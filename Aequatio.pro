@@ -10,9 +10,10 @@ TARGET = Aequatio
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        mainwindow.cpp
+SOURCES += source\main.cpp\
+           source\mainwindow.cpp \
+    source/mainwindow.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += source\mainwindow.h
 
-FORMS    += mainwindow.ui
+FORMS    += source\mainwindow.ui
