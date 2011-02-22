@@ -1,6 +1,6 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2011-02-20T22:34:35
+# Project created by QtCreator 2011-02-22T21:14:42
 #
 #-------------------------------------------------
 
@@ -10,10 +10,12 @@ TARGET = Aequatio
 TEMPLATE = app
 
 
-SOURCES += source\main.cpp\
-           source\mainwindow.cpp \
-    source/mainwindow.cpp
+SOURCES += \
+    source/mainwindow.cpp \
+    source/main.cpp
 
-HEADERS  += source\mainwindow.h
+HEADERS  += \
+    source/mainwindow.h
 
-FORMS    += source\mainwindow.ui
+FORMS    += \
+    source/mainwindow.ui
