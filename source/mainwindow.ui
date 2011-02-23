@@ -16,14 +16,14 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QTextEdit" name="textEdit">
+     <widget class="QTextEdit" name="consoleEdit">
       <property name="readOnly">
        <bool>true</bool>
       </property>
      </widget>
     </item>
     <item>
-     <widget class="QLineEdit" name="lineEdit"/>
+     <widget class="QLineEdit" name="commandEdit"/>
     </item>
    </layout>
   </widget>

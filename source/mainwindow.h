@@ -4,19 +4,25 @@
 #include <QMainWindow>
 
 namespace Ui {
-    class MainWindow;
+	class MainWindow;
 }
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
+signals:
+	void commandEntered(const QString &);	
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
-
+	explicit MainWindow(QWidget *parent = 0);
+	~MainWindow();
+public slots:
+	void resultReturned(const QString &result);
+private slots:
+	void on_commandEdit_returnPressed();
+	
 private:
-    Ui::MainWindow *ui;
+	Ui::MainWindow *ui;	
 };
-
+	
 #endif // MAINWINDOW_H
