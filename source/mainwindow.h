@@ -20,6 +20,8 @@ public slots:
 	void resultReturned(const QString &result);
 private slots:
 	void on_commandEdit_returnPressed();
+protected:
+	void resizeEvent(QResizeEvent *);
 	
 private:
 	Ui::MainWindow *ui;	

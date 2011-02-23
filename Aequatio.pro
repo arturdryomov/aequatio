@@ -5,10 +5,12 @@ TEMPLATE = app
 
 SOURCES += \
 	source/mainwindow.cpp \
-	source/main.cpp
+	source/main.cpp \
+    source/controller.cpp
 
 HEADERS  += \
-	source/mainwindow.h
+	source/mainwindow.h \
+    source/controller.h
 
 FORMS	+= \
 	source/mainwindow.ui
