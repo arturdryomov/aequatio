@@ -23,7 +23,7 @@ int Controller::runApplication(int argc, char *argv[])
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf8"));
 	QTextCodec::setCodecForTr(QTextCodec::codecForName("utf8"));	
 	
-	m_mainWindow = new MainWindow;
+	m_mainWindow = new MainWindow();
 	connect(m_mainWindow, SIGNAL(commandEntered(QString)), SLOT(commandEntered(QString)));
 	m_mainWindow->show();
 

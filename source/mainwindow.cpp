@@ -21,12 +21,13 @@ void MainWindow::resultReturned(const QString &result)
 	ui->consoleEdit->append("→ " + result);
 }
 
-void MainWindow::on_commandEdit_returnPressed()
+void MainWindow::on_submitButton_clicked()
 {
-    // drop commandEdit text to console and send this text to external code
+	// drop commandEdit text to console and send this text to external code
 	ui->consoleEdit->append("← " + ui->commandEdit->text());
 	emit commandEntered(ui->commandEdit->text());
-	ui->commandEdit->clear();	
+	ui->commandEdit->clear(); 
+	ui->commandEdit->setFocus();
 }
 
 void MainWindow::resizeEvent(QResizeEvent *)
@@ -34,3 +35,4 @@ void MainWindow::resizeEvent(QResizeEvent *)
 	// scroll consoleEdit to the end
 	ui->consoleEdit->verticalScrollBar()->setValue(ui->consoleEdit->verticalScrollBar()->maximum());
 }
+

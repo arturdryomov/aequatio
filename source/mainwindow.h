@@ -19,7 +19,8 @@ public:
 public slots:
 	void resultReturned(const QString &result);
 private slots:
-	void on_commandEdit_returnPressed();
+	void on_submitButton_clicked();
+	
 protected:
 	void resizeEvent(QResizeEvent *);
 	
