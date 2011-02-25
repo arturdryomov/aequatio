@@ -2,5 +2,8 @@
 
 int main(int argc, char *argv[])
 {				
-	return Controller::instance()->runApplication(argc, argv);
+	int result = Controller::instance()->runApplication(argc, argv);
+	delete Controller::instance();
+	
+	return result;
 }

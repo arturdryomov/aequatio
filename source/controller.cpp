@@ -23,20 +23,25 @@ int Controller::runApplication(int argc, char *argv[])
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf8"));
 	QTextCodec::setCodecForTr(QTextCodec::codecForName("utf8"));	
 	
-	m_mainWindow = new MainWindow();
+	m_mainWindow = new MainWindow;
 	connect(m_mainWindow, SIGNAL(commandEntered(QString)), SLOT(commandEntered(QString)));
 	m_mainWindow->show();
-
-	return a.exec();
+	
+	int result = a.exec();
+	delete m_mainWindow;
+	return result;
 }
 
 void Controller::commandEntered(const QString &command)
 {
-	m_mainWindow->resultReturned(tr("I’ve got this command: ‘%1’").arg(command));
+	QString result = m_syntaxAnalyzer->parse(command);
+	m_mainWindow->resultReturned(result);	
 }
 
 Controller::Controller(QObject *parent) :
-    QObject(parent)
+	QObject(parent),
+	m_mainWindow(0),
+	m_syntaxAnalyzer(new SyntaxAnalyzer(this))
 {
 }
 
