@@ -34,8 +34,14 @@ int Controller::runApplication(int argc, char *argv[])
 
 void Controller::commandEntered(const QString &command)
 {
-	QString result = m_syntaxAnalyzer->parse(command);
-	m_mainWindow->resultReturned(result);	
+	try {
+		QString result = m_syntaxAnalyzer->parse(command);
+		m_mainWindow->resultReturned(result);		
+	} 
+	catch (SyntaxAnalyzer::Exception e) {
+		m_mainWindow->resultReturned(e.message());
+	}
+		
 }
 
 Controller::Controller(QObject *parent) :

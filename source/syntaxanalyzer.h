@@ -10,6 +10,18 @@ class SyntaxAnalyzer : public QObject
 public:
 	explicit SyntaxAnalyzer(QObject *parent = 0);
 	QString parse(const QString &input);
+	
+	// This exception will be thrown if parsing or computing error occurs.
+	// message() returns error description.
+	class Exception 
+	{
+	public:
+		explicit Exception(const QString &message) : m_message(message) {}
+		QString message() { return m_message; }
+	private:
+		QString m_message;
+	};
+
 signals:
 
 public slots:
