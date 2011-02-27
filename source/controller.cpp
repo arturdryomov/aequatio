@@ -1,9 +1,7 @@
 #include "controller.h"
 #include "mainwindow.h"
-#include "QApplication"
+#include "application.h"
 #include "QTextCodec"
-
-
 
 Controller *Controller::m_instance = 0;
 
@@ -17,7 +15,7 @@ Controller *Controller::instance()
 
 int Controller::runApplication(int argc, char *argv[])
 {
-	QApplication a(argc, argv);
+	Application a(argc, argv);
 	
 	// set codecs to unicode
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf8"));
