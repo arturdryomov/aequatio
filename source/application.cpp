@@ -1,8 +1,9 @@
 #include "application.h"
 #include <QSysInfo>
 #include <QFont>
-#include <qt_windows.h>
-
+#ifdef Q_WS_WIN
+	#include <qt_windows.h>
+#endif
 
 Application::Application(int &argc, char **argv) : QApplication(argc, argv)
 {	
@@ -16,6 +17,7 @@ Application::Application(int &argc, char **argv) : QApplication(argc, argv)
 
 QFont Application::systemFont()
 {
+#ifdef Q_WS_WIN
 	NONCLIENTMETRICS metrics;	
 	ZeroMemory(&metrics, sizeof(NONCLIENTMETRICS));
 	metrics.cbSize = sizeof(NONCLIENTMETRICS);
@@ -25,8 +27,11 @@ QFont Application::systemFont()
 	
 	int pointSize = MulDiv(-metrics.lfMessageFont.lfHeight, 72, 
 		GetDeviceCaps(GetDC(GetDesktopWindow()), LOGPIXELSY));
-	QFont font;	
+#endif	
+	QFont font;
+#ifdef Q_WS_WIN	
 	font.setPointSize(pointSize);
 	font.setFamily(QString::fromWCharArray(metrics.lfMessageFont.lfFaceName));
+#endif	
 	return font;	
 }
