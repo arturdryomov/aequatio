@@ -1,10 +1,8 @@
 #include "application.h"
+#include <QSysInfo>
+#include <QFont>
+#include <qt_windows.h>
 
-#ifdef Q_WS_WIN
-	#include "qt_windows.h"	
-	#include <QSysInfo>
-	#include <QFont>
-#endif
 
 Application::Application(int &argc, char **argv) : QApplication(argc, argv)
 {	
