@@ -5,6 +5,11 @@
 #include <QString>
 #include <QChar>
 
+struct lexeme {
+	QString lexemeData;
+	QString lexemeType;
+};
+
 class LexicalAnalyzer
 {
 public:
@@ -15,11 +20,13 @@ public:
 	void nextLexeme();
 private:
 	QString m_input;
-	QList<QString> m_lexemeList;
-	bool isSeparator(QChar symbol);
-	void skipSymbols(int &startPosition, int &position);
+	int m_position;
+	QList<lexeme> m_lexemeList;
+	void skipSymbols(int &startPosition);
 	void addEnd();
-	void pushLexeme(int startPosition, int endPosition);
+	void pushNumber(int startPosition);
+	void extractLexeme(int startPosition);
+	void extractNumber(int &startPosition);
 };
 
 class CheckSymbol

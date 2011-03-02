@@ -2,18 +2,16 @@
 
 QString LexicalAnalyzer::getLexeme()
 {
-
 	if (m_lexemeList.isEmpty()) {
 		return QString();
 	}
-	QString tempLexeme = m_lexemeList.first();
-	if (tempLexeme.isNull()) {
+	lexeme tempLexeme = m_lexemeList.first();
+	if (tempLexeme.lexemeData.isNull()) {
 		return QString();
 	}
 	else {
-		return tempLexeme;
+		return tempLexeme.lexemeData;
 	}
-
 }
 
 void LexicalAnalyzer::nextLexeme()
@@ -28,42 +26,60 @@ void LexicalAnalyzer::parseInput()
 	}
 
 	int inputLength = m_input.size() - 1;
-	int position = 0;
+	m_position = 0;
 
-	while (position <= inputLength) {
-		int startPosition = position;
-
-		skipSymbols(startPosition, position);
-
-		if (!CheckSymbol::isDigit(m_input.at(position))) {
-			return;
-		}
-
-		while ( (position < inputLength) && (CheckSymbol::isDigit(m_input.at(position))) ) {
-			position++;
-		}
-
-		if ( (position < inputLength) && (CheckSymbol::isSeparator(m_input.at(position))) ) {
-			position++;
-			if ( (position > inputLength) || (!CheckSymbol::isDigit(m_input.at(position))) ) {
-				pushLexeme(startPosition, position);
-			}
-			while ( (position < inputLength) && (CheckSymbol::isDigit(m_input.at(position))) ) {
-				position++;
-			}
-		}
-
-		pushLexeme(startPosition, position);
+	while (m_position <= inputLength) {
+		int startPosition = m_position;
+		skipSymbols(startPosition);
+		extractLexeme(startPosition);
 	}
 
 	addEnd();
 }
 
-void LexicalAnalyzer::skipSymbols(int &startPosition, int &position)
+void LexicalAnalyzer::extractLexeme(int startPosition)
 {
-	while (position < m_input.size() - 1) {
-		if (CheckSymbol::isSpace(m_input.at(position))) {
-			position++;
+	int lexemeType;
+	if (CheckSymbol::isDigit(m_input.at(m_position))) {
+		lexemeType = 1;
+	}
+	else {
+		m_position = m_input.size();
+		return;
+	}
+
+	switch (lexemeType) {
+		case 1: { extractNumber(startPosition); return;}
+		default: return;
+	}
+}
+
+void LexicalAnalyzer::extractNumber(int &startPosition)
+{
+	int inputLength = m_input.size() - 1;
+
+	while ( (m_position < inputLength) && (CheckSymbol::isDigit(m_input.at(m_position))) ) {
+		m_position++;
+	}
+
+	if ( (m_position < inputLength) && (CheckSymbol::isSeparator(m_input.at(m_position))) ) {
+		m_position++;
+		if ( (m_position > inputLength) || (!CheckSymbol::isDigit(m_input.at(m_position))) ) {
+			pushNumber(startPosition);
+		}
+		while ( (m_position < inputLength) && (CheckSymbol::isDigit(m_input.at(m_position))) ) {
+			m_position++;
+		}
+	}
+
+	pushNumber(startPosition);
+}
+
+void LexicalAnalyzer::skipSymbols(int &startPosition)
+{
+	while (m_position < m_input.size() - 1) {
+		if (CheckSymbol::isSpace(m_input.at(m_position))) {
+			m_position++;
 			startPosition++;
 		}
 		else {
@@ -72,24 +88,31 @@ void LexicalAnalyzer::skipSymbols(int &startPosition, int &position)
 	}
 }
 
-void LexicalAnalyzer::pushLexeme(int startPosition, int endPosition)
+void LexicalAnalyzer::pushNumber(int startPosition)
 {
+
 	QString tempNumber;
 
-	while (startPosition < endPosition) {
+	while (startPosition < m_position) {
 		tempNumber.append(m_input.at(startPosition));
 		startPosition++;
 	}
 
 	if (!tempNumber.isNull()) {
-		m_lexemeList.append(tempNumber);
+		QString lexemeType = "number";
+		lexeme tempLexeme;
+		tempLexeme.lexemeType = lexemeType;
+		tempLexeme.lexemeData = tempNumber;
+		m_lexemeList.append(tempLexeme);
 	}
 }
 
 void LexicalAnalyzer::addEnd()
 {
+	lexeme tempLexeme;
 	QString end;
-	m_lexemeList.append(end);
+	tempLexeme.lexemeType = tempLexeme.lexemeData = end;
+	m_lexemeList.append(tempLexeme);
 }
 
 // Methods below are for checking symbols
