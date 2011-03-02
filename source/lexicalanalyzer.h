@@ -22,5 +22,16 @@ private:
 	void pushLexeme(int startPosition, int endPosition);
 };
 
+class CheckSymbol
+{
+public:
+	static bool isSeparator(QChar symbol);
+	static bool isSpace(QChar symbol);
+	static bool isExponent(QChar symbol);
+	static bool isOperation(QChar symbol);
+	static bool isSign(QChar symbol);
+	static bool isDigit(QChar symbol);
+};
+
 #endif // LEXICALANALYZER_H
 
