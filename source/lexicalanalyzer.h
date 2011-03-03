@@ -21,17 +21,8 @@ public:
 		parseInput();
 	}
 	void parseInput();
-	QString getLexeme();
+	Lexeme getLexeme();
 	void nextLexeme();
-private:
-	QString m_input;
-	int m_position;
-	QList<Lexeme> m_lexemeList;
-	void skipSymbols();
-	void addEnd();
-	void extractLexeme();
-	void extractNumber();
-	void pushLexeme(LexemeType, QString);
 	class Exception
 	{
 	public:
@@ -40,17 +31,26 @@ private:
 	private:
 		QString m_message;
 	};
+private:
+	QString m_input;
+	int m_position;
+	QList<Lexeme> m_lexemeList;
+	void skipWhitespace();
+	void addEnd();
+	void extractLexeme();
+	void extractNumber();
+	void pushLexeme(LexemeType, QString);
 };
 
 class CheckSymbol
 {
 public:
-	static bool isSeparator(QChar symbol);
-	static bool isSpace(QChar symbol);
-	static bool isExponent(QChar symbol);
-	static bool isOperation(QChar symbol);
-	static bool isSign(QChar symbol);
-	static bool isDigit(QChar symbol);
+	static bool isSeparator(QChar);
+	static bool isSpace(QChar);
+	static bool isExponent(QChar);
+	static bool isOperation(QChar);
+	static bool isSign(QChar);
+	static bool isDigit(QChar);
 };
 
 #endif // LEXICALANALYZER_H
