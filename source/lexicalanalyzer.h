@@ -5,28 +5,33 @@
 #include <QString>
 #include <QChar>
 
-struct lexeme {
+enum LexemeType {
+	lexemeNumber, lexemeEOL
+};
+
+struct Lexeme {
+	LexemeType lexemeType;
 	QString lexemeData;
-	QString lexemeType;
 };
 
 class LexicalAnalyzer
 {
 public:
-	LexicalAnalyzer(QString in) : m_input(in)
-		{ }
+	LexicalAnalyzer(QString in) : m_input(in) {
+		parseInput();
+	}
 	void parseInput();
 	QString getLexeme();
 	void nextLexeme();
 private:
 	QString m_input;
 	int m_position;
-	QList<lexeme> m_lexemeList;
-	void skipSymbols(int &startPosition);
+	QList<Lexeme> m_lexemeList;
+	void skipSymbols();
 	void addEnd();
-	void pushNumber(int startPosition);
-	void extractLexeme(int startPosition);
-	void extractNumber(int &startPosition);
+	void extractLexeme();
+	void extractNumber();
+	void pushLexeme(LexemeType, QString);
 };
 
 class CheckSymbol
