@@ -22,7 +22,7 @@ void LexicalAnalyzer::nextLexeme()
 void LexicalAnalyzer::parseInput()
 {
 	if (m_input.isEmpty()) {
-		return;
+		throw Exception("Input is empty");
 	}
 
 	int inputLength = m_input.size() - 1;

@@ -32,6 +32,14 @@ private:
 	void extractLexeme();
 	void extractNumber();
 	void pushLexeme(LexemeType, QString);
+	class Exception
+	{
+	public:
+		explicit Exception(const QString &message) : m_message(message) {}
+		QString message() { return m_message; }
+	private:
+		QString m_message;
+	};
 };
 
 class CheckSymbol
