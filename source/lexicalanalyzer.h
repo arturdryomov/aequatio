@@ -6,7 +6,7 @@
 #include <QChar>
 
 enum LexemeType {
-	lexemeNumber, lexemeEOL
+	lexemeNumber, lexemeOperation, lexemeEOL
 };
 
 struct Lexeme {
@@ -39,6 +39,7 @@ private:
 	void addEnd();
 	void extractLexeme();
 	void extractNumber();
+	void extractOperation();
 	void pushLexeme(LexemeType, QString);
 };
 

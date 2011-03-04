@@ -36,7 +36,12 @@ void LexicalAnalyzer::extractLexeme()
 		extractNumber();
 	}
 	else {
-		throw Exception("Lexeme type does not support");
+		if (CheckSymbol::isOperation(m_input.at(m_position))) {
+			extractOperation();
+		}
+		else {
+			throw Exception("Lexeme type does not support");
+		}
 	}
 }
 
@@ -64,6 +69,17 @@ void LexicalAnalyzer::extractNumber()
 		LexemeType lexemeType = lexemeNumber;
 		pushLexeme(lexemeType, tempNumber);
 	}
+}
+
+void LexicalAnalyzer::extractOperation()
+{
+	QString tempOperation = m_input.mid(m_position, 1);
+	if (!tempOperation.isNull()) {
+		LexemeType lexemeType = lexemeOperation;
+		pushLexeme(lexemeType, tempOperation);
+	}
+
+	m_position++;
 }
 
 void LexicalAnalyzer::pushLexeme(LexemeType lexemeType, QString lexemeData)
