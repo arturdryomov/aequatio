@@ -6,7 +6,8 @@
 #include <QChar>
 
 enum LexemeType {
-	lexemeNumber, lexemeOperation, lexemeEOL
+	lexemeNumber, lexemePlus, lexemeMinus,
+	lexemeMultiply, lexemeDivide, lexemeEOL
 };
 
 struct Lexeme {

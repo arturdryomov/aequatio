@@ -74,11 +74,32 @@ void LexicalAnalyzer::extractNumber()
 void LexicalAnalyzer::extractOperation()
 {
 	QString tempOperation = m_input.mid(m_position, 1);
+	LexemeType lexemeType;
 	if (!tempOperation.isNull()) {
-		LexemeType lexemeType = lexemeOperation;
-		pushLexeme(lexemeType, tempOperation);
+		if (tempOperation == "+") {
+			lexemeType = lexemePlus;
+		}
+		else {
+			if (tempOperation == "-") {
+				lexemeType = lexemeMinus;
+			}
+			else {
+				if (tempOperation == "*") {
+					lexemeType = lexemeMultiply;
+				}
+				else {
+					if (tempOperation == "/") {
+						lexemeType = lexemeDivide;
+					}
+					else {
+						throw Exception("Operation does not support");
+					}
+				}
+			}
+		}
 	}
 
+	pushLexeme(lexemeType, QString());
 	m_position++;
 }
 
