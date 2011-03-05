@@ -75,28 +75,20 @@ void LexicalAnalyzer::extractOperation()
 {
 	QString tempOperation = m_input.mid(m_position, 1);
 	LexemeType lexemeType;
-	if (!tempOperation.isNull()) {
-		if (tempOperation == "+") {
-			lexemeType = lexemePlus;
-		}
-		else {
-			if (tempOperation == "-") {
-				lexemeType = lexemeMinus;
-			}
-			else {
-				if (tempOperation == "*") {
-					lexemeType = lexemeMultiply;
-				}
-				else {
-					if (tempOperation == "/") {
-						lexemeType = lexemeDivide;
-					}
-					else {
-						throw Exception("Operation does not support");
-					}
-				}
-			}
-		}
+	if (tempOperation == "+") {
+		lexemeType = lexemePlus;
+	}
+	else if (tempOperation == "-") {
+		lexemeType = lexemeMinus;
+	}
+	else if (tempOperation == "*") {
+		lexemeType = lexemeMultiply;
+	}
+	else if (tempOperation == "/") {
+		lexemeType = lexemeDivide;
+	}
+	else {
+		throw Exception("Operation is not supported.");
 	}
 
 	pushLexeme(lexemeType, QString());
