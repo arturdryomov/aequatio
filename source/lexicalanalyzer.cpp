@@ -1,10 +1,8 @@
 #include "lexicalanalyzer.h"
 
-LexicalAnalyzer::LexicalAnalyzer(const QString &in, QObject *parent) :
-	QObject(parent), 
-	m_input(in)
-{
-	parseInput();
+LexicalAnalyzer::LexicalAnalyzer(QObject *parent) :
+	QObject(parent)	
+{	
 }
 
 
@@ -23,8 +21,11 @@ void LexicalAnalyzer::nextLexeme()
 		m_lexemeList.removeFirst();
 }
 
-void LexicalAnalyzer::parseInput()
+void LexicalAnalyzer::parse(const QString &input)
 {
+	m_lexemeList.clear();
+	m_input = input;
+	
 	if (m_input.isEmpty()) {
 		throw Exception(tr("Input is empty"));
 	}

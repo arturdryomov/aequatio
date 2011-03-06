@@ -20,9 +20,9 @@ class LexicalAnalyzer : public QObject
 {
     Q_OBJECT
 public:
-	LexicalAnalyzer(const QString &in, QObject *parent = 0);
+	LexicalAnalyzer(QObject *parent = 0);
 	
-	void parseInput();
+	void parse(const QString &input);
 	Lexeme lexeme();
 	void nextLexeme();
 	class Exception
