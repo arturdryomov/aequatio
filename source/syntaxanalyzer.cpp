@@ -14,8 +14,11 @@ SyntaxAnalyzer::~SyntaxAnalyzer()
 QString SyntaxAnalyzer::process(const QString &input)
 {
 	m_lexicalAnalyzer = new LexicalAnalyzer(input);	
+	m_rpnCode->elements.clear();
+
 	QString result = "";
-	
+
+
 	if (m_lexicalAnalyzer->lexeme().type == LexemeEOL) {
 		throw Exception(tr("Input is empty"));
 	}
@@ -75,22 +78,25 @@ RpnElement SyntaxAnalyzer::factor()
 // FactorOp = '*' | '/'
 RpnElement SyntaxAnalyzer::factorOp()
 {	
-	if (CheckLexeme::isFactorOp(m_lexicalAnalyzer->lexeme())) {
-		RpnElement result;
+	RpnElement result;
+
+	if (m_lexicalAnalyzer->lexeme().type == LexemeMultiply) {
 		result.type = RpnOperation;
-		result.value = m_lexicalAnalyzer->lexeme().type;
-		
-		m_lexicalAnalyzer->nextLexeme();
-		return result;
+		result.value = OperationMultiply;
+	}
+	else if(m_lexicalAnalyzer->lexeme().type == LexemeDivide) {
+		result.type = RpnOperation;
+		result.value = OperationDivide;
 	}
 	else {
 		throw Exception(tr("Factoring operator expected"));
 	}
+
+	m_lexicalAnalyzer->nextLexeme();
+	return result;
 }
 
 bool CheckLexeme::isFactorOp(Lexeme lexeme)
 {
 	return ((lexeme.type == LexemeMultiply) || (lexeme.type == LexemeDivide));
 }
-
-

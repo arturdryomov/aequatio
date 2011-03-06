@@ -26,7 +26,7 @@ struct RpnCode
 
 class SyntaxAnalyzer : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
 	explicit SyntaxAnalyzer(QObject *parent = 0);
 	~SyntaxAnalyzer();
