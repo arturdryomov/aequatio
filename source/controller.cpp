@@ -37,10 +37,13 @@ void Controller::commandEntered(const QString &command)
 		m_mainWindow->resultReturned(result);		
 	} 
 	catch (LexicalAnalyzer::Exception e) {
-		m_mainWindow->resultReturned( tr("Lexical error: ‘%1’").arg(e.message()));
+		m_mainWindow->resultReturned(tr("Lexical error: ‘%1’").arg(e.message()));
 	}
 	catch (SyntaxAnalyzer::Exception e) {
 		m_mainWindow->resultReturned( tr("Syntax error: ‘%1’").arg(e.message()));
+	}
+	catch (ExprCalculator::Exception e) {
+		m_mainWindow->resultReturned( tr("Calculating error: ‘%1’").arg(e.message()));
 	}
 		
 }

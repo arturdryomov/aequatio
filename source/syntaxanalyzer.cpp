@@ -2,7 +2,9 @@
 #include "lexicalanalyzer.h"
 
 SyntaxAnalyzer::SyntaxAnalyzer(QObject *parent) :
-	QObject(parent), m_rpnCode(new RpnCode)
+	QObject(parent), 	
+	m_rpnCode(new RpnCode),
+	m_exprCalculator(new ExprCalculator(this))
 {
 }
 
@@ -13,24 +15,25 @@ SyntaxAnalyzer::~SyntaxAnalyzer()
 
 QString SyntaxAnalyzer::process(const QString &input)
 {
+	// TODO: fix m_lexicalAnalyzer memory leak if exception is thrown
 	m_lexicalAnalyzer = new LexicalAnalyzer(input);	
 	m_rpnCode->elements.clear();
 
-	QString result = "";
-
+	QString result;
 
 	if (m_lexicalAnalyzer->lexeme().type == LexemeEOL) {
 		throw Exception(tr("Input is empty"));
 	}
 	
-	expression(); // convert expression to RPN
+	expression(); // convert expression to RPN	
 	
 	if (m_lexicalAnalyzer->lexeme().type != LexemeEOL) {
 		throw Exception(tr("Factor operator or end of file expected"));
 	}
-	
-	
 	delete m_lexicalAnalyzer;
+	
+	result = QString::number(m_exprCalculator->calculate(m_rpnCode));		
+	
 	return result;
 }
 

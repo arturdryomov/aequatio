@@ -6,6 +6,7 @@
 #include "syntaxanalyzer.h"
 
 
+
 /* 
 	This class interconnects ui level and application level.
 	Controller implements Singletone pattern.

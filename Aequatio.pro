@@ -13,14 +13,16 @@ SOURCES += \
     source/controller.cpp \
     source/syntaxanalyzer.cpp \
 		source/application.cpp \
-		source/lexicalanalyzer.cpp
+		source/lexicalanalyzer.cpp \
+    source/exprcalculator.cpp
 
 HEADERS  += \
 	source/mainwindow.h \
     source/controller.h \
     source/syntaxanalyzer.h \
 		source/application.h \
-		source/lexicalanalyzer.h
+		source/lexicalanalyzer.h \
+    source/exprcalculator.h
 
 FORMS	+= \
 	source/mainwindow.ui

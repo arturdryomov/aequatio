@@ -6,23 +6,7 @@
 #include <QVariant>
 #include <QList>
 #include "lexicalanalyzer.h"
-
-typedef double Number;
-
-enum RpnElementType { RpnOperation, RpnOperand };
-enum OperationType { OperationPlus, OperationMinus, OperationMultiply, 
-	OperationDivide };
-
-struct RpnElement // RPN stands for ‘reverse Polish notation’
-{
-	RpnElementType type;
-	QVariant value; // this will hold a Number or a OperationType value
-};
-
-struct RpnCode
-{
-	QList<RpnElement> elements; // there will be a number of lists here: main thread, functions…
-};
+#include "exprcalculator.h"
 
 class SyntaxAnalyzer : public QObject
 {
@@ -33,7 +17,7 @@ public:
 	
 	QString process(const QString &input);
 	
-	// This exception will be thrown if parsing or computing error occurs.
+	// This exception will be thrown if parsing error occurs.
 	// message() returns error description.
 	class Exception 
 	{
@@ -48,9 +32,10 @@ private:
 	void expression(); // Expression = Factor {FactorOp Factor}
 	RpnElement factor(); // Factor = Number
 	RpnElement factorOp(); // FactorOp = '*' | '/'
-	
+
 	RpnCode *m_rpnCode;
 	LexicalAnalyzer *m_lexicalAnalyzer;	
+	ExprCalculator *m_exprCalculator;
 };
 
 class CheckLexeme
