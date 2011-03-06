@@ -1,7 +1,7 @@
 #include "controller.h"
 #include "mainwindow.h"
 #include "application.h"
-#include "QTextCodec"
+#include <QTextCodec>
 
 Controller *Controller::m_instance = 0;
 
@@ -33,11 +33,14 @@ int Controller::runApplication(int argc, char *argv[])
 void Controller::commandEntered(const QString &command)
 {
 	try {
-		QString result = m_syntaxAnalyzer->parse(command);
+		QString result = m_syntaxAnalyzer->process(command);
 		m_mainWindow->resultReturned(result);		
 	} 
+	catch (LexicalAnalyzer::Exception e) {
+		m_mainWindow->resultReturned( tr("Lexical error: ‘%1’").arg(e.message()));
+	}
 	catch (SyntaxAnalyzer::Exception e) {
-		m_mainWindow->resultReturned(e.message());
+		m_mainWindow->resultReturned( tr("Syntax error: ‘%1’").arg(e.message()));
 	}
 		
 }

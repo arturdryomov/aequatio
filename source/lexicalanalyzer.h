@@ -1,28 +1,29 @@
 #ifndef LEXICALANALYZER_H
 #define LEXICALANALYZER_H
 
+#include <QObject>
 #include <QList>
 #include <QString>
 #include <QChar>
 
 enum LexemeType {
-	lexemeNumber, lexemePlus, lexemeMinus,
-	lexemeMultiply, lexemeDivide, lexemeEOL
+	LexemeNumber, LexemePlus, LexemeMinus,
+	LexemeMultiply, LexemeDivide, LexemeEOL
 };
 
 struct Lexeme {
-	LexemeType lexemeType;
-	QString lexemeData;
+	LexemeType type;
+	QString value;
 };
 
-class LexicalAnalyzer
+class LexicalAnalyzer : public QObject
 {
+    Q_OBJECT
 public:
-	LexicalAnalyzer(QString in) : m_input(in) {
-		parseInput();
-	}
+	LexicalAnalyzer(const QString &in, QObject *parent = 0);
+	
 	void parseInput();
-	Lexeme getLexeme();
+	Lexeme lexeme();
 	void nextLexeme();
 	class Exception
 	{
@@ -44,7 +45,7 @@ private:
 	void pushLexeme(LexemeType, QString);
 };
 
-class CheckSymbol
+class CheckChar
 {
 public:
 	static bool isSeparator(QChar);
