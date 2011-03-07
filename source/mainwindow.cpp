@@ -7,7 +7,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
-	ui->commandEdit->setFocus();
+	ui->consoleEdit->append(tr("→ You are welcome to Aequatio! Enter math expression, please…"));
+	ui->commandEdit->setFocus();	
 }
 
 MainWindow::~MainWindow()
