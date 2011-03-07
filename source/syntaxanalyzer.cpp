@@ -1,5 +1,6 @@
 #include "syntaxanalyzer.h"
 #include "lexicalanalyzer.h"
+#include <QMetaType>
 
 SyntaxAnalyzer::SyntaxAnalyzer(QObject *parent) :
 	QObject(parent), 	
@@ -17,7 +18,8 @@ SyntaxAnalyzer::~SyntaxAnalyzer()
 QString SyntaxAnalyzer::process(const QString &input)
 {	
 	m_rpnCode->elements.clear();
-		
+	
+	// perform lexical analyzis
 	m_lexicalAnalyzer->parse(input);		
 	if (m_lexicalAnalyzer->lexeme().type == LexemeEOL) {
 		throw Exception(tr("Input is empty"));
@@ -29,6 +31,7 @@ QString SyntaxAnalyzer::process(const QString &input)
 		throw Exception(tr("Factor operator or end of file expected"));
 	}
 	
+	// calculate
 	return QString::number(m_exprCalculator->calculate(m_rpnCode));		
 
 }
@@ -81,11 +84,11 @@ RpnElement SyntaxAnalyzer::multOperation()
 
 	if (m_lexicalAnalyzer->lexeme().type == LexemeMultiply) {
 		result.type = RpnOperation;
-		result.value = OperationMultiply;
+		result.value.setValue(OperationMultiply);
 	}
 	else if(m_lexicalAnalyzer->lexeme().type == LexemeDivide) {
 		result.type = RpnOperation;
-		result.value = OperationDivide;
+		result.value.setValue(OperationDivide);
 	}
 	else {
 		throw Exception(tr("Factoring operator expected"));

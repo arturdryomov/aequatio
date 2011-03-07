@@ -13,10 +13,13 @@ Number ExprCalculator::calculate(RpnCode *code)
 	}
 
 	QStack<RpnElement> rpnStack;
+	
 	foreach (RpnElement element, code->elements) {
+		
 		if (element.type == RpnOperand) {
 			rpnStack.push(element);
 		}
+		
 		else {
 			if (rpnStack.count() < 2) {
 				// we cannot apply binary operation to less than two operands
@@ -25,18 +28,18 @@ Number ExprCalculator::calculate(RpnCode *code)
 			
 			RpnElement rightOperand = rpnStack.pop();
 			RpnElement leftOperand = rpnStack.pop();
-			OperationType operation = (OperationType)element.value.toInt();
+			OperationType operation = element.value.value<OperationType>();
 			
 			switch (operation) {
 			case OperationMultiply:
-				leftOperand.value = leftOperand.value.toDouble() * rightOperand.value.toDouble();
+				leftOperand.value = leftOperand.value.value<Number>() * rightOperand.value.value<Number>();
 				break;
 			case OperationDivide:
-				leftOperand.value = leftOperand.value.toDouble() / rightOperand.value.toDouble();
+				leftOperand.value = leftOperand.value.value<Number>() / rightOperand.value.value<Number>();
 				break;
 			default:
 				// there should'n be code here
-				Q_ASSERT_X(false, "ExprCalculator", "Unknown operation in RPN code");
+				throw Exception(tr("Unknown operation in RPN code"));				
 				break;
 			}
 			rpnStack.push(leftOperand);				
@@ -53,5 +56,5 @@ Number ExprCalculator::calculate(RpnCode *code)
 		throw Exception(tr("Expression is incorrect"));
 	}
 	
-	return rpnStack.pop().value.toDouble();
+	return rpnStack.pop().value.value<Number>();
 }

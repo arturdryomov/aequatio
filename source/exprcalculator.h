@@ -3,9 +3,9 @@
 
 #include <QObject>
 #include <QVariant>
+#include <QMetaType>
 
 typedef double Number;
-// Q_DECLARE_METATYPE(Number);
 
 // RPN stands for ‘Reverse Polish notation’
 enum RpnElementType { RpnOperation, RpnOperand };
@@ -39,5 +39,8 @@ public:
 		QString m_message;
 	};
 };
+
+Q_DECLARE_METATYPE(Number)
+Q_DECLARE_METATYPE(OperationType)
 
 #endif // EXPRCALCULATOR_H
