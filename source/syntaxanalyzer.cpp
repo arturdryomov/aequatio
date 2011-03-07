@@ -33,18 +33,18 @@ QString SyntaxAnalyzer::process(const QString &input)
 
 }
 
-// Expression = Factor {FactorOp Factor}
+// Expression = Factor {MultOperation Factor}
 void SyntaxAnalyzer::expression()
 {		
-	// note, that exception will be thrown in factor() or factorOp() if something's wrong
+	// note, that exception will be thrown in factor() or multOperation() if something's wrong
 	
 	// first obligatory factor
 	RpnElement operand = factor(); 
 	m_rpnCode->elements << operand;
 	
-	// {FactorOp Factor} section
-	while (CheckLexeme::isFactorOp(m_lexicalAnalyzer->lexeme())) {
-		RpnElement operation = factorOp();
+	// {MultOperation Factor} section
+	while (CheckLexeme::isMultOperation(m_lexicalAnalyzer->lexeme())) {
+		RpnElement operation = multOperation();
 		operand = factor();
 		
 		m_rpnCode->elements << operand << operation;
@@ -74,8 +74,8 @@ RpnElement SyntaxAnalyzer::factor()
 	return result;
 }
 
-// FactorOp = '*' | '/'
-RpnElement SyntaxAnalyzer::factorOp()
+// MultOperation = '*' | '/'
+RpnElement SyntaxAnalyzer::multOperation()
 {	
 	RpnElement result;
 
@@ -95,7 +95,7 @@ RpnElement SyntaxAnalyzer::factorOp()
 	return result;
 }
 
-bool CheckLexeme::isFactorOp(Lexeme lexeme)
+bool CheckLexeme::isMultOperation(Lexeme lexeme)
 {
 	return ((lexeme.type == LexemeMultiply) || (lexeme.type == LexemeDivide));
 }

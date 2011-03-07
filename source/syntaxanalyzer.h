@@ -31,7 +31,7 @@ public:
 private:
 	void expression(); // Expression = Factor {FactorOp Factor}
 	RpnElement factor(); // Factor = Number
-	RpnElement factorOp(); // FactorOp = '*' | '/'
+	RpnElement multOperation(); // MultOperation = '*' | '/'
 
 	RpnCode *m_rpnCode;
 	LexicalAnalyzer *m_lexicalAnalyzer;	
@@ -41,7 +41,7 @@ private:
 class CheckLexeme
 {
 public:
-	static bool isFactorOp(Lexeme lexeme);
+	static bool isMultOperation(Lexeme lexeme);
 };
 
 

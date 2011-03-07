@@ -17,9 +17,6 @@ class Controller : public QObject
 public:
 	static Controller *instance();	
 	int runApplication(int argc, char *argv[]);
-signals:
-
-public slots:
 private slots:
 	void commandEntered(const QString &command);
 private:

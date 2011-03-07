@@ -7,19 +7,21 @@
 typedef double Number;
 // Q_DECLARE_METATYPE(Number);
 
+// RPN stands for ‘Reverse Polish notation’
 enum RpnElementType { RpnOperation, RpnOperand };
-enum OperationType { OperationPlus, OperationMinus, OperationMultiply,
-	OperationDivide };
 
-struct RpnElement // RPN stands for ‘reverse Polish notation’
+enum OperationType { OperationPlus, OperationMinus, OperationMultiply, OperationDivide };
+
+struct RpnElement
 {
 	RpnElementType type;
-	QVariant value; // this will hold a Number or a OperationType value
+	QVariant value; // this will hold a Number or an OperationType value
 };
 
 struct RpnCode
 {
-	QList<RpnElement> elements; // there will be a number of lists here: main thread, functions…
+	// there will be a number of lists here: main thread, functions. Now its only main thread.
+	QList<RpnElement> elements; 
 };
 
 class ExprCalculator : public QObject
