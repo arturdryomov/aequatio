@@ -37,6 +37,12 @@ Number ExprCalculator::calculate(RpnCode *code)
 			case OperationDivide:
 				leftOperand.value = leftOperand.value.value<Number>() / rightOperand.value.value<Number>();
 				break;
+			case OperationPlus:
+				leftOperand.value = leftOperand.value.value<Number>() + rightOperand.value.value<Number>();
+				break;
+			case OperationMinus:
+				leftOperand.value = leftOperand.value.value<Number>() - rightOperand.value.value<Number>();
+				break;
 			default:
 				// there should'n be code here
 				throw Exception(tr("Unknown operation in RPN code"));				

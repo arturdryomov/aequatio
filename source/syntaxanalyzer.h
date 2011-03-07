@@ -29,9 +29,11 @@ public:
 	};
 
 private:
-	void expression(); // Expression = Factor {FactorOp Factor}
+	void expression(); // Expression = Summand {SummOperator Summand}
 	RpnCodeThread factor(); // Factor = Number
 	RpnElement multOperation(); // MultOperation = '*' | '/'
+	RpnCodeThread summand(); // Summand = Factor {MultOperator Factor}
+	RpnElement summOperation(); // SummOperation = '+' | '-'
 
 	RpnCode *m_rpnCode;
 	LexicalAnalyzer *m_lexicalAnalyzer;	
@@ -42,6 +44,7 @@ class CheckLexeme
 {
 public:
 	static bool isMultOperation(Lexeme lexeme);
+	static bool isSummOperation(Lexeme lexeme);
 };
 
 

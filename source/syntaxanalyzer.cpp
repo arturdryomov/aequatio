@@ -36,19 +36,19 @@ QString SyntaxAnalyzer::process(const QString &input)
 
 }
 
-// Expression = Factor {MultOperation Factor}
+// Expression = Summand {SummOperator Summand}
 void SyntaxAnalyzer::expression()
 {		
-	// note, that exception will be thrown in factor() or multOperation() if something's wrong
+	// note, that exception will be thrown in factor() or multOperation() etc if something's wrong
 	
-	// first obligatory factor
-	RpnCodeThread operand = factor(); 
+	// first obligatory summand
+	RpnCodeThread operand = summand(); 
 	m_rpnCode->elements << operand;
 	
-	// {MultOperation Factor} section
-	while (CheckLexeme::isMultOperation(m_lexicalAnalyzer->lexeme())) {
-		RpnElement operation = multOperation();
-		operand = factor();
+	// {SummOperator Summand} section
+	while (CheckLexeme::isSummOperation(m_lexicalAnalyzer->lexeme())) {
+		RpnElement operation = summOperation();
+		operand = summand();
 		
 		m_rpnCode->elements << operand << operation;
 	}		
@@ -83,24 +83,68 @@ RpnCodeThread SyntaxAnalyzer::factor()
 RpnElement SyntaxAnalyzer::multOperation()
 {	
 	RpnElement result;
-
-	if (m_lexicalAnalyzer->lexeme().type == LexemeMultiply) {
-		result.type = RpnOperation;
+	result.type = RpnOperation;
+	
+	if (m_lexicalAnalyzer->lexeme().type == LexemeMultiply) {		
 		result.value.setValue(OperationMultiply);
 	}
 	else if(m_lexicalAnalyzer->lexeme().type == LexemeDivide) {
-		result.type = RpnOperation;
 		result.value.setValue(OperationDivide);
 	}
 	else {
-		throw Exception(tr("Factoring operator expected"));
+		throw Exception(tr("Multiplication operator expected"));
 	}
 
 	m_lexicalAnalyzer->nextLexeme();
 	return result;
 }
 
+// Summand = Factor {MultOperator Factor}
+RpnCodeThread SyntaxAnalyzer::summand()
+{
+	RpnCodeThread result;
+	// first obligatory factor
+	RpnCodeThread operand = factor(); 
+	result << operand;
+	
+	// {MultOperation Factor} section
+	while (CheckLexeme::isMultOperation(m_lexicalAnalyzer->lexeme())) {
+		RpnElement operation = multOperation();
+		operand = factor();
+				
+		result << operand << operation;
+	}
+	
+	return result;
+}
+
+// SummOperation = '+' | '-'
+RpnElement SyntaxAnalyzer::summOperation()
+{
+	RpnElement result;
+	result.type = RpnOperation;
+	
+	if (m_lexicalAnalyzer->lexeme().type == LexemePlus) {		
+		result.value.setValue(OperationPlus);
+	}
+	else if(m_lexicalAnalyzer->lexeme().type == LexemeMinus) {
+		result.value.setValue(OperationMinus);
+	}
+	else {
+		throw Exception(tr("Summation operator expected"));
+	}
+
+	m_lexicalAnalyzer->nextLexeme();
+	return result;	
+}
+
 bool CheckLexeme::isMultOperation(Lexeme lexeme)
 {
 	return ((lexeme.type == LexemeMultiply) || (lexeme.type == LexemeDivide));
 }
+
+bool CheckLexeme::isSummOperation(Lexeme lexeme)
+{
+	return ((lexeme.type == LexemePlus) || (lexeme.type == LexemeMinus));
+}
+
