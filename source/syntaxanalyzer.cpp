@@ -42,7 +42,7 @@ void SyntaxAnalyzer::expression()
 	// note, that exception will be thrown in factor() or multOperation() if something's wrong
 	
 	// first obligatory factor
-	RpnElement operand = factor(); 
+	RpnCodeThread operand = factor(); 
 	m_rpnCode->elements << operand;
 	
 	// {MultOperation Factor} section
@@ -55,22 +55,24 @@ void SyntaxAnalyzer::expression()
 }
 
 // Factor = Number
-RpnElement SyntaxAnalyzer::factor()
+RpnCodeThread SyntaxAnalyzer::factor()
 {
 	if (m_lexicalAnalyzer->lexeme().type != LexemeNumber) {
 		throw Exception(tr("Number expected"));
 	}
 	
-	RpnElement result;
-	result.type = RpnOperand;
-	
 	// try to convert
 	bool ok = false;	
-	result.value = m_lexicalAnalyzer->lexeme().value.toDouble(&ok);
+	Number value = m_lexicalAnalyzer->lexeme().value.toDouble(&ok);
 	if (!ok) {
 		throw Exception(tr("Cannot convert ‘%1’ to a number")
 			.arg(m_lexicalAnalyzer->lexeme().value));
 	}
+	
+	RpnElement element = {RpnOperand, value};
+	
+	RpnCodeThread result;
+	result.append(element);
 	
 	m_lexicalAnalyzer->nextLexeme();
 	

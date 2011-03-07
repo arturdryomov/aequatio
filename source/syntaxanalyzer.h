@@ -30,7 +30,7 @@ public:
 
 private:
 	void expression(); // Expression = Factor {FactorOp Factor}
-	RpnElement factor(); // Factor = Number
+	RpnCodeThread factor(); // Factor = Number
 	RpnElement multOperation(); // MultOperation = '*' | '/'
 
 	RpnCode *m_rpnCode;

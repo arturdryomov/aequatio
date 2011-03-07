@@ -18,10 +18,12 @@ struct RpnElement
 	QVariant value; // this will hold a Number or an OperationType value
 };
 
+typedef QList<RpnElement> RpnCodeThread; // contains linear RPN code to calculate
+
 struct RpnCode
 {
 	// there will be a number of lists here: main thread, functions. Now its only main thread.
-	QList<RpnElement> elements; 
+	RpnCodeThread elements; 
 };
 
 class ExprCalculator : public QObject
