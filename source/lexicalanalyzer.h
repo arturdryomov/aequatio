@@ -7,8 +7,14 @@
 #include <QChar>
 
 enum LexemeType {
-	LexemeNumber, LexemePlus, LexemeMinus,
-	LexemeMultiply, LexemeDivide, LexemeEOL
+	LexemeNumber,
+	LexemePlus,
+	LexemeMinus,
+	LexemeMultiply,
+	LexemeDivide,
+	LexemeOpeningBracket,
+	LexemeClosingBracket,
+	LexemeEOL
 };
 
 struct Lexeme {
@@ -42,6 +48,7 @@ private:
 	void extractLexeme();
 	void extractNumber();
 	void extractOperation();
+	void extractBracket();
 	void pushLexeme(LexemeType, QString);
 };
 
@@ -53,6 +60,7 @@ public:
 	static bool isExponent(QChar);
 	static bool isOperation(QChar);
 	static bool isSign(QChar);
+	static bool isBracket(QChar);
 	static bool isDigit(QChar);
 };
 
