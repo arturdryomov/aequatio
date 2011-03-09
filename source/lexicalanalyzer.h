@@ -14,6 +14,7 @@ enum LexemeType {
 	LexemeDivide,
 	LexemeOpeningBracket,
 	LexemeClosingBracket,
+	LexemePower,
 	LexemeEOL
 };
 
@@ -49,6 +50,7 @@ private:
 	void extractNumber();
 	void extractOperation();
 	void extractBracket();
+	void extractPower();
 	void pushLexeme(LexemeType, QString);
 };
 
@@ -61,6 +63,7 @@ public:
 	static bool isOperation(QChar);
 	static bool isSign(QChar);
 	static bool isBracket(QChar);
+	static bool isPower(QChar);
 	static bool isDigit(QChar);
 };
 

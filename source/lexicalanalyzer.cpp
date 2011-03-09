@@ -50,6 +50,9 @@ void LexicalAnalyzer::extractLexeme()
 	else if (CheckChar::isBracket(m_input.at(m_position))) {
 		extractBracket();
 	}
+	else if (CheckChar::isPower(m_input.at(m_position))) {
+		extractPower();
+	}
 	else {
 		throw Exception(tr("Lexeme type is not supported"));
 	}
@@ -117,6 +120,21 @@ void LexicalAnalyzer::extractBracket()
 	}
 	else {
 		throw Exception(tr("Bracket type is not supported"));
+	}
+
+	pushLexeme(lexemeType, QString());
+	m_position++;
+}
+
+void LexicalAnalyzer::extractPower()
+{
+	QString tempOperation = m_input.mid(m_position, 1);
+	LexemeType lexemeType;
+	if (tempOperation == "^") {
+		lexemeType = LexemePower;
+	}
+	else {
+		throw Exception(tr("Power type is not supported"));
 	}
 
 	pushLexeme(lexemeType, QString());
@@ -192,6 +210,13 @@ bool CheckChar::isBracket(QChar c)
 	QList<QChar> brackets;
 	brackets << '(' << ')';
 	return brackets.contains(c);
+}
+
+bool CheckChar::isPower(QChar c)
+{
+	QList<QChar> powers;
+	powers << '^';
+	return powers.contains(c);
 }
 
 bool CheckChar::isDigit(QChar c)
