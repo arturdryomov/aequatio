@@ -69,10 +69,27 @@ void LexicalAnalyzer::extractNumber()
 
 	if ( (m_position < inputLength) && (CheckChar::isSeparator(m_input.at(m_position))) ) {
 		m_position++;
-		if (!( (m_position > inputLength) || (!CheckChar::isDigit(m_input.at(m_position))) ) ) {
-			while ( (m_position <= inputLength) && (CheckChar::isDigit(m_input.at(m_position))) ) {
-				m_position++;
-			}
+		if ( (m_position > inputLength) || (!CheckChar::isDigit(m_input.at(m_position))) )  {
+			throw Exception(tr("Must be number after dot"));
+		}
+		while ( (m_position <= inputLength) && (CheckChar::isDigit(m_input.at(m_position))) ) {
+			m_position++;
+		}
+	}
+
+	if ( (m_position <= inputLength) && (CheckChar::isExponent(m_input.at(m_position))) ) {
+		m_position++;
+		if (m_position > inputLength) {
+			throw Exception(tr("Must be number or sign after exponent sign"));
+		}
+		if (CheckChar::isSign(m_input.at(m_position))) {
+			m_position++;
+		}
+		if ( (m_position > inputLength) || (!CheckChar::isDigit(m_input.at(m_position))) ) {
+			throw Exception(tr("Must be number or sign after exponent sign"));
+		}
+		while ( (m_position < inputLength) && (CheckChar::isDigit(m_input.at(m_position))) ) {
+			m_position++;
 		}
 	}
 
