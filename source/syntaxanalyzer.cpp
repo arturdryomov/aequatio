@@ -58,13 +58,38 @@ RpnCodeThread SyntaxAnalyzer::expression()
 	return result;		
 }
 
-// Factor = Number | '('Expression')'
+// Factor = UnaryOp Factor | Number | '('Expression')'
 RpnCodeThread SyntaxAnalyzer::factor()
 {
 	RpnCodeThread result;
 	
+	// UnaryOp Factor
+	if (CheckLexeme::isUnaryOperation(m_lexicalAnalyzer->lexeme())) {
+		
+		if (m_lexicalAnalyzer->lexeme().type == LexemeMinus) {			
+			
+			m_lexicalAnalyzer->nextLexeme();
+			
+			// -A = (-1) * A
+			RpnElement minusOne = {RpnOperand, -1};
+			RpnElement multiply = {RpnOperation, QVariant::fromValue(OperationMultiply)}; 
+			RpnCodeThread rightOperand = factor();
+			
+			result << minusOne << rightOperand << multiply;
+		}
+		
+		else if (m_lexicalAnalyzer->lexeme().type == LexemePlus) {			
+			m_lexicalAnalyzer->nextLexeme();
+			result = factor();
+		}
+		
+		else {
+			throw Exception(tr("Unsupported unary operation"));
+		}
+	}
+	
 	// Number
-	if (m_lexicalAnalyzer->lexeme().type == LexemeNumber) {
+	else if (m_lexicalAnalyzer->lexeme().type == LexemeNumber) {
 		
 		// try to convert
 		bool ok = false;	
@@ -92,10 +117,10 @@ RpnCodeThread SyntaxAnalyzer::factor()
 		m_lexicalAnalyzer->nextLexeme();
 	}
 	
+	
 	else {
 		throw Exception(tr("Number or expression in brackets expected"));
-	}
-		
+	}	
 	return result;
 }
 
@@ -164,6 +189,11 @@ bool CheckLexeme::isMultOperation(Lexeme lexeme)
 }
 
 bool CheckLexeme::isSummOperation(Lexeme lexeme)
+{
+	return ((lexeme.type == LexemePlus) || (lexeme.type == LexemeMinus));
+}
+
+bool CheckLexeme::isUnaryOperation(Lexeme lexeme)
 {
 	return ((lexeme.type == LexemePlus) || (lexeme.type == LexemeMinus));
 }

@@ -30,7 +30,7 @@ public:
 
 private:
 	RpnCodeThread expression(); // Expression = Summand {SummOperator Summand}
-	RpnCodeThread factor(); // Factor = Number | '('Expression')'
+	RpnCodeThread factor(); // Factor = UnaryOp Factor | Number | '('Expression')'
 	RpnElement multOperation(); // MultOperation = '*' | '/'
 	RpnCodeThread summand(); // Summand = Factor {MultOperator Factor}
 	RpnElement summOperation(); // SummOperation = '+' | '-'
@@ -45,6 +45,7 @@ class CheckLexeme
 public:
 	static bool isMultOperation(Lexeme lexeme);
 	static bool isSummOperation(Lexeme lexeme);
+	static bool isUnaryOperation(Lexeme lexeme);
 };
 
 
