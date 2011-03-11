@@ -25,10 +25,10 @@ QString SyntaxAnalyzer::process(const QString &input)
 		throw Exception(tr("Input is empty"));
 	}
 	
-	expression(); // convert expression to RPN	
+	m_rpnCode->elements << expression(); // convert expression to RPN	
 	
 	if (m_lexicalAnalyzer->lexeme().type != LexemeEOL) {
-		throw Exception(tr("Factor operator or end of file expected"));
+		throw Exception(tr("End of file expected"));
 	}
 	
 	// calculate
@@ -37,45 +37,65 @@ QString SyntaxAnalyzer::process(const QString &input)
 }
 
 // Expression = Summand {SummOperator Summand}
-void SyntaxAnalyzer::expression()
+RpnCodeThread SyntaxAnalyzer::expression()
 {		
-	// note, that exception will be thrown in factor() or multOperation() etc if something's wrong
+	/* Note, that exception will be thrown in factor(), multOperation(), etc if something's wrong. */
 	
-	// first obligatory summand
+	RpnCodeThread result;
+	
+	// first obligatory summand		
 	RpnCodeThread operand = summand(); 
-	m_rpnCode->elements << operand;
+	result << operand;	
 	
 	// {SummOperator Summand} section
 	while (CheckLexeme::isSummOperation(m_lexicalAnalyzer->lexeme())) {
 		RpnElement operation = summOperation();
 		operand = summand();
 		
-		m_rpnCode->elements << operand << operation;
-	}		
+		result << operand << operation;
+	}	
+	
+	return result;		
 }
 
-// Factor = Number
+// Factor = Number | '('Expression')'
 RpnCodeThread SyntaxAnalyzer::factor()
 {
-	if (m_lexicalAnalyzer->lexeme().type != LexemeNumber) {
-		throw Exception(tr("Number expected"));
-	}
-	
-	// try to convert
-	bool ok = false;	
-	Number value = m_lexicalAnalyzer->lexeme().value.toDouble(&ok);
-	if (!ok) {
-		throw Exception(tr("Cannot convert ‘%1’ to a number")
-			.arg(m_lexicalAnalyzer->lexeme().value));
-	}
-	
-	RpnElement element = {RpnOperand, value};
-	
 	RpnCodeThread result;
-	result.append(element);
 	
-	m_lexicalAnalyzer->nextLexeme();
+	// Number
+	if (m_lexicalAnalyzer->lexeme().type == LexemeNumber) {
+		
+		// try to convert
+		bool ok = false;	
+		Number value = m_lexicalAnalyzer->lexeme().value.toDouble(&ok);
+		if (!ok) {
+			throw Exception(tr("Cannot convert ‘%1’ to a number")
+				.arg(m_lexicalAnalyzer->lexeme().value));
+		}
+		
+		RpnElement element = {RpnOperand, value};		
+		result << element;		
+		m_lexicalAnalyzer->nextLexeme();		
+	}
 	
+	// '('Expression')'
+	else if (m_lexicalAnalyzer->lexeme().type == LexemeOpeningBracket) {
+		
+		m_lexicalAnalyzer->nextLexeme();		
+		result = expression();
+		
+		if (m_lexicalAnalyzer->lexeme().type != LexemeClosingBracket) {
+			throw Exception(tr("Closing bracket expected"));
+		}
+		
+		m_lexicalAnalyzer->nextLexeme();
+	}
+	
+	else {
+		throw Exception(tr("Number or expression in brackets expected"));
+	}
+		
 	return result;
 }
 

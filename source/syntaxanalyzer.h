@@ -29,8 +29,8 @@ public:
 	};
 
 private:
-	void expression(); // Expression = Summand {SummOperator Summand}
-	RpnCodeThread factor(); // Factor = Number
+	RpnCodeThread expression(); // Expression = Summand {SummOperator Summand}
+	RpnCodeThread factor(); // Factor = Number | '('Expression')'
 	RpnElement multOperation(); // MultOperation = '*' | '/'
 	RpnCodeThread summand(); // Summand = Factor {MultOperator Factor}
 	RpnElement summOperation(); // SummOperation = '+' | '-'
