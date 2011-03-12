@@ -5,12 +5,18 @@
 #include <QVariant>
 #include <QMetaType>
 
-typedef double Number;
+typedef qreal Number;
 
 // RPN stands for ‘Reverse Polish notation’
 enum RpnElementType { RpnOperation, RpnOperand };
 
-enum OperationType { OperationPlus, OperationMinus, OperationMultiply, OperationDivide };
+enum OperationType { 
+	OperationPlus, 
+	OperationMinus, 
+	OperationMultiply, 
+	OperationDivide, 
+	OperationPower
+};
 
 struct RpnElement
 {

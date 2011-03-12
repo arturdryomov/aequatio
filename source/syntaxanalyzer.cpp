@@ -58,7 +58,7 @@ RpnCodeThread SyntaxAnalyzer::expression()
 	return result;		
 }
 
-// Factor = UnaryOp Factor | Number | '('Expression')'
+// Factor = (UnaryOp Factor) | (PowerBase ['^' Factor]) 
 RpnCodeThread SyntaxAnalyzer::factor()
 {
 	RpnCodeThread result;
@@ -88,8 +88,31 @@ RpnCodeThread SyntaxAnalyzer::factor()
 		}
 	}
 	
+	else {
+		RpnCodeThread base = powerBase();
+		result << base;
+		
+		// ['^' Factor]
+		if (m_lexicalAnalyzer->lexeme().type == LexemePower) {
+			RpnElement power = {RpnOperation, QVariant::fromValue(OperationPower)};
+			m_lexicalAnalyzer->nextLexeme();
+			RpnCodeThread exponent = factor();
+			
+			result << exponent << power;
+		}
+		
+	}
+	
+	return result;
+}
+
+// PowerBase = Number | '('Expression')'
+RpnCodeThread SyntaxAnalyzer::powerBase()
+{
+	RpnCodeThread result;
+	
 	// Number
-	else if (m_lexicalAnalyzer->lexeme().type == LexemeNumber) {
+	if (m_lexicalAnalyzer->lexeme().type == LexemeNumber) {
 		
 		// try to convert
 		bool ok = false;	
@@ -117,11 +140,11 @@ RpnCodeThread SyntaxAnalyzer::factor()
 		m_lexicalAnalyzer->nextLexeme();
 	}
 	
-	
 	else {
 		throw Exception(tr("Number or expression in brackets expected"));
 	}	
-	return result;
+
+	return result;	
 }
 
 // MultOperation = '*' | '/'
@@ -156,10 +179,10 @@ RpnCodeThread SyntaxAnalyzer::summand()
 	while (CheckLexeme::isMultOperation(m_lexicalAnalyzer->lexeme())) {
 		RpnElement operation = multOperation();
 		operand = factor();
-				
+
 		result << operand << operation;
 	}
-	
+
 	return result;
 }
 
@@ -197,4 +220,6 @@ bool CheckLexeme::isUnaryOperation(Lexeme lexeme)
 {
 	return ((lexeme.type == LexemePlus) || (lexeme.type == LexemeMinus));
 }
+
+
 

@@ -30,7 +30,8 @@ public:
 
 private:
 	RpnCodeThread expression(); // Expression = Summand {SummOperator Summand}
-	RpnCodeThread factor(); // Factor = UnaryOp Factor | Number | '('Expression')'
+	RpnCodeThread factor(); // Factor = (UnaryOp Factor) | (PowerBase ['^' Factor]) 
+	RpnCodeThread powerBase(); // PowerBase = Number | '('Expression')'
 	RpnElement multOperation(); // MultOperation = '*' | '/'
 	RpnCodeThread summand(); // Summand = Factor {MultOperator Factor}
 	RpnElement summOperation(); // SummOperation = '+' | '-'

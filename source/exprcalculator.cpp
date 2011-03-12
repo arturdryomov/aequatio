@@ -1,5 +1,6 @@
 #include "exprcalculator.h"
 #include <QStack>
+#include <qmath.h>
 
 ExprCalculator::ExprCalculator(QObject *parent) :
     QObject(parent)
@@ -22,7 +23,7 @@ Number ExprCalculator::calculate(RpnCode *code)
 		
 		else {
 			if (rpnStack.count() < 2) {
-				// we cannot apply binary operation to less than two operands
+				// we cannot apply operation to less than two operands
 				throw Exception(tr("At least two operators expected"));
 			}
 			
@@ -42,6 +43,9 @@ Number ExprCalculator::calculate(RpnCode *code)
 				break;
 			case OperationMinus:
 				leftOperand.value = leftOperand.value.value<Number>() - rightOperand.value.value<Number>();
+				break;
+			case OperationPower:
+				leftOperand.value = qPow(leftOperand.value.value<Number>(), rightOperand.value.value<Number>());
 				break;
 			default:
 				// there should'n be code here
