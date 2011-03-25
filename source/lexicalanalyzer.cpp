@@ -39,6 +39,11 @@ void LexicalAnalyzer::parse(const QString &input)
 	addEnd();
 }
 
+void LexicalAnalyzer::initializeReserved()
+{
+	m_reservedWords.insert("const", LexemeConst);
+}
+
 void LexicalAnalyzer::extractLexeme()
 {
 	if (CheckChar::isDigit(m_input.at(m_position))) {
@@ -53,8 +58,37 @@ void LexicalAnalyzer::extractLexeme()
 	else if (CheckChar::isPower(m_input.at(m_position))) {
 		extractPower();
 	}
+	else if (CheckChar::isLetterOrUnderscore(m_input.at(m_position))) {
+		extractIdentifyer();
+	}
 	else {
 		throw Exception(tr("Lexeme type is not supported"));
+	}
+}
+
+
+void LexicalAnalyzer::extractIdentifyer()
+{
+	int inputLength = m_input.size() - 1;
+	int startPosition = m_position;
+
+	while ( (m_position <= inputLength) &&
+		( (CheckChar::isDigit(m_input.at(m_position))) ||
+			(CheckChar::isLetterOrUnderscore(m_input.at(m_position))) ) ) {
+		m_position++;
+	}
+
+	QString tempIdentifyer = m_input.mid(startPosition, m_position - startPosition);
+
+	if (!tempIdentifyer.isNull()) {
+		if (m_reservedWords.contains(tempIdentifyer)) {
+			LexemeType lexemeType = m_reservedWords.value(tempIdentifyer);
+			pushLexeme(lexemeType, QString());
+		}
+		else {
+			LexemeType lexemeType = LexemeIdentifyer;
+			pushLexeme(lexemeType, tempIdentifyer);
+		}
 	}
 }
 
@@ -243,3 +277,29 @@ bool CheckChar::isDigit(QChar c)
 	return digits.contains(c);
 }
 
+bool CheckChar::isLetterOrUnderscore(QChar c)
+{
+	if ( (CheckChar::isLetter(c)) || (CheckChar::isUnderscore(c)) ) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool CheckChar::isLetter(QChar c)
+{
+	if ( ( (c >= 'A') && (c <='Z') ) || ( (c >= 'a') && (c <='z') ) ) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool CheckChar::isUnderscore(QChar c)
+{
+	QList<QChar> underscores;
+	underscores << '_';
+	return underscores.contains(c);
+}

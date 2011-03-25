@@ -5,6 +5,7 @@
 #include <QList>
 #include <QString>
 #include <QChar>
+#include <QHash>
 
 enum LexemeType {
 	LexemeNumber,
@@ -15,6 +16,8 @@ enum LexemeType {
 	LexemeOpeningBracket,
 	LexemeClosingBracket,
 	LexemePower,
+	LexemeIdentifyer,
+	LexemeConst,
 	LexemeEOL
 };
 
@@ -25,7 +28,7 @@ struct Lexeme {
 
 class LexicalAnalyzer : public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
 	LexicalAnalyzer(QObject *parent = 0);
 	
@@ -44,9 +47,13 @@ private:
 	QString m_input;
 	int m_position;
 	QList<Lexeme> m_lexemeList;
+	QHash<QString, LexemeType> m_reservedWords;
+
+	void initializeReserved();
 	void skipWhitespace();
 	void addEnd();
 	void extractLexeme();
+	void extractIdentifyer();
 	void extractNumber();
 	void extractOperation();
 	void extractBracket();
@@ -65,6 +72,9 @@ public:
 	static bool isBracket(QChar);
 	static bool isPower(QChar);
 	static bool isDigit(QChar);
+	static bool isLetter(QChar);
+	static bool isUnderscore(QChar);
+	static bool isLetterOrUnderscore(QChar);
 };
 
 #endif // LEXICALANALYZER_H
