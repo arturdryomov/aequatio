@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QVariant>
 #include <QMetaType>
-#include <QHash>
 
 typedef qreal Number;
 

@@ -25,6 +25,7 @@ QString SyntaxAnalyzer::process(const QString &input)
 		throw Exception(tr("Input is empty"));
 	}
 	
+	// Process the command: const declaration or expression
 	return command();
 }
 
@@ -33,10 +34,13 @@ QString SyntaxAnalyzer::command()
 {
 	QString result;
 	
+	// const declaration
 	if (m_lexicalAnalyzer->lexeme().type == LexemeConst) {
 		result = constDeclaration(); // result here is just a notification
 		ensureNoMoreLexemes();	
 	}
+	
+	// expression
 	else {
 		m_rpnCode->elements << expression(); // convert expression to RPN
 		ensureNoMoreLexemes();		
@@ -261,12 +265,10 @@ RpnElement SyntaxAnalyzer::summOperation()
 
 Number SyntaxAnalyzer::number()
 {
-	// try to convert
 	bool ok = false;	
 	Number result = m_lexicalAnalyzer->lexeme().value.toDouble(&ok);
 	if (!ok) {
-		throw Exception(tr("Cannot convert ‘%1’ to a number")
-			.arg(m_lexicalAnalyzer->lexeme().value));
+		throw Exception(tr("Cannot convert ‘%1’ to a number").arg(m_lexicalAnalyzer->lexeme().value));
 	}
 	m_lexicalAnalyzer->nextLexeme();	
 	return result;
