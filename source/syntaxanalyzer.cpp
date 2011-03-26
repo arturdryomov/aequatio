@@ -25,15 +25,70 @@ QString SyntaxAnalyzer::process(const QString &input)
 		throw Exception(tr("Input is empty"));
 	}
 	
-	m_rpnCode->elements << expression(); // convert expression to RPN	
+	return command();
+}
+
+// Command = ConstDeclaration | Expression
+QString SyntaxAnalyzer::command()
+{
+	QString result;
 	
-	if (m_lexicalAnalyzer->lexeme().type != LexemeEOL) {
-		throw Exception(tr("End of file expected"));
+	if (m_lexicalAnalyzer->lexeme().type == LexemeConst) {
+		result = constDeclaration(); // result here is just a notification
+		ensureNoMoreLexemes();	
+	}
+	else {
+		m_rpnCode->elements << expression(); // convert expression to RPN
+		ensureNoMoreLexemes();		
+		result = QString::number(m_exprCalculator->calculate(m_rpnCode)); // calculate
 	}
 	
-	// calculate
-	return QString::number(m_exprCalculator->calculate(m_rpnCode));		
+	return result;	
+}
 
+// ConstDeclaration = 'const' Identifier '=' {Unary Op} Number
+QString SyntaxAnalyzer::constDeclaration()
+{
+	// 'const'
+	if (m_lexicalAnalyzer->lexeme().type != LexemeConst) {
+		throw Exception(tr("Illegal constant declaration beginning"));
+	}
+	m_lexicalAnalyzer->nextLexeme();
+	
+	// Identifier
+	if (m_lexicalAnalyzer->lexeme().type != LexemeIdentifier) {
+		throw Exception(tr("Identifier after ‘const’ expected"));
+	}	
+	QString constName = m_lexicalAnalyzer->lexeme().value;
+	m_lexicalAnalyzer->nextLexeme();
+	
+	// '='
+	if (m_lexicalAnalyzer->lexeme().type != LexemeEqual) {
+		throw Exception(tr("Sign ‘=’ expected after identifier"));
+	}
+	m_lexicalAnalyzer->nextLexeme();
+	
+	// {UnaryOp}
+	int signMultiplyer = 1;
+	while (CheckLexeme::isUnaryOperation(m_lexicalAnalyzer->lexeme())) {
+		if (m_lexicalAnalyzer->lexeme().type == LexemeMinus) {
+			signMultiplyer *= -1;
+		}
+		m_lexicalAnalyzer->nextLexeme();
+	}
+	
+	// Number
+	if (m_lexicalAnalyzer->lexeme().type != LexemeNumber) {
+		throw Exception(tr("Number after ‘=’ expected"));
+	}	
+	Number constValue = number();
+	m_lexicalAnalyzer->nextLexeme();
+	
+	// add constant to list
+	m_consts[constName] = constValue;
+	
+	// return notification
+	return tr("Constant ‘%1’ now means ‘%2’").arg(constName).arg(constValue);
 }
 
 // Expression = Summand {SummOperator Summand}
@@ -106,25 +161,23 @@ RpnCodeThread SyntaxAnalyzer::factor()
 	return result;
 }
 
-// PowerBase = Number | '('Expression')'
+// PowerBase = Number | Constant | '('Expression')'
 RpnCodeThread SyntaxAnalyzer::powerBase()
 {
 	RpnCodeThread result;
 	
 	// Number
-	if (m_lexicalAnalyzer->lexeme().type == LexemeNumber) {
-		
-		// try to convert
-		bool ok = false;	
-		Number value = m_lexicalAnalyzer->lexeme().value.toDouble(&ok);
-		if (!ok) {
-			throw Exception(tr("Cannot convert ‘%1’ to a number")
-				.arg(m_lexicalAnalyzer->lexeme().value));
-		}
-		
+	if (m_lexicalAnalyzer->lexeme().type == LexemeNumber) {		
+		Number value = number();		
 		RpnElement element = {RpnOperand, value};		
-		result << element;		
-		m_lexicalAnalyzer->nextLexeme();		
+		result << element;					
+	}
+	
+	// Constant
+	else if (m_lexicalAnalyzer->lexeme().type == LexemeIdentifier) {
+		Number value = constant();
+		RpnElement element = {RpnOperand, value};		
+		result << element;	
 	}
 	
 	// '('Expression')'
@@ -206,6 +259,38 @@ RpnElement SyntaxAnalyzer::summOperation()
 	return result;	
 }
 
+Number SyntaxAnalyzer::number()
+{
+	// try to convert
+	bool ok = false;	
+	Number result = m_lexicalAnalyzer->lexeme().value.toDouble(&ok);
+	if (!ok) {
+		throw Exception(tr("Cannot convert ‘%1’ to a number")
+			.arg(m_lexicalAnalyzer->lexeme().value));
+	}
+	m_lexicalAnalyzer->nextLexeme();	
+	return result;
+}
+
+// Constant = Identifier
+Number SyntaxAnalyzer::constant()
+{
+	QString constName = m_lexicalAnalyzer->lexeme().value;
+	if (!m_consts.contains(constName)) {
+		throw Exception(tr("Undeclared identifier ‘%1’").arg(constName));
+	}
+	m_lexicalAnalyzer->nextLexeme();
+	
+	return m_consts.value(constName);	
+}
+
+void SyntaxAnalyzer::ensureNoMoreLexemes()
+{
+	if (m_lexicalAnalyzer->lexeme().type != LexemeEOL) {
+	   throw Exception(tr("End of file expected"));
+   }
+}
+
 bool CheckLexeme::isMultOperation(Lexeme lexeme)
 {
 	return ((lexeme.type == LexemeMultiply) || (lexeme.type == LexemeDivide));
@@ -220,6 +305,10 @@ bool CheckLexeme::isUnaryOperation(Lexeme lexeme)
 {
 	return ((lexeme.type == LexemePlus) || (lexeme.type == LexemeMinus));
 }
+
+
+
+
 
 
 

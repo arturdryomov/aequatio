@@ -3,7 +3,7 @@
 LexicalAnalyzer::LexicalAnalyzer(QObject *parent) :
 	QObject(parent)	
 {
-	initializeReserved();
+	initializeReservedWords();
 }
 
 
@@ -64,7 +64,7 @@ void LexicalAnalyzer::extractLexeme()
 		extractEqual();
 	}
 	else if (CheckChar::isLetterOrUnderscore(m_input.at(m_position))) {
-		extractIdentifyer();
+		extractIdentifier();
 	}
 	else {
 		throw Exception(tr("Lexeme type is not supported"));
@@ -72,7 +72,7 @@ void LexicalAnalyzer::extractLexeme()
 }
 
 
-void LexicalAnalyzer::extractIdentifyer()
+void LexicalAnalyzer::extractIdentifier()
 {
 	int inputLength = m_input.size() - 1;
 	int startPosition = m_position;
@@ -83,16 +83,16 @@ void LexicalAnalyzer::extractIdentifyer()
 		m_position++;
 	}
 
-	QString tempIdentifyer = m_input.mid(startPosition, m_position - startPosition);
+	QString tempIdentifier = m_input.mid(startPosition, m_position - startPosition);
 
-	if (!tempIdentifyer.isNull()) {
-		if (m_reservedWords.contains(tempIdentifyer)) {
-			LexemeType lexemeType = m_reservedWords.value(tempIdentifyer);
+	if (!tempIdentifier.isNull()) {
+		if (m_reservedWords.contains(tempIdentifier)) {
+			LexemeType lexemeType = m_reservedWords.value(tempIdentifier);
 			pushLexeme(lexemeType, QString());
 		}
 		else {
-			LexemeType lexemeType = LexemeIdentifyer;
-			pushLexeme(lexemeType, tempIdentifyer);
+			LexemeType lexemeType = LexemeIdentifier;
+			pushLexeme(lexemeType, tempIdentifier);
 		}
 	}
 }

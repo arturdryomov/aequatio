@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QVariant>
 #include <QMetaType>
+#include <QHash>
 
 typedef qreal Number;
 
@@ -29,7 +30,7 @@ typedef QList<RpnElement> RpnCodeThread; // contains linear RPN code to calculat
 struct RpnCode
 {
 	// there will be a number of lists here: main thread, functions. Now its only main thread.
-	RpnCodeThread elements; 
+	RpnCodeThread elements; 	
 };
 
 class ExprCalculator : public QObject

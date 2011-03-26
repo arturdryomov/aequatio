@@ -17,7 +17,7 @@ enum LexemeType {
 	LexemeClosingBracket,
 	LexemePower,
 	LexemeEqual,
-	LexemeIdentifyer,
+	LexemeIdentifier,
 	LexemeConst,
 	LexemeEOL
 };
@@ -54,7 +54,7 @@ private:
 	void skipWhitespace();
 	void addEnd();
 	void extractLexeme();
-	void extractIdentifyer();
+	void extractIdentifier();
 	void extractNumber();
 	void extractOperation();
 	void extractBracket();

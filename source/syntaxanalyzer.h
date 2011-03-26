@@ -1,10 +1,10 @@
 #ifndef SYNTAXANALYZER_H
 #define SYNTAXANALYZER_H
-
 #include <QObject>
 #include <QString>
 #include <QVariant>
 #include <QList>
+#include <QHash>
 #include "lexicalanalyzer.h"
 #include "exprcalculator.h"
 
@@ -29,16 +29,23 @@ public:
 	};
 
 private:
+	QString command(); // Command = ConstDeclaration | Expression
+	QString constDeclaration(); // ConstDeclaration = 'const' Identifier '=' {Unary Op} Number
 	RpnCodeThread expression(); // Expression = Summand {SummOperator Summand}
 	RpnCodeThread factor(); // Factor = (UnaryOp Factor) | (PowerBase ['^' Factor]) 
-	RpnCodeThread powerBase(); // PowerBase = Number | '('Expression')'
+	RpnCodeThread powerBase(); // PowerBase = Number | Constant | '('Expression')'
 	RpnElement multOperation(); // MultOperation = '*' | '/'
 	RpnCodeThread summand(); // Summand = Factor {MultOperator Factor}
 	RpnElement summOperation(); // SummOperation = '+' | '-'
+	Number number();
+	Number constant(); //Constant = Identifier
 
+	void ensureNoMoreLexemes();
+	
 	RpnCode *m_rpnCode;
 	LexicalAnalyzer *m_lexicalAnalyzer;	
 	ExprCalculator *m_exprCalculator;
+	QHash<QString, Number> m_consts;
 };
 
 class CheckLexeme
