@@ -39,9 +39,10 @@ void LexicalAnalyzer::parse(const QString &input)
 	addEnd();
 }
 
-void LexicalAnalyzer::initializeReserved()
+void LexicalAnalyzer::initializeReservedWords()
 {
 	m_reservedWords.insert("const", LexemeConst);
+	m_reservedWords.insert("func", LexemeConst);
 }
 
 void LexicalAnalyzer::extractLexeme()
@@ -57,6 +58,9 @@ void LexicalAnalyzer::extractLexeme()
 	}
 	else if (CheckChar::isPower(m_input.at(m_position))) {
 		extractPower();
+	}
+	else if (CheckChar::isEqual(m_input.at(m_position))) {
+		extractEqual();
 	}
 	else if (CheckChar::isLetterOrUnderscore(m_input.at(m_position))) {
 		extractIdentifyer();
@@ -192,6 +196,21 @@ void LexicalAnalyzer::extractPower()
 	m_position++;
 }
 
+void LexicalAnalyzer::extractEqual()
+{
+	QString tempOperation = m_input.mid(m_position, 1);
+	LexemeType lexemeType;
+	if (tempOperation == "=") {
+		lexemeType = LexemeEqual;
+	}
+	else {
+		throw Exception(tr("Equal type is not supported"));
+	}
+
+	pushLexeme(lexemeType, QString());
+	m_position++;
+}
+
 void LexicalAnalyzer::pushLexeme(LexemeType lexemeType, QString lexemeData)
 {
 	Lexeme tempLexeme;
@@ -302,4 +321,11 @@ bool CheckChar::isUnderscore(QChar c)
 	QList<QChar> underscores;
 	underscores << '_';
 	return underscores.contains(c);
+}
+
+bool CheckChar::isEqual(QChar c)
+{
+	QList<QChar> equals;
+	equals << '=';
+	return equals.contains(c);
 }
