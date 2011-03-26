@@ -16,6 +16,7 @@ enum LexemeType {
 	LexemeOpeningBracket,
 	LexemeClosingBracket,
 	LexemePower,
+	LexemeEqual,
 	LexemeIdentifyer,
 	LexemeConst,
 	LexemeEOL
@@ -49,7 +50,7 @@ private:
 	QList<Lexeme> m_lexemeList;
 	QHash<QString, LexemeType> m_reservedWords;
 
-	void initializeReserved();
+	void initializeReservedWords();
 	void skipWhitespace();
 	void addEnd();
 	void extractLexeme();
@@ -58,6 +59,7 @@ private:
 	void extractOperation();
 	void extractBracket();
 	void extractPower();
+	void extractEqual();
 	void pushLexeme(LexemeType, QString);
 };
 
@@ -75,6 +77,7 @@ public:
 	static bool isLetter(QChar);
 	static bool isUnderscore(QChar);
 	static bool isLetterOrUnderscore(QChar);
+	static bool isEqual(QChar);
 };
 
 #endif // LEXICALANALYZER_H
