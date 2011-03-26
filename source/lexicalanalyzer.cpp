@@ -2,7 +2,8 @@
 
 LexicalAnalyzer::LexicalAnalyzer(QObject *parent) :
 	QObject(parent)	
-{	
+{
+	initializeReserved();
 }
 
 
