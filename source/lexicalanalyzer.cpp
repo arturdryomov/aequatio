@@ -32,8 +32,14 @@ void LexicalAnalyzer::parse(const QString &input)
 	}
 
 	m_position = 0;
-	while (m_position < m_input.size()) {
+	forever {
 		skipWhitespace();
+
+		// Loop exit condition
+		if (m_position >= m_input.size()) {
+			break;
+		}
+
 		extractLexeme();
 	}
 
@@ -222,7 +228,7 @@ void LexicalAnalyzer::pushLexeme(LexemeType lexemeType, QString lexemeData)
 
 void LexicalAnalyzer::skipWhitespace()
 {
-	while (m_position < m_input.size() - 1) {
+	while (m_position < m_input.size()) {
 		if (CheckChar::isSpace(m_input.at(m_position))) {
 			m_position++;
 		}
