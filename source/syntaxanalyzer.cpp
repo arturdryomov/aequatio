@@ -21,7 +21,7 @@ QString SyntaxAnalyzer::process(const QString &input)
 	
 	// perform lexical analyzis
 	m_lexicalAnalyzer->parse(input);		
-	if (m_lexicalAnalyzer->lexeme().type == LexemeEOL) {
+	if (m_lexicalAnalyzer->lexeme().type == LexemeEol) {
 		throw Exception(tr("Input is empty"));
 	}
 	
@@ -288,7 +288,7 @@ Number SyntaxAnalyzer::constant()
 
 void SyntaxAnalyzer::ensureNoMoreLexemes()
 {
-	if (m_lexicalAnalyzer->lexeme().type != LexemeEOL) {
+	if (m_lexicalAnalyzer->lexeme().type != LexemeEol) {
 	   throw Exception(tr("End of file expected"));
    }
 }
@@ -307,10 +307,3 @@ bool CheckLexeme::isUnaryOperation(Lexeme lexeme)
 {
 	return ((lexeme.type == LexemePlus) || (lexeme.type == LexemeMinus));
 }
-
-
-
-
-
-
-

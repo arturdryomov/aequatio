@@ -1,25 +1,41 @@
 #include "lexicalanalyzer.h"
 
 LexicalAnalyzer::LexicalAnalyzer(QObject *parent) :
-	QObject(parent)	
+	QObject(parent),
+	m_lexemeListIterator(0)
 {
 	initializeReservedWords();
 }
 
+LexicalAnalyzer::~LexicalAnalyzer()
+{
+	if (m_lexemeListIterator != 0) {
+		delete m_lexemeListIterator;
+	}
+}
 
 Lexeme LexicalAnalyzer::lexeme()
 {
-	if (m_lexemeList.isEmpty()) {
-		throw Exception(tr("Lexeme list is empty"));
+	if (m_lexemeListIterator->hasNext()) {
+		return m_lexemeListIterator->peekNext();
 	}
-
-	return m_lexemeList.first();
+	else {
+		return EndLexeme();
+	}
 }
 
 void LexicalAnalyzer::nextLexeme()
 {
-	if (m_lexemeList.first().type != LexemeEOL)
-		m_lexemeList.removeFirst();
+	if (m_lexemeListIterator->hasNext()) {
+		m_lexemeListIterator->next();
+	}		
+}
+
+void LexicalAnalyzer::previousLexeme()
+{
+	if (m_lexemeListIterator->hasPrevious()) {
+		m_lexemeListIterator->previous();
+	}	
 }
 
 void LexicalAnalyzer::parse(const QString &input)
@@ -42,8 +58,17 @@ void LexicalAnalyzer::parse(const QString &input)
 
 		extractLexeme();
 	}
-
-	addEnd();
+	
+	// ensure there are lexemes
+	if (m_lexemeList.isEmpty()) {
+		throw Exception(tr("Lexeme list is empty"));
+	}	
+	
+	// create new constant iterator for lexemes
+	if (m_lexemeListIterator != 0) {
+		delete m_lexemeListIterator;
+	}
+	m_lexemeListIterator = new QListIterator<Lexeme>(m_lexemeList);
 }
 
 void LexicalAnalyzer::initializeReservedWords()
@@ -76,7 +101,6 @@ void LexicalAnalyzer::extractLexeme()
 		throw Exception(tr("Lexeme type is not supported"));
 	}
 }
-
 
 void LexicalAnalyzer::extractIdentifier()
 {
@@ -238,11 +262,10 @@ void LexicalAnalyzer::skipWhitespace()
 	}
 }
 
-void LexicalAnalyzer::addEnd()
+Lexeme LexicalAnalyzer::EndLexeme()
 {
-	Lexeme tempLexeme;
-	tempLexeme.type = LexemeEOL;
-	m_lexemeList.append(tempLexeme);
+	Lexeme result = {LexemeEol, QString()};
+	return result;
 }
 
 // Methods below are for checking symbols

@@ -19,7 +19,7 @@ enum LexemeType {
 	LexemeEqual,
 	LexemeIdentifier,
 	LexemeConst,
-	LexemeEOL
+	LexemeEol
 };
 
 struct Lexeme {
@@ -32,10 +32,11 @@ class LexicalAnalyzer : public QObject
 	Q_OBJECT
 public:
 	LexicalAnalyzer(QObject *parent = 0);
-	
+	~LexicalAnalyzer();
 	void parse(const QString &input);
 	Lexeme lexeme();
 	void nextLexeme();
+	void previousLexeme();
 	class Exception
 	{
 	public:
@@ -46,13 +47,14 @@ public:
 	};
 private:
 	QString m_input;
-	int m_position;
+	int m_position;	
 	QList<Lexeme> m_lexemeList;
+	QListIterator<Lexeme> *m_lexemeListIterator;
 	QHash<QString, LexemeType> m_reservedWords;
 
 	void initializeReservedWords();
 	void skipWhitespace();
-	void addEnd();
+	Lexeme EndLexeme();
 	void extractLexeme();
 	void extractIdentifier();
 	void extractNumber();
