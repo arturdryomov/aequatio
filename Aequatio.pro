@@ -4,6 +4,7 @@ TARGET = Aequatio
 TEMPLATE = app
 
 win32 {
+	RC_FILE = appicon/Aequatio.rc
 	LIBS += -lGdi32 \
 		-lUser32
 }
