@@ -4,7 +4,8 @@ TARGET = Aequatio
 TEMPLATE = app
 
 win32 {
-	LIBS += -lgdi32
+	LIBS += -lGdi32 \
+		-lUser32
 }
 
 SOURCES += \
