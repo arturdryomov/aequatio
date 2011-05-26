@@ -19,6 +19,7 @@ enum LexemeType {
 	LexemeEqual,
 	LexemeIdentifier,
 	LexemeConst,
+	LexemeFunc,
 	LexemeEol
 };
 

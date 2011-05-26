@@ -74,7 +74,7 @@ void LexicalAnalyzer::parse(const QString &input)
 void LexicalAnalyzer::initializeReservedWords()
 {
 	m_reservedWords.insert("const", LexemeConst);
-	m_reservedWords.insert("func", LexemeConst);
+	m_reservedWords.insert("func", LexemeFunc);
 }
 
 void LexicalAnalyzer::extractLexeme()
