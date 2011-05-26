@@ -10,17 +10,6 @@
 typedef qreal Number;
 
 // RPN stands for ‘Reverse Polish notation’
-
-typedef QList<RpnElement> RpnCodeThread; // contains linear RPN code to calculate
-typedef QHash<QString, RpnFunction> RpnCode;
-
-const QString RpnFunctionMain = "@Main@";
-const QString RpnFunctionPlus = "@Plus@";
-const QString RpnFunctionMinus = "@Minus@";
-const QString RpnFunctionMultiply = "@Multiply@";
-const QString RpnFunctionDivide = "@Divide@";
-const QString RpnFunctionPower = "@Power@";
-
 enum RpnElementType {
 	RpnElementOperand, // operand, value is Number
 	RpnElementParam, // parameter, value is ordinal number of the parameter (int)
@@ -33,10 +22,21 @@ struct RpnElement
 	QVariant value; // this will hold a Number, parameter’s ordinal number or function name
 };
 
+typedef QList<RpnElement> RpnCodeThread; // contains linear RPN code to calculate
+
 struct RpnFunction {
 	int parametersNumber;
 	RpnCodeThread codeThread;
 };
+
+typedef QHash<QString, RpnFunction> RpnCode;
+
+const QString RpnFunctionMain = "@Main@";
+const QString RpnFunctionPlus = "@Plus@";
+const QString RpnFunctionMinus = "@Minus@";
+const QString RpnFunctionMultiply = "@Multiply@";
+const QString RpnFunctionDivide = "@Divide@";
+const QString RpnFunctionPower = "@Power@";
 
 class ExprCalculator : public QObject
 {
@@ -47,8 +47,8 @@ public:
 
 	bool isBuiltInFunction(const QString &name);
 	int builtInFunctionArgumentsNumber(const QString &functionName);
-	Number calculateFunction(QString functionName, QVector functionParameters);
-	Number calculateBuiltInFunction(QString functionName, QVector functionParameters);
+	Number calculateFunction(QString functionName, QVector<Number> functionParameters);
+	Number calculateBuiltInFunction(QString functionName, QVector<Number> functionParameters);
 	
 	class Exception
 	{
@@ -63,6 +63,6 @@ private:
 };
 
 Q_DECLARE_METATYPE(Number)
-Q_DECLARE_METATYPE(OperationType)
+Q_DECLARE_METATYPE(RpnElementType)
 
 #endif // EXPRCALCULATOR_H
