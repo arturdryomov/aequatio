@@ -43,12 +43,12 @@ class ExprCalculator : public QObject
 	Q_OBJECT	
 public:
 	explicit ExprCalculator(QObject *parent = 0);
-	Number calculate(RpnCode *code);
+	Number calculate(const RpnCode &code);
 
-	bool isBuiltInFunction(const QString &name);
+	bool isBuiltInFunction(const QString &functionName);
 	int builtInFunctionArgumentsNumber(const QString &functionName);
-	Number calculateFunction(QString functionName, QVector<Number> functionParameters);
-	Number calculateBuiltInFunction(QString functionName, QVector<Number> functionParameters);
+	Number calculateFunction(QString functionName, QVector<Number> functionArguments);
+	Number calculateBuiltInFunction(QString functionName, QVector<Number> functionArguments);
 	
 	class Exception
 	{
@@ -60,6 +60,9 @@ public:
 	};
 private:
 	QHash<QString, int> m_standardFunctions;
+	RpnCode m_rpnCode;
+
+	void initializeStandardFunctions();
 };
 
 Q_DECLARE_METATYPE(Number)
