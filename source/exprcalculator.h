@@ -47,8 +47,6 @@ public:
 
 	bool isBuiltInFunction(const QString &functionName);
 	int builtInFunctionArgumentsCount(const QString &functionName);
-	Number calculateFunction(QString functionName, QVector<Number> functionArguments);
-	Number calculateBuiltInFunction(QString functionName, QVector<Number> functionArguments);
 
 	class Exception
 	{
@@ -63,6 +61,8 @@ private:
 	RpnCode m_rpnCode;
 
 	void initializeStandardFunctions();
+	Number calculateFunction(QString functionName, QList<Number> functionArguments);
+	Number calculateBuiltInFunction(QString functionName, QList<Number> functionArguments);
 };
 
 Q_DECLARE_METATYPE(Number)

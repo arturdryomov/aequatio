@@ -25,10 +25,10 @@ Number ExprCalculator::calculate(const RpnCode &code)
 		throw Exception(tr("There is no main function"));
 	}
 
-	return calculateFunction(RpnFunctionMain, QVector<Number>());
+	return calculateFunction(RpnFunctionMain, QList<Number>());
 }
 
-Number ExprCalculator::calculateFunction(QString functionName, QVector<Number> functionArguments)
+Number ExprCalculator::calculateFunction(QString functionName, QList<Number> functionArguments)
 {
 	RpnCodeThread currentThread = m_rpnCode.value(functionName).codeThread;
 	QStack<Number> calculationStack;
@@ -51,18 +51,18 @@ Number ExprCalculator::calculateFunction(QString functionName, QVector<Number> f
 				QString calledFunctionName = element.value.value<QString>();
 
 				if (m_standardFunctions.contains(calledFunctionName)) {
-					QVector<Number> actualArguments;
+					QList<Number> actualArguments;
 					for (int i = 0; i < m_standardFunctions.value(calledFunctionName); i++) {
-						actualArguments.append(calculationStack.pop());
+						actualArguments.prepend(calculationStack.pop());
 					}
 					Number result = calculateBuiltInFunction(calledFunctionName, actualArguments);
 					calculationStack.push(result);
 				}
 
 				else if (m_rpnCode.contains(calledFunctionName)) {
-					QVector<Number> actualArguments;
+					QList<Number> actualArguments;
 					for (int i = 0; i < m_rpnCode.value(calledFunctionName).argumentsCount; i++) {
-						actualArguments.append(calculationStack.pop());
+						actualArguments.prepend(calculationStack.pop());
 					}
 					Number result = calculateFunction(calledFunctionName, actualArguments);
 					calculationStack.push(result);
@@ -84,18 +84,18 @@ Number ExprCalculator::calculateFunction(QString functionName, QVector<Number> f
 	return calculationStack.pop();
 }
 
-Number ExprCalculator::calculateBuiltInFunction(QString functionName, QVector<Number> functionArguments)
+Number ExprCalculator::calculateBuiltInFunction(QString functionName, QList<Number> functionArguments)
 {
 	if (functionName == RpnFunctionPlus) {
-		return functionArguments[1] + functionArguments[0];
+		return functionArguments[0] + functionArguments[1];
 	} else if (RpnFunctionMinus == functionName) {
-		return functionArguments[1] - functionArguments[0];
+		return functionArguments[0] - functionArguments[1];
 	}	else if (functionName == RpnFunctionMultiply) {
-		return functionArguments[1] * functionArguments[0];
+		return functionArguments[0] * functionArguments[1];
 	} else if (RpnFunctionDivide == functionName) {
-		return functionArguments[1] / functionArguments[0];
+		return functionArguments[0] / functionArguments[1];
 	} else if (functionName == RpnFunctionPower) {
-		return qPow(functionArguments[1],  functionArguments[0]);
+		return qPow(functionArguments[0],  functionArguments[1]);
 	} else {
 		throw Exception(tr("Unknown default function"));
 	}
