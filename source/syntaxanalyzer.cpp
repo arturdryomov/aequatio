@@ -40,11 +40,15 @@ QString SyntaxAnalyzer::command()
 	}
 
 	// func declaration
+	else if (m_lexicalAnalyzer->lexeme().type == LexemeFunc) {
+		result = functionDeclaration(); // result here is a notification too
+		ensureNoMoreLexemes();
+	}
 
 	// expression
 	else {
 		RpnFunction mainFunction;
-		mainFunction.parametersNumber = 0;
+		mainFunction.argumentsCount = 0;
 		mainFunction.codeThread << expression(); // convert expression to RPN
 		m_rpnCode.insert(RpnFunctionMain, mainFunction);
 		ensureNoMoreLexemes();
@@ -99,6 +103,66 @@ QString SyntaxAnalyzer::constDeclaration()
 	return tr("Constant ‘%1’ now means ‘%2’").arg(constName).arg(constValue);
 }
 
+// FunctionDeclaration = 'func' Indenifier '(' FormalArgument
+//		{ ',' FormalArgument} ')' '=' Expression
+QString SyntaxAnalyzer::functionDeclaration()
+{
+	/* Get function name */
+
+	// 'func'
+	if (m_lexicalAnalyzer->lexeme().type != LexemeFunc) {
+		throw Exception(tr("Illegal function declaration beginning"));
+	}
+	m_lexicalAnalyzer->nextLexeme();
+
+	// Identifier
+	if (m_lexicalAnalyzer->lexeme().type != LexemeIdentifier) {
+		throw Exception(tr("Identifyer after ‘func’ expected"));
+	}
+	QString functionName = m_lexicalAnalyzer->lexeme().value;
+	m_lexicalAnalyzer->nextLexeme();
+	
+	
+	/* Ensure there's no built in function with this name */
+	if (m_exprCalculator->isBuiltInFunction(functionName)) {
+		throw Exception(tr("There is built in function named ‘%1’").arg(functionName));
+	}
+	
+	
+	/* Get formal arguments and save them to list */
+	
+	if (m_lexicalAnalyzer->lexeme().type != LexemeOpeningBracket) {
+		throw Exception(tr("Opening bracket expected after function name"));
+	}
+	
+	do {
+		m_lexicalAnalyzer->nextLexeme();
+		extractFormalArgument();
+	} while (m_lexicalAnalyzer->lexeme().type == LexemeComma);
+	
+	if (m_lexicalAnalyzer->lexeme().type != LexemeClosingBracket) {
+		throw Exception(tr("Closing bracket expected after formal arguments list"));
+	}
+	m_lexicalAnalyzer->nextLexeme();
+	
+	if (m_lexicalAnalyzer->lexeme().type != LexemeEqual) {
+		throw Exception(tr("Equal sign expected after closing bracket"));
+	}
+	m_lexicalAnalyzer->nextLexeme();
+	
+	/* Parse the function body and save it */
+	
+	RpnFunction function;
+	function.argumentsCount = m_workingParams.count();
+	function.codeThread = expression();
+	m_workingParams.clear();
+	m_rpnCode.insert(functionName, function);
+	
+	
+	/* Parse the function body and save it */
+	return tr("Function ‘%1’ is declared").arg(functionName);
+}
+
 // Expression = Summand {SummOperator Summand}
 RpnCodeThread SyntaxAnalyzer::expression()
 {
@@ -118,6 +182,63 @@ RpnCodeThread SyntaxAnalyzer::expression()
 		result << operand << operation;
 	}
 
+	return result;
+}
+
+// Function = Identifier'(' ActualArgument{ ',' ActualArgument}')'
+RpnCodeThread SyntaxAnalyzer::function()
+{
+	RpnCodeThread result;
+	
+	// Get function name and ensure it is built in or user defined	
+	
+	if (m_lexicalAnalyzer->lexeme().type != LexemeIdentifier) {
+		throw Exception(tr("Function name expected"));
+	}	
+	QString functionName = m_lexicalAnalyzer->lexeme().value;		
+	int formalArgumentsCount;
+	if (m_exprCalculator->isBuiltInFunction(functionName)) {
+		formalArgumentsCount = m_exprCalculator->builtInFunctionArgumentsCount(functionName);
+	} 
+	else if (m_rpnCode.contains(functionName)) {
+		formalArgumentsCount = m_rpnCode[functionName].argumentsCount;
+	}	
+	else {
+		throw Exception(tr("Undeclared function ‘%1’ call").arg(functionName));
+	}	
+	m_lexicalAnalyzer->nextLexeme();	
+	
+	if (m_lexicalAnalyzer->lexeme().type != LexemeOpeningBracket) {
+		throw Exception(tr("Opening bracket expected"));
+	}
+	
+	// Parse actual arguments and add them to tread. 
+	// Ensure their count equals formal arguments count
+	int actualArgumentsCount = 0;
+	do {
+		m_lexicalAnalyzer->nextLexeme();
+		result << expression();
+		actualArgumentsCount++;
+		if (actualArgumentsCount > formalArgumentsCount) {
+			throw Exception(tr("Too many arguments in ‘%1’ function call").arg(functionName));
+		}		
+	} while (m_lexicalAnalyzer->lexeme().type == LexemeComma);
+	
+	if (actualArgumentsCount != formalArgumentsCount) {
+		throw Exception(tr("Not enough arguments in ‘%1’ function call").arg(functionName));
+	}
+	
+	if (m_lexicalAnalyzer->lexeme().type != LexemeClosingBracket) {
+		throw Exception(tr("Closing bracket expected"));
+	}	
+	m_lexicalAnalyzer->nextLexeme();
+	
+	// Add to thread a function call element
+	RpnElement functionCall;
+	functionCall.type = RpnElementFunction;
+	functionCall.value = functionName;
+	result << functionCall;
+	
 	return result;
 }
 
@@ -169,7 +290,7 @@ RpnCodeThread SyntaxAnalyzer::factor()
 	return result;
 }
 
-// PowerBase = Number | Constant | '('Expression')'
+// PowerBase = Number | Constant | Function | '('Expression')'
 RpnCodeThread SyntaxAnalyzer::powerBase()
 {
 	RpnCodeThread result;
@@ -181,11 +302,21 @@ RpnCodeThread SyntaxAnalyzer::powerBase()
 		result << element;
 	}
 
-	// Constant
+	// Constant | Function
 	else if (m_lexicalAnalyzer->lexeme().type == LexemeIdentifier) {
-		Number value = constant();
-		RpnElement element = {RpnElementOperand, value};
-		result << element;
+		// Constant
+		m_lexicalAnalyzer->nextLexeme();
+		if (m_lexicalAnalyzer->lexeme().type != LexemeOpeningBracket) {
+			m_lexicalAnalyzer->previousLexeme();
+			RpnElement element = constant();
+			result << element;
+		}
+		// Function
+		else {
+			m_lexicalAnalyzer->previousLexeme();
+			RpnCodeThread thread = function();
+			result << thread;
+		}		
 	}
 
 	// '('Expression')'
@@ -278,16 +409,45 @@ Number SyntaxAnalyzer::number()
 	return result;
 }
 
-// Constant = Identifier
-Number SyntaxAnalyzer::constant()
+// Constant = Identifier (formal arguments are processed here as well)
+RpnElement SyntaxAnalyzer::constant()
 {
+	RpnElement result;
 	QString constName = m_lexicalAnalyzer->lexeme().value;
-	if (!m_consts.contains(constName)) {
+	
+	if (m_workingParams.contains(constName)) {
+		// it is an argument
+		result.type = RpnElementParam;
+		result.value = m_workingParams.indexOf(constName, 1);
+	}
+	
+	else if (m_consts.contains(constName)) {
+		result.type = RpnElementOperand;
+		result.value = m_consts.value(constName);		
+	}
+	
+	else {
 		throw Exception(tr("Undeclared identifier ‘%1’").arg(constName));
 	}
-	m_lexicalAnalyzer->nextLexeme();
+	
+	m_lexicalAnalyzer->nextLexeme();	
+	return result;
+}
 
-	return m_consts.value(constName);
+// FormalArgument = Identifier
+void SyntaxAnalyzer::extractFormalArgument()
+{
+	if (m_lexicalAnalyzer->lexeme().type != LexemeIdentifier) {
+		throw Exception(tr("Identifier expected if argument list"));
+	}
+	
+	QString argumentName = m_lexicalAnalyzer->lexeme().value;
+	if (m_workingParams.contains(argumentName)) {
+		throw Exception(tr("Argument ‘%1’ is already in the list").arg(argumentName));
+	}
+	m_workingParams.append(argumentName);
+	
+	m_lexicalAnalyzer->nextLexeme();
 }
 
 void SyntaxAnalyzer::ensureNoMoreLexemes()
@@ -311,3 +471,5 @@ bool CheckLexeme::isUnaryOperation(Lexeme lexeme)
 {
 	return ((lexeme.type == LexemePlus) || (lexeme.type == LexemeMinus));
 }
+
+

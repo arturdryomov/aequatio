@@ -29,16 +29,19 @@ public:
 	};
 
 private:
-	QString command(); // Command = ConstDeclaration | Expression
-	QString constDeclaration(); // ConstDeclaration = 'const' Identifier '=' {Unary Op} Number
-	RpnCodeThread expression(); // Expression = Summand {SummOperator Summand}
-	RpnCodeThread factor(); // Factor = (UnaryOp Factor) | (PowerBase ['^' Factor])
-	RpnCodeThread powerBase(); // PowerBase = Number | Constant | '('Expression')'
-	RpnElement multOperation(); // MultOperation = '*' | '/'
-	RpnCodeThread summand(); // Summand = Factor {MultOperator Factor}
-	RpnElement summOperation(); // SummOperation = '+' | '-'
+	QString command();
+	QString constDeclaration();
+	QString functionDeclaration();
+	RpnCodeThread expression();
+	RpnCodeThread function();
+	RpnCodeThread factor();
+	RpnCodeThread powerBase();
+	RpnElement multOperation();
+	RpnCodeThread summand();	
+	RpnElement summOperation();
 	Number number();
-	Number constant(); //Constant = Identifier
+	RpnElement constant();	
+	void extractFormalArgument();
 
 	void ensureNoMoreLexemes();
 

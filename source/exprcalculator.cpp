@@ -61,7 +61,7 @@ Number ExprCalculator::calculateFunction(QString functionName, QVector<Number> f
 
 				else if (m_rpnCode.contains(calledFunctionName)) {
 					QVector<Number> actualArguments;
-					for (int i = 0; i < m_rpnCode.value(calledFunctionName).parametersNumber; i++) {
+					for (int i = 0; i < m_rpnCode.value(calledFunctionName).argumentsCount; i++) {
 						actualArguments.append(calculationStack.pop());
 					}
 					Number result = calculateFunction(calledFunctionName, actualArguments);
@@ -109,7 +109,7 @@ bool ExprCalculator::isBuiltInFunction(const QString &functionName)
 	return m_standardFunctions.contains(functionName);
 }
 
-int ExprCalculator::builtInFunctionArgumentsNumber(const QString &functionName)
+int ExprCalculator::builtInFunctionArgumentsCount(const QString &functionName)
 {
 	if (!isBuiltInFunction(functionName)) {
 		throw Exception(tr("There is no such function"));

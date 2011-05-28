@@ -25,7 +25,7 @@ struct RpnElement
 typedef QList<RpnElement> RpnCodeThread; // contains linear RPN code to calculate
 
 struct RpnFunction {
-	int parametersNumber;
+	int argumentsCount;
 	RpnCodeThread codeThread;
 };
 
@@ -46,7 +46,7 @@ public:
 	Number calculate(const RpnCode &code);
 
 	bool isBuiltInFunction(const QString &functionName);
-	int builtInFunctionArgumentsNumber(const QString &functionName);
+	int builtInFunctionArgumentsCount(const QString &functionName);
 	Number calculateFunction(QString functionName, QVector<Number> functionArguments);
 	Number calculateBuiltInFunction(QString functionName, QVector<Number> functionArguments);
 

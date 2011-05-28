@@ -94,6 +94,9 @@ void LexicalAnalyzer::extractLexeme()
 	else if (CheckChar::isEqual(m_input.at(m_position))) {
 		extractEqual();
 	}
+	else if (CheckChar::isComma(m_input.at(m_position))) {
+		extractComma();
+	}
 	else if (CheckChar::isLetterOrUnderscore(m_input.at(m_position))) {
 		extractIdentifier();
 	}
@@ -242,6 +245,21 @@ void LexicalAnalyzer::extractEqual()
 	m_position++;
 }
 
+void LexicalAnalyzer::extractComma()
+{
+	QString tempOperation = m_input.mid(m_position, 1);
+	LexemeType lexemeType;
+	if (tempOperation == ",") {
+		lexemeType = LexemeComma;
+	}
+	else {
+		throw Exception(tr("Comma type is not supported"));
+	}
+
+	pushLexeme(lexemeType, QString());
+	m_position++;	
+}
+
 void LexicalAnalyzer::pushLexeme(LexemeType lexemeType, QString lexemeData)
 {
 	Lexeme tempLexeme;
@@ -358,4 +376,11 @@ bool CheckChar::isEqual(QChar c)
 	QList<QChar> equals;
 	equals << '=';
 	return equals.contains(c);
+}
+
+bool CheckChar::isComma(QChar c)
+{
+	QList<QChar> commas;
+	commas << ',';
+	return commas.contains(c);
 }
