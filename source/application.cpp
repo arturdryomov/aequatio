@@ -6,7 +6,7 @@
 #endif
 
 Application::Application(int &argc, char **argv) : QApplication(argc, argv)
-{	
+{
 #ifdef Q_WS_WIN
 	// adjust application font to Segoe UI on Vista and older
 	if (QSysInfo::windowsVersion() >= QSysInfo::WV_VISTA)	 {

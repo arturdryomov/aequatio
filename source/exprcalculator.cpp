@@ -13,6 +13,7 @@ void ExprCalculator::initializeStandardFunctions()
 	m_standardFunctions.insert(RpnFunctionMain, 0);
 	m_standardFunctions.insert(RpnFunctionPlus, 2);
 	m_standardFunctions.insert(RpnFunctionMinus, 2);
+	m_standardFunctions.insert(RpnFunctionMultiply, 2);
 	m_standardFunctions.insert(RpnFunctionDivide, 2);
 	m_standardFunctions.insert(RpnFunctionPower, 2);
 }
