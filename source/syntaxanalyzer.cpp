@@ -418,7 +418,7 @@ RpnElement SyntaxAnalyzer::constant()
 	if (m_workingParams.contains(constName)) {
 		// it is an argument
 		result.type = RpnElementParam;
-		result.value = m_workingParams.indexOf(constName, 1);
+		result.value = m_workingParams.indexOf(constName);
 	}
 	
 	else if (m_consts.contains(constName)) {
