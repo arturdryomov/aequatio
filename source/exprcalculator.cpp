@@ -86,15 +86,15 @@ Number ExprCalculator::calculateFunction(QString functionName, QVector<Number> f
 Number ExprCalculator::calculateBuiltInFunction(QString functionName, QVector<Number> functionArguments)
 {
 	if (functionName == RpnFunctionPlus) {
-		return functionArguments[0] + functionArguments[1];
+		return functionArguments[1] + functionArguments[0];
 	} else if (RpnFunctionMinus == functionName) {
-		return functionArguments[0] - functionArguments[1];
+		return functionArguments[1] - functionArguments[0];
 	}	else if (functionName == RpnFunctionMultiply) {
-		return functionArguments[0] * functionArguments[1];
+		return functionArguments[1] * functionArguments[0];
 	} else if (RpnFunctionDivide == functionName) {
-		return functionArguments[0] / functionArguments[1];
+		return functionArguments[1] / functionArguments[0];
 	} else if (functionName == RpnFunctionPower) {
-		return qPow(functionArguments[0],  functionArguments[1]);
+		return qPow(functionArguments[1],  functionArguments[0]);
 	} else {
 		throw Exception(tr("Unknown default function"));
 	}
