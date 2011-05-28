@@ -10,12 +10,15 @@ ExprCalculator::ExprCalculator(QObject *parent) : QObject(parent)
 
 void ExprCalculator::initializeStandardFunctions()
 {
-	m_standardFunctions.insert(RpnFunctionMain, 0);
-	m_standardFunctions.insert(RpnFunctionPlus, 2);
-	m_standardFunctions.insert(RpnFunctionMinus, 2);
-	m_standardFunctions.insert(RpnFunctionMultiply, 2);
-	m_standardFunctions.insert(RpnFunctionDivide, 2);
-	m_standardFunctions.insert(RpnFunctionPower, 2);
+	m_builtInFunctions.insert(RpnFunctionMain, 0);
+	m_builtInFunctions.insert(RpnFunctionPlus, 2);
+	m_builtInFunctions.insert(RpnFunctionMinus, 2);
+	m_builtInFunctions.insert(RpnFunctionMultiply, 2);
+	m_builtInFunctions.insert(RpnFunctionDivide, 2);
+	m_builtInFunctions.insert(RpnFunctionPower, 2);
+	m_builtInFunctions.insert(Sine, 1);
+	m_builtInFunctions.insert(Cosine, 1);
+	m_builtInFunctions.insert(Tangent, 1);
 }
 
 Number ExprCalculator::calculate(const RpnCode &code)
@@ -50,9 +53,9 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<Number> fun
 			case RpnElementFunction: {
 				QString calledFunctionName = element.value.value<QString>();
 
-				if (m_standardFunctions.contains(calledFunctionName)) {
+				if (m_builtInFunctions.contains(calledFunctionName)) {
 					QList<Number> actualArguments;
-					for (int i = 0; i < m_standardFunctions.value(calledFunctionName); i++) {
+					for (int i = 0; i < m_builtInFunctions.value(calledFunctionName); i++) {
 						actualArguments.prepend(calculationStack.pop());
 					}
 					Number result = calculateBuiltInFunction(calledFunctionName, actualArguments);
@@ -88,25 +91,38 @@ Number ExprCalculator::calculateBuiltInFunction(QString functionName, QList<Numb
 {
 	if (functionName == RpnFunctionPlus) {
 		return functionArguments[0] + functionArguments[1];
-	} else if (RpnFunctionMinus == functionName) {
+	} 
+	else if (functionName == RpnFunctionMinus) {
 		return functionArguments[0] - functionArguments[1];
-	}	else if (functionName == RpnFunctionMultiply) {
+	} 
+	else if (functionName == RpnFunctionMultiply) {
 		return functionArguments[0] * functionArguments[1];
-	} else if (RpnFunctionDivide == functionName) {
+	} 
+	else if (functionName == RpnFunctionDivide) {
 		return functionArguments[0] / functionArguments[1];
-	} else if (functionName == RpnFunctionPower) {
+	} 
+	else if (functionName == RpnFunctionPower) {
 		return qPow(functionArguments[0],  functionArguments[1]);
+	} 
+	else if (functionName == Sine) {
+		return qSin(functionArguments[0]);
+	}
+	else if (functionName == Cosine) {
+		return qCos(functionArguments[0]);
+	}
+	else if (functionName == Tangent) {
+		return qTan(functionArguments[0]);
 	} else {
 		throw Exception(tr("Unknown default function"));
 	}
-
+	
 	// Compiler needs this useless thing
 	return 0;
 }
 
 bool ExprCalculator::isBuiltInFunction(const QString &functionName)
 {
-	return m_standardFunctions.contains(functionName);
+	return m_builtInFunctions.contains(functionName);
 }
 
 int ExprCalculator::builtInFunctionArgumentsCount(const QString &functionName)
@@ -115,5 +131,5 @@ int ExprCalculator::builtInFunctionArgumentsCount(const QString &functionName)
 		throw Exception(tr("There is no such function"));
 	}
 
-	return m_standardFunctions.value(functionName);
+	return m_builtInFunctions.value(functionName);
 }

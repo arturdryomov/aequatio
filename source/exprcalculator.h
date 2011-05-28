@@ -38,6 +38,13 @@ const QString RpnFunctionMultiply = "@Multiply@";
 const QString RpnFunctionDivide = "@Divide@";
 const QString RpnFunctionPower = "@Power@";
 
+// these are real built in functions and in fact it would be better to hide 
+// these definitions from client code
+const QString Sine = "sin";
+const QString Cosine = "cos";
+const QString Tangent = "tan";
+
+
 class ExprCalculator : public QObject
 {
 	Q_OBJECT
@@ -57,7 +64,7 @@ public:
 		QString m_message;
 	};
 private:
-	QHash<QString, int> m_standardFunctions;
+	QHash<QString, int> m_builtInFunctions;
 	RpnCode m_rpnCode;
 
 	void initializeStandardFunctions();
