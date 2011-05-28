@@ -40,7 +40,7 @@ const QString RpnFunctionPower = "@Power@";
 
 class ExprCalculator : public QObject
 {
-	Q_OBJECT	
+	Q_OBJECT
 public:
 	explicit ExprCalculator(QObject *parent = 0);
 	Number calculate(const RpnCode &code);
@@ -49,13 +49,13 @@ public:
 	int builtInFunctionArgumentsNumber(const QString &functionName);
 	Number calculateFunction(QString functionName, QVector<Number> functionArguments);
 	Number calculateBuiltInFunction(QString functionName, QVector<Number> functionArguments);
-	
+
 	class Exception
 	{
 	public:
 		explicit Exception(const QString &message) : m_message(message) {}
 		QString message() { return m_message; }
-	private:		
+	private:
 		QString m_message;
 	};
 private:

@@ -3,8 +3,7 @@
 #include <QStack>
 #include <qmath.h>
 
-ExprCalculator::ExprCalculator(QObject *parent) :
-    QObject(parent)
+ExprCalculator::ExprCalculator(QObject *parent) : QObject(parent)
 {
 	initializeStandardFunctions();
 }
