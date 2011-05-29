@@ -13,7 +13,8 @@ typedef qreal Number;
 enum RpnElementType {
 	RpnElementOperand, // operand, value is Number
 	RpnElementParam, // parameter, value is ordinal number of the parameter (int)
-	RpnElementFunction // function call, value is its name (QString)
+	RpnElementFunction, // function call, value is its name (QString)
+	RpnElementContant // constant, value is its name (QString)
 };
 
 struct RpnElement
@@ -44,16 +45,23 @@ const QString Sine = "sin";
 const QString Cosine = "cos";
 const QString Tangent = "tan";
 
+// Built in constants
+const QString Pi = "pi";
+const QString E = "e";
+
 
 class ExprCalculator : public QObject
 {
 	Q_OBJECT
 public:
 	explicit ExprCalculator(QObject *parent = 0);
-	Number calculate(const RpnCode &code);
+	Number calculate(const RpnCodeThread &thread);
+	void addConstant(const QString &name, const Number &value);
+	void addFunction(const QString &name, const RpnFunction &function);
 
-	bool isBuiltInFunction(const QString &functionName);
-	int builtInFunctionArgumentsCount(const QString &functionName);
+	bool isFunction(const QString &name);
+	bool isConstant(const QString &name);
+	int functionArgumentsCount(const QString &name);
 
 	class Exception
 	{
@@ -64,10 +72,12 @@ public:
 		QString m_message;
 	};
 private:
-	QHash<QString, int> m_builtInFunctions;
-	RpnCode m_rpnCode;
+	QHash<QString, RpnFunction> m_functions;
+	QHash<QString, Number> m_constants;
+	RpnCodeThread m_rpnCodeThread;
 
-	void initializeStandardFunctions();
+	void initializeBuiltInFunctions();
+	void initializeBuiltInConstants();
 	Number calculateFunction(QString functionName, QList<Number> functionArguments);
 	Number calculateBuiltInFunction(QString functionName, QList<Number> functionArguments);
 };
