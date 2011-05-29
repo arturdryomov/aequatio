@@ -17,6 +17,7 @@ enum LexemeType {
 	LexemeClosingBracket,
 	LexemePower,
 	LexemeEqual,
+	LexemeComma,
 	LexemeIdentifier,
 	LexemeConst,
 	LexemeFunc,
@@ -63,6 +64,7 @@ private:
 	void extractBracket();
 	void extractPower();
 	void extractEqual();
+	void extractComma();
 	void pushLexeme(LexemeType, QString);
 };
 
@@ -76,6 +78,7 @@ public:
 	static bool isSign(QChar);
 	static bool isBracket(QChar);
 	static bool isPower(QChar);
+	static bool isComma(QChar);
 	static bool isDigit(QChar);
 	static bool isLetter(QChar);
 	static bool isUnderscore(QChar);
