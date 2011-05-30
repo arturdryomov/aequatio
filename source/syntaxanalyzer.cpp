@@ -15,9 +15,6 @@ SyntaxAnalyzer::~SyntaxAnalyzer()
 
 QString SyntaxAnalyzer::process(const QString &input)
 {
-	// there will be new Main function
-	m_rpnCode.remove(RpnFunctionMain);
-
 	// perform lexical analyzis
 	m_lexicalAnalyzer->parse(input);
 	if (m_lexicalAnalyzer->lexeme().type == LexemeEol) {
@@ -46,13 +43,10 @@ QString SyntaxAnalyzer::command()
 	}
 
 	// expression
-	else {
-		RpnFunction mainFunction;
-		mainFunction.argumentsCount = 0;
-		mainFunction.codeThread << expression(); // convert expression to RPN
-		m_rpnCode.insert(RpnFunctionMain, mainFunction);
+	else {		
+		RpnCodeThread codeThread = expression(); // convert expression to RPN
 		ensureNoMoreLexemes();
-		result = QString::number(m_exprCalculator->calculate(m_rpnCode)); // calculate
+		result = QString::number(m_exprCalculator->calculate(codeThread)); // calculate
 	}
 
 	return result;
@@ -97,7 +91,7 @@ QString SyntaxAnalyzer::constDeclaration()
 	m_lexicalAnalyzer->nextLexeme();
 
 	// add constant to list
-	m_consts[constName] = constValue;
+	m_exprCalculator->addConstant(constName, constValue);	
 
 	// return notification
 	return tr("Constant ‘%1’ now means ‘%2’").arg(constName).arg(constValue);
@@ -121,12 +115,6 @@ QString SyntaxAnalyzer::functionDeclaration()
 	}
 	QString functionName = m_lexicalAnalyzer->lexeme().value;
 	m_lexicalAnalyzer->nextLexeme();
-	
-	
-	/* Ensure there's no built in function with this name */
-	if (m_exprCalculator->isBuiltInFunction(functionName)) {
-		throw Exception(tr("There is built in function named ‘%1’").arg(functionName));
-	}
 	
 	
 	/* Get formal arguments and save them to list */
@@ -155,11 +143,9 @@ QString SyntaxAnalyzer::functionDeclaration()
 	RpnFunction function;
 	function.argumentsCount = m_workingParams.count();
 	function.codeThread = expression();
-	m_workingParams.clear();
-	m_rpnCode.insert(functionName, function);
+	m_workingParams.clear();	
+	m_exprCalculator->addFunction(functionName, function);
 	
-	
-	/* Parse the function body and save it */
 	return tr("Function ‘%1’ is declared").arg(functionName);
 }
 
@@ -197,12 +183,9 @@ RpnCodeThread SyntaxAnalyzer::function()
 	}	
 	QString functionName = m_lexicalAnalyzer->lexeme().value;		
 	int formalArgumentsCount;
-	if (m_exprCalculator->isBuiltInFunction(functionName)) {
-		formalArgumentsCount = m_exprCalculator->builtInFunctionArgumentsCount(functionName);
-	} 
-	else if (m_rpnCode.contains(functionName)) {
-		formalArgumentsCount = m_rpnCode[functionName].argumentsCount;
-	}	
+	if (m_exprCalculator->isFunction(functionName)) {
+		formalArgumentsCount = m_exprCalculator->functionArgumentsCount(functionName);
+	} 	
 	else {
 		throw Exception(tr("Undeclared function ‘%1’ call").arg(functionName));
 	}	
@@ -421,9 +404,9 @@ RpnElement SyntaxAnalyzer::constant()
 		result.value = m_workingParams.indexOf(constName);
 	}
 	
-	else if (m_consts.contains(constName)) {
-		result.type = RpnElementOperand;
-		result.value = m_consts.value(constName);		
+	else if (m_exprCalculator->isConstant(constName)) {
+		result.type = RpnElementConstant;		
+		result.value = constName;		
 	}
 	
 	else {

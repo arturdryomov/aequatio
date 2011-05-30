@@ -25,13 +25,13 @@ void ExprCalculator::initializeBuiltInFunctions()
 
 void ExprCalculator::initializeBuiltInConstants()
 {
-	m_builtInConstants.insert(Pi, M_PI);
-	m_builtInConstants.insert(E, M_E);
+	m_builtInConstants.insert(Pi, 3.14159265358979323846);
+	m_builtInConstants.insert(E, 2.71828182845904523536);
 }
 
 void ExprCalculator::addConstant(const QString &name, const Number &value)
 {
-	if (m_builtInFunctions.contains(name)) {
+	if (m_builtInConstants.contains(name)) {
 		throw Exception(tr("Constant exists as built in"));
 	}
 
@@ -78,10 +78,16 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<Number> fun
 
 			// Find constant and push its value
 			case RpnElementConstant:
-				if (!m_constants.contains(element.value.value<QString>())) {
+				if (m_builtInConstants.contains(element.value.value<QString>())) {
+					calculationStack.push(m_builtInConstants.value(element.value.value<QString>()));					
+				}
+				else if (m_constants.contains(element.value.value<QString>())) {
+					calculationStack.push(m_constants.value(element.value.value<QString>()));	
+				}
+				else {
 					throw Exception(tr("Unknown constant"));
 				}
-				calculationStack.push(m_constants.value(element.value.value<QString>()));
+				
 				break;
 
 			// Find function and call it
@@ -162,13 +168,13 @@ bool ExprCalculator::isFunction(const QString &name)
 
 bool ExprCalculator::isConstant(const QString &name)
 {
-	return m_constants.contains(name);
+	return (m_constants.contains(name) || m_builtInConstants.contains(name));
 }
 
 int ExprCalculator::functionArgumentsCount(const QString &name)
 {
 	if (!isFunction(name)) {
-		throw Exception(tr("There is no such function"));
+		throw Exception(tr("There is no such a function"));
 	}
 
 	if (m_functions.contains(name)) {

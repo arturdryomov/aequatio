@@ -42,13 +42,10 @@ private:
 	Number number();
 	RpnElement constant();	
 	void extractFormalArgument();
-
 	void ensureNoMoreLexemes();
-
-	RpnCode m_rpnCode;
+	
 	LexicalAnalyzer *m_lexicalAnalyzer;
 	ExprCalculator *m_exprCalculator;
-	QHash<QString, Number> m_consts;
 	QVector<QString> m_workingParams;
 };
 
