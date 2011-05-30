@@ -1,6 +1,7 @@
 #include "exprcalculator.h"
-
 #include <QStack>
+
+#define _USE_MATH_DEFINES
 #include <qmath.h>
 
 
@@ -25,8 +26,8 @@ void ExprCalculator::initializeBuiltInFunctions()
 
 void ExprCalculator::initializeBuiltInConstants()
 {
-	m_builtInConstants.insert(Pi, 3.14159265358979323846);
-	m_builtInConstants.insert(E, 2.71828182845904523536);
+	m_builtInConstants.insert(Pi, M_PI);
+	m_builtInConstants.insert(E, M_E);
 }
 
 void ExprCalculator::addConstant(const QString &name, const Number &value)

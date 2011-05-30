@@ -1,6 +1,5 @@
 #ifndef EXPRCALCULATOR_H
 #define EXPRCALCULATOR_H
-
 #include <QHash>
 #include <QObject>
 #include <QVariant>
