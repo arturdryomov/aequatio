@@ -14,7 +14,7 @@ enum RpnElementType {
 	RpnElementOperand, // operand, value is Number
 	RpnElementParam, // parameter, value is ordinal number of the parameter (int)
 	RpnElementFunction, // function call, value is its name (QString)
-	RpnElementContant // constant, value is its name (QString)
+	RpnElementConstant // constant, value is its name (QString)
 };
 
 struct RpnElement
@@ -55,6 +55,7 @@ class ExprCalculator : public QObject
 	Q_OBJECT
 public:
 	explicit ExprCalculator(QObject *parent = 0);
+
 	Number calculate(const RpnCodeThread &thread);
 	void addConstant(const QString &name, const Number &value);
 	void addFunction(const QString &name, const RpnFunction &function);
@@ -73,7 +74,9 @@ public:
 	};
 private:
 	QHash<QString, RpnFunction> m_functions;
+	QHash<QString, int> m_builtInFunctions;
 	QHash<QString, Number> m_constants;
+	QHash<QString, Number> m_builtInConstants;
 	RpnCodeThread m_rpnCodeThread;
 
 	void initializeBuiltInFunctions();

@@ -3,12 +3,14 @@
 #include <QStack>
 #include <qmath.h>
 
+
 ExprCalculator::ExprCalculator(QObject *parent) : QObject(parent)
 {
-	initializeStandardFunctions();
+	initializeBuiltInFunctions();
+	initializeBuiltInConstants();
 }
 
-void ExprCalculator::initializeStandardFunctions()
+void ExprCalculator::initializeBuiltInFunctions()
 {
 	m_builtInFunctions.insert(RpnFunctionMain, 0);
 	m_builtInFunctions.insert(RpnFunctionPlus, 2);
@@ -21,20 +23,45 @@ void ExprCalculator::initializeStandardFunctions()
 	m_builtInFunctions.insert(Tangent, 1);
 }
 
-Number ExprCalculator::calculate(const RpnCode &code)
+void ExprCalculator::initializeBuiltInConstants()
 {
-	m_rpnCode = code;
-	if (!m_rpnCode.contains(RpnFunctionMain)) {
-		throw Exception(tr("There is no main function"));
+	m_builtInConstants.insert(Pi, M_PI);
+	m_builtInConstants.insert(E, M_E);
+}
+
+void ExprCalculator::addConstant(const QString &name, const Number &value)
+{
+	if (m_builtInFunctions.contains(name)) {
+		throw Exception(tr("Constant exists as built in"));
 	}
+
+	m_constants.insert(name, value);
+}
+
+void ExprCalculator::addFunction(const QString &name, const RpnFunction &function)
+{
+	if (m_builtInFunctions.contains(name)) {
+		throw Exception(tr("Function exists as built in"));
+	}
+
+	m_functions.insert(name, function);
+}
+
+Number ExprCalculator::calculate(const RpnCodeThread &thread)
+{
+	RpnFunction function = {0, thread};
+	m_functions.insert(RpnFunctionMain, function);
 
 	return calculateFunction(RpnFunctionMain, QList<Number>());
 }
 
 Number ExprCalculator::calculateFunction(QString functionName, QList<Number> functionArguments)
 {
-	RpnCodeThread currentThread = m_rpnCode.value(functionName).codeThread;
 	QStack<Number> calculationStack;
+
+	RpnCodeThread currentThread = m_functions.value(functionName).codeThread;
+
+	// Find and extract
 
 	foreach (RpnElement element, currentThread) {
 
@@ -47,6 +74,14 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<Number> fun
 			// Get number and push to stack
 			case RpnElementParam:
 				calculationStack.push(functionArguments[element.value.value<int>()]);
+				break;
+
+			// Find constant and push its value
+			case RpnElementConstant:
+				if (!m_constants.contains(element.value.value<QString>())) {
+					throw Exception(tr("Unknown constant"));
+				}
+				calculationStack.push(m_constants.value(element.value.value<QString>()));
 				break;
 
 			// Find function and call it
@@ -62,9 +97,9 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<Number> fun
 					calculationStack.push(result);
 				}
 
-				else if (m_rpnCode.contains(calledFunctionName)) {
+				else if (m_functions.contains(calledFunctionName)) {
 					QList<Number> actualArguments;
-					for (int i = 0; i < m_rpnCode.value(calledFunctionName).argumentsCount; i++) {
+					for (int i = 0; i < m_functions.value(calledFunctionName).argumentsCount; i++) {
 						actualArguments.prepend(calculationStack.pop());
 					}
 					Number result = calculateFunction(calledFunctionName, actualArguments);
@@ -120,16 +155,26 @@ Number ExprCalculator::calculateBuiltInFunction(QString functionName, QList<Numb
 	return 0;
 }
 
-bool ExprCalculator::isBuiltInFunction(const QString &functionName)
+bool ExprCalculator::isFunction(const QString &name)
 {
-	return m_builtInFunctions.contains(functionName);
+	return (m_functions.contains(name) || m_builtInFunctions.contains(name));
 }
 
-int ExprCalculator::builtInFunctionArgumentsCount(const QString &functionName)
+bool ExprCalculator::isConstant(const QString &name)
 {
-	if (!isBuiltInFunction(functionName)) {
+	return m_constants.contains(name);
+}
+
+int ExprCalculator::functionArgumentsCount(const QString &name)
+{
+	if (!isFunction(name)) {
 		throw Exception(tr("There is no such function"));
 	}
 
-	return m_builtInFunctions.value(functionName);
+	if (m_functions.contains(name)) {
+		return m_functions.value(name).argumentsCount;
+	}
+	else {
+		return m_builtInFunctions.value(name);
+	}
 }
