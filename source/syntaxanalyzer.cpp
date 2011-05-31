@@ -5,7 +5,7 @@
 
 SyntaxAnalyzer::SyntaxAnalyzer(QObject *parent) :
 	QObject(parent),
-	m_lexicalAnalyzer(new LexicalAnalyzer),
+	m_lexicalAnalyzer(new LexicalAnalyzer(this)),
 	m_exprCalculator(new ExprCalculator(this))
 {
 }

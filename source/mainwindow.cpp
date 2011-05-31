@@ -23,7 +23,7 @@ void MainWindow::resultReturned(const QString &result)
 	ui->consoleEdit->append("→ " + result);
 }
 
-void MainWindow::submitButtonClicked()
+void MainWindow::on_submitButton_clicked()
 {
 	// drop commandEdit text to console and send this text to external code
 	ui->consoleEdit->append("← " + ui->commandEdit->text());

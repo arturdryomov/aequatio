@@ -17,8 +17,8 @@ public:
 	~MainWindow();
 public slots:
 	void resultReturned(const QString &result);
-private slots:
-	void submitButtonClicked();
+//private slots:
+	void on_submitButton_clicked();
 protected:
 	void resizeEvent(QResizeEvent *);
 private:

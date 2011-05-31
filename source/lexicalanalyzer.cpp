@@ -116,16 +116,16 @@ void LexicalAnalyzer::extractIdentifier()
 		m_position++;
 	}
 
-	QString tempIdentifier = m_input.mid(startPosition, m_position - startPosition);
+	QString identifier = m_input.mid(startPosition, m_position - startPosition);
 
-	if (!tempIdentifier.isNull()) {
-		if (m_reservedWords.contains(tempIdentifier)) {
-			LexemeType lexemeType = m_reservedWords.value(tempIdentifier);
+	if (!identifier.isNull()) {
+		if (m_reservedWords.contains(identifier)) {
+			LexemeType lexemeType = m_reservedWords.value(identifier);
 			pushLexeme(lexemeType, QString());
 		}
 		else {
 			LexemeType lexemeType = LexemeIdentifier;
-			pushLexeme(lexemeType, tempIdentifier);
+			pushLexeme(lexemeType, identifier);
 		}
 	}
 }
@@ -199,12 +199,12 @@ void LexicalAnalyzer::extractOperation()
 
 void LexicalAnalyzer::extractBracket()
 {
-	QString tempBracket = m_input.mid(m_position, 1);
+	QString bracket = m_input.mid(m_position, 1);
 	LexemeType lexemeType;
-	if (tempBracket == "(") {
+	if (bracket == "(") {
 		lexemeType = LexemeOpeningBracket;
 	}
-	else if (tempBracket == ")") {
+	else if (bracket == ")") {
 		lexemeType = LexemeClosingBracket;
 	}
 	else {
@@ -217,9 +217,9 @@ void LexicalAnalyzer::extractBracket()
 
 void LexicalAnalyzer::extractPower()
 {
-	QString tempOperation = m_input.mid(m_position, 1);
+	QString operation = m_input.mid(m_position, 1);
 	LexemeType lexemeType;
-	if (tempOperation == "^") {
+	if (operation == "^") {
 		lexemeType = LexemePower;
 	}
 	else {
@@ -232,9 +232,9 @@ void LexicalAnalyzer::extractPower()
 
 void LexicalAnalyzer::extractEqual()
 {
-	QString tempOperation = m_input.mid(m_position, 1);
+	QString operation = m_input.mid(m_position, 1);
 	LexemeType lexemeType;
-	if (tempOperation == "=") {
+	if (operation == "=") {
 		lexemeType = LexemeEqual;
 	}
 	else {
@@ -247,9 +247,9 @@ void LexicalAnalyzer::extractEqual()
 
 void LexicalAnalyzer::extractComma()
 {
-	QString tempOperation = m_input.mid(m_position, 1);
+	QString operation = m_input.mid(m_position, 1);
 	LexemeType lexemeType;
-	if (tempOperation == ",") {
+	if (operation == ",") {
 		lexemeType = LexemeComma;
 	}
 	else {
@@ -262,10 +262,10 @@ void LexicalAnalyzer::extractComma()
 
 void LexicalAnalyzer::pushLexeme(LexemeType lexemeType, QString lexemeData)
 {
-	Lexeme tempLexeme;
-	tempLexeme.type = lexemeType;
-	tempLexeme.value = lexemeData;
-	m_lexemeList.append(tempLexeme);
+	Lexeme lexeme;
+	lexeme.type = lexemeType;
+	lexeme.value = lexemeData;
+	m_lexemeList.append(lexeme);
 }
 
 void LexicalAnalyzer::skipWhitespace()
