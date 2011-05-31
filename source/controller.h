@@ -1,11 +1,10 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
-#include <QObject>
 #include "mainwindow.h"
 #include "syntaxanalyzer.h"
 
-
+#include <QObject>
 
 /* 
 	This class interconnects ui level and application level.
@@ -15,7 +14,7 @@ class Controller : public QObject
 {
 	Q_OBJECT
 public:
-	static Controller *instance();	
+	static Controller *instance();
 	int runApplication(int argc, char *argv[]);
 private slots:
 	void commandEntered(const QString &command);

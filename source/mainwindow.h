@@ -10,7 +10,6 @@ namespace Ui {
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
-
 signals:
 	void commandEntered(const QString &);	
 public:
@@ -19,11 +18,9 @@ public:
 public slots:
 	void resultReturned(const QString &result);
 private slots:
-	void on_submitButton_clicked();
-	
+	void submitButtonClicked();
 protected:
 	void resizeEvent(QResizeEvent *);
-	
 private:
 	Ui::MainWindow *ui;	
 };

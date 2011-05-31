@@ -1,6 +1,7 @@
 #include "mainwindow.h"
-#include "QScrollBar"
 #include "ui_mainwindow.h"
+
+#include <QScrollBar>
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
@@ -22,7 +23,7 @@ void MainWindow::resultReturned(const QString &result)
 	ui->consoleEdit->append("→ " + result);
 }
 
-void MainWindow::on_submitButton_clicked()
+void MainWindow::submitButtonClicked()
 {
 	// drop commandEdit text to console and send this text to external code
 	ui->consoleEdit->append("← " + ui->commandEdit->text());
@@ -36,4 +37,3 @@ void MainWindow::resizeEvent(QResizeEvent *)
 	// scroll consoleEdit to the end
 	ui->consoleEdit->verticalScrollBar()->setValue(ui->consoleEdit->verticalScrollBar()->maximum());
 }
-

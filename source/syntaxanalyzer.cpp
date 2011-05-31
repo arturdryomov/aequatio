@@ -1,5 +1,6 @@
 #include "syntaxanalyzer.h"
 #include "lexicalanalyzer.h"
+
 #include <QMetaType>
 
 SyntaxAnalyzer::SyntaxAnalyzer(QObject *parent) :
@@ -25,7 +26,7 @@ QString SyntaxAnalyzer::process(const QString &input)
 	return command();
 }
 
-// Command = ConstDeclaration | Expression
+// Command = ConstDeclaration | Expression | FuncDeclaration
 QString SyntaxAnalyzer::command()
 {
 	QString result;
@@ -109,14 +110,14 @@ QString SyntaxAnalyzer::functionDeclaration()
 	}
 	m_lexicalAnalyzer->nextLexeme();
 
-	// Identifier
+	// identifier
 	if (m_lexicalAnalyzer->lexeme().type != LexemeIdentifier) {
-		throw Exception(tr("Identifyer after ‘func’ expected"));
+		throw Exception(tr("Identifier after ‘func’ expected"));
 	}
 	QString functionName = m_lexicalAnalyzer->lexeme().value;
 	m_lexicalAnalyzer->nextLexeme();
 	
-	
+
 	/* Get formal arguments and save them to list */
 	
 	if (m_lexicalAnalyzer->lexeme().type != LexemeOpeningBracket) {
@@ -137,6 +138,7 @@ QString SyntaxAnalyzer::functionDeclaration()
 		throw Exception(tr("Equal sign expected after closing bracket"));
 	}
 	m_lexicalAnalyzer->nextLexeme();
+
 	
 	/* Parse the function body and save it */
 	
@@ -267,7 +269,6 @@ RpnCodeThread SyntaxAnalyzer::factor()
 
 			result << exponent << power;
 		}
-
 	}
 
 	return result;
@@ -304,7 +305,6 @@ RpnCodeThread SyntaxAnalyzer::powerBase()
 
 	// '('Expression')'
 	else if (m_lexicalAnalyzer->lexeme().type == LexemeOpeningBracket) {
-
 		m_lexicalAnalyzer->nextLexeme();
 		result = expression();
 
@@ -454,5 +454,3 @@ bool CheckLexeme::isUnaryOperation(Lexeme lexeme)
 {
 	return ((lexeme.type == LexemePlus) || (lexeme.type == LexemeMinus));
 }
-
-

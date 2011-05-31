@@ -112,7 +112,7 @@ void LexicalAnalyzer::extractIdentifier()
 
 	while ( (m_position <= inputLength) &&
 		( (CheckChar::isDigit(m_input.at(m_position))) ||
-			(CheckChar::isLetterOrUnderscore(m_input.at(m_position))) ) ) {
+		(CheckChar::isLetterOrUnderscore(m_input.at(m_position))) ) ) {
 		m_position++;
 	}
 

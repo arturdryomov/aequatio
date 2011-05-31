@@ -1,5 +1,6 @@
 #ifndef EXPRCALCULATOR_H
 #define EXPRCALCULATOR_H
+
 #include <QHash>
 #include <QObject>
 #include <QVariant>
@@ -31,7 +32,9 @@ struct RpnFunction {
 
 typedef QHash<QString, RpnFunction> RpnCode;
 
+// main and built-in functions names
 const QString RpnFunctionMain = "@Main@";
+
 const QString RpnFunctionPlus = "@Plus@";
 const QString RpnFunctionMinus = "@Minus@";
 const QString RpnFunctionMultiply = "@Multiply@";
@@ -44,10 +47,9 @@ const QString Sine = "sin";
 const QString Cosine = "cos";
 const QString Tangent = "tan";
 
-// Built in constants
+// built in constants
 const QString Pi = "pi";
 const QString E = "e";
-
 
 class ExprCalculator : public QObject
 {

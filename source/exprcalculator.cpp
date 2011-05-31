@@ -1,51 +1,14 @@
 #include "exprcalculator.h"
+
 #include <QStack>
 
 #define _USE_MATH_DEFINES
 #include <qmath.h>
 
-
 ExprCalculator::ExprCalculator(QObject *parent) : QObject(parent)
 {
 	initializeBuiltInFunctions();
 	initializeBuiltInConstants();
-}
-
-void ExprCalculator::initializeBuiltInFunctions()
-{
-	m_builtInFunctions.insert(RpnFunctionMain, 0);
-	m_builtInFunctions.insert(RpnFunctionPlus, 2);
-	m_builtInFunctions.insert(RpnFunctionMinus, 2);
-	m_builtInFunctions.insert(RpnFunctionMultiply, 2);
-	m_builtInFunctions.insert(RpnFunctionDivide, 2);
-	m_builtInFunctions.insert(RpnFunctionPower, 2);
-	m_builtInFunctions.insert(Sine, 1);
-	m_builtInFunctions.insert(Cosine, 1);
-	m_builtInFunctions.insert(Tangent, 1);
-}
-
-void ExprCalculator::initializeBuiltInConstants()
-{
-	m_builtInConstants.insert(Pi, M_PI);
-	m_builtInConstants.insert(E, M_E);
-}
-
-void ExprCalculator::addConstant(const QString &name, const Number &value)
-{
-	if (m_builtInConstants.contains(name)) {
-		throw Exception(tr("Constant exists as built in"));
-	}
-
-	m_constants.insert(name, value);
-}
-
-void ExprCalculator::addFunction(const QString &name, const RpnFunction &function)
-{
-	if (m_builtInFunctions.contains(name)) {
-		throw Exception(tr("Function exists as built in"));
-	}
-
-	m_functions.insert(name, function);
 }
 
 Number ExprCalculator::calculate(const RpnCodeThread &thread)
@@ -162,6 +125,24 @@ Number ExprCalculator::calculateBuiltInFunction(QString functionName, QList<Numb
 	return 0;
 }
 
+void ExprCalculator::addConstant(const QString &name, const Number &value)
+{
+	if (m_builtInConstants.contains(name)) {
+		throw Exception(tr("Constant exists as built in"));
+	}
+
+	m_constants.insert(name, value);
+}
+
+void ExprCalculator::addFunction(const QString &name, const RpnFunction &function)
+{
+	if (m_builtInFunctions.contains(name)) {
+		throw Exception(tr("Function exists as built in"));
+	}
+
+	m_functions.insert(name, function);
+}
+
 bool ExprCalculator::isFunction(const QString &name)
 {
 	return (m_functions.contains(name) || m_builtInFunctions.contains(name));
@@ -184,4 +165,23 @@ int ExprCalculator::functionArgumentsCount(const QString &name)
 	else {
 		return m_builtInFunctions.value(name);
 	}
+}
+
+void ExprCalculator::initializeBuiltInFunctions()
+{
+	m_builtInFunctions.insert(RpnFunctionMain, 0);
+	m_builtInFunctions.insert(RpnFunctionPlus, 2);
+	m_builtInFunctions.insert(RpnFunctionMinus, 2);
+	m_builtInFunctions.insert(RpnFunctionMultiply, 2);
+	m_builtInFunctions.insert(RpnFunctionDivide, 2);
+	m_builtInFunctions.insert(RpnFunctionPower, 2);
+	m_builtInFunctions.insert(Sine, 1);
+	m_builtInFunctions.insert(Cosine, 1);
+	m_builtInFunctions.insert(Tangent, 1);
+}
+
+void ExprCalculator::initializeBuiltInConstants()
+{
+	m_builtInConstants.insert(Pi, M_PI);
+	m_builtInConstants.insert(E, M_E);
 }

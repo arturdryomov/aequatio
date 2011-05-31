@@ -1,12 +1,14 @@
 #ifndef SYNTAXANALYZER_H
 #define SYNTAXANALYZER_H
+
+#include "lexicalanalyzer.h"
+#include "exprcalculator.h"
+
 #include <QObject>
 #include <QString>
 #include <QVariant>
 #include <QVector>
 #include <QHash>
-#include "lexicalanalyzer.h"
-#include "exprcalculator.h"
 
 class SyntaxAnalyzer : public QObject
 {
@@ -27,7 +29,6 @@ public:
 	private:
 		QString m_message;
 	};
-
 private:
 	QString command();
 	QString constDeclaration();
@@ -56,6 +57,5 @@ public:
 	static bool isSummOperation(Lexeme lexeme);
 	static bool isUnaryOperation(Lexeme lexeme);
 };
-
 
 #endif // SYNTAXANALYZER_H

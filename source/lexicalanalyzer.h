@@ -35,10 +35,12 @@ class LexicalAnalyzer : public QObject
 public:
 	LexicalAnalyzer(QObject *parent = 0);
 	~LexicalAnalyzer();
+
 	void parse(const QString &input);
 	Lexeme lexeme();
 	void nextLexeme();
 	void previousLexeme();
+
 	class Exception
 	{
 	public:
@@ -87,4 +89,3 @@ public:
 };
 
 #endif // LEXICALANALYZER_H
-

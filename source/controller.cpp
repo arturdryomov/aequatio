@@ -1,6 +1,7 @@
 #include "controller.h"
 #include "mainwindow.h"
 #include "application.h"
+
 #include <QTextCodec>
 
 Controller *Controller::m_instance = 0;
@@ -36,6 +37,7 @@ void Controller::commandEntered(const QString &command)
 		QString result = m_syntaxAnalyzer->process(command);
 		m_mainWindow->resultReturned(result);		
 	} 
+
 	catch (LexicalAnalyzer::Exception e) {
 		m_mainWindow->resultReturned(tr("Lexical error: ‘%1’").arg(e.message()));
 	}
@@ -45,7 +47,6 @@ void Controller::commandEntered(const QString &command)
 	catch (ExprCalculator::Exception e) {
 		m_mainWindow->resultReturned(tr("Calculating error: ‘%1’").arg(e.message()));
 	}
-		
 }
 
 Controller::Controller(QObject *parent) :
@@ -54,4 +55,3 @@ Controller::Controller(QObject *parent) :
 	m_syntaxAnalyzer(new SyntaxAnalyzer(this))
 {
 }
-
