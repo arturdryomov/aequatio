@@ -32,8 +32,7 @@ QFont Application::systemFont()
 		GetDeviceCaps(GetDC(GetDesktopWindow()), LOGPIXELSY));
 #endif	
 	QFont font;
-#ifdef Q_WS_WIN
-	NONCLIENTMETRICS metrics;	
+#ifdef Q_WS_WIN		
 	font.setPointSize(pointSize);
 	font.setFamily(QString::fromWCharArray(metrics.lfMessageFont.lfFaceName));
 #endif	
