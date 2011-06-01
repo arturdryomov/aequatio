@@ -175,19 +175,22 @@ void LexicalAnalyzer::extractNumber()
 
 void LexicalAnalyzer::extractOperation()
 {
-	QChar tempOperation = m_input.at(m_position);
+	QChar operation = m_input.at(m_position);
 	LexemeType lexemeType;
-	if (CheckChar::isPlus(tempOperation)) {
+	if (CheckChar::isPlus(operation)) {
 		lexemeType = LexemePlus;
 	}
-	else if (CheckChar::isMinus(tempOperation)) {
+	else if (CheckChar::isMinus(operation)) {
 		lexemeType = LexemeMinus;
 	}
-	else if (CheckChar::isMultiply(tempOperation)) {
+	else if (CheckChar::isMultiply(operation)) {
 		lexemeType = LexemeMultiply;
 	}
-	else if (CheckChar::isDivide(tempOperation)) {
+	else if (CheckChar::isDivide(operation)) {
 		lexemeType = LexemeDivide;
+	}
+	else if (CheckChar::isPower(operation)) {
+		lexemeType = LexemePower;
 	}
 	else {
 		throw Exception(tr("Operation is not supported"));
@@ -311,9 +314,12 @@ bool CheckChar::isExponent(QChar c)
 
 bool CheckChar::isOperation(QChar c)
 {
-	QList<QChar> operations;
-	operations << '+' << '-' << '*' << '/';
-	return operations.contains(c);
+	if ( isMinus(c) || isPlus(c) || isMultiply(c) || isDivide(c) || isPower(c) ) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 bool CheckChar::isSign(QChar c)
@@ -394,21 +400,19 @@ bool CheckChar::isPlus(QChar c)
 
 bool CheckChar::isMinus(QChar c)
 {
-	QList<QChar> minuses;
-	minuses << '-' << L'—' << L'−';
+	// Thanks goes to MSVC++
+	QString minuses = "- – − —";
 	return minuses.contains(c);
 }
 
 bool CheckChar::isMultiply(QChar c)
 {
-	QList<QChar> multiplies;
-	multiplies << '*' << L'×';
+	QString multiplies = "* ×";
 	return multiplies.contains(c);
 }
 
 bool CheckChar::isDivide(QChar c)
 {
-	QList<QChar> divides;
-	divides << '/';
+	QString divides = "/ ÷";
 	return divides.contains(c);
 }
