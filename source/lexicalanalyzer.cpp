@@ -160,7 +160,7 @@ void LexicalAnalyzer::extractNumber()
 		if ( (m_position > inputLength) || (!CheckChar::isDigit(m_input.at(m_position))) ) {
 			throw Exception(tr("Must be number or sign after exponent sign"));
 		}
-		while ( (m_position < inputLength) && (CheckChar::isDigit(m_input.at(m_position))) ) {
+		while ( (m_position <= inputLength) && (CheckChar::isDigit(m_input.at(m_position))) ) {
 			m_position++;
 		}
 	}
@@ -175,18 +175,18 @@ void LexicalAnalyzer::extractNumber()
 
 void LexicalAnalyzer::extractOperation()
 {
-	QString tempOperation = m_input.mid(m_position, 1);
+	QChar tempOperation = m_input.at(m_position);
 	LexemeType lexemeType;
-	if (tempOperation == "+") {
+	if (CheckChar::isPlus(tempOperation)) {
 		lexemeType = LexemePlus;
 	}
-	else if (tempOperation == "-") {
+	else if (CheckChar::isMinus(tempOperation)) {
 		lexemeType = LexemeMinus;
 	}
-	else if (tempOperation == "*") {
+	else if (CheckChar::isMultiply(tempOperation)) {
 		lexemeType = LexemeMultiply;
 	}
-	else if (tempOperation == "/") {
+	else if (CheckChar::isDivide(tempOperation)) {
 		lexemeType = LexemeDivide;
 	}
 	else {
@@ -383,4 +383,32 @@ bool CheckChar::isComma(QChar c)
 	QList<QChar> commas;
 	commas << ',';
 	return commas.contains(c);
+}
+
+bool CheckChar::isPlus(QChar c)
+{
+	QList<QChar> pluses;
+	pluses << '+';
+	return pluses.contains(c);
+}
+
+bool CheckChar::isMinus(QChar c)
+{
+	QList<QChar> minuses;
+	minuses << '-' << L'—' << L'−';
+	return minuses.contains(c);
+}
+
+bool CheckChar::isMultiply(QChar c)
+{
+	QList<QChar> multiplies;
+	multiplies << '*' << L'×';
+	return multiplies.contains(c);
+}
+
+bool CheckChar::isDivide(QChar c)
+{
+	QList<QChar> divides;
+	divides << '/';
+	return divides.contains(c);
 }

@@ -86,6 +86,10 @@ public:
 	static bool isUnderscore(QChar);
 	static bool isLetterOrUnderscore(QChar);
 	static bool isEqual(QChar);
+	static bool isPlus(QChar);
+	static bool isMinus(QChar);
+	static bool isMultiply(QChar);
+	static bool isDivide(QChar);
 };
 
 #endif // LEXICALANALYZER_H

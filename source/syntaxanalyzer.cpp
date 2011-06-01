@@ -47,7 +47,7 @@ QString SyntaxAnalyzer::command()
 	else {		
 		RpnCodeThread codeThread = expression(); // convert expression to RPN
 		ensureNoMoreLexemes();
-		result = QString::number(m_exprCalculator->calculate(codeThread)); // calculate
+		result = QString::number(m_exprCalculator->calculate(codeThread), 'f', 15); // calculate
 	}
 
 	return result;
