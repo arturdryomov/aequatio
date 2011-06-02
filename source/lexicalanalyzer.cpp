@@ -220,9 +220,9 @@ void LexicalAnalyzer::extractBracket()
 
 void LexicalAnalyzer::extractPower()
 {
-	QString operation = m_input.mid(m_position, 1);
+	QChar operation = m_input.at(m_position);
 	LexemeType lexemeType;
-	if (operation == "^") {
+	if (CheckChar::isPower(operation)) {
 		lexemeType = LexemePower;
 	}
 	else {
@@ -235,9 +235,9 @@ void LexicalAnalyzer::extractPower()
 
 void LexicalAnalyzer::extractEqual()
 {
-	QString operation = m_input.mid(m_position, 1);
+	QChar operation = m_input.at(m_position);
 	LexemeType lexemeType;
-	if (operation == "=") {
+	if (CheckChar::isEqual(operation)) {
 		lexemeType = LexemeEqual;
 	}
 	else {
@@ -250,9 +250,9 @@ void LexicalAnalyzer::extractEqual()
 
 void LexicalAnalyzer::extractComma()
 {
-	QString operation = m_input.mid(m_position, 1);
+	QChar operation = m_input.at(m_position);
 	LexemeType lexemeType;
-	if (operation == ",") {
+	if (CheckChar::isComma(operation)) {
 		lexemeType = LexemeComma;
 	}
 	else {
@@ -293,60 +293,45 @@ Lexeme LexicalAnalyzer::EndLexeme()
 
 bool CheckChar::isSeparator(QChar c)
 {
-	QList<QChar> separators;
-	separators << '.';
-	return separators.contains(c);
+	return c == '.';
 }
 
 bool CheckChar::isSpace(QChar c)
 {
-	QList<QChar> spaces;
-	spaces << ' ';
-	return spaces.contains(c);
+	return c == ' ';
 }
 
 bool CheckChar::isExponent(QChar c)
 {
-	QList<QChar> exponents;
-	exponents << 'e' << 'E';
+	QString exponents = "eE";
 	return exponents.contains(c);
 }
 
 bool CheckChar::isOperation(QChar c)
 {
-	if ( isMinus(c) || isPlus(c) || isMultiply(c) || isDivide(c) || isPower(c) ) {
-		return true;
-	}
-	else {
-		return false;
-	}
+	return isMinus(c) || isPlus(c) || isMultiply(c) || isDivide(c) || isPower(c);
 }
 
 bool CheckChar::isSign(QChar c)
 {
-	QList<QChar> signs;
-	signs << '+' << '-';
+	QString signs = "+-";
 	return signs.contains(c);
 }
 
 bool CheckChar::isBracket(QChar c)
 {
-	QList<QChar> brackets;
-	brackets << '(' << ')';
+	QString brackets = "()";
 	return brackets.contains(c);
 }
 
 bool CheckChar::isPower(QChar c)
 {
-	QList<QChar> powers;
-	powers << '^';
-	return powers.contains(c);
+	return c == '^';
 }
 
 bool CheckChar::isDigit(QChar c)
 {
-	QList<QChar> digits;
-	digits << '1' << '2' << '3' << '4' << '5' << '6' << '7' << '8' << '9' << '0';
+	QString digits = "1234567890";
 	return digits.contains(c);
 }
 
@@ -372,47 +357,40 @@ bool CheckChar::isLetter(QChar c)
 
 bool CheckChar::isUnderscore(QChar c)
 {
-	QList<QChar> underscores;
-	underscores << '_';
-	return underscores.contains(c);
+	return c == '_';
 }
 
 bool CheckChar::isEqual(QChar c)
 {
-	QList<QChar> equals;
-	equals << '=';
-	return equals.contains(c);
+	return c == '=';
 }
 
 bool CheckChar::isComma(QChar c)
 {
-	QList<QChar> commas;
-	commas << ',';
-	return commas.contains(c);
+	return c == ',';
 }
 
 bool CheckChar::isPlus(QChar c)
 {
-	QList<QChar> pluses;
-	pluses << '+';
-	return pluses.contains(c);
+	return c == '+';
 }
 
 bool CheckChar::isMinus(QChar c)
 {
-	// Thanks goes to MSVC++
-	QString minuses = "- – − —";
+	// There are no beautiful way to work with unicode char literals
+	// GCC knows how to do that task, but MSVC++ isn't so cool
+	QString minuses = "-–−—";
 	return minuses.contains(c);
 }
 
 bool CheckChar::isMultiply(QChar c)
 {
-	QString multiplies = "* ×";
+	QString multiplies = "*×";
 	return multiplies.contains(c);
 }
 
 bool CheckChar::isDivide(QChar c)
 {
-	QString divides = "/ ÷";
+	QString divides = "/÷";
 	return divides.contains(c);
 }
