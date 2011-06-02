@@ -13,7 +13,7 @@ class MainWindow : public QMainWindow
 signals:
 	void commandEntered(const QString &);	
 public:
-	explicit MainWindow(QWidget *parent = 0);
+	explicit MainWindow(QWidget *parent = nullptr);
 	~MainWindow();
 public slots:
 	void resultReturned(const QString &result);

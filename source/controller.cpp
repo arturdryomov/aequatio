@@ -4,14 +4,21 @@
 
 #include <QTextCodec>
 
-Controller *Controller::m_instance = 0;
+Controller *Controller::m_instance = nullptr;
 
 Controller *Controller::instance()
 {
-	if (m_instance == 0) {
+	if (m_instance == nullptr) {
 		m_instance = new Controller;
 	}
 	return m_instance;
+}
+
+void Controller::release()
+{
+	if (m_instance != nullptr) {
+		delete m_instance;
+	}	
 }
 
 int Controller::runApplication(int argc, char *argv[])
@@ -37,7 +44,7 @@ void Controller::commandEntered(const QString &command)
 		QString result = m_syntaxAnalyzer->process(command);
 		m_mainWindow->resultReturned(result);		
 	} 
-
+	
 	catch (LexicalAnalyzer::Exception e) {
 		m_mainWindow->resultReturned(tr("Lexical error: ‘%1’").arg(e.message()));
 	}
@@ -51,7 +58,11 @@ void Controller::commandEntered(const QString &command)
 
 Controller::Controller(QObject *parent) :
 	QObject(parent),
-	m_mainWindow(0),
-	m_syntaxAnalyzer(new SyntaxAnalyzer(this))
+	m_mainWindow(nullptr),
+m_syntaxAnalyzer(new SyntaxAnalyzer(this))
+{
+}
+
+Controller::~Controller()
 {
 }

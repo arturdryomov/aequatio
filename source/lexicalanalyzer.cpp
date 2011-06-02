@@ -2,14 +2,14 @@
 
 LexicalAnalyzer::LexicalAnalyzer(QObject *parent) :
 	QObject(parent),
-	m_lexemeListIterator(0)
+	m_lexemeListIterator(nullptr)
 {
 	initializeReservedWords();
 }
 
 LexicalAnalyzer::~LexicalAnalyzer()
 {
-	if (m_lexemeListIterator != 0) {
+	if (m_lexemeListIterator != nullptr) {
 		delete m_lexemeListIterator;
 	}
 }
@@ -65,7 +65,7 @@ void LexicalAnalyzer::parse(const QString &input)
 	}	
 	
 	// create new constant iterator for lexemes
-	if (m_lexemeListIterator != 0) {
+	if (m_lexemeListIterator != nullptr) {
 		delete m_lexemeListIterator;
 	}
 	m_lexemeListIterator = new QListIterator<Lexeme>(m_lexemeList);

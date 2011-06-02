@@ -33,7 +33,7 @@ class LexicalAnalyzer : public QObject
 {
 	Q_OBJECT
 public:
-	LexicalAnalyzer(QObject *parent = 0);
+	LexicalAnalyzer(QObject *parent = nullptr);
 	~LexicalAnalyzer();
 
 	void parse(const QString &input);

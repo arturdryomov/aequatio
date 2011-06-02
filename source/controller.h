@@ -15,11 +15,15 @@ class Controller : public QObject
 	Q_OBJECT
 public:
 	static Controller *instance();
+	static void release();
+	
 	int runApplication(int argc, char *argv[]);
 private slots:
 	void commandEntered(const QString &command);
 private:
-	explicit Controller(QObject *parent = 0);	
+	explicit Controller(QObject *parent = nullptr);	
+	~Controller();
+	
 	static Controller *m_instance;
 	MainWindow *m_mainWindow;
 	SyntaxAnalyzer *m_syntaxAnalyzer;

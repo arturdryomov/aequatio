@@ -14,7 +14,7 @@ class SyntaxAnalyzer : public QObject
 {
 	Q_OBJECT
 public:
-	explicit SyntaxAnalyzer(QObject *parent = 0);
+	explicit SyntaxAnalyzer(QObject *parent = nullptr);
 	~SyntaxAnalyzer();
 
 	QString process(const QString &input);
