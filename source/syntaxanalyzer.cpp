@@ -53,7 +53,7 @@ QString SyntaxAnalyzer::command()
 	return result;
 }
 
-// ConstDeclaration = 'const' Identifier '=' {Unary Op} Number
+// ConstDeclaration = 'const' Identifier '=' Expression
 QString SyntaxAnalyzer::constDeclaration()
 {
 	// 'const'
@@ -75,20 +75,9 @@ QString SyntaxAnalyzer::constDeclaration()
 	}
 	m_lexicalAnalyzer->nextLexeme();
 
-	// {UnaryOp}
-	int signMultiplyer = 1;
-	while (CheckLexeme::isUnaryOperation(m_lexicalAnalyzer->lexeme())) {
-		if (m_lexicalAnalyzer->lexeme().type == LexemeMinus) {
-			signMultiplyer *= -1;
-		}
-		m_lexicalAnalyzer->nextLexeme();
-	}
-
-	// Number
-	if (m_lexicalAnalyzer->lexeme().type != LexemeNumber) {
-		throw Exception(tr("Number after ‘=’ expected"));
-	}
-	Number constValue = number();
+	// Expression
+	RpnCodeThread constThread = expression();
+	Number constValue = m_exprCalculator->calculate(constThread);
 	m_lexicalAnalyzer->nextLexeme();
 
 	// add constant to list
@@ -398,12 +387,13 @@ RpnElement SyntaxAnalyzer::constant()
 	RpnElement result;
 	QString constName = m_lexicalAnalyzer->lexeme().value;
 	
+	// it is a formal argument
 	if (m_workingParams.contains(constName)) {
-		// it is an argument
 		result.type = RpnElementParam;
 		result.value = m_workingParams.indexOf(constName);
 	}
 	
+	// it is a constant
 	else if (m_exprCalculator->isConstant(constName)) {
 		result.type = RpnElementConstant;		
 		result.value = constName;		
