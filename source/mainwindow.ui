@@ -25,10 +25,38 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QLineEdit" name="commandEdit"/>
+       <widget class="InputEdit" name="commandEdit">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>46</height>
+         </size>
+        </property>
+        <property name="baseSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QPushButton" name="submitButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Submit</string>
         </property>
@@ -50,12 +78,22 @@
      <x>0</x>
      <y>0</y>
      <width>634</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>InputEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header>inputedit.h</header>
+   <slots>
+    <signal>returnPressed()</signal>
+   </slots>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
@@ -65,12 +103,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>452</x>
-     <y>405</y>
+     <x>276</x>
+     <y>394</y>
     </hint>
     <hint type="destinationlabel">
-     <x>578</x>
-     <y>409</y>
+     <x>586</x>
+     <y>394</y>
     </hint>
    </hints>
   </connection>

@@ -74,7 +74,7 @@ class CheckChar
 {
 public:
 	static bool isSeparator(QChar);
-	static bool isSpace(QChar);
+	static bool isWhitespace(QChar);
 	static bool isExponent(QChar);
 	static bool isOperation(QChar);
 	static bool isSign(QChar);

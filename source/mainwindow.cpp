@@ -26,8 +26,11 @@ void MainWindow::resultReturned(const QString &result)
 void MainWindow::on_submitButton_clicked()
 {
 	// drop commandEdit text to console and send this text to external code
-	ui->consoleEdit->append("← " + ui->commandEdit->text());
-	emit commandEntered(ui->commandEdit->text());
+	
+	QString command = ui->commandEdit->toPlainText().simplified();
+	
+	ui->consoleEdit->append("← " +command);
+	emit commandEntered(command);
 	ui->commandEdit->clear(); 
 	ui->commandEdit->setFocus();
 }

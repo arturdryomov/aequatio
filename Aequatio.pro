@@ -16,7 +16,8 @@ SOURCES += \
 		source/exprcalculator.cpp \
     source/syntaxanalyzer.cpp \
 		source/application.cpp \
-		source/lexicalanalyzer.cpp
+		source/lexicalanalyzer.cpp \
+    source/inputedit.cpp
 
 
 HEADERS  += \
@@ -25,7 +26,8 @@ HEADERS  += \
     source/syntaxanalyzer.h \
 		source/application.h \
 		source/lexicalanalyzer.h \
-    source/exprcalculator.h
+    source/exprcalculator.h \
+    source/inputedit.h
 
 FORMS	+= \
 	source/mainwindow.ui

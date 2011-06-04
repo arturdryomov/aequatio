@@ -274,7 +274,7 @@ void LexicalAnalyzer::pushLexeme(LexemeType lexemeType, QString lexemeData)
 void LexicalAnalyzer::skipWhitespace()
 {
 	while (m_position < m_input.size()) {
-		if (CheckChar::isSpace(m_input.at(m_position))) {
+		if (CheckChar::isWhitespace(m_input.at(m_position))) {
 			m_position++;
 		}
 		else {
@@ -296,9 +296,9 @@ bool CheckChar::isSeparator(QChar c)
 	return c == '.';
 }
 
-bool CheckChar::isSpace(QChar c)
+bool CheckChar::isWhitespace(QChar c)
 {
-	return c == ' ';
+	return c.isSpace();	
 }
 
 bool CheckChar::isExponent(QChar c)
