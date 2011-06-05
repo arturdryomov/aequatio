@@ -33,8 +33,8 @@ Highlighter::Highlighter(QTextDocument *parent) : QSyntaxHighlighter(parent)
 	m_highlightingRules << rule;
 
 	// numbers
-	rule.format.setForeground(Qt::darkCyan);
-	rule.pattern = QRegExp("[0-9]+(.[0-9]+)?([eE]?[+-]?[0-9]+)?");
+	rule.format.setForeground(Qt::blue);
+	rule.pattern = QRegExp("\\b([0-9]+(\\.[0-9]+)?([eE][+-]?[0-9]+)?)\\b");
 	m_highlightingRules << rule;
 }
 
