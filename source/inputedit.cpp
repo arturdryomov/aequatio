@@ -3,6 +3,7 @@
 InputEdit::InputEdit(QWidget *parent) :
     QPlainTextEdit(parent)
 {
+	new Highlighter(this->document());
 }
 
 void InputEdit::keyPressEvent(QKeyEvent *event)
@@ -18,4 +19,33 @@ void InputEdit::keyPressEvent(QKeyEvent *event)
 		return;
 	}
 	QPlainTextEdit::keyPressEvent(event);
+}
+
+Highlighter::Highlighter(QTextDocument *parent) : QSyntaxHighlighter(parent)
+{
+	HighlightingRule rule;
+
+	// keywords
+	rule.format.setForeground(Qt::darkMagenta);
+	rule.pattern = QRegExp("\\bconst\\b");
+	m_highlightingRules << rule;
+	rule.pattern = QRegExp("\\bfunc\\b");
+	m_highlightingRules << rule;
+
+	// numbers
+	rule.format.setForeground(Qt::darkCyan);
+	rule.pattern = QRegExp("[0-9]+(.[0-9]+)?([eE]?[+-]?[0-9]+)?");
+	m_highlightingRules << rule;
+}
+
+void Highlighter::highlightBlock(const QString &text)
+{
+	foreach (const HighlightingRule &rule, m_highlightingRules) {
+		int start = rule.pattern.indexIn(text);
+		while (start >= 0) {
+			int length = rule.pattern.matchedLength();
+			setFormat(start, length, rule.format);
+			start = rule.pattern.indexIn(text, start + length);
+		}
+	}
 }
