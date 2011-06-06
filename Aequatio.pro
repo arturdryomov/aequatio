@@ -20,20 +20,21 @@ win32 {
 SOURCES += \
 	source/mainwindow.cpp \
 	source/main.cpp \
-    source/controller.cpp \
+		source/controller.cpp \
 		source/exprcalculator.cpp \
-    source/syntaxanalyzer.cpp \
+		source/syntaxanalyzer.cpp \
 		source/application.cpp \
 		source/lexicalanalyzer.cpp
 
 
 HEADERS  += \
 	source/mainwindow.h \
-    source/controller.h \
-    source/syntaxanalyzer.h \
+		source/controller.h \
+		source/syntaxanalyzer.h \
 		source/application.h \
 		source/lexicalanalyzer.h \
-    source/exprcalculator.h
+		source/exprcalculator.h \
+		source/compilerspecific.h
 
 FORMS	+= \
 	source/mainwindow.ui
