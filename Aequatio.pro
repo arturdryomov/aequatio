@@ -7,6 +7,10 @@ linux* {
 	QMAKE_CXXFLAGS += -std=c++0x
 }
 
+mac {
+	CONFIG += x86 x86_64
+}
+
 win32 {
 	RC_FILE = appicon/Aequatio.rc
 	LIBS += -lGdi32 \
