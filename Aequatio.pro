@@ -3,7 +3,7 @@ QT	+= core gui
 TARGET = Aequatio
 TEMPLATE = app
 
-linux* {
+*g++* {
 	QMAKE_CXXFLAGS += -std=c++0x
 }
 
