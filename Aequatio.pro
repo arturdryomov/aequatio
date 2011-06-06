@@ -3,6 +3,14 @@ QT	+= core gui
 TARGET = Aequatio
 TEMPLATE = app
 
+linux* {
+	QMAKE_CXXFLAGS += -std=c++0x
+}
+
+mac {
+	ICON = appicon/Aequatio.icns
+}
+
 win32 {
 	RC_FILE = appicon/Aequatio.rc
 	LIBS += -lGdi32 \
