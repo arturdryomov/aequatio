@@ -97,10 +97,7 @@
   <customwidget>
    <class>InputEdit</class>
    <extends>QPlainTextEdit</extends>
-   <header>inputedit.h</header>
-   <slots>
-    <signal>returnPressed()</signal>
-   </slots>
+   <header>source/inputedit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
