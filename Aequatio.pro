@@ -8,7 +8,7 @@ linux* {
 }
 
 mac {
-	CONFIG += x86 x86_64
+	ICON = appicon/Aequatio.icns
 }
 
 win32 {
