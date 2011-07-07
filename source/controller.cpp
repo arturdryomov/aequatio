@@ -4,11 +4,11 @@
 
 #include <QTextCodec>
 
-Controller *Controller::m_instance = nullptr;
+Controller *Controller::m_instance = 0;
 
 Controller *Controller::instance()
 {
-	if (m_instance == nullptr) {
+	if (m_instance == 0) {
 		m_instance = new Controller;
 	}
 	return m_instance;
@@ -16,7 +16,7 @@ Controller *Controller::instance()
 
 void Controller::release()
 {
-	if (m_instance != nullptr) {
+	if (m_instance != 0) {
 		delete m_instance;
 	}	
 }
@@ -58,7 +58,7 @@ void Controller::commandEntered(const QString &command)
 
 Controller::Controller(QObject *parent) :
 	QObject(parent),
-	m_mainWindow(nullptr),
+	m_mainWindow(0),
 m_syntaxAnalyzer(new SyntaxAnalyzer(this))
 {
 }

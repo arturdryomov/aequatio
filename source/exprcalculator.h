@@ -55,7 +55,7 @@ class ExprCalculator : public QObject
 {
 	Q_OBJECT
 public:
-	explicit ExprCalculator(QObject *parent = nullptr);
+	explicit ExprCalculator(QObject *parent = 0);
 
 	Number calculate(const RpnCodeThread &thread);
 	void addConstant(const QString &name, const Number &value);

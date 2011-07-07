@@ -21,7 +21,7 @@ public:
 private slots:
 	void commandEntered(const QString &command);
 private:
-	explicit Controller(QObject *parent = nullptr);	
+	explicit Controller(QObject *parent = 0);
 	~Controller();
 	
 	static Controller *m_instance;
