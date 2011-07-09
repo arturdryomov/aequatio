@@ -7,13 +7,13 @@
 #include <QFile>
 
 struct Item {
-  QString name;
-  QString value;
+	QString name;
+	QString value;
 };
 
 struct LogItem {
-  QDateTime time;
-  QString name;
+	QDateTime time;
+	QString name;
 	QList<Item> addons;
 };
 
@@ -21,7 +21,7 @@ const QString logFilename = "aequatio.log";
 
 class Logger {
 public:
-  static Logger *instance();
+	static Logger *instance();
 	static void release();
 
 	void add(LogItem item);
@@ -30,7 +30,7 @@ protected:
 	Logger();
 	~Logger();
 private:
-  static Logger *m_instance;
+	static Logger *m_instance;
 
 	QFile m_logFile;
 

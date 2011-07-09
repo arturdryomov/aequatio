@@ -9,11 +9,11 @@ Logger *Logger::m_instance = 0;
 
 Logger *Logger::instance()
 {
-  if (m_instance == 0) {
-    m_instance = new Logger;
-  }
+	if (m_instance == 0) {
+		m_instance = new Logger;
+	}
 
-  return m_instance;
+	return m_instance;
 }
 
 void Logger::release()
