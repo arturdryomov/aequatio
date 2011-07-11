@@ -3,6 +3,7 @@
 #include "application.h"
 #include "exceptions.h"
 #include "parsingexceptions.h"
+#include "calculatingexceptions.h"
 
 #include <QTextCodec>
 
@@ -50,14 +51,14 @@ void Controller::commandEntered(const QString &command)
 	catch (SyntaxAnalyzer::Exception e) {
 		m_mainWindow->resultReturned(tr("Syntax error: ‘%1’").arg(e.message()));
 	}
-	catch (ExprCalculator::Exception e) {
-		m_mainWindow->resultReturned(tr("Calculating error: ‘%1’").arg(e.message()));
-	}
 	catch (EInternal &e) {
 		m_mainWindow->resultReturned(e.message());
 		e.toLogger();
 	}
 	catch (EParsing &e) {
+		m_mainWindow->resultReturned(e.message());
+	}
+	catch (ECalculating &e) {
 		m_mainWindow->resultReturned(e.message());
 	}
 }

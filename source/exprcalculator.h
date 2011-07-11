@@ -64,15 +64,6 @@ public:
 	bool isFunction(const QString &name);
 	bool isConstant(const QString &name);
 	int functionArgumentsCount(const QString &name);
-
-	class Exception
-	{
-	public:
-		explicit Exception(const QString &message) : m_message(message) {}
-		QString message() { return m_message; }
-	private:
-		QString m_message;
-	};
 private:
 	QHash<QString, RpnFunction> m_functions;
 	QHash<QString, int> m_builtInFunctions;

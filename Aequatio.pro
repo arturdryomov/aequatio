@@ -23,7 +23,8 @@ SOURCES += \
 	source/lexicalanalyzer.cpp \
 	source/logger.cpp \
 	source/exceptions.cpp \
-	source/parsingexceptions.cpp
+	source/parsingexceptions.cpp \
+	source/calculatingexceptions.cpp
 
 
 HEADERS  += \
@@ -35,7 +36,8 @@ HEADERS  += \
 	source/logger.h \
 	source/exprcalculator.h \
 	source/exceptions.h \
-	source/parsingexceptions.h
+	source/parsingexceptions.h \
+	source/calculatingexceptions.h
 
 FORMS	+= \
 	source/mainwindow.ui
