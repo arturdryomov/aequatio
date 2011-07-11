@@ -12,11 +12,12 @@ public:
 	virtual QString message() = 0; // user-friendly exception message
 	QStack<QString> throwStack;
 protected:
-	QString tr(const char *text, const char *context);
+	// Helper method. tr() is simply shorter than QApplication::translate()
+	QString tr(const QString &text, const QString &context);
 };
 
 
-// Base class for exceptions due to wrong algorithm. The program should be
+// Base class for exceptions that occur due to wrong algorithm. The program should be
 // corrected and recompiled if such exceptions occur.
 class EInternal : public Exception
 {

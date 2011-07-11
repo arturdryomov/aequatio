@@ -1,6 +1,8 @@
 #include "controller.h"
 #include "mainwindow.h"
 #include "application.h"
+#include "exceptions.h"
+#include "parsingexceptions.h"
 
 #include <QTextCodec>
 
@@ -53,6 +55,13 @@ void Controller::commandEntered(const QString &command)
 	}
 	catch (ExprCalculator::Exception e) {
 		m_mainWindow->resultReturned(tr("Calculating error: ‘%1’").arg(e.message()));
+	}
+	catch (EInternal &e) {
+		m_mainWindow->resultReturned(e.message());
+		// TODO: Log the exception here
+	}
+	catch (EParsing &e) {
+		m_mainWindow->resultReturned(e.message());
 	}
 }
 

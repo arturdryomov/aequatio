@@ -6,9 +6,9 @@ Exception::Exception()
 {
 }
 
-QString Exception::tr(const char *text, const char *context)
+QString Exception::tr(const QString &text, const QString &context)
 {
-	return QApplication::translate(context, text);
+	return QApplication::translate(context.toUtf8(), text.toUtf8());
 }
 
 QString EInternal::message()

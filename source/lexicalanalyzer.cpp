@@ -1,4 +1,5 @@
 #include "lexicalanalyzer.h"
+#include "parsingexceptions.h"
 
 LexicalAnalyzer::LexicalAnalyzer(QObject *parent) :
 	QObject(parent),
@@ -101,7 +102,7 @@ void LexicalAnalyzer::extractLexeme()
 		extractIdentifier();
 	}
 	else {
-		throw Exception(tr("Lexeme type is not supported"));
+		THROW(EUnsupportedLexeme("Lexeme"));
 	}
 }
 
@@ -142,7 +143,7 @@ void LexicalAnalyzer::extractNumber()
 	if ( (m_position < inputLength) && (CheckChar::isSeparator(m_input.at(m_position))) ) {
 		m_position++;
 		if ( (m_position > inputLength) || (!CheckChar::isDigit(m_input.at(m_position))) )  {
-			throw Exception(tr("Must be number after dot"));
+			THROW(ELexemeExpected("Number after dot"))
 		}
 		while ( (m_position <= inputLength) && (CheckChar::isDigit(m_input.at(m_position))) ) {
 			m_position++;
@@ -152,13 +153,13 @@ void LexicalAnalyzer::extractNumber()
 	if ( (m_position <= inputLength) && (CheckChar::isExponent(m_input.at(m_position))) ) {
 		m_position++;
 		if (m_position > inputLength) {
-			throw Exception(tr("Must be number or sign after exponent sign"));
+			THROW(ELexemeExpected("Number or sign after exponent character"))
 		}
 		if (CheckChar::isSign(m_input.at(m_position))) {
 			m_position++;
 		}
 		if ( (m_position > inputLength) || (!CheckChar::isDigit(m_input.at(m_position))) ) {
-			throw Exception(tr("Must be number or sign after exponent sign"));
+			THROW(ELexemeExpected("Number or sign after exponent character"))
 		}
 		while ( (m_position <= inputLength) && (CheckChar::isDigit(m_input.at(m_position))) ) {
 			m_position++;
@@ -193,7 +194,7 @@ void LexicalAnalyzer::extractOperation()
 		lexemeType = LexemePower;
 	}
 	else {
-		throw Exception(tr("Operation is not supported"));
+		THROW(EUnsupportedLexeme("Operation"));
 	}
 
 	pushLexeme(lexemeType, QString());
@@ -211,7 +212,7 @@ void LexicalAnalyzer::extractBracket()
 		lexemeType = LexemeClosingBracket;
 	}
 	else {
-		throw Exception(tr("Bracket type is not supported"));
+		THROW(EUnsupportedLexeme("Bracket"));
 	}
 
 	pushLexeme(lexemeType, QString());
@@ -226,7 +227,7 @@ void LexicalAnalyzer::extractPower()
 		lexemeType = LexemePower;
 	}
 	else {
-		throw Exception(tr("Power type is not supported"));
+		THROW(EUnsupportedLexeme("Power"));
 	}
 
 	pushLexeme(lexemeType, QString());
@@ -241,7 +242,7 @@ void LexicalAnalyzer::extractEqual()
 		lexemeType = LexemeEqual;
 	}
 	else {
-		throw Exception(tr("Equal type is not supported"));
+		THROW(EUnsupportedLexeme("Equal sign"));
 	}
 
 	pushLexeme(lexemeType, QString());
@@ -256,7 +257,7 @@ void LexicalAnalyzer::extractComma()
 		lexemeType = LexemeComma;
 	}
 	else {
-		throw Exception(tr("Comma type is not supported"));
+		THROW(EUnsupportedLexeme("Comma"));
 	}
 
 	pushLexeme(lexemeType, QString());
