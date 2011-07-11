@@ -25,6 +25,12 @@ private:
 	QString m_expected;
 };
 
+class EEmptyInput : public EParsing
+{
+public:
+	QString message();
+};
+
 
 /* EInternal children */
 

@@ -23,6 +23,11 @@ LogItem ELexemeExpected::logItem()
 	return item;
 }
 
+QString EEmptyInput::message()
+{
+	return tr("You’ve entered empty command.", "EEmptyInput");
+}
+
 
 EUnsupportedLexeme::EUnsupportedLexeme(const QString &unsupportedType) : m_unsupported(unsupportedType)
 {

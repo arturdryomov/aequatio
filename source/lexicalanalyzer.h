@@ -40,15 +40,6 @@ public:
 	Lexeme lexeme();
 	void nextLexeme();
 	void previousLexeme();
-
-	class Exception
-	{
-	public:
-		explicit Exception(const QString &message) : m_message(message) {}
-		QString message() { return m_message; }
-	private:
-		QString m_message;
-	};
 private:
 	QString m_input;
 	int m_position;	

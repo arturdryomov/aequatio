@@ -42,10 +42,10 @@ void LexicalAnalyzer::previousLexeme()
 void LexicalAnalyzer::parse(const QString &input)
 {
 	m_lexemeList.clear();
-	m_input = input;
+	m_input = input.trimmed();
 	
 	if (m_input.isEmpty()) {
-		throw Exception(tr("Input is empty"));
+		THROW(EEmptyInput());
 	}
 
 	m_position = 0;
@@ -62,7 +62,7 @@ void LexicalAnalyzer::parse(const QString &input)
 	
 	// ensure there are lexemes
 	if (m_lexemeList.isEmpty()) {
-		throw Exception(tr("Lexeme list is empty"));
+		THROW(EInternal());
 	}	
 	
 	// create new constant iterator for lexemes
