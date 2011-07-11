@@ -55,7 +55,8 @@ void Logger::add(LogItem item)
 	}
 }
 
-void Logger::operator << (LogItem item)
+Logger *operator <<(Logger *logger, const LogItem &logItem)
 {
-	add(item);
+	logger->add(logItem);
+	return logger;
 }

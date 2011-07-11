@@ -20,6 +20,7 @@ class ELexemeExpected : public EParsing
 public:
 	ELexemeExpected(const QString &whatExpected);
 	QString message();
+	LogItem logItem();
 private:
 	QString m_expected;
 };

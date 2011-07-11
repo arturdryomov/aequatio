@@ -25,7 +25,6 @@ public:
 	static void release();
 
 	void add(LogItem item);
-	void operator << (LogItem item);
 protected:
 	Logger();
 	~Logger();
@@ -36,5 +35,7 @@ private:
 
 	void openFile();
 };
+
+Logger *operator <<(Logger *logger, const LogItem &logItem);
 
 #endif // LOGGER_H 

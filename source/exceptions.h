@@ -1,6 +1,8 @@
 #ifndef EXCEPTIONS_H
 #define EXCEPTIONS_H
 
+#include "logger.h"
+
 #include <QString>
 #include <QStack>
 
@@ -11,9 +13,13 @@ public:
 	Exception();
 	virtual QString message() = 0; // user-friendly exception message
 	QStack<QString> throwStack;
+	void toLogger();
 protected:
+	virtual LogItem logItem();
 	// Helper method. tr() is simply shorter than QApplication::translate()
 	QString tr(const QString &text, const QString &context);
+private:
+	QDateTime m_throwTime;
 };
 
 
@@ -27,8 +33,9 @@ public:
 
 
 // Pushing method name to Exception::throwStack
+// GCC for some reason won't compile this: E &operator <<(E &e, const QString &methodInfo)
 template <class E>
-E &operator <<(E &e, const QString &methodInfo)
+E operator <<(E e, const QString &methodInfo)
 {
 	e.throwStack.push(methodInfo);
 	return e;

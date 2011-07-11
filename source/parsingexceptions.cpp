@@ -15,6 +15,14 @@ QString ELexemeExpected::message()
 	return tr(QString("%1 expected.").arg(m_expected), "ELexemeExpected");
 }
 
+LogItem ELexemeExpected::logItem()
+{
+	LogItem item = EParsing::logItem();
+	Item expectedLexeme = {"Expected lexeme", m_expected};
+	item.addons << expectedLexeme;
+	return item;
+}
+
 
 EUnsupportedLexeme::EUnsupportedLexeme(const QString &unsupportedType) : m_unsupported(unsupportedType)
 {

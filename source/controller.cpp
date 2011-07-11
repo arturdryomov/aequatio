@@ -58,7 +58,7 @@ void Controller::commandEntered(const QString &command)
 	}
 	catch (EInternal &e) {
 		m_mainWindow->resultReturned(e.message());
-		// TODO: Log the exception here
+		e.toLogger();
 	}
 	catch (EParsing &e) {
 		m_mainWindow->resultReturned(e.message());
