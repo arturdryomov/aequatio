@@ -47,10 +47,7 @@ void Controller::commandEntered(const QString &command)
 		QString result = m_syntaxAnalyzer->process(command);
 		m_mainWindow->resultReturned(result);		
 	} 
-	
-	catch (SyntaxAnalyzer::Exception e) {
-		m_mainWindow->resultReturned(tr("Syntax error: ‘%1’").arg(e.message()));
-	}
+
 	catch (EInternal &e) {
 		m_mainWindow->resultReturned(e.message());
 		e.toLogger();

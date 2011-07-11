@@ -31,6 +31,33 @@ public:
 	QString message();
 };
 
+class EUndeclaredUsed : public EParsing
+{
+public:
+	enum ElementType {Constant, Function};
+	EUndeclaredUsed(const QString &elementName, ElementType elementType);
+	QString message();
+	QString m_elementName;
+	ElementType m_elementType;
+};
+
+class EWrongArgumentsCount : public EParsing
+{
+public:
+	EWrongArgumentsCount(const QString &functionName, int argumentsExpected, int argumentsPassed);
+	QString message();
+	QString m_functionName;
+	int m_argumentsExpected;
+	int m_argumentsPassed;
+};
+
+class EFormalArgumentReused : public EParsing
+{
+public:
+	EFormalArgumentReused(const QString &argumentName);
+	QString message();
+	QString m_argumentName;
+};
 
 /* EInternal children */
 
@@ -42,6 +69,14 @@ public:
 	// This info is for debug purpose only.
 private:
 	QString m_unsupported;
+};
+
+class EConversionToNumber : public EInternal
+{
+public:
+	EConversionToNumber(const QString &numberRepresentation);
+	QString message();
+	QString m_numberRepresentation;
 };
 
 #endif // PARSINGEXCEPTIONS_H
