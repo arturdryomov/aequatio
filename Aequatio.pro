@@ -41,3 +41,6 @@ HEADERS  += \
 
 FORMS	+= \
 	source/mainwindow.ui
+
+RESOURCES += \
+	aequatio.qrc
