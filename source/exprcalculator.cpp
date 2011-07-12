@@ -1,4 +1,5 @@
 #include "exprcalculator.h"
+#include "calculatingexceptions.h"
 
 #include <QStack>
 
@@ -49,7 +50,7 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<Number> fun
 					calculationStack.push(m_constants.value(element.value.value<QString>()));	
 				}
 				else {
-					throw Exception(tr("Unknown constant"));
+					THROW(EIncorrectRpnCode());
 				}
 				
 				break;
@@ -77,17 +78,17 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<Number> fun
 				}
 
 				else {
-					throw Exception(tr("Unknown function"));
+					THROW(EIncorrectRpnCode());
 				}
 				break;
 			}
 			default:
-				throw Exception(tr("Unknown RPN element"));
+				THROW(EIncorrectRpnCode());
 		}
 	}
 
 	if (calculationStack.count() != 1) {
-		throw Exception(tr("There are too much elements in RPN stack"));
+		THROW(EIncorrectRpnCode());
 	}
 	return calculationStack.pop();
 }
@@ -118,7 +119,7 @@ Number ExprCalculator::calculateBuiltInFunction(QString functionName, QList<Numb
 	else if (functionName == Tangent) {
 		return qTan(functionArguments[0]);
 	} else {
-		throw Exception(tr("Unknown default function"));
+		THROW(EIncorrectRpnCode());
 	}
 	
 	// Compiler needs this useless thing
@@ -128,7 +129,7 @@ Number ExprCalculator::calculateBuiltInFunction(QString functionName, QList<Numb
 void ExprCalculator::addConstant(const QString &name, const Number &value)
 {
 	if (m_builtInConstants.contains(name)) {
-		throw Exception(tr("Constant exists as built in"));
+		THROW(EBuiltInRedifinition(name, EBuiltInRedifinition::Constant));
 	}
 
 	m_constants.insert(name, value);
@@ -137,7 +138,7 @@ void ExprCalculator::addConstant(const QString &name, const Number &value)
 void ExprCalculator::addFunction(const QString &name, const RpnFunction &function)
 {
 	if (m_builtInFunctions.contains(name)) {
-		throw Exception(tr("Function exists as built in"));
+		THROW(EBuiltInRedifinition(name, EBuiltInRedifinition::Function));
 	}
 
 	m_functions.insert(name, function);
@@ -156,7 +157,7 @@ bool ExprCalculator::isConstant(const QString &name)
 int ExprCalculator::functionArgumentsCount(const QString &name)
 {
 	if (!isFunction(name)) {
-		throw Exception(tr("There is no such a function"));
+		THROW(EIncorrectRpnCode());
 	}
 
 	if (m_functions.contains(name)) {

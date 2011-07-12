@@ -17,12 +17,12 @@ public:
 	~MainWindow();
 public slots:
 	void resultReturned(const QString &result);
-//private slots:
+	//private slots:
 	void on_submitButton_clicked();
 protected:
 	void resizeEvent(QResizeEvent *);
 private:
 	Ui::MainWindow *ui;	
 };
-	
+
 #endif // MAINWINDOW_H

@@ -1,5 +1,6 @@
 #include "syntaxanalyzer.h"
 #include "lexicalanalyzer.h"
+#include "parsingexceptions.h"
 
 #include <QMetaType>
 
@@ -19,7 +20,7 @@ QString SyntaxAnalyzer::process(const QString &input)
 	// perform lexical analyzis
 	m_lexicalAnalyzer->parse(input);
 	if (m_lexicalAnalyzer->lexeme().type == LexemeEol) {
-		throw Exception(tr("Input is empty"));
+		THROW(EEmptyInput());
 	}
 
 	// Process the command: const declaration, const function or expression
@@ -58,20 +59,20 @@ QString SyntaxAnalyzer::constDeclaration()
 {
 	// 'const'
 	if (m_lexicalAnalyzer->lexeme().type != LexemeConst) {
-		throw Exception(tr("Illegal constant declaration beginning"));
+		THROW(EInternal());
 	}
 	m_lexicalAnalyzer->nextLexeme();
 
 	// Identifier
 	if (m_lexicalAnalyzer->lexeme().type != LexemeIdentifier) {
-		throw Exception(tr("Identifier after ‘const’ expected"));
+		THROW(ELexemeExpected(tr("Identifier after “const”")));
 	}
 	QString constName = m_lexicalAnalyzer->lexeme().value;
 	m_lexicalAnalyzer->nextLexeme();
 
 	// '='
 	if (m_lexicalAnalyzer->lexeme().type != LexemeEqual) {
-		throw Exception(tr("Sign ‘=’ expected after identifier"));
+		THROW(ELexemeExpected(tr("Sign “=” after identifier")));
 	}
 	m_lexicalAnalyzer->nextLexeme();
 
@@ -95,13 +96,13 @@ QString SyntaxAnalyzer::functionDeclaration()
 
 	// 'func'
 	if (m_lexicalAnalyzer->lexeme().type != LexemeFunc) {
-		throw Exception(tr("Illegal function declaration beginning"));
+		THROW(EInternal());
 	}
 	m_lexicalAnalyzer->nextLexeme();
 
 	// identifier
 	if (m_lexicalAnalyzer->lexeme().type != LexemeIdentifier) {
-		throw Exception(tr("Identifier after ‘func’ expected"));
+		THROW(ELexemeExpected(tr("Identifier after “func”")));
 	}
 	QString functionName = m_lexicalAnalyzer->lexeme().value;
 	m_lexicalAnalyzer->nextLexeme();
@@ -110,7 +111,7 @@ QString SyntaxAnalyzer::functionDeclaration()
 	/* Get formal arguments and save them to list */
 	
 	if (m_lexicalAnalyzer->lexeme().type != LexemeOpeningBracket) {
-		throw Exception(tr("Opening bracket expected after function name"));
+		THROW(ELexemeExpected(tr("Opening bracket after function name")));
 	}
 	
 	do {
@@ -119,12 +120,12 @@ QString SyntaxAnalyzer::functionDeclaration()
 	} while (m_lexicalAnalyzer->lexeme().type == LexemeComma);
 	
 	if (m_lexicalAnalyzer->lexeme().type != LexemeClosingBracket) {
-		throw Exception(tr("Closing bracket expected after formal arguments list"));
+		THROW(ELexemeExpected(tr("Closing bracket after formal arguments list")));
 	}
 	m_lexicalAnalyzer->nextLexeme();
 	
 	if (m_lexicalAnalyzer->lexeme().type != LexemeEqual) {
-		throw Exception(tr("Equal sign expected after closing bracket"));
+		THROW(ELexemeExpected(tr("Sign “=” after closing bracket")));
 	}
 	m_lexicalAnalyzer->nextLexeme();
 
@@ -170,7 +171,7 @@ RpnCodeThread SyntaxAnalyzer::function()
 	// Get function name and ensure it is built in or user defined	
 	
 	if (m_lexicalAnalyzer->lexeme().type != LexemeIdentifier) {
-		throw Exception(tr("Function name expected"));
+		THROW(EInternal());
 	}	
 	QString functionName = m_lexicalAnalyzer->lexeme().value;		
 	int formalArgumentsCount;
@@ -178,12 +179,12 @@ RpnCodeThread SyntaxAnalyzer::function()
 		formalArgumentsCount = m_exprCalculator->functionArgumentsCount(functionName);
 	} 	
 	else {
-		throw Exception(tr("Undeclared function ‘%1’ call").arg(functionName));
+		THROW(EUndeclaredUsed(functionName, EUndeclaredUsed::Function));
 	}	
 	m_lexicalAnalyzer->nextLexeme();	
 	
 	if (m_lexicalAnalyzer->lexeme().type != LexemeOpeningBracket) {
-		throw Exception(tr("Opening bracket expected"));
+		THROW(ELexemeExpected(tr("Opening bracket after function name")));
 	}
 	
 	// Parse actual arguments and add them to tread. 
@@ -194,16 +195,16 @@ RpnCodeThread SyntaxAnalyzer::function()
 		result << expression();
 		actualArgumentsCount++;
 		if (actualArgumentsCount > formalArgumentsCount) {
-			throw Exception(tr("Too many arguments in ‘%1’ function call").arg(functionName));
+			THROW(EWrongArgumentsCount(functionName, formalArgumentsCount, actualArgumentsCount));
 		}		
 	} while (m_lexicalAnalyzer->lexeme().type == LexemeComma);
 	
 	if (actualArgumentsCount != formalArgumentsCount) {
-		throw Exception(tr("Not enough arguments in ‘%1’ function call").arg(functionName));
+		THROW(EWrongArgumentsCount(functionName, formalArgumentsCount, actualArgumentsCount));
 	}
 	
 	if (m_lexicalAnalyzer->lexeme().type != LexemeClosingBracket) {
-		throw Exception(tr("Closing bracket expected"));
+		THROW(ELexemeExpected(tr("Closing bracket after arguments list")));
 	}	
 	m_lexicalAnalyzer->nextLexeme();
 	
@@ -242,7 +243,7 @@ RpnCodeThread SyntaxAnalyzer::factor()
 		}
 
 		else {
-			throw Exception(tr("Unsupported unary operation"));
+			THROW(EInternal());
 		}
 	}
 
@@ -298,14 +299,14 @@ RpnCodeThread SyntaxAnalyzer::powerBase()
 		result = expression();
 
 		if (m_lexicalAnalyzer->lexeme().type != LexemeClosingBracket) {
-			throw Exception(tr("Closing bracket expected"));
+			THROW(ELexemeExpected(tr("Closing bracket")));
 		}
 
 		m_lexicalAnalyzer->nextLexeme();
 	}
 
 	else {
-		throw Exception(tr("Number or expression in brackets expected"));
+		THROW(EInternal()); // NOTE: not sure here, maybe it can be wrong user input
 	}
 
 	return result;
@@ -324,7 +325,7 @@ RpnElement SyntaxAnalyzer::multOperation()
 		result.value.setValue(RpnFunctionDivide);
 	}
 	else {
-		throw Exception(tr("Multiplication operator expected"));
+		THROW(EInternal());
 	}
 
 	m_lexicalAnalyzer->nextLexeme();
@@ -363,7 +364,7 @@ RpnElement SyntaxAnalyzer::summOperation()
 		result.value.setValue(RpnFunctionMinus);
 	}
 	else {
-		throw Exception(tr("Summation operator expected"));
+		THROW(EInternal());
 	}
 
 	m_lexicalAnalyzer->nextLexeme();
@@ -375,7 +376,7 @@ Number SyntaxAnalyzer::number()
 	bool ok = false;
 	Number result = m_lexicalAnalyzer->lexeme().value.toDouble(&ok);
 	if (!ok) {
-		throw Exception(tr("Cannot convert ‘%1’ to a number").arg(m_lexicalAnalyzer->lexeme().value));
+		THROW(EConversionToNumber(m_lexicalAnalyzer->lexeme().value));
 	}
 	m_lexicalAnalyzer->nextLexeme();
 	return result;
@@ -400,7 +401,7 @@ RpnElement SyntaxAnalyzer::constant()
 	}
 	
 	else {
-		throw Exception(tr("Undeclared identifier ‘%1’").arg(constName));
+		THROW(EUndeclaredUsed(constName, EUndeclaredUsed::Constant));
 	}
 	
 	m_lexicalAnalyzer->nextLexeme();	
@@ -411,12 +412,12 @@ RpnElement SyntaxAnalyzer::constant()
 void SyntaxAnalyzer::extractFormalArgument()
 {
 	if (m_lexicalAnalyzer->lexeme().type != LexemeIdentifier) {
-		throw Exception(tr("Identifier expected if argument list"));
+		THROW(ELexemeExpected(tr("Argument name")));
 	}
 	
 	QString argumentName = m_lexicalAnalyzer->lexeme().value;
 	if (m_workingParams.contains(argumentName)) {
-		throw Exception(tr("Argument ‘%1’ is already in the list").arg(argumentName));
+		THROW(EFormalArgumentReused(argumentName));
 	}
 	m_workingParams.append(argumentName);
 	
@@ -426,7 +427,7 @@ void SyntaxAnalyzer::extractFormalArgument()
 void SyntaxAnalyzer::ensureNoMoreLexemes()
 {
 	if (m_lexicalAnalyzer->lexeme().type != LexemeEol) {
-	   throw Exception(tr("End of file expected"));
+		THROW(ELexemeExpected(tr("End of file")));
    }
 }
 

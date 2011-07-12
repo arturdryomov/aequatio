@@ -18,17 +18,6 @@ public:
 	~SyntaxAnalyzer();
 
 	QString process(const QString &input);
-
-	// This exception will be thrown if parsing error occurs.
-	// message() returns error description.
-	class Exception
-	{
-	public:
-		explicit Exception(const QString &message) : m_message(message) {}
-		QString message() { return m_message; }
-	private:
-		QString m_message;
-	};
 private:
 	QString command();
 	QString constDeclaration();
