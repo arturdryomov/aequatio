@@ -12,9 +12,14 @@ typedef qreal Number;
 // RPN stands for ‘Reverse Polish notation’
 enum RpnElementType {
 	RpnElementOperand, // operand, value is Number
-	RpnElementParam, // parameter, value is ordinal number of the parameter (int)
-	RpnElementFunction, // function call, value is its name (QString)
+	RpnElementArgument,// argument, value is ordinal number of the argument (int) and argument's name (RpnArgumentInfo)
+	RpnElementFunction,// function call, value is its name (QString)
 	RpnElementConstant // constant, value is its name (QString)
+};
+
+struct RpnArgumentInfo {
+	int ordinalNumber;
+	QString name;
 };
 
 struct RpnElement
@@ -79,5 +84,6 @@ private:
 
 Q_DECLARE_METATYPE(Number)
 Q_DECLARE_METATYPE(RpnElementType)
+Q_DECLARE_METATYPE(RpnArgumentInfo)
 
 #endif // EXPRCALCULATOR_H
