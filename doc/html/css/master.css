@@ -1,13 +1,13 @@
-html, body {
+html {
   height: 100%;
-  margin: 1%;
-  padding: 0;
-  background: #FFFFFF;
-  color: #000000;
 }
 
 body {
   font: 14px/1.5 Arial, "Droid Sans", Verdana, sans-serif;
+  margin: 1%;
+  height: 95%;
+  background: #FFFFFF;
+  color: #000000;
 }
 
 a {
