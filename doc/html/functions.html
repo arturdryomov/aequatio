@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+    <title>Aequatio Help</title>
+
+    <link rel="stylesheet" type="text/css" href="css/master.css" />
+  </head>
+
+  <body>
+
+    <a name="title"><h1>Functions</h1></a>
+      
+      <a name="brief"><h2>Brief</h2></a>
+    
+        <p>Aequatio provides using functions in your calculations.</p>
+        <p>There are two types of functions: internal and user-defined. You can use both of them simple typing name of function with arguments (usually in brackets).</p>
+
+      <a name="using"><h2>Using</h2></a>
+
+        <a name="internal"><h3>Internal</h3></a>
+
+          <p>For example, we have internal function named as <i>sin</i>. I want to calculate sine of <i>90&deg;</i>.</p>
+          <p>I’ll type that command:</p>
+          <p id="code">&larr; sin(90)</p>
+          <p>And Aequatio’ll give me the answer:</p>
+          <p id="code">&rarr; 0.893996663600558</p>
+          <p>Problem solved.</p>
+          <p>There is a <a href="intfunctions.html">list</a> of internal functions.</p>
+
+        <a name="user-defined"><h3>User-defined</h3></a>
+
+          <p>Using user functions is the same as internal, but you must define function before using it. Of course, you need to define function with name, that is not using as internal.<p>
+          <p>For defining function there is special command named <i>func</i>. Here you can see it’s format:</p>
+          <p id="code">func "function name"("arguments") = "operations with arguments"</p>
+          <p>Let’s define function with name <i>radius</i>. I’ll peek an example with circle square.<p>
+          <p id="code">&larr; func radius(x) = pi * (x ^ 2)</p>
+          <p id="code">&rarr; Function ‘radius’ is declared</p>
+          <p id="code">&larr; radius(5)</p>
+          <p id="code">&rarr; 78.539816339744831</p>
+
+  </body>
+
+</html>

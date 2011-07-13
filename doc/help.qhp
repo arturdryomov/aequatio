@@ -22,6 +22,11 @@
             <keyword name="Internal Constants Using" ref="html/constants.html#internal" />
             <keyword name="User-defined Constants Using" ref="html/constants.html#user-defined" />
             <keyword name="Internal Constants" ref="html/intconstants.html#title" />
+            <keyword name="Functions" ref="html/functions.html#title" />
+            <keyword name="Functions Brief" ref="html/functions.html#brief" />
+            <keyword name="Functions Using" ref="html/functions.html#using" />
+            <keyword name="Internal Functions Using" ref="html/functions.html#internal" />
+            <keyword name="User-defined Functions Using" ref="html/functions.html#user-defined" />
         </keywords>
         <files>
             <file>html/css/*.css</file>
