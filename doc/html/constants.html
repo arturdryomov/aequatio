@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+    <title>Aequatio Help</title>
+
+    <link rel="stylesheet" type="text/css" href="css/master.css" />
+  </head>
+
+  <body>
+
+    <a name="title"><h1>Constants</h1></a>
+      
+      <a name="brief"><h2>Brief</h2></a>
+    
+        <p>Aequatio provides using constants in your calculations.</p>
+        <p>There are two types of constants: internal and user-defined. You can use both of them simple typing name of constant instead number.</p>
+
+      <a name="using"><h2>Using</h2></a>
+
+        <a name="internal"><h3>Internal</h3></a>
+
+          <p>For example, we have internal constant named as <i>pi</i>. I want to calculate circle square with radius <i>5</i>.</p>
+          <p>I’ll type that command:</p>
+          <p id="code">&larr; pi * (5 ^ 2)</p>
+          <p>And Aequatio’ll give me the answer:</p>
+          <p id="code">&rarr; 78.539816339744831</p>
+          <p>Problem solved.</p>
+          <p>There is a <a href="intconstants.html">list</a> of internal constants.</p>
+
+        <a name="user-defined"><h3>User-defined</h3></a>
+
+          <p>Using user constants is the same as internal, but you must define constant before using it. Of course, you need to define constant with name, that is not using as internal.<p>
+          <p>For defining constant there is special command named <i>const</i>. Here you can see it’s format:</p>
+          <p id="code">const "constant name" = "constant value"</p>
+          <p>Let’s define constant with name <i>radius</i> and value <i>5</i>. I’ll peek an example with circle.<p>
+          <p id="code">&larr; const radius = 5</p>
+          <p id="code">&rarr; Constant ‘radius’ now means ‘5’</p>
+          <p id="code">&larr; pi * (radius ^ 2)</p>
+          <p id="code">&rarr; 78.539816339744831</p>
+
+  </body>
+
+</html>

@@ -9,10 +9,17 @@
         <filterAttribute>Help</filterAttribute>
         <toc>
             <section title="Aequatio Help" ref="html/index.html">
+              <section title="Constants" ref="html/constants.html">
+              </section>
             </section>
         </toc>
         <keywords>
-            <keyword name="Introdution" ref="index.html#Introdution" />
+            <keyword name="Introdution" ref="html/index.html#Introdution" />
+            <keyword name="Constants" ref="html/constants.html#title" />
+            <keyword name="Constants Brief" ref="html/constants.html#brief" />
+            <keyword name="Constants Using" ref="html/constants.html#using" />
+            <keyword name="Internal Constants Using" ref="html/constants.html#internal" />
+            <keyword name="User-defined Constants Using" ref="html/constants.html#user-defined" />
         </keywords>
         <files>
             <file>html/css/*.css</file>
