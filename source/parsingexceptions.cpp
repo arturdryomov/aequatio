@@ -2,7 +2,7 @@
 
 QString EParsing::message()
 {
-	return tr("Cannot parse the command entered.", "EParsing");
+	return tr("Cannot parse the command entered because it is incorrect.", "EParsing");
 }
 
 
@@ -68,6 +68,15 @@ QString EFormalArgumentReused::message()
 {
 	return tr("There is already argument named “%1” in the arguments list.", "EFormalArgumentReused")
 		.arg(m_argumentName);
+}
+
+EIncorrectCharacter::EIncorrectCharacter(QChar c) : m_character(c)
+{
+}
+
+QString EIncorrectCharacter::message()
+{
+	return tr("Character “%1” is incorrect here.", "EIncorrectCharacter").arg(m_character);
 }
 
 EUnsupportedLexeme::EUnsupportedLexeme(const QString &unsupportedType) : m_unsupported(unsupportedType)

@@ -49,7 +49,7 @@ private:
 
 	void initializeReservedWords();
 	void skipWhitespace();
-	Lexeme EndLexeme();
+	Lexeme endLexeme();
 	void extractLexeme();
 	void extractIdentifier();
 	void extractNumber();

@@ -21,7 +21,7 @@ Lexeme LexicalAnalyzer::lexeme()
 		return m_lexemeListIterator->peekNext();
 	}
 	else {
-		return EndLexeme();
+		return endLexeme();
 	}
 }
 
@@ -80,29 +80,31 @@ void LexicalAnalyzer::initializeReservedWords()
 
 void LexicalAnalyzer::extractLexeme()
 {
-	if (CheckChar::isDigit(m_input.at(m_position))) {
+	QChar current = m_input.at(m_position);
+
+	if (CheckChar::isDigit(current)) {
 		extractNumber();
 	}
-	else if (CheckChar::isOperation(m_input.at(m_position))) {
+	else if (CheckChar::isOperation(current)) {
 		extractOperation();
 	}
-	else if (CheckChar::isBracket(m_input.at(m_position))) {
+	else if (CheckChar::isBracket(current)) {
 		extractBracket();
 	}
-	else if (CheckChar::isPower(m_input.at(m_position))) {
+	else if (CheckChar::isPower(current)) {
 		extractPower();
 	}
-	else if (CheckChar::isEqual(m_input.at(m_position))) {
+	else if (CheckChar::isEqual(current)) {
 		extractEqual();
 	}
-	else if (CheckChar::isComma(m_input.at(m_position))) {
+	else if (CheckChar::isComma(current)) {
 		extractComma();
 	}
-	else if (CheckChar::isLetterOrUnderscore(m_input.at(m_position))) {
+	else if (CheckChar::isLetterOrUnderscore(current)) {
 		extractIdentifier();
 	}
 	else {
-		THROW(EUnsupportedLexeme("Lexeme"));
+		THROW(EIncorrectCharacter(current));
 	}
 }
 
@@ -284,7 +286,7 @@ void LexicalAnalyzer::skipWhitespace()
 	}
 }
 
-Lexeme LexicalAnalyzer::EndLexeme()
+Lexeme LexicalAnalyzer::endLexeme()
 {
 	Lexeme result = {LexemeEol, QString()};
 	return result;

@@ -59,6 +59,14 @@ public:
 	QString m_argumentName;
 };
 
+class EIncorrectCharacter : public EParsing
+{
+public:
+	EIncorrectCharacter(QChar c);
+	QString message();
+	QChar m_character;
+};
+
 /* EInternal children */
 
 class EUnsupportedLexeme : public EInternal

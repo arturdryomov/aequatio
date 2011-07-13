@@ -306,7 +306,7 @@ RpnCodeThread SyntaxAnalyzer::powerBase()
 	}
 
 	else {
-		THROW(EInternal()); // NOTE: not sure here, maybe it can be wrong user input
+		THROW(EParsing()); // NOTE: Exception type is possibly to be more specific.
 	}
 
 	return result;
@@ -428,7 +428,7 @@ void SyntaxAnalyzer::extractFormalArgument()
 void SyntaxAnalyzer::ensureNoMoreLexemes()
 {
 	if (m_lexicalAnalyzer->lexeme().type != LexemeEol) {
-		THROW(ELexemeExpected(tr("End of file")));
+		THROW(EParsing());
    }
 }
 
