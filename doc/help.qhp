@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QtHelpProject version="1.0">
+    <namespace>aequatio</namespace>
+    <virtualFolder>html</virtualFolder>
+    <customFilter name="Aequatio">
+        <filterAttribute>Help</filterAttribute>
+    </customFilter>
+    <filterSection>
+        <filterAttribute>Help</filterAttribute>
+        <toc>
+            <section title="Aequatio Help" ref="html/index.html">
+            </section>
+        </toc>
+        <keywords>
+            <keyword name="Introdution" ref="index.html#Introdution" />
+        </keywords>
+        <files>
+            <file>html/css/*.css</file>
+            <file>html/*.html</file>
+        </files>
+    </filterSection>
+</QtHelpProject>
