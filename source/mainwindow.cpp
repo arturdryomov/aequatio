@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "aboutwindow.h"
 
 #include <QScrollBar>
 
@@ -8,8 +9,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
-	this->setWindowIcon(QIcon(":/images/appicon"));
-
+	this->setWindowIcon(QIcon(":/images/appicon.png"));
+	ui->actionShowFunctionsAndConstants->setChecked(false); // hide sidebar
 	ui->consoleEdit->append(tr("→ You are welcome to Aequatio! Enter math expression, please…"));
 	ui->commandEdit->setFocus();	
 }
@@ -38,4 +39,9 @@ void MainWindow::resizeEvent(QResizeEvent *)
 {
 	// scroll consoleEdit to the end
 	ui->consoleEdit->verticalScrollBar()->setValue(ui->consoleEdit->verticalScrollBar()->maximum());
+}
+
+void MainWindow::aboutTriggered()
+{
+	AboutWindow(this).exec();
 }

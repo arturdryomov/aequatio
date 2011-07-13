@@ -21,6 +21,8 @@ public slots:
 	void on_submitButton_clicked();
 protected:
 	void resizeEvent(QResizeEvent *);
+private slots:
+	void aboutTriggered();
 private:
 	Ui::MainWindow *ui;	
 };

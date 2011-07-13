@@ -24,7 +24,8 @@ SOURCES += \
 	source/logger.cpp \
 	source/exceptions.cpp \
 	source/parsingexceptions.cpp \
-	source/calculatingexceptions.cpp
+	source/calculatingexceptions.cpp \
+	source/aboutwindow.cpp
 
 
 HEADERS  += \
@@ -37,10 +38,12 @@ HEADERS  += \
 	source/exprcalculator.h \
 	source/exceptions.h \
 	source/parsingexceptions.h \
-	source/calculatingexceptions.h
+	source/calculatingexceptions.h \
+	source/aboutwindow.h
 
 FORMS	+= \
-	source/mainwindow.ui
+	source/mainwindow.ui \
+	source/aboutwindow.ui
 
 RESOURCES += \
 	aequatio.qrc
