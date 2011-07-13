@@ -12,7 +12,7 @@ body {
 
 a {
   color: #052671;
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 a:hover {
@@ -44,6 +44,7 @@ p {
 
 p#code {
   font-family: "Droid Sans Mono", Consolas, "Courier New", monospace;
+  text-indent: 1em;
 }
 
 img {
