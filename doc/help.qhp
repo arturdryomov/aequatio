@@ -10,6 +10,7 @@
         <toc>
             <section title="Aequatio Help" ref="html/index.html">
               <section title="Constants" ref="html/constants.html">
+                <section title="Internal Constants" ref="html/intconstants.html"></section>
               </section>
             </section>
         </toc>
@@ -20,6 +21,7 @@
             <keyword name="Constants Using" ref="html/constants.html#using" />
             <keyword name="Internal Constants Using" ref="html/constants.html#internal" />
             <keyword name="User-defined Constants Using" ref="html/constants.html#user-defined" />
+            <keyword name="Internal Constants" ref="html/intconstants.html#title" />
         </keywords>
         <files>
             <file>html/css/*.css</file>
