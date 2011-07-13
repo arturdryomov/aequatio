@@ -27,6 +27,7 @@
             <keyword name="Functions Using" ref="html/functions.html#using" />
             <keyword name="Internal Functions Using" ref="html/functions.html#internal" />
             <keyword name="User-defined Functions Using" ref="html/functions.html#user-defined" />
+            <keyword name="Internal Functions" ref="html/intfunctions.html#title" />
         </keywords>
         <files>
             <file>html/css/*.css</file>
