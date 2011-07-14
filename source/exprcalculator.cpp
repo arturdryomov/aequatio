@@ -38,7 +38,9 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<Number> fun
 
 			// Get number and push to stack
 			case RpnElementArgument:
-				calculationStack.push(element.value.value<RpnArgumentInfo>().ordinalNumber);
+				int argumentOrdinalNumber;
+				argumentOrdinalNumber = element.value.value<RpnArgumentInfo>().ordinalNumber;
+				calculationStack.push(functionArguments[argumentOrdinalNumber]);
 				break;
 
 			// Find constant and push its value
