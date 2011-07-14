@@ -12,6 +12,9 @@
               <section title="Constants" ref="html/constants.html">
                 <section title="Internal Constants" ref="html/intconstants.html"></section>
               </section>
+              <section title="Functions" ref="html/functions.html">
+                <section title="Internal Functions" ref="html/intfunctions.html"></section>
+              </section>
             </section>
         </toc>
         <keywords>
