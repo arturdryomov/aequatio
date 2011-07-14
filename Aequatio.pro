@@ -1,3 +1,5 @@
+include(doc/doc.pri)
+
 QT	+= core gui
 
 TARGET = Aequatio
