@@ -86,6 +86,7 @@ public:
 	QList<ConstantDescription> constantsList();
 	QList<FunctionDescription> functionsList();
 private:
+	QList<QString> m_functionNames; // stores function in order of their declaration
 	QHash<QString, RpnFunction> m_functions;
 	QHash<QString, int> m_builtInFunctions;
 	QHash<QString, Number> m_constants;

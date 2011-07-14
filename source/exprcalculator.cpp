@@ -237,6 +237,10 @@ void ExprCalculator::addFunction(const QString &name, const RpnFunction &functio
 		THROW(EBuiltInRedifinition(name, EBuiltInRedifinition::Function));
 	}
 
+	if (m_functionNames.contains(name)) {
+		m_functionNames.removeOne(name);
+	}
+	m_functionNames.append(name);
 	m_functions.insert(name, function);
 }
 
