@@ -10,6 +10,7 @@
 typedef qreal Number;
 
 // RPN stands for ‘Reverse Polish notation’
+
 enum RpnElementType {
 	RpnElementOperand, // operand, value is Number
 	RpnElementArgument,// argument, value is ordinal number of the argument (int) and argument's name (RpnArgumentInfo)
@@ -36,6 +37,18 @@ struct RpnFunction {
 };
 
 typedef QHash<QString, RpnFunction> RpnCode;
+
+
+struct ConstantDescription {
+	QString name;
+	QString value;
+};
+
+struct FunctionDescription {
+	QString name;
+	QList<QString> arguments;
+	QString body;
+};
 
 // main and built-in functions names
 const QString RpnFunctionMain = "@Main@";
@@ -69,6 +82,9 @@ public:
 	bool isFunction(const QString &name);
 	bool isConstant(const QString &name);
 	int functionArgumentsCount(const QString &name);
+
+	QList<ConstantDescription> constantsList();
+	QList<FunctionDescription> functionsList();
 private:
 	QHash<QString, RpnFunction> m_functions;
 	QHash<QString, int> m_builtInFunctions;
@@ -80,6 +96,7 @@ private:
 	void initializeBuiltInConstants();
 	Number calculateFunction(QString functionName, QList<Number> functionArguments);
 	Number calculateBuiltInFunction(QString functionName, QList<Number> functionArguments);
+	FunctionDescription functionDescriptionFromCode(const QString &functionName, RpnFunction functionCode);
 };
 
 Q_DECLARE_METATYPE(Number)

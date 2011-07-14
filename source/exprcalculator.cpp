@@ -2,6 +2,7 @@
 #include "calculatingexceptions.h"
 
 #include <QStack>
+#include <QStringList>
 
 #define _USE_MATH_DEFINES
 #include <qmath.h>
@@ -128,6 +129,99 @@ Number ExprCalculator::calculateBuiltInFunction(QString functionName, QList<Numb
 	return 0;
 }
 
+FunctionDescription ExprCalculator::functionDescriptionFromCode(const QString &functionName, RpnFunction functionCode)
+{
+	FunctionDescription description;
+	description.name = functionName;
+	description.arguments = functionCode.arguments;
+
+	QStack<QString> functionBodyParts;
+
+	foreach(RpnElement element, functionCode.codeThread) {
+
+		QString operand;
+		switch (element.type) {
+
+			case RpnElementOperand:
+				operand = QString::number(element.value.value<Number>());
+				break;
+
+			case RpnElementConstant:
+				operand = element.value.toString();
+				break;
+
+			case RpnElementArgument: {
+				RpnArgumentInfo argumentInfo = element.value.value<RpnArgumentInfo>();
+				operand = argumentInfo.name;
+				break;
+			}
+
+			case RpnElementFunction: {
+				QString functionName = element.value.toString();
+
+				// basic arithmetical operations
+				if (functionName == RpnFunctionPlus) {
+					QString right = functionBodyParts.pop();
+					QString left = functionBodyParts.pop();
+					operand = QString("(%1 + %2)").arg(left, right);
+				}
+				else if (functionName == RpnFunctionMinus) {
+					QString right = functionBodyParts.pop();
+					QString left = functionBodyParts.pop();
+					operand = QString("(%1 − %2)").arg(left, right);
+				}
+				else if (functionName == RpnFunctionMultiply) {
+					QString right = functionBodyParts.pop();
+					QString left = functionBodyParts.pop();
+					operand = QString("(%1 × %2)").arg(left, right);
+				}
+				else if (functionName == RpnFunctionDivide) {
+					QString right = functionBodyParts.pop();
+					QString left = functionBodyParts.pop();
+					operand = QString("(%1 ÷ %2)").arg(left, right);
+				}
+				else if (functionName == RpnFunctionPower) {
+					QString right = functionBodyParts.pop();
+					QString left = functionBodyParts.pop();
+					operand = QString("(%1 ^ %2)").arg(left, right);
+				}
+
+				// built-in and user-defined functions
+				else {
+					int argumentsCount;
+					if (m_builtInFunctions.contains(functionName)) {
+						argumentsCount = m_builtInFunctions.value(functionName);
+					}
+					else if (m_functions.contains(functionName)) {
+						argumentsCount = m_functions.value(functionName).arguments.count();
+					}
+					else {
+						THROW(EIncorrectRpnCode());
+					}
+
+					QStringList arguments;
+					for (int i = 0; i < argumentsCount; i++) {
+						arguments.prepend(functionBodyParts.pop());
+						operand = QString("%1(%2)").arg(functionName).arg(arguments.join(", "));
+					}
+				}
+				break;
+			}
+			default:
+				THROW(EIncorrectRpnCode());
+		} // switch
+		functionBodyParts.push(operand);
+
+	} // foreach
+
+	if (functionBodyParts.count() != 1) {
+		THROW(EIncorrectRpnCode());
+	}
+
+	description.body = functionBodyParts.pop();
+	return description;
+}
+
 void ExprCalculator::addConstant(const QString &name, const Number &value)
 {
 	if (m_builtInConstants.contains(name)) {
@@ -168,6 +262,36 @@ int ExprCalculator::functionArgumentsCount(const QString &name)
 	else {
 		return m_builtInFunctions.value(name);
 	}
+}
+
+QList<ConstantDescription> ExprCalculator::constantsList()
+{
+	QList<ConstantDescription> constantsList;
+
+	QHashIterator<QString, Number> i(m_constants);
+	while (i.hasNext()) {
+		i.next();
+		ConstantDescription constant = {i.key(), QString::number(i.value())};
+		constantsList << constant;
+	}
+
+	return constantsList;
+}
+
+QList<FunctionDescription> ExprCalculator::functionsList()
+{
+	QList<FunctionDescription> functionsList;
+
+	QHashIterator<QString, RpnFunction> i(m_functions);
+	while (i.hasNext()) {
+		i.next();
+		if (i.key() != RpnFunctionMain) {
+			FunctionDescription function = functionDescriptionFromCode(i.key(), i.value());
+			functionsList << function;
+		}
+	}
+
+	return functionsList;
 }
 
 void ExprCalculator::initializeBuiltInFunctions()
