@@ -97,7 +97,7 @@ private:
 	void initializeBuiltInConstants();
 	Number calculateFunction(QString functionName, QList<Number> functionArguments);
 	Number calculateBuiltInFunction(QString functionName, QList<Number> functionArguments);
-	FunctionDescription functionDescriptionFromCode(const QString &functionName, RpnFunction functionCode);
+	FunctionDescription functionDescriptionFromCode(const QString &functionName);
 };
 
 Q_DECLARE_METATYPE(Number)

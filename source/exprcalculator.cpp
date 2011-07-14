@@ -129,8 +129,9 @@ Number ExprCalculator::calculateBuiltInFunction(QString functionName, QList<Numb
 	return 0;
 }
 
-FunctionDescription ExprCalculator::functionDescriptionFromCode(const QString &functionName, RpnFunction functionCode)
+FunctionDescription ExprCalculator::functionDescriptionFromCode(const QString &functionName)
 {
+	RpnFunction functionCode = m_functions.value(functionName);
 	FunctionDescription description;
 	description.name = functionName;
 	description.arguments = functionCode.arguments;
@@ -288,8 +289,7 @@ QList<FunctionDescription> ExprCalculator::functionsList()
 
 	foreach (QString functionName, m_functionNames) {
 		if (functionName != RpnFunctionMain) {
-			FunctionDescription function = functionDescriptionFromCode(functionName,
-				m_functions.value(functionName));
+			FunctionDescription function = functionDescriptionFromCode(functionName);
 			functionsList << function;
 		}
 	}
