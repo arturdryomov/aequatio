@@ -6,6 +6,9 @@
 #include "calculatingexceptions.h"
 
 #include <QTextCodec>
+#include <QProcess>
+#include <QMessageBox>
+#include <QFileInfo>
 
 Controller *Controller::m_instance = 0;
 
@@ -34,6 +37,7 @@ int Controller::runApplication(int argc, char *argv[])
 	
 	m_mainWindow = new MainWindow;
 	connect(m_mainWindow, SIGNAL(commandEntered(QString)), SLOT(commandEntered(QString)));
+	connect(m_mainWindow, SIGNAL(helpLaunched()), SLOT(helpLaunched()));
 	m_mainWindow->show();
 	
 	int result = a.exec();
@@ -58,6 +62,32 @@ void Controller::commandEntered(const QString &command)
 	catch (ECalculating &e) {
 		m_mainWindow->resultReturned(e.message());
 	}
+}
+
+void Controller::helpLaunched()
+{
+	// Check file
+	if (!QFileInfo(helpFilename).exists()) {
+		QMessageBox::information(m_mainWindow, "Aequatio", "Help is not available");
+		return;
+	}
+
+	// Run Assistant
+	QProcess *assistantProcess = new QProcess;
+	QStringList assistantArgs;
+	assistantArgs << QString("-collectionFile")
+		<< helpFilename
+		<< QString("-enableRemoteControl");
+	assistantProcess->start(QString("assistant"), assistantArgs);
+	if (!assistantProcess->waitForStarted()) {
+		return;
+	}
+
+	// Send commands about appearance
+	QByteArray assistantCommands;
+	assistantCommands.append("hide bookmarks;");
+	assistantCommands.append("setSource qthelp://aequatio/html/html/index.html\n");
+	assistantProcess->write(assistantCommands);
 }
 
 Controller::Controller(QObject *parent) :
