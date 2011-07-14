@@ -27,6 +27,16 @@ QString SyntaxAnalyzer::process(const QString &input)
 	return command();
 }
 
+QList<ConstantDescription> SyntaxAnalyzer::constantsList()
+{
+	return m_exprCalculator->constantsList();
+}
+
+QList<FunctionDescription> SyntaxAnalyzer::functionsList()
+{
+	return m_exprCalculator->functionsList();
+}
+
 // Command = ConstDeclaration | Expression | FuncDeclaration
 QString SyntaxAnalyzer::command()
 {
@@ -133,9 +143,9 @@ QString SyntaxAnalyzer::functionDeclaration()
 	/* Parse the function body and save it */
 	
 	RpnFunction function;
-	function.argumentsCount = m_workingParams.count();
+	function.arguments = m_workingArguments;
 	function.codeThread = expression();
-	m_workingParams.clear();	
+	m_workingArguments.clear();
 	m_exprCalculator->addFunction(functionName, function);
 	
 	return tr("Function ‘%1’ is declared").arg(functionName);
@@ -389,9 +399,9 @@ RpnElement SyntaxAnalyzer::constant()
 	QString constName = m_lexicalAnalyzer->lexeme().value;
 	
 	// it is a formal argument
-	if (m_workingParams.contains(constName)) {
+	if (m_workingArguments.contains(constName)) {
 		result.type = RpnElementArgument;
-		RpnArgumentInfo argumentInfo = {m_workingParams.indexOf(constName), constName};
+		RpnArgumentInfo argumentInfo = {m_workingArguments.indexOf(constName), constName};
 		result.value = QVariant::fromValue<RpnArgumentInfo>(argumentInfo);
 	}
 	
@@ -417,10 +427,10 @@ void SyntaxAnalyzer::extractFormalArgument()
 	}
 	
 	QString argumentName = m_lexicalAnalyzer->lexeme().value;
-	if (m_workingParams.contains(argumentName)) {
+	if (m_workingArguments.contains(argumentName)) {
 		THROW(EFormalArgumentReused(argumentName));
 	}
-	m_workingParams.append(argumentName);
+	m_workingArguments.append(argumentName);
 	
 	m_lexicalAnalyzer->nextLexeme();
 }

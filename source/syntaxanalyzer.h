@@ -18,6 +18,8 @@ public:
 	~SyntaxAnalyzer();
 
 	QString process(const QString &input);
+	QList<ConstantDescription> constantsList();
+	QList<FunctionDescription> functionsList();
 private:
 	QString command();
 	QString constDeclaration();
@@ -36,7 +38,7 @@ private:
 	
 	LexicalAnalyzer *m_lexicalAnalyzer;
 	ExprCalculator *m_exprCalculator;
-	QVector<QString> m_workingParams;
+	QList<QString> m_workingArguments;
 };
 
 class CheckLexeme

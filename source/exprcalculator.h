@@ -10,6 +10,7 @@
 typedef qreal Number;
 
 // RPN stands for ‘Reverse Polish notation’
+
 enum RpnElementType {
 	RpnElementOperand, // operand, value is Number
 	RpnElementArgument,// argument, value is ordinal number of the argument (int) and argument's name (RpnArgumentInfo)
@@ -31,11 +32,23 @@ struct RpnElement
 typedef QList<RpnElement> RpnCodeThread; // contains linear RPN code to calculate
 
 struct RpnFunction {
-	int argumentsCount;
+	QList<QString> arguments;
 	RpnCodeThread codeThread;
 };
 
 typedef QHash<QString, RpnFunction> RpnCode;
+
+
+struct ConstantDescription {
+	QString name;
+	QString value;
+};
+
+struct FunctionDescription {
+	QString name;
+	QList<QString> arguments;
+	QString body;
+};
 
 // main and built-in functions names
 const QString RpnFunctionMain = "@Main@";
@@ -59,6 +72,9 @@ const QString E = "e";
 class ExprCalculator : public QObject
 {
 	Q_OBJECT
+signals:
+	void constantsListChanged();
+	void functionsListChanged();
 public:
 	explicit ExprCalculator(QObject *parent = 0);
 
@@ -69,7 +85,11 @@ public:
 	bool isFunction(const QString &name);
 	bool isConstant(const QString &name);
 	int functionArgumentsCount(const QString &name);
+
+	QList<ConstantDescription> constantsList();
+	QList<FunctionDescription> functionsList();
 private:
+	QList<QString> m_functionNames; // stores function in order of their declaration
 	QHash<QString, RpnFunction> m_functions;
 	QHash<QString, int> m_builtInFunctions;
 	QHash<QString, Number> m_constants;
@@ -80,6 +100,7 @@ private:
 	void initializeBuiltInConstants();
 	Number calculateFunction(QString functionName, QList<Number> functionArguments);
 	Number calculateBuiltInFunction(QString functionName, QList<Number> functionArguments);
+	FunctionDescription functionDescriptionFromCode(const QString &functionName);
 };
 
 Q_DECLARE_METATYPE(Number)

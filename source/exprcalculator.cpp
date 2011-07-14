@@ -2,6 +2,7 @@
 #include "calculatingexceptions.h"
 
 #include <QStack>
+#include <QStringList>
 
 #define _USE_MATH_DEFINES
 #include <qmath.h>
@@ -14,7 +15,7 @@ ExprCalculator::ExprCalculator(QObject *parent) : QObject(parent)
 
 Number ExprCalculator::calculate(const RpnCodeThread &thread)
 {
-	RpnFunction function = {0, thread};
+	RpnFunction function = {QList<QString>(), thread};
 	m_functions.insert(RpnFunctionMain, function);
 
 	return calculateFunction(RpnFunctionMain, QList<Number>());
@@ -38,7 +39,9 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<Number> fun
 
 			// Get number and push to stack
 			case RpnElementArgument:
-				calculationStack.push(element.value.value<RpnArgumentInfo>().ordinalNumber);
+				int argumentOrdinalNumber;
+				argumentOrdinalNumber = element.value.value<RpnArgumentInfo>().ordinalNumber;
+				calculationStack.push(functionArguments[argumentOrdinalNumber]);
 				break;
 
 			// Find constant and push its value
@@ -70,7 +73,7 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<Number> fun
 
 				else if (m_functions.contains(calledFunctionName)) {
 					QList<Number> actualArguments;
-					for (int i = 0; i < m_functions.value(calledFunctionName).argumentsCount; i++) {
+					for (int i = 0; i < m_functions.value(calledFunctionName).arguments.count(); i++) {
 						actualArguments.prepend(calculationStack.pop());
 					}
 					Number result = calculateFunction(calledFunctionName, actualArguments);
@@ -126,6 +129,100 @@ Number ExprCalculator::calculateBuiltInFunction(QString functionName, QList<Numb
 	return 0;
 }
 
+FunctionDescription ExprCalculator::functionDescriptionFromCode(const QString &functionName)
+{
+	RpnFunction functionCode = m_functions.value(functionName);
+	FunctionDescription description;
+	description.name = functionName;
+	description.arguments = functionCode.arguments;
+
+	QStack<QString> functionBodyParts;
+
+	foreach(RpnElement element, functionCode.codeThread) {
+
+		QString operand;
+		switch (element.type) {
+
+			case RpnElementOperand:
+				operand = QString::number(element.value.value<Number>());
+				break;
+
+			case RpnElementConstant:
+				operand = element.value.toString();
+				break;
+
+			case RpnElementArgument: {
+				RpnArgumentInfo argumentInfo = element.value.value<RpnArgumentInfo>();
+				operand = argumentInfo.name;
+				break;
+			}
+
+			case RpnElementFunction: {
+				QString functionName = element.value.toString();
+
+				// basic arithmetical operations
+				if (functionName == RpnFunctionPlus) {
+					QString right = functionBodyParts.pop();
+					QString left = functionBodyParts.pop();
+					operand = QString("(%1 + %2)").arg(left, right);
+				}
+				else if (functionName == RpnFunctionMinus) {
+					QString right = functionBodyParts.pop();
+					QString left = functionBodyParts.pop();
+					operand = QString("(%1 − %2)").arg(left, right);
+				}
+				else if (functionName == RpnFunctionMultiply) {
+					QString right = functionBodyParts.pop();
+					QString left = functionBodyParts.pop();
+					operand = QString("(%1 × %2)").arg(left, right);
+				}
+				else if (functionName == RpnFunctionDivide) {
+					QString right = functionBodyParts.pop();
+					QString left = functionBodyParts.pop();
+					operand = QString("(%1 ÷ %2)").arg(left, right);
+				}
+				else if (functionName == RpnFunctionPower) {
+					QString right = functionBodyParts.pop();
+					QString left = functionBodyParts.pop();
+					operand = QString("(%1 ^ %2)").arg(left, right);
+				}
+
+				// built-in and user-defined functions
+				else {
+					int argumentsCount;
+					if (m_builtInFunctions.contains(functionName)) {
+						argumentsCount = m_builtInFunctions.value(functionName);
+					}
+					else if (m_functions.contains(functionName)) {
+						argumentsCount = m_functions.value(functionName).arguments.count();
+					}
+					else {
+						THROW(EIncorrectRpnCode());
+					}
+
+					QStringList arguments;
+					for (int i = 0; i < argumentsCount; i++) {
+						arguments.prepend(functionBodyParts.pop());
+						operand = QString("%1(%2)").arg(functionName).arg(arguments.join(", "));
+					}
+				}
+				break;
+			}
+			default:
+				THROW(EIncorrectRpnCode());
+		} // switch
+		functionBodyParts.push(operand);
+
+	} // foreach
+
+	if (functionBodyParts.count() != 1) {
+		THROW(EIncorrectRpnCode());
+	}
+
+	description.body = functionBodyParts.pop();
+	return description;
+}
+
 void ExprCalculator::addConstant(const QString &name, const Number &value)
 {
 	if (m_builtInConstants.contains(name)) {
@@ -133,6 +230,7 @@ void ExprCalculator::addConstant(const QString &name, const Number &value)
 	}
 
 	m_constants.insert(name, value);
+	emit constantsListChanged();
 }
 
 void ExprCalculator::addFunction(const QString &name, const RpnFunction &function)
@@ -141,7 +239,12 @@ void ExprCalculator::addFunction(const QString &name, const RpnFunction &functio
 		THROW(EBuiltInRedifinition(name, EBuiltInRedifinition::Function));
 	}
 
+	if (m_functionNames.contains(name)) {
+		m_functionNames.removeOne(name);
+	}
+	m_functionNames.append(name);
 	m_functions.insert(name, function);
+	emit functionsListChanged();
 }
 
 bool ExprCalculator::isFunction(const QString &name)
@@ -161,11 +264,39 @@ int ExprCalculator::functionArgumentsCount(const QString &name)
 	}
 
 	if (m_functions.contains(name)) {
-		return m_functions.value(name).argumentsCount;
+		return m_functions.value(name).arguments.count();
 	}
 	else {
 		return m_builtInFunctions.value(name);
 	}
+}
+
+QList<ConstantDescription> ExprCalculator::constantsList()
+{
+	QList<ConstantDescription> constantsList;
+
+	QHashIterator<QString, Number> i(m_constants);
+	while (i.hasNext()) {
+		i.next();
+		ConstantDescription constant = {i.key(), QString::number(i.value())};
+		constantsList << constant;
+	}
+
+	return constantsList;
+}
+
+QList<FunctionDescription> ExprCalculator::functionsList()
+{
+	QList<FunctionDescription> functionsList;
+
+	foreach (QString functionName, m_functionNames) {
+		if (functionName != RpnFunctionMain) {
+			FunctionDescription function = functionDescriptionFromCode(functionName);
+			functionsList << function;
+		}
+	}
+
+	return functionsList;
 }
 
 void ExprCalculator::initializeBuiltInFunctions()
