@@ -286,11 +286,10 @@ QList<FunctionDescription> ExprCalculator::functionsList()
 {
 	QList<FunctionDescription> functionsList;
 
-	QHashIterator<QString, RpnFunction> i(m_functions);
-	while (i.hasNext()) {
-		i.next();
-		if (i.key() != RpnFunctionMain) {
-			FunctionDescription function = functionDescriptionFromCode(i.key(), i.value());
+	foreach (QString functionName, m_functionNames) {
+		if (functionName != RpnFunctionMain) {
+			FunctionDescription function = functionDescriptionFromCode(functionName,
+				m_functions.value(functionName));
 			functionsList << function;
 		}
 	}
