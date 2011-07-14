@@ -1,5 +1,3 @@
-include(doc/doc.pri)
-
 QT	+= core gui
 
 TARGET = Aequatio
@@ -46,3 +44,18 @@ FORMS	+= \
 
 RESOURCES += \
 	aequatio.qrc
+
+debug {
+	DESTDIR = debug
+}
+
+release {
+	DESTDIR = debug
+}
+
+OBJECTS_DIR = $$DESTDIR/objects
+MOC_DIR = $$DESTDIR/moc
+RCC_DIR = $$DESTDIR/rcc
+UI_DIR = $$DESTDIR/ui
+
+include(doc/doc.pri)
