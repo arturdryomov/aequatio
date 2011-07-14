@@ -230,6 +230,7 @@ void ExprCalculator::addConstant(const QString &name, const Number &value)
 	}
 
 	m_constants.insert(name, value);
+	emit constantsListChanged();
 }
 
 void ExprCalculator::addFunction(const QString &name, const RpnFunction &function)
@@ -243,6 +244,7 @@ void ExprCalculator::addFunction(const QString &name, const RpnFunction &functio
 	}
 	m_functionNames.append(name);
 	m_functions.insert(name, function);
+	emit functionsListChanged();
 }
 
 bool ExprCalculator::isFunction(const QString &name)

@@ -72,6 +72,9 @@ const QString E = "e";
 class ExprCalculator : public QObject
 {
 	Q_OBJECT
+signals:
+	void constantsListChanged();
+	void functionsListChanged();
 public:
 	explicit ExprCalculator(QObject *parent = 0);
 
