@@ -233,7 +233,7 @@ void ExprCalculator::addConstant(const QString &name, const Number &value)
 	emit constantsListChanged();
 }
 
-void ExprCalculator::addFunction(const QString &name, const RpnFunction &function)
+FunctionDescription ExprCalculator::addFunction(const QString &name, const RpnFunction &function)
 {
 	if (m_builtInFunctions.contains(name)) {
 		THROW(EBuiltInRedifinition(name, EBuiltInRedifinition::Function));
@@ -245,6 +245,8 @@ void ExprCalculator::addFunction(const QString &name, const RpnFunction &functio
 	m_functionNames.append(name);
 	m_functions.insert(name, function);
 	emit functionsListChanged();
+
+	return functionDescriptionFromCode(name);
 }
 
 bool ExprCalculator::isFunction(const QString &name)

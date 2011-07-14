@@ -80,7 +80,7 @@ public:
 
 	Number calculate(const RpnCodeThread &thread);
 	void addConstant(const QString &name, const Number &value);
-	void addFunction(const QString &name, const RpnFunction &function);
+	FunctionDescription addFunction(const QString &name, const RpnFunction &function);
 
 	bool isFunction(const QString &name);
 	bool isConstant(const QString &name);
@@ -106,5 +106,7 @@ private:
 Q_DECLARE_METATYPE(Number)
 Q_DECLARE_METATYPE(RpnElementType)
 Q_DECLARE_METATYPE(RpnArgumentInfo)
+Q_DECLARE_METATYPE(ConstantDescription)
+Q_DECLARE_METATYPE(FunctionDescription)
 
 #endif // EXPRCALCULATOR_H

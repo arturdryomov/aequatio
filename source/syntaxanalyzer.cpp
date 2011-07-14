@@ -17,7 +17,7 @@ SyntaxAnalyzer::~SyntaxAnalyzer()
 {
 }
 
-QString SyntaxAnalyzer::process(const QString &input)
+CalculatingResult SyntaxAnalyzer::process(const QString &input)
 {
 	// perform lexical analyzis
 	m_lexicalAnalyzer->parse(input);
@@ -40,34 +40,40 @@ QList<FunctionDescription> SyntaxAnalyzer::functionsList()
 }
 
 // Command = ConstDeclaration | Expression | FuncDeclaration
-QString SyntaxAnalyzer::command()
+CalculatingResult SyntaxAnalyzer::command()
 {
-	QString result;
+	CalculatingResult result;
 
 	// const declaration
 	if (m_lexicalAnalyzer->lexeme().type == LexemeConst) {
-		result = constDeclaration(); // result here is just a notification
+		ConstantDescription constant = constDeclaration();
 		ensureNoMoreLexemes();
+		result.type = ResultConstDeclared;
+		result.data.setValue(constant);
 	}
 
 	// func declaration
 	else if (m_lexicalAnalyzer->lexeme().type == LexemeFunc) {
-		result = functionDeclaration(); // result here is a notification too
+		FunctionDescription function = functionDeclaration();
 		ensureNoMoreLexemes();
+		result.type = ResultFunctionDeclared;
+		result.data.setValue(function);
 	}
 
 	// expression
 	else {		
 		RpnCodeThread codeThread = expression(); // convert expression to RPN
 		ensureNoMoreLexemes();
-		result = QString::number(m_exprCalculator->calculate(codeThread), 'f', 15); // calculate
+		Number number = m_exprCalculator->calculate(codeThread);
+		result.type = ResultExpressionCalculated;
+		result.data.setValue(number);
 	}
 
 	return result;
 }
 
 // ConstDeclaration = 'const' Identifier '=' Expression
-QString SyntaxAnalyzer::constDeclaration()
+ConstantDescription SyntaxAnalyzer::constDeclaration()
 {
 	// 'const'
 	if (m_lexicalAnalyzer->lexeme().type != LexemeConst) {
@@ -96,13 +102,13 @@ QString SyntaxAnalyzer::constDeclaration()
 	// add constant to list
 	m_exprCalculator->addConstant(constName, constValue);	
 
-	// return notification
-	return tr("Constant ‘%1’ now means ‘%2’").arg(constName).arg(constValue);
+	ConstantDescription description = {constName, QString::number(constValue)};
+	return description;
 }
 
 // FunctionDeclaration = 'func' Indenifier '(' FormalArgument
 //		{ ',' FormalArgument} ')' '=' Expression
-QString SyntaxAnalyzer::functionDeclaration()
+FunctionDescription SyntaxAnalyzer::functionDeclaration()
 {
 	/* Get function name */
 
@@ -148,9 +154,8 @@ QString SyntaxAnalyzer::functionDeclaration()
 	function.arguments = m_workingArguments;
 	function.codeThread = expression();
 	m_workingArguments.clear();
-	m_exprCalculator->addFunction(functionName, function);
-	
-	return tr("Function ‘%1’ is declared").arg(functionName);
+
+	return m_exprCalculator->addFunction(functionName, function);
 }
 
 // Expression = Summand {SummOperator Summand}

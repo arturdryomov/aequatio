@@ -10,6 +10,13 @@
 #include <QVector>
 #include <QHash>
 
+
+enum CalculatingResultType {ResultExpressionCalculated, ResultConstDeclared, ResultFunctionDeclared};
+struct CalculatingResult {
+	CalculatingResultType type;
+	QVariant data; // depends on type, Number, ConstantDescription or FunctionDescription.
+};
+
 class SyntaxAnalyzer : public QObject
 {
 	Q_OBJECT
@@ -20,13 +27,13 @@ public:
 	explicit SyntaxAnalyzer(QObject *parent = 0);
 	~SyntaxAnalyzer();
 
-	QString process(const QString &input);
+	CalculatingResult process(const QString &input);
 	QList<ConstantDescription> constantsList();
 	QList<FunctionDescription> functionsList();
 private:
-	QString command();
-	QString constDeclaration();
-	QString functionDeclaration();
+	CalculatingResult command();
+	ConstantDescription constDeclaration();
+	FunctionDescription functionDeclaration();
 	RpnCodeThread expression();
 	RpnCodeThread function();
 	RpnCodeThread factor();

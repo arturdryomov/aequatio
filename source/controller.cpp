@@ -45,19 +45,48 @@ int Controller::runApplication(int argc, char *argv[])
 void Controller::commandEntered(const QString &command)
 {
 	try {
-		QString result = m_syntaxAnalyzer->process(command);
-		m_mainWindow->resultReturned(result);		
+		CalculatingResult result = m_syntaxAnalyzer->process(command);
+
+		QString notificationText;
+
+		switch (result.type) {
+
+			case ResultExpressionCalculated:
+				notificationText = QString::number(result.data.value<Number>());
+				break;
+
+			case ResultConstDeclared: {
+				ConstantDescription constant = result.data.value<ConstantDescription>();
+				notificationText = tr("Constant declared: %1 = %2")
+					.arg(constant.name)
+					.arg(constant.value);
+				break;
+			}
+
+			case ResultFunctionDeclared: {
+				FunctionDescription function = result.data.value<FunctionDescription>();
+				notificationText = tr("Function declared: %1(%2) = %3")
+					.arg(function.name)
+					.arg(QStringList(function.arguments).join(", "))
+					.arg(function.body);
+				break;
+			}
+			default:
+				THROW(EInternal());
+		}
+
+		m_mainWindow->resultReturned(notificationText);
 	} 
 
 	catch (EInternal &e) {
-		m_mainWindow->resultReturned(e.message());
+		m_mainWindow->displayErrorInfo(e.message());
 		e.toLogger();
 	}
 	catch (EParsing &e) {
-		m_mainWindow->resultReturned(e.message());
+		m_mainWindow->displayErrorInfo(e.message());
 	}
 	catch (ECalculating &e) {
-		m_mainWindow->resultReturned(e.message());
+		m_mainWindow->displayErrorInfo(e.message());
 	}
 }
 

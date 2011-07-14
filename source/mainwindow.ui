@@ -22,62 +22,67 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
-     <widget class="QSplitter" name="splitter">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+     <widget class="QTextEdit" name="functionsAndConstantsList">
+      <property name="minimumSize">
+       <size>
+        <width>200</width>
+        <height>0</height>
+       </size>
       </property>
-      <property name="childrenCollapsible">
-       <bool>false</bool>
+      <property name="textInteractionFlags">
+       <set>Qt::TextSelectableByMouse</set>
       </property>
-      <widget class="QTextEdit" name="functionsAndConstantsList">
-       <property name="minimumSize">
-        <size>
-         <width>200</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="textInteractionFlags">
-        <set>Qt::TextSelectableByMouse</set>
-       </property>
-      </widget>
-      <widget class="QWidget" name="layoutWidget">
-       <layout class="QVBoxLayout" name="verticalLayout">
+     </widget>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QTextEdit" name="consoleEdit">
+        <property name="minimumSize">
+         <size>
+          <width>400</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="errorInformationLabel">
+        <property name="styleSheet">
+         <string notr="true">color:#a40000;</string>
+        </property>
+        <property name="text">
+         <string>Error Information Label</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QTextEdit" name="consoleEdit">
-          <property name="minimumSize">
-           <size>
-            <width>400</width>
-            <height>0</height>
-           </size>
+         <widget class="QLineEdit" name="commandEdit"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="submitButton">
+          <property name="text">
+           <string>Submit</string>
           </property>
-          <property name="readOnly">
+          <property name="autoDefault">
+           <bool>true</bool>
+          </property>
+          <property name="default">
            <bool>true</bool>
           </property>
          </widget>
         </item>
-        <item>
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <item>
-           <widget class="QLineEdit" name="commandEdit"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="submitButton">
-            <property name="text">
-             <string>Submit</string>
-            </property>
-            <property name="autoDefault">
-             <bool>true</bool>
-            </property>
-            <property name="default">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
        </layout>
-      </widget>
-     </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -156,12 +161,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>452</x>
-     <y>405</y>
+     <x>607</x>
+     <y>386</y>
     </hint>
     <hint type="destinationlabel">
-     <x>578</x>
-     <y>409</y>
+     <x>688</x>
+     <y>388</y>
     </hint>
    </hints>
   </connection>
@@ -213,8 +218,42 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>commandEdit</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>hideErrorInfo()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>449</x>
+     <y>376</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>349</x>
+     <y>199</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>submitButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>commandEntered()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>664</x>
+     <y>375</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>198</x>
+     <y>394</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>aboutTriggered()</slot>
+  <slot>hideErrorInfo()</slot>
+  <slot>commandEntered()</slot>
  </slots>
 </ui>

@@ -10,8 +10,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 	ui->setupUi(this);
 	this->setWindowIcon(QIcon(":/images/appicon.png"));
+	ui->errorInformationLabel->hide();
 	ui->actionShowFunctionsAndConstants->setChecked(false); // hide sidebar
 	ui->consoleEdit->append(tr("→ You are welcome to Aequatio! Enter math expression, please…"));
+	ui->consoleEdit->append(""); // new line
 	ui->commandEdit->setFocus();	
 }
 
@@ -26,17 +28,26 @@ void MainWindow::resultReturned(const QString &result)
 	ui->consoleEdit->append("→ " + result);
 }
 
+void MainWindow::displayErrorInfo(const QString &info)
+{
+	ui->errorInformationLabel->setText(info);
+	ui->errorInformationLabel->show();
+}
+
+void MainWindow::hideErrorInfo()
+{
+	ui->errorInformationLabel->hide();
+}
+
 void MainWindow::updateSidebar(const QString &contents)
 {
 	ui->functionsAndConstantsList->setHtml(contents);
 }
 
-void MainWindow::on_submitButton_clicked()
+void MainWindow::commandEntered()
 {
-	// drop commandEdit text to console and send this text to external code
-	ui->consoleEdit->append("← " + ui->commandEdit->text());
 	emit commandEntered(ui->commandEdit->text());
-	ui->commandEdit->clear(); 
+	ui->commandEdit->clear();
 	ui->commandEdit->setFocus();
 }
 

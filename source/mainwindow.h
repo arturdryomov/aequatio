@@ -15,12 +15,13 @@ signals:
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
-
-	void updateSidebar(const QString &contents);
 public slots:
+	void displayErrorInfo(const QString &info);
+	void hideErrorInfo();
+	void updateSidebar(const QString &contents);
 	void resultReturned(const QString &result);
 private slots:
-	void on_submitButton_clicked();
+	void commandEntered();
 protected:
 	void resizeEvent(QResizeEvent *);
 private slots:
