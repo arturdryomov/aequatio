@@ -14,7 +14,7 @@ ExprCalculator::ExprCalculator(QObject *parent) : QObject(parent)
 
 Number ExprCalculator::calculate(const RpnCodeThread &thread)
 {
-	RpnFunction function = {0, thread};
+	RpnFunction function = {QList<QString>(), thread};
 	m_functions.insert(RpnFunctionMain, function);
 
 	return calculateFunction(RpnFunctionMain, QList<Number>());
@@ -72,7 +72,7 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<Number> fun
 
 				else if (m_functions.contains(calledFunctionName)) {
 					QList<Number> actualArguments;
-					for (int i = 0; i < m_functions.value(calledFunctionName).argumentsCount; i++) {
+					for (int i = 0; i < m_functions.value(calledFunctionName).arguments.count(); i++) {
 						actualArguments.prepend(calculationStack.pop());
 					}
 					Number result = calculateFunction(calledFunctionName, actualArguments);
@@ -163,7 +163,7 @@ int ExprCalculator::functionArgumentsCount(const QString &name)
 	}
 
 	if (m_functions.contains(name)) {
-		return m_functions.value(name).argumentsCount;
+		return m_functions.value(name).arguments.count();
 	}
 	else {
 		return m_builtInFunctions.value(name);

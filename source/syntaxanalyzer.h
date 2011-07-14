@@ -36,7 +36,7 @@ private:
 	
 	LexicalAnalyzer *m_lexicalAnalyzer;
 	ExprCalculator *m_exprCalculator;
-	QVector<QString> m_workingParams;
+	QList<QString> m_workingArguments;
 };
 
 class CheckLexeme

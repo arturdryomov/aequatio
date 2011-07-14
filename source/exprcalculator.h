@@ -31,7 +31,7 @@ struct RpnElement
 typedef QList<RpnElement> RpnCodeThread; // contains linear RPN code to calculate
 
 struct RpnFunction {
-	int argumentsCount;
+	QList<QString> arguments;
 	RpnCodeThread codeThread;
 };
 
