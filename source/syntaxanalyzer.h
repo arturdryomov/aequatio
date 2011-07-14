@@ -18,6 +18,8 @@ public:
 	~SyntaxAnalyzer();
 
 	QString process(const QString &input);
+	QList<ConstantDescription> constantsList();
+	QList<FunctionDescription> functionsList();
 private:
 	QString command();
 	QString constDeclaration();

@@ -27,6 +27,16 @@ QString SyntaxAnalyzer::process(const QString &input)
 	return command();
 }
 
+QList<ConstantDescription> SyntaxAnalyzer::constantsList()
+{
+	return m_exprCalculator->constantsList();
+}
+
+QList<FunctionDescription> SyntaxAnalyzer::functionsList()
+{
+	return m_exprCalculator->functionsList();
+}
+
 // Command = ConstDeclaration | Expression | FuncDeclaration
 QString SyntaxAnalyzer::command()
 {
