@@ -26,6 +26,11 @@ void MainWindow::resultReturned(const QString &result)
 	ui->consoleEdit->append("→ " + result);
 }
 
+void MainWindow::updateSidebar(const QString &contents)
+{
+	ui->functionsAndConstantsList->setHtml(contents);
+}
+
 void MainWindow::on_submitButton_clicked()
 {
 	// drop commandEdit text to console and send this text to external code

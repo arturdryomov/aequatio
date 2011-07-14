@@ -13,6 +13,9 @@
 class SyntaxAnalyzer : public QObject
 {
 	Q_OBJECT
+signals:
+	void constantsListChanged();
+	void functionsListChanged();
 public:
 	explicit SyntaxAnalyzer(QObject *parent = 0);
 	~SyntaxAnalyzer();

@@ -9,6 +9,8 @@ SyntaxAnalyzer::SyntaxAnalyzer(QObject *parent) :
 	m_lexicalAnalyzer(new LexicalAnalyzer(this)),
 	m_exprCalculator(new ExprCalculator(this))
 {
+	connect(m_exprCalculator, SIGNAL(constantsListChanged()), SIGNAL(constantsListChanged()));
+	connect(m_exprCalculator, SIGNAL(functionsListChanged()), SIGNAL(functionsListChanged()));
 }
 
 SyntaxAnalyzer::~SyntaxAnalyzer()

@@ -34,6 +34,7 @@ int Controller::runApplication(int argc, char *argv[])
 	
 	m_mainWindow = new MainWindow;
 	connect(m_mainWindow, SIGNAL(commandEntered(QString)), SLOT(commandEntered(QString)));
+	constantsAndFunctionsUpdated();
 	m_mainWindow->show();
 	
 	int result = a.exec();
@@ -60,11 +61,43 @@ void Controller::commandEntered(const QString &command)
 	}
 }
 
+void Controller::constantsAndFunctionsUpdated()
+{
+	QList<ConstantDescription> constants = m_syntaxAnalyzer->constantsList();
+	QList<FunctionDescription> functions = m_syntaxAnalyzer->functionsList();
+
+	QString constantsText;
+	foreach (ConstantDescription constant, constants) {
+		constantsText += QString("<p> %1 = %2 </p>").arg(constant.name).arg(constant.value);
+	}
+	if (constantsText.isEmpty()) {
+		constantsText = tr("<i> &lt;nothing&gt; </i>");
+	}
+
+	QString functionsText;
+	foreach (FunctionDescription function, functions) {
+		functionsText += QString("<p> %1(%2) = %3 </p>")
+			.arg(function.name)
+			.arg(QStringList(function.arguments).join(", "))
+			.arg(function.body);
+	}
+	if (functionsText.isEmpty()) {
+		functionsText = tr("<i> &lt;nothing&gt; </i>");
+	}
+
+	QString fullText = QString("<h1>Constants</h1> %1 <h1>Functions</h1> %2")
+		.arg(constantsText, functionsText);
+
+	m_mainWindow->updateSidebar(fullText);
+}
+
 Controller::Controller(QObject *parent) :
 	QObject(parent),
 	m_mainWindow(0),
-m_syntaxAnalyzer(new SyntaxAnalyzer(this))
+	m_syntaxAnalyzer(new SyntaxAnalyzer(this))
 {
+	connect(m_syntaxAnalyzer, SIGNAL(constantsListChanged()), SLOT(constantsAndFunctionsUpdated()));
+	connect(m_syntaxAnalyzer, SIGNAL(functionsListChanged()), SLOT(constantsAndFunctionsUpdated()));
 }
 
 Controller::~Controller()

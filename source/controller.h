@@ -20,6 +20,7 @@ public:
 	int runApplication(int argc, char *argv[]);
 private slots:
 	void commandEntered(const QString &command);
+	void constantsAndFunctionsUpdated();
 private:
 	explicit Controller(QObject *parent = 0);
 	~Controller();
