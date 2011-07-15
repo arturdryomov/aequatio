@@ -87,10 +87,10 @@ void Controller::commandEntered(const QString &command)
 		e.toLogger();
 	}
 	catch (EParsing &e) {
-		m_mainWindow->displayErrorInfo(e.message());
+		m_mainWindow->displayErrorInfo(QString("<p><b>→ %1</b></p> <p>%2</p>").arg(command).arg(e.message()));
 	}
 	catch (ECalculating &e) {
-		m_mainWindow->displayErrorInfo(e.message());
+		m_mainWindow->displayErrorInfo(QString("<p><b>%1</b></p> <p>%2</p>").arg(command).arg(e.message()));
 	}
 }
 
