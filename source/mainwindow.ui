@@ -44,6 +44,9 @@
           <height>0</height>
          </size>
         </property>
+        <property name="styleSheet">
+         <string notr="true">font-size: 10pt</string>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>

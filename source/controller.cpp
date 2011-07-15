@@ -101,25 +101,27 @@ void Controller::constantsAndFunctionsUpdated()
 
 	QString constantsText;
 	foreach (ConstantDescription constant, constants) {
-		constantsText += QString("<p> %1 = %2 </p>").arg(constant.name).arg(constant.value);
+		constantsText += ListElementTemplate.arg(QString("%1 = %2").arg(constant.name, constant.value));
 	}
 	if (constantsText.isEmpty()) {
-		constantsText = tr("<i> &lt;nothing&gt; </i>");
+		constantsText = ListElementTemplate.arg(tr("&lt;nothing&gt;"));
 	}
 
 	QString functionsText;
 	foreach (FunctionDescription function, functions) {
-		functionsText += QString("<p> %1(%2) = %3 </p>")
-			.arg(function.name)
-			.arg(QStringList(function.arguments).join(", "))
-			.arg(function.body);
+		functionsText += ListElementTemplate.arg(
+				QString("%1(%2) = %3")
+				.arg(function.name)
+				.arg(QStringList(function.arguments).join(", "))
+				.arg(function.body)
+			);
 	}
 	if (functionsText.isEmpty()) {
-		functionsText = tr("<i> &lt;nothing&gt; </i>");
+		functionsText = ListElementTemplate.arg(tr("&lt;nothing&gt;"));
 	}
 
-	QString fullText = QString("<h1>Constants</h1> %1 <h1>Functions</h1> %2")
-		.arg(constantsText, functionsText);
+	QString fullText = ListHeaderTemplate.arg(tr("Constants")) + constantsText
+		+ ListHeaderTemplate.arg(tr("Functions")) + functionsText;
 
 	m_mainWindow->updateSidebar(fullText);
 }
