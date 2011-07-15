@@ -9,7 +9,14 @@
 
 typedef qreal Number;
 
+// This is to unify Number to string converting.
+inline QString NumberToString(const Number number)
+{
+	return QString::number(number);
+}
+
 // RPN stands for ‘Reverse Polish notation’
+
 enum RpnElementType {
 	RpnElementOperand, // operand, value is Number
 	RpnElementArgument,// argument, value is ordinal number of the argument (int) and argument's name (RpnArgumentInfo)
@@ -17,25 +24,32 @@ enum RpnElementType {
 	RpnElementConstant // constant, value is its name (QString)
 };
 
-struct RpnArgumentInfo {
-	int ordinalNumber;
-	QString name;
-};
-
 struct RpnElement
 {
 	RpnElementType type;
-	QVariant value; // this will hold a Number, parameter’s ordinal number or function name
+	QVariant value; // this will hold a Number, parameter name, constant name or function name
 };
 
 typedef QList<RpnElement> RpnCodeThread; // contains linear RPN code to calculate
 
 struct RpnFunction {
-	int argumentsCount;
+	QList<QString> arguments;
 	RpnCodeThread codeThread;
 };
 
 typedef QHash<QString, RpnFunction> RpnCode;
+
+
+struct ConstantDescription {
+	QString name;
+	QString value;
+};
+
+struct FunctionDescription {
+	QString name;
+	QList<QString> arguments;
+	QString body;
+};
 
 // main and built-in functions names
 const QString RpnFunctionMain = "@Main@";
@@ -59,17 +73,25 @@ const QString E = "e";
 class ExprCalculator : public QObject
 {
 	Q_OBJECT
+signals:
+	void constantsListChanged();
+	void functionsListChanged();
 public:
 	explicit ExprCalculator(QObject *parent = 0);
 
 	Number calculate(const RpnCodeThread &thread);
 	void addConstant(const QString &name, const Number &value);
-	void addFunction(const QString &name, const RpnFunction &function);
+	FunctionDescription addFunction(const QString &name, const RpnFunction &function);
 
 	bool isFunction(const QString &name);
 	bool isConstant(const QString &name);
 	int functionArgumentsCount(const QString &name);
+
+	QList<ConstantDescription> constantsList();
+	QList<FunctionDescription> functionsList();
+	QString rpnCodeThreadToString(const RpnCodeThread &codeThread);
 private:
+	QList<QString> m_functionNames; // stores function in order of their declaration
 	QHash<QString, RpnFunction> m_functions;
 	QHash<QString, int> m_builtInFunctions;
 	QHash<QString, Number> m_constants;
@@ -80,10 +102,12 @@ private:
 	void initializeBuiltInConstants();
 	Number calculateFunction(QString functionName, QList<Number> functionArguments);
 	Number calculateBuiltInFunction(QString functionName, QList<Number> functionArguments);
+	FunctionDescription functionDescription(const QString &functionName);
 };
 
 Q_DECLARE_METATYPE(Number)
 Q_DECLARE_METATYPE(RpnElementType)
-Q_DECLARE_METATYPE(RpnArgumentInfo)
+Q_DECLARE_METATYPE(ConstantDescription)
+Q_DECLARE_METATYPE(FunctionDescription)
 
 #endif // EXPRCALCULATOR_H

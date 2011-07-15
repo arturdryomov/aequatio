@@ -9,13 +9,15 @@ SyntaxAnalyzer::SyntaxAnalyzer(QObject *parent) :
 	m_lexicalAnalyzer(new LexicalAnalyzer(this)),
 	m_exprCalculator(new ExprCalculator(this))
 {
+	connect(m_exprCalculator, SIGNAL(constantsListChanged()), SIGNAL(constantsListChanged()));
+	connect(m_exprCalculator, SIGNAL(functionsListChanged()), SIGNAL(functionsListChanged()));
 }
 
 SyntaxAnalyzer::~SyntaxAnalyzer()
 {
 }
 
-QString SyntaxAnalyzer::process(const QString &input)
+ProcessingResult SyntaxAnalyzer::process(const QString &input)
 {
 	// perform lexical analyzis
 	m_lexicalAnalyzer->parse(input);
@@ -27,35 +29,53 @@ QString SyntaxAnalyzer::process(const QString &input)
 	return command();
 }
 
-// Command = ConstDeclaration | Expression | FuncDeclaration
-QString SyntaxAnalyzer::command()
+QList<ConstantDescription> SyntaxAnalyzer::constantsList()
 {
-	QString result;
+	return m_exprCalculator->constantsList();
+}
+
+QList<FunctionDescription> SyntaxAnalyzer::functionsList()
+{
+	return m_exprCalculator->functionsList();
+}
+
+// Command = ConstDeclaration | Expression | FuncDeclaration
+ProcessingResult SyntaxAnalyzer::command()
+{
+	ProcessingResult result;
 
 	// const declaration
 	if (m_lexicalAnalyzer->lexeme().type == LexemeConst) {
-		result = constDeclaration(); // result here is just a notification
+		ConstantDescription constant = constDeclaration();
 		ensureNoMoreLexemes();
+		result.type = ResultConstantDeclared;
+		result.data.setValue(constant);
 	}
 
 	// func declaration
 	else if (m_lexicalAnalyzer->lexeme().type == LexemeFunc) {
-		result = functionDeclaration(); // result here is a notification too
+		FunctionDescription function = functionDeclaration();
 		ensureNoMoreLexemes();
+		result.type = ResultFunctionDeclared;
+		result.data.setValue(function);
 	}
 
 	// expression
 	else {		
 		RpnCodeThread codeThread = expression(); // convert expression to RPN
 		ensureNoMoreLexemes();
-		result = QString::number(m_exprCalculator->calculate(codeThread), 'f', 15); // calculate
+		Number number = m_exprCalculator->calculate(codeThread);
+		result.type = ResultExpressionCalculated;
+		CalculationResult calculatingResult = {NumberToString(number),
+			m_exprCalculator->rpnCodeThreadToString(codeThread)};
+		result.data.setValue(calculatingResult);
 	}
 
 	return result;
 }
 
 // ConstDeclaration = 'const' Identifier '=' Expression
-QString SyntaxAnalyzer::constDeclaration()
+ConstantDescription SyntaxAnalyzer::constDeclaration()
 {
 	// 'const'
 	if (m_lexicalAnalyzer->lexeme().type != LexemeConst) {
@@ -84,13 +104,13 @@ QString SyntaxAnalyzer::constDeclaration()
 	// add constant to list
 	m_exprCalculator->addConstant(constName, constValue);	
 
-	// return notification
-	return tr("Constant ‘%1’ now means ‘%2’").arg(constName).arg(constValue);
+	ConstantDescription description = {constName, NumberToString(constValue)};
+	return description;
 }
 
 // FunctionDeclaration = 'func' Indenifier '(' FormalArgument
 //		{ ',' FormalArgument} ')' '=' Expression
-QString SyntaxAnalyzer::functionDeclaration()
+FunctionDescription SyntaxAnalyzer::functionDeclaration()
 {
 	/* Get function name */
 
@@ -133,12 +153,11 @@ QString SyntaxAnalyzer::functionDeclaration()
 	/* Parse the function body and save it */
 	
 	RpnFunction function;
-	function.argumentsCount = m_workingParams.count();
+	function.arguments = m_workingArguments;
 	function.codeThread = expression();
-	m_workingParams.clear();	
-	m_exprCalculator->addFunction(functionName, function);
-	
-	return tr("Function ‘%1’ is declared").arg(functionName);
+	m_workingArguments.clear();
+
+	return m_exprCalculator->addFunction(functionName, function);
 }
 
 // Expression = Summand {SummOperator Summand}
@@ -389,10 +408,9 @@ RpnElement SyntaxAnalyzer::constant()
 	QString constName = m_lexicalAnalyzer->lexeme().value;
 	
 	// it is a formal argument
-	if (m_workingParams.contains(constName)) {
+	if (m_workingArguments.contains(constName)) {
 		result.type = RpnElementArgument;
-		RpnArgumentInfo argumentInfo = {m_workingParams.indexOf(constName), constName};
-		result.value = QVariant::fromValue<RpnArgumentInfo>(argumentInfo);
+		result.value.setValue(constName);
 	}
 	
 	// it is a constant
@@ -417,10 +435,10 @@ void SyntaxAnalyzer::extractFormalArgument()
 	}
 	
 	QString argumentName = m_lexicalAnalyzer->lexeme().value;
-	if (m_workingParams.contains(argumentName)) {
+	if (m_workingArguments.contains(argumentName)) {
 		THROW(EFormalArgumentReused(argumentName));
 	}
-	m_workingParams.append(argumentName);
+	m_workingArguments.append(argumentName);
 	
 	m_lexicalAnalyzer->nextLexeme();
 }

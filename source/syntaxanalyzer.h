@@ -10,18 +10,35 @@
 #include <QVector>
 #include <QHash>
 
+
+enum ProcessingResultType {ResultExpressionCalculated, ResultConstantDeclared, ResultFunctionDeclared};
+struct ProcessingResult {
+	ProcessingResultType type;
+	QVariant data; // depends on type, Number, ConstantDescription or FunctionDescription.
+};
+
+struct CalculationResult {
+	QString result;
+	QString expression;
+};
+
 class SyntaxAnalyzer : public QObject
 {
 	Q_OBJECT
+signals:
+	void constantsListChanged();
+	void functionsListChanged();
 public:
 	explicit SyntaxAnalyzer(QObject *parent = 0);
 	~SyntaxAnalyzer();
 
-	QString process(const QString &input);
+	ProcessingResult process(const QString &input);
+	QList<ConstantDescription> constantsList();
+	QList<FunctionDescription> functionsList();
 private:
-	QString command();
-	QString constDeclaration();
-	QString functionDeclaration();
+	ProcessingResult command();
+	ConstantDescription constDeclaration();
+	FunctionDescription functionDeclaration();
 	RpnCodeThread expression();
 	RpnCodeThread function();
 	RpnCodeThread factor();
@@ -36,7 +53,7 @@ private:
 	
 	LexicalAnalyzer *m_lexicalAnalyzer;
 	ExprCalculator *m_exprCalculator;
-	QVector<QString> m_workingParams;
+	QList<QString> m_workingArguments;
 };
 
 class CheckLexeme
@@ -46,5 +63,7 @@ public:
 	static bool isSummOperation(Lexeme lexeme);
 	static bool isUnaryOperation(Lexeme lexeme);
 };
+
+Q_DECLARE_METATYPE(CalculationResult)
 
 #endif // SYNTAXANALYZER_H

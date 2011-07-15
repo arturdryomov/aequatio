@@ -7,6 +7,9 @@ namespace Ui {
 	class MainWindow;
 }
 
+static const QString ListHeaderTemplate = "<p style='font: bold 11pt; margin-bottom: 5px'>%1</p>";
+static const QString ListElementTemplate = "<p style='font-size: 10pt; margin: 0px 0px 4px 20px'> %1 </p>";
+
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -16,11 +19,16 @@ public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
 public slots:
+	void displayErrorInfo(const QString &info);
+	void hideErrorInfo();
+	void updateSidebar(const QString &contents);
 	void resultReturned(const QString &result);
-	//private slots:
-	void on_submitButton_clicked();
+private slots:
+	void commandEntered();
 protected:
 	void resizeEvent(QResizeEvent *);
+private slots:
+	void aboutTriggered();
 private:
 	Ui::MainWindow *ui;	
 };

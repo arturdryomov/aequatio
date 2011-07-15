@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/images">
-        <file alias="appicon">appicon/256.png</file>
+        <file alias="appicon.png">appicon/256.png</file>
     </qresource>
 </RCC>
