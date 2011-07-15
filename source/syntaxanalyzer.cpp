@@ -66,7 +66,7 @@ ProcessingResult SyntaxAnalyzer::command()
 		ensureNoMoreLexemes();
 		Number number = m_exprCalculator->calculate(codeThread);
 		result.type = ResultExpressionCalculated;
-		CalculationResult calculatingResult = {QString::number(number),
+		CalculationResult calculatingResult = {NumberToString(number),
 			m_exprCalculator->rpnCodeThreadToString(codeThread)};
 		result.data.setValue(calculatingResult);
 	}
@@ -104,7 +104,7 @@ ConstantDescription SyntaxAnalyzer::constDeclaration()
 	// add constant to list
 	m_exprCalculator->addConstant(constName, constValue);	
 
-	ConstantDescription description = {constName, QString::number(constValue)};
+	ConstantDescription description = {constName, NumberToString(constValue)};
 	return description;
 }
 

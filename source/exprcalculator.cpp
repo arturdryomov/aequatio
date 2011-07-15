@@ -48,11 +48,11 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<Number> fun
 
 			// Find constant and push its value
 			case RpnElementConstant:
-				if (m_builtInConstants.contains(element.value.value<QString>())) {
-					calculationStack.push(m_builtInConstants.value(element.value.value<QString>()));
+				if (m_builtInConstants.contains(element.value.toString())) {
+					calculationStack.push(m_builtInConstants.value(element.value.toString()));
 				}
-				else if (m_constants.contains(element.value.value<QString>())) {
-					calculationStack.push(m_constants.value(element.value.value<QString>()));	
+				else if (m_constants.contains(element.value.toString())) {
+					calculationStack.push(m_constants.value(element.value.toString()));
 				}
 				else {
 					THROW(EIncorrectRpnCode());
@@ -62,7 +62,7 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<Number> fun
 
 			// Find function and call it
 			case RpnElementFunction: {
-				QString calledFunctionName = element.value.value<QString>();
+				QString calledFunctionName = element.value.toString();
 
 				if (m_builtInFunctions.contains(calledFunctionName)) {
 					QList<Number> actualArguments;
@@ -174,7 +174,7 @@ QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
 		switch (element.type) {
 
 			case RpnElementOperand:
-				part.text = QString::number(element.value.value<Number>());
+				part.text = NumberToString(element.value.value<Number>());
 				part.priority = PriorityHighest;
 				break;
 
@@ -331,7 +331,7 @@ QList<ConstantDescription> ExprCalculator::constantsList()
 	QHashIterator<QString, Number> i(m_constants);
 	while (i.hasNext()) {
 		i.next();
-		ConstantDescription constant = {i.key(), QString::number(i.value())};
+		ConstantDescription constant = {i.key(), NumberToString(i.value())};
 		constantsList << constant;
 	}
 

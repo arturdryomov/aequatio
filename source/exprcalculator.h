@@ -9,6 +9,12 @@
 
 typedef qreal Number;
 
+// This is to unify Number to string converting.
+inline QString NumberToString(const Number number)
+{
+	return QString::number(number);
+}
+
 // RPN stands for ‘Reverse Polish notation’
 
 enum RpnElementType {
