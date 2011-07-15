@@ -1,0 +1,75 @@
+html {
+  height: 100%;
+}
+
+body {
+  font: 14px/1.5 Arial, "Droid Sans", Verdana, sans-serif;
+  margin: 1%;
+  height: 95%;
+  background: #FFFFFF;
+  color: #000000;
+}
+
+a {
+  color: #052671;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #052671;
+  text-decoration: underline;
+}
+
+a[name] {
+  color: #000000;
+  text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: Georgia, "Linux Libertine", serif;
+}
+
+h1 {
+  font-size: 2em;
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+p {
+  line-height: normal;
+}
+
+p#code {
+  font-family: "Droid Sans Mono", Consolas, "Courier New", monospace;
+  text-indent: 1em;
+}
+
+img {
+  border: 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table td, table th {
+  border: 1px solid #b1b1b1;
+  padding: 3px 7px 2px 7px;
+}
+
+table th {
+  text-align: left;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  background-color: #bdbdbd;
+  color: #ffffff;
+}
+
+table tr.alt td {
+  color: #000000;
+  background-color: #eeeeee;
+}

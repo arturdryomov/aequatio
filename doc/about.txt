@@ -1,0 +1,2 @@
+Aequatio Help System
+Powered by Qt Assistant

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<QHelpCollectionProject version="1.0">
+	<assistant>
+		<title>Aequatio Help</title>
+		<startPage>qthelp://aequatio/html/html/index.html</startPage>
+		<applicationIcon>../appicon/32.png</applicationIcon>
+		<enableFilterFunctionality>false</enableFilterFunctionality>
+		<enableDocumentationManager>false</enableDocumentationManager>
+		<enableAddressBar visible="false">false</enableAddressBar>
+		<aboutMenuText>
+			<text>About Aequatio</text>
+		</aboutMenuText>
+		<aboutDialog>
+			<file>about.txt</file>
+			<icon>../appicon/256.png</icon>
+		</aboutDialog>
+	</assistant>
+	<docFiles>
+		<register>
+			<file>help.qch</file>
+		</register>
+	</docFiles>
+</QHelpCollectionProject>

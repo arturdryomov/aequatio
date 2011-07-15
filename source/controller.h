@@ -6,6 +6,8 @@
 
 #include <QObject>
 
+const QString helpFilename = "help.qhc";
+
 /* 
 	This class interconnects ui level and application level.
 	Controller implements Singletone pattern.
@@ -21,6 +23,7 @@ public:
 private slots:
 	void commandEntered(const QString &command);
 	void constantsAndFunctionsUpdated();
+	void helpLaunched();
 private:
 	explicit Controller(QObject *parent = 0);
 	~Controller();
