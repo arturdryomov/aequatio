@@ -45,11 +45,11 @@ FORMS	+= \
 RESOURCES += \
 	aequatio.qrc
 
-debug {
-	DESTDIR = debug
+CONFIG(release, debug|release) {
+	DESTDIR = release
 }
 
-release {
+CONFIG(debug, debug|release) {
 	DESTDIR = debug
 }
 
