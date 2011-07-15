@@ -141,6 +141,10 @@ FunctionDescription ExprCalculator::functionDescription(const QString &functionN
 
 QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
 {
+	// This code is quite alike with calculateFunction argorithm, but we store
+	// parts of final string expression in the stack.
+	// We also need to store the priority level of the last (meaning it is applied after all other)
+	// part in order to determine when the braces are needed.
 
 	enum PartPriority {PriorityPlusMinus, PriorityMultiplyDivide, PriorityPower,
 		PriorityHighest, PriorityFunction = PriorityHighest, PriorityNumber = PriorityHighest};

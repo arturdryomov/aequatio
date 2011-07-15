@@ -52,14 +52,14 @@ void Controller::commandEntered(const QString &command)
 		switch (result.type) {
 
 			case ResultExpressionCalculated: {
-				CalculatingResult calculatingResult = result.data.value<CalculatingResult>();
+				CalculationResult calculationResult = result.data.value<CalculationResult>();
 				notificationText = QString("%1 = %2")
-					.arg(calculatingResult.expression)
-					.arg(calculatingResult.result);
+					.arg(calculationResult.expression)
+					.arg(calculationResult.result);
 				break;
 			}
 
-			case ResultConstDeclared: {
+			case ResultConstantDeclared: {
 				ConstantDescription constant = result.data.value<ConstantDescription>();
 				notificationText = tr("Constant declared: %1 = %2")
 					.arg(constant.name)
@@ -104,7 +104,7 @@ void Controller::constantsAndFunctionsUpdated()
 		constantsText += ListElementTemplate.arg(QString("%1 = %2").arg(constant.name, constant.value));
 	}
 	if (constantsText.isEmpty()) {
-		constantsText = ListElementTemplate.arg(tr("&lt;nothing&gt;"));
+		constantsText = ListElementTemplate.arg(tr("<i>&lt;nothing&gt;</i>"));
 	}
 
 	QString functionsText;
@@ -117,7 +117,7 @@ void Controller::constantsAndFunctionsUpdated()
 			);
 	}
 	if (functionsText.isEmpty()) {
-		functionsText = ListElementTemplate.arg(tr("&lt;nothing&gt;"));
+		functionsText = ListElementTemplate.arg(tr("<i>&lt;nothing&gt;</i>"));
 	}
 
 	QString fullText = ListHeaderTemplate.arg(tr("Constants")) + constantsText

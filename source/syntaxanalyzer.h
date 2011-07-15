@@ -11,13 +11,13 @@
 #include <QHash>
 
 
-enum ProcessingResultType {ResultExpressionCalculated, ResultConstDeclared, ResultFunctionDeclared};
+enum ProcessingResultType {ResultExpressionCalculated, ResultConstantDeclared, ResultFunctionDeclared};
 struct ProcessingResult {
 	ProcessingResultType type;
 	QVariant data; // depends on type, Number, ConstantDescription or FunctionDescription.
 };
 
-struct CalculatingResult {
+struct CalculationResult {
 	QString result;
 	QString expression;
 };
@@ -64,6 +64,6 @@ public:
 	static bool isUnaryOperation(Lexeme lexeme);
 };
 
-Q_DECLARE_METATYPE(CalculatingResult)
+Q_DECLARE_METATYPE(CalculationResult)
 
 #endif // SYNTAXANALYZER_H
