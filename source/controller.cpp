@@ -45,15 +45,19 @@ int Controller::runApplication(int argc, char *argv[])
 void Controller::commandEntered(const QString &command)
 {
 	try {
-		CalculatingResult result = m_syntaxAnalyzer->process(command);
+		ProcessingResult result = m_syntaxAnalyzer->process(command);
 
 		QString notificationText;
 
 		switch (result.type) {
 
-			case ResultExpressionCalculated:
-				notificationText = QString::number(result.data.value<Number>());
+			case ResultExpressionCalculated: {
+				CalculatingResult calculatingResult = result.data.value<CalculatingResult>();
+				notificationText = QString("%1 = %2")
+					.arg(calculatingResult.expression)
+					.arg(calculatingResult.result);
 				break;
+			}
 
 			case ResultConstDeclared: {
 				ConstantDescription constant = result.data.value<ConstantDescription>();

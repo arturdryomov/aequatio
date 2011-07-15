@@ -11,10 +11,15 @@
 #include <QHash>
 
 
-enum CalculatingResultType {ResultExpressionCalculated, ResultConstDeclared, ResultFunctionDeclared};
-struct CalculatingResult {
-	CalculatingResultType type;
+enum ProcessingResultType {ResultExpressionCalculated, ResultConstDeclared, ResultFunctionDeclared};
+struct ProcessingResult {
+	ProcessingResultType type;
 	QVariant data; // depends on type, Number, ConstantDescription or FunctionDescription.
+};
+
+struct CalculatingResult {
+	QString result;
+	QString expression;
 };
 
 class SyntaxAnalyzer : public QObject
@@ -27,11 +32,11 @@ public:
 	explicit SyntaxAnalyzer(QObject *parent = 0);
 	~SyntaxAnalyzer();
 
-	CalculatingResult process(const QString &input);
+	ProcessingResult process(const QString &input);
 	QList<ConstantDescription> constantsList();
 	QList<FunctionDescription> functionsList();
 private:
-	CalculatingResult command();
+	ProcessingResult command();
 	ConstantDescription constDeclaration();
 	FunctionDescription functionDeclaration();
 	RpnCodeThread expression();
@@ -58,5 +63,7 @@ public:
 	static bool isSummOperation(Lexeme lexeme);
 	static bool isUnaryOperation(Lexeme lexeme);
 };
+
+Q_DECLARE_METATYPE(CalculatingResult)
 
 #endif // SYNTAXANALYZER_H

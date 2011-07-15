@@ -129,16 +129,21 @@ Number ExprCalculator::calculateBuiltInFunction(QString functionName, QList<Numb
 	return 0;
 }
 
-FunctionDescription ExprCalculator::functionDescriptionFromCode(const QString &functionName)
+FunctionDescription ExprCalculator::functionDescription(const QString &functionName)
 {
 	RpnFunction functionCode = m_functions.value(functionName);
 	FunctionDescription description;
 	description.name = functionName;
 	description.arguments = functionCode.arguments;
+	description.body = rpnCodeThreadToString(functionCode.codeThread);
+	return description;
+}
 
-	QStack<QString> functionBodyParts;
+QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
+{
+	QStack<QString> codeParts;
 
-	foreach(RpnElement element, functionCode.codeThread) {
+	foreach(RpnElement element, codeThread) {
 
 		QString operand;
 		switch (element.type) {
@@ -162,28 +167,28 @@ FunctionDescription ExprCalculator::functionDescriptionFromCode(const QString &f
 
 				// basic arithmetical operations
 				if (functionName == RpnFunctionPlus) {
-					QString right = functionBodyParts.pop();
-					QString left = functionBodyParts.pop();
+					QString right = codeParts.pop();
+					QString left = codeParts.pop();
 					operand = QString("(%1 + %2)").arg(left, right);
 				}
 				else if (functionName == RpnFunctionMinus) {
-					QString right = functionBodyParts.pop();
-					QString left = functionBodyParts.pop();
+					QString right = codeParts.pop();
+					QString left = codeParts.pop();
 					operand = QString("(%1 − %2)").arg(left, right);
 				}
 				else if (functionName == RpnFunctionMultiply) {
-					QString right = functionBodyParts.pop();
-					QString left = functionBodyParts.pop();
+					QString right = codeParts.pop();
+					QString left = codeParts.pop();
 					operand = QString("(%1 × %2)").arg(left, right);
 				}
 				else if (functionName == RpnFunctionDivide) {
-					QString right = functionBodyParts.pop();
-					QString left = functionBodyParts.pop();
+					QString right = codeParts.pop();
+					QString left = codeParts.pop();
 					operand = QString("(%1 ÷ %2)").arg(left, right);
 				}
 				else if (functionName == RpnFunctionPower) {
-					QString right = functionBodyParts.pop();
-					QString left = functionBodyParts.pop();
+					QString right = codeParts.pop();
+					QString left = codeParts.pop();
 					operand = QString("(%1 ^ %2)").arg(left, right);
 				}
 
@@ -202,7 +207,7 @@ FunctionDescription ExprCalculator::functionDescriptionFromCode(const QString &f
 
 					QStringList arguments;
 					for (int i = 0; i < argumentsCount; i++) {
-						arguments.prepend(functionBodyParts.pop());
+						arguments.prepend(codeParts.pop());
 						operand = QString("%1(%2)").arg(functionName).arg(arguments.join(", "));
 					}
 				}
@@ -211,16 +216,15 @@ FunctionDescription ExprCalculator::functionDescriptionFromCode(const QString &f
 			default:
 				THROW(EIncorrectRpnCode());
 		} // switch
-		functionBodyParts.push(operand);
+		codeParts.push(operand);
 
 	} // foreach
 
-	if (functionBodyParts.count() != 1) {
+	if (codeParts.count() != 1) {
 		THROW(EIncorrectRpnCode());
 	}
 
-	description.body = functionBodyParts.pop();
-	return description;
+	return codeParts.pop();
 }
 
 void ExprCalculator::addConstant(const QString &name, const Number &value)
@@ -246,7 +250,7 @@ FunctionDescription ExprCalculator::addFunction(const QString &name, const RpnFu
 	m_functions.insert(name, function);
 	emit functionsListChanged();
 
-	return functionDescriptionFromCode(name);
+	return functionDescription(name);
 }
 
 bool ExprCalculator::isFunction(const QString &name)
@@ -293,7 +297,7 @@ QList<FunctionDescription> ExprCalculator::functionsList()
 
 	foreach (QString functionName, m_functionNames) {
 		if (functionName != RpnFunctionMain) {
-			FunctionDescription function = functionDescriptionFromCode(functionName);
+			FunctionDescription function = functionDescription(functionName);
 			functionsList << function;
 		}
 	}

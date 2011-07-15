@@ -17,7 +17,7 @@ SyntaxAnalyzer::~SyntaxAnalyzer()
 {
 }
 
-CalculatingResult SyntaxAnalyzer::process(const QString &input)
+ProcessingResult SyntaxAnalyzer::process(const QString &input)
 {
 	// perform lexical analyzis
 	m_lexicalAnalyzer->parse(input);
@@ -40,9 +40,9 @@ QList<FunctionDescription> SyntaxAnalyzer::functionsList()
 }
 
 // Command = ConstDeclaration | Expression | FuncDeclaration
-CalculatingResult SyntaxAnalyzer::command()
+ProcessingResult SyntaxAnalyzer::command()
 {
-	CalculatingResult result;
+	ProcessingResult result;
 
 	// const declaration
 	if (m_lexicalAnalyzer->lexeme().type == LexemeConst) {
@@ -66,7 +66,9 @@ CalculatingResult SyntaxAnalyzer::command()
 		ensureNoMoreLexemes();
 		Number number = m_exprCalculator->calculate(codeThread);
 		result.type = ResultExpressionCalculated;
-		result.data.setValue(number);
+		CalculatingResult calculatingResult = {QString::number(number),
+			m_exprCalculator->rpnCodeThreadToString(codeThread)};
+		result.data.setValue(calculatingResult);
 	}
 
 	return result;

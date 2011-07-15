@@ -88,6 +88,7 @@ public:
 
 	QList<ConstantDescription> constantsList();
 	QList<FunctionDescription> functionsList();
+	QString rpnCodeThreadToString(const RpnCodeThread &codeThread);
 private:
 	QList<QString> m_functionNames; // stores function in order of their declaration
 	QHash<QString, RpnFunction> m_functions;
@@ -100,7 +101,7 @@ private:
 	void initializeBuiltInConstants();
 	Number calculateFunction(QString functionName, QList<Number> functionArguments);
 	Number calculateBuiltInFunction(QString functionName, QList<Number> functionArguments);
-	FunctionDescription functionDescriptionFromCode(const QString &functionName);
+	FunctionDescription functionDescription(const QString &functionName);
 };
 
 Q_DECLARE_METATYPE(Number)
