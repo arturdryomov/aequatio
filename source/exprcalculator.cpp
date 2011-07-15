@@ -38,16 +38,18 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<Number> fun
 				break;
 
 			// Get number and push to stack
-			case RpnElementArgument:
+			case RpnElementArgument: {
 				int argumentOrdinalNumber;
-				argumentOrdinalNumber = element.value.value<RpnArgumentInfo>().ordinalNumber;
+				RpnFunction function = m_functions.value(functionName);
+				argumentOrdinalNumber = function.arguments.indexOf(element.value.toString());
 				calculationStack.push(functionArguments[argumentOrdinalNumber]);
 				break;
+			}
 
 			// Find constant and push its value
 			case RpnElementConstant:
 				if (m_builtInConstants.contains(element.value.value<QString>())) {
-					calculationStack.push(m_builtInConstants.value(element.value.value<QString>()));					
+					calculationStack.push(m_builtInConstants.value(element.value.value<QString>()));
 				}
 				else if (m_constants.contains(element.value.value<QString>())) {
 					calculationStack.push(m_constants.value(element.value.value<QString>()));	
@@ -182,8 +184,7 @@ QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
 				break;
 
 			case RpnElementArgument: {
-				RpnArgumentInfo argumentInfo = element.value.value<RpnArgumentInfo>();
-				part.text = argumentInfo.name;
+				part.text = element.value.toString();
 				part.priority = PriorityHighest;
 				break;
 			}

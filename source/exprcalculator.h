@@ -18,15 +18,10 @@ enum RpnElementType {
 	RpnElementConstant // constant, value is its name (QString)
 };
 
-struct RpnArgumentInfo {
-	int ordinalNumber;
-	QString name;
-};
-
 struct RpnElement
 {
 	RpnElementType type;
-	QVariant value; // this will hold a Number, parameter’s ordinal number or function name
+	QVariant value; // this will hold a Number, parameter name, constant name or function name
 };
 
 typedef QList<RpnElement> RpnCodeThread; // contains linear RPN code to calculate
@@ -106,7 +101,6 @@ private:
 
 Q_DECLARE_METATYPE(Number)
 Q_DECLARE_METATYPE(RpnElementType)
-Q_DECLARE_METATYPE(RpnArgumentInfo)
 Q_DECLARE_METATYPE(ConstantDescription)
 Q_DECLARE_METATYPE(FunctionDescription)
 

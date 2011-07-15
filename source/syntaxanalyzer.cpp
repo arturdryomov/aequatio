@@ -410,8 +410,7 @@ RpnElement SyntaxAnalyzer::constant()
 	// it is a formal argument
 	if (m_workingArguments.contains(constName)) {
 		result.type = RpnElementArgument;
-		RpnArgumentInfo argumentInfo = {m_workingArguments.indexOf(constName), constName};
-		result.value = QVariant::fromValue<RpnArgumentInfo>(argumentInfo);
+		result.value.setValue(constName);
 	}
 	
 	// it is a constant
