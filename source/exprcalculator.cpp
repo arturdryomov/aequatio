@@ -141,24 +141,46 @@ FunctionDescription ExprCalculator::functionDescription(const QString &functionN
 
 QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
 {
-	QStack<QString> codeParts;
+
+	enum PartPriority {PriorityPlusMinus, PriorityMultiplyDivide, PriorityPower,
+		PriorityHighest, PriorityFunction = PriorityHighest, PriorityNumber = PriorityHighest};
+
+	struct PartInfo {
+		QString text;
+		PartPriority priority;
+		void bracesIfGreater(PartPriority externalPriority) {
+			if (externalPriority > priority) {
+				text = QString("(%1)").arg(text);
+			}
+		}
+		void bracesIfGreaterOrEqual(PartPriority externalPriority) {
+			if (externalPriority >= priority) {
+				text = QString("(%1)").arg(text);
+			}
+		}
+	};
+
+	QStack<PartInfo> codeParts;
 
 	foreach(RpnElement element, codeThread) {
 
-		QString operand;
+		PartInfo part;
 		switch (element.type) {
 
 			case RpnElementOperand:
-				operand = QString::number(element.value.value<Number>());
+				part.text = QString::number(element.value.value<Number>());
+				part.priority = PriorityHighest;
 				break;
 
 			case RpnElementConstant:
-				operand = element.value.toString();
+				part.text = element.value.toString();
+				part.priority = PriorityHighest;
 				break;
 
 			case RpnElementArgument: {
 				RpnArgumentInfo argumentInfo = element.value.value<RpnArgumentInfo>();
-				operand = argumentInfo.name;
+				part.text = argumentInfo.name;
+				part.priority = PriorityHighest;
 				break;
 			}
 
@@ -167,29 +189,48 @@ QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
 
 				// basic arithmetical operations
 				if (functionName == RpnFunctionPlus) {
-					QString right = codeParts.pop();
-					QString left = codeParts.pop();
-					operand = QString("(%1 + %2)").arg(left, right);
+					part.priority = PriorityPlusMinus;
+					PartInfo right = codeParts.pop();
+					right.bracesIfGreater(part.priority);
+					PartInfo left = codeParts.pop();
+					left.bracesIfGreater(part.priority);
+					part.text = QString("%1 + %2").arg(left.text, right.text);
 				}
+
 				else if (functionName == RpnFunctionMinus) {
-					QString right = codeParts.pop();
-					QString left = codeParts.pop();
-					operand = QString("(%1 − %2)").arg(left, right);
+					part.priority = PriorityPlusMinus;
+					PartInfo right = codeParts.pop();
+					right.bracesIfGreaterOrEqual(part.priority);
+					PartInfo left = codeParts.pop();
+					left.bracesIfGreater(part.priority);
+					part.text = QString("%1 - %2").arg(left.text, right.text);
 				}
+
 				else if (functionName == RpnFunctionMultiply) {
-					QString right = codeParts.pop();
-					QString left = codeParts.pop();
-					operand = QString("(%1 × %2)").arg(left, right);
+					part.priority = PriorityMultiplyDivide;
+					PartInfo right = codeParts.pop();
+					right.bracesIfGreater(part.priority);
+					PartInfo left = codeParts.pop();
+					left.bracesIfGreater(part.priority);
+					part.text = QString("%1 × %2").arg(left.text, right.text);
 				}
+
 				else if (functionName == RpnFunctionDivide) {
-					QString right = codeParts.pop();
-					QString left = codeParts.pop();
-					operand = QString("(%1 ÷ %2)").arg(left, right);
+					part.priority = PriorityMultiplyDivide;
+					PartInfo right = codeParts.pop();
+					right.bracesIfGreaterOrEqual(part.priority);
+					PartInfo left = codeParts.pop();
+					left.bracesIfGreater(part.priority);
+					part.text = QString("%1 ÷ %2").arg(left.text, right.text);
 				}
+
 				else if (functionName == RpnFunctionPower) {
-					QString right = codeParts.pop();
-					QString left = codeParts.pop();
-					operand = QString("(%1 ^ %2)").arg(left, right);
+					part.priority = PriorityPower;
+					PartInfo right = codeParts.pop();
+					right.bracesIfGreater(part.priority);
+					PartInfo left = codeParts.pop();
+					left.bracesIfGreaterOrEqual(part.priority);
+					part.text = QString("%1 ^ %2").arg(left.text, right.text);
 				}
 
 				// built-in and user-defined functions
@@ -207,8 +248,9 @@ QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
 
 					QStringList arguments;
 					for (int i = 0; i < argumentsCount; i++) {
-						arguments.prepend(codeParts.pop());
-						operand = QString("%1(%2)").arg(functionName).arg(arguments.join(", "));
+						arguments.prepend(codeParts.pop().text);
+						part.text = QString("%1(%2)").arg(functionName).arg(arguments.join(", "));
+						part.priority = PriorityFunction;
 					}
 				}
 				break;
@@ -216,7 +258,7 @@ QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
 			default:
 				THROW(EIncorrectRpnCode());
 		} // switch
-		codeParts.push(operand);
+		codeParts.push(part);
 
 	} // foreach
 
@@ -224,7 +266,7 @@ QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
 		THROW(EIncorrectRpnCode());
 	}
 
-	return codeParts.pop();
+	return codeParts.pop().text;
 }
 
 void ExprCalculator::addConstant(const QString &name, const Number &value)
