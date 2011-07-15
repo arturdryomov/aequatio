@@ -8,7 +8,7 @@
 		<enableDocumentationManager>false</enableDocumentationManager>
 		<enableAddressBar visible="false">false</enableAddressBar>
 		<aboutMenuText>
-			<text>About Aequatio</text>
+			<text>About</text>
 		</aboutMenuText>
 		<aboutDialog>
 			<file>about.txt</file>
