@@ -117,6 +117,9 @@ Number ExprCalculator::calculateBuiltInFunction(QString functionName, QList<Numb
 	else if (functionName == RpnFunctionPower) {
 		return qPow(functionArguments[0],  functionArguments[1]);
 	} 
+	else if (functionName == RpnFunctionUnaryMinus) {
+		return -functionArguments[0];
+	}
 	else if (functionName == Sine) {
 		return qSin(functionArguments[0]);
 	}
@@ -220,6 +223,13 @@ QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
 					PartInfo left = codeParts.pop();
 					left.bracesIfGreaterOrEqual(part.priority);
 					part.text = QString("%1 ^ %2").arg(left.text, right.text);
+				}
+
+				else if (functionName == RpnFunctionUnaryMinus) {
+					part.priority = PriorityPlusMinus;
+					PartInfo argument = codeParts.pop();
+					argument.bracesIfGreaterOrEqual(part.priority);
+					part.text = QString("−%1").arg(argument.text);
 				}
 
 				// built-in and user-defined functions
@@ -347,6 +357,7 @@ void ExprCalculator::initializeBuiltInFunctions()
 	m_builtInFunctions.insert(RpnFunctionMultiply, 2);
 	m_builtInFunctions.insert(RpnFunctionDivide, 2);
 	m_builtInFunctions.insert(RpnFunctionPower, 2);
+	m_builtInFunctions.insert(RpnFunctionUnaryMinus, 1);
 	m_builtInFunctions.insert(Sine, 1);
 	m_builtInFunctions.insert(Cosine, 1);
 	m_builtInFunctions.insert(Tangent, 1);

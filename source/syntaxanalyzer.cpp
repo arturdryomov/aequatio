@@ -243,12 +243,10 @@ RpnCodeThread SyntaxAnalyzer::factor()
 
 			m_lexicalAnalyzer->nextLexeme();
 
-			// -A = (-1) * A
-			RpnElement minusOne = {RpnElementOperand, -1};
-			RpnElement multiply = {RpnElementFunction, QVariant::fromValue(RpnFunctionMultiply)};
-			RpnCodeThread rightOperand = factor();
+			RpnElement unaryMinus = {RpnElementFunction, QVariant::fromValue(RpnFunctionUnaryMinus)};
+			RpnCodeThread operand = factor();
 
-			result << minusOne << rightOperand << multiply;
+			result << operand << unaryMinus;
 		}
 
 		else if (m_lexicalAnalyzer->lexeme().type == LexemePlus) {

@@ -64,6 +64,7 @@ const QString RpnFunctionMinus = "@Minus@";
 const QString RpnFunctionMultiply = "@Multiply@";
 const QString RpnFunctionDivide = "@Divide@";
 const QString RpnFunctionPower = "@Power@";
+const QString RpnFunctionUnaryMinus = "@UnaryMinus@";
 
 // these are real built in functions and in fact it would be better to hide 
 // these definitions from client code
