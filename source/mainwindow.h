@@ -15,11 +15,7 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 signals:
 	void commandEntered(const QString &);
-<<<<<<< HEAD
-	void helpLaunched();
-=======
 	void helpLaunchQueried();
->>>>>>> feature-new-own-help-system
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
