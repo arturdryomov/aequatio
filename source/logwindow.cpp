@@ -3,7 +3,7 @@
 LogWindow::LogWindow(QWidget *parent, Qt::WindowFlags f) :
 	QDialog(parent, f)
 {
-	QSize windowSizes(400, 400);
+	QSize windowSizes(500, 300);
 	resize(windowSizes);
 	setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
