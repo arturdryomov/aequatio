@@ -14,6 +14,7 @@ HelpWindow::HelpWindow(QWidget *parent, Qt::WindowFlags f) :
 
 	QSize windowSizes(600, 400);
 	resize(windowSizes);
+	setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
 	HelpBrowser *helpBrowser = new HelpBrowser(m_helpEngine, this);
 	QHelpContentWidget *helpWidget = m_helpEngine->contentWidget();
