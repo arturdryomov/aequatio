@@ -7,8 +7,8 @@ namespace Ui {
 	class MainWindow;
 }
 
-static const QString ListHeaderTemplate = "<p style='font: bold 11pt; margin-bottom: 5px'>%1</p>";
-static const QString ListElementTemplate = "<p style='font-size: 10pt; margin: 0px 0px 4px 20px'> %1 </p>";
+static const QString ListHeaderTemplate = "<h3>%1</h3>";
+static const QString ListElementTemplate = "<p style='margin: 0px 0px 4px 20px'> %1 </p>";
 
 class MainWindow : public QMainWindow
 {

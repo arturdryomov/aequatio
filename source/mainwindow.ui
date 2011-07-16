@@ -22,70 +22,75 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout_2">
     <item>
-     <widget class="QTextEdit" name="functionsAndConstantsList">
-      <property name="minimumSize">
-       <size>
-        <width>200</width>
-        <height>0</height>
-       </size>
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
       </property>
-      <property name="textInteractionFlags">
-       <set>Qt::TextSelectableByMouse</set>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QTextEdit" name="consoleEdit">
-        <property name="minimumSize">
-         <size>
-          <width>400</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">font-size: 10pt</string>
-        </property>
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="errorInformationLabel">
-        <property name="styleSheet">
-         <string notr="true">color:#a40000;</string>
-        </property>
-        <property name="text">
-         <string>Error Information Label</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+      <widget class="QTextEdit" name="functionsAndConstantsList">
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::TextSelectableByMouse</set>
+       </property>
+      </widget>
+      <widget class="QWidget" name="layoutWidget">
+       <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QLineEdit" name="commandEdit"/>
-        </item>
-        <item>
-         <widget class="QPushButton" name="submitButton">
-          <property name="text">
-           <string>Submit</string>
+         <widget class="QTextEdit" name="consoleEdit">
+          <property name="minimumSize">
+           <size>
+            <width>400</width>
+            <height>0</height>
+           </size>
           </property>
-          <property name="autoDefault">
-           <bool>true</bool>
+          <property name="styleSheet">
+           <string notr="true"/>
           </property>
-          <property name="default">
+          <property name="readOnly">
            <bool>true</bool>
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QLabel" name="errorInformationLabel">
+          <property name="styleSheet">
+           <string notr="true">color:#a40000;</string>
+          </property>
+          <property name="text">
+           <string>Error Information Label</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLineEdit" name="commandEdit"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="submitButton">
+            <property name="text">
+             <string>Submit</string>
+            </property>
+            <property name="autoDefault">
+             <bool>true</bool>
+            </property>
+            <property name="default">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
        </layout>
-      </item>
-     </layout>
+      </widget>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -98,12 +103,6 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuFile">
-    <property name="title">
-     <string>File</string>
-    </property>
-    <addaction name="actionExit"/>
-   </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
      <string>View</string>
@@ -117,15 +116,9 @@
     <addaction name="actionHelp"/>
     <addaction name="actionAbout"/>
    </widget>
-   <addaction name="menuFile"/>
    <addaction name="menuView"/>
    <addaction name="menuHelp"/>
   </widget>
-  <action name="actionExit">
-   <property name="text">
-    <string>Exit</string>
-   </property>
-  </action>
   <action name="actionShowFunctionsAndConstants">
    <property name="checkable">
     <bool>true</bool>
@@ -142,7 +135,10 @@
   </action>
   <action name="actionHelp">
    <property name="text">
-    <string>Help</string>
+    <string>Contents</string>
+   </property>
+   <property name="toolTip">
+    <string>Help contents</string>
    </property>
    <property name="shortcut">
     <string>F1</string>
@@ -186,22 +182,6 @@
     <hint type="destinationlabel">
      <x>146</x>
      <y>210</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionExit</sender>
-   <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>349</x>
-     <y>199</y>
     </hint>
    </hints>
   </connection>
