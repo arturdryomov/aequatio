@@ -17,11 +17,6 @@ struct ProcessingResult {
 	QVariant data; // depends on type, Number, ConstantDescription or FunctionDescription.
 };
 
-struct CalculationResult {
-	QString result;
-	QString expression;
-};
-
 class SyntaxAnalyzer : public QObject
 {
 	Q_OBJECT
@@ -63,7 +58,5 @@ public:
 	static bool isSummOperation(Lexeme lexeme);
 	static bool isUnaryOperation(Lexeme lexeme);
 };
-
-Q_DECLARE_METATYPE(CalculationResult)
 
 #endif // SYNTAXANALYZER_H

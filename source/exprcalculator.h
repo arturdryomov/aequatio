@@ -42,13 +42,18 @@ typedef QHash<QString, RpnFunction> RpnCode;
 
 struct ConstantDescription {
 	QString name;
-	QString value;
+	Number value;
 };
 
 struct FunctionDescription {
 	QString name;
 	QList<QString> arguments;
 	QString body;
+};
+
+struct ExpressionDescription {
+	QString expression;
+	Number result;
 };
 
 // main and built-in functions names
@@ -79,8 +84,8 @@ signals:
 public:
 	explicit ExprCalculator(QObject *parent = 0);
 
-	Number calculate(const RpnCodeThread &thread);
-	void addConstant(const QString &name, const Number &value);
+	ExpressionDescription calculate(const RpnCodeThread &thread);
+	ConstantDescription addConstant(const QString &name, const Number &value);
 	FunctionDescription addFunction(const QString &name, const RpnFunction &function);
 
 	bool isFunction(const QString &name);
@@ -89,7 +94,6 @@ public:
 
 	QList<ConstantDescription> constantsList();
 	QList<FunctionDescription> functionsList();
-	QString rpnCodeThreadToString(const RpnCodeThread &codeThread);
 private:
 	QList<QString> m_functionNames; // stores function in order of their declaration
 	QHash<QString, RpnFunction> m_functions;
@@ -98,6 +102,24 @@ private:
 	QHash<QString, Number> m_builtInConstants;
 	RpnCodeThread m_rpnCodeThread;
 
+	// PartPriority and PartInfo are used in rpnCodeThreadToString() only.
+	enum PartPriority {PriorityPlusMinus, PriorityMultiplyDivide, PriorityPower,
+		PriorityHighest, PriorityFunction = PriorityHighest, PriorityNumber = PriorityHighest};
+	struct PartInfo {
+		QString text;
+		PartPriority priority;
+		void bracesIfGreater(PartPriority externalPriority) {
+			if (externalPriority > priority) {
+				text = QString("(%1)").arg(text);
+			}
+		}
+		void bracesIfGreaterOrEqual(PartPriority externalPriority) {
+			if (externalPriority >= priority) {
+				text = QString("(%1)").arg(text);
+			}
+		}
+	};
+	QString rpnCodeThreadToString(const RpnCodeThread &codeThread);
 	void initializeBuiltInFunctions();
 	void initializeBuiltInConstants();
 	Number calculateFunction(QString functionName, QList<Number> functionArguments);
@@ -109,5 +131,6 @@ Q_DECLARE_METATYPE(Number)
 Q_DECLARE_METATYPE(RpnElementType)
 Q_DECLARE_METATYPE(ConstantDescription)
 Q_DECLARE_METATYPE(FunctionDescription)
+Q_DECLARE_METATYPE(ExpressionDescription)
 
 #endif // EXPRCALCULATOR_H

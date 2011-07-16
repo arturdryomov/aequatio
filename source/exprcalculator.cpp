@@ -13,12 +13,14 @@ ExprCalculator::ExprCalculator(QObject *parent) : QObject(parent)
 	initializeBuiltInConstants();
 }
 
-Number ExprCalculator::calculate(const RpnCodeThread &thread)
+ExpressionDescription ExprCalculator::calculate(const RpnCodeThread &thread)
 {
 	RpnFunction function = {QList<QString>(), thread};
 	m_functions.insert(RpnFunctionMain, function);
+	ExpressionDescription description = {rpnCodeThreadToString(thread),
+		calculateFunction(RpnFunctionMain, QList<Number>())};
 
-	return calculateFunction(RpnFunctionMain, QList<Number>());
+	return description;
 }
 
 Number ExprCalculator::calculateFunction(QString functionName, QList<Number> functionArguments)
@@ -148,24 +150,6 @@ QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
 	// We also need to store the priority level of the last (meaning it is applied after all other)
 	// part in order to determine when the braces are needed.
 
-	enum PartPriority {PriorityPlusMinus, PriorityMultiplyDivide, PriorityPower,
-		PriorityHighest, PriorityFunction = PriorityHighest, PriorityNumber = PriorityHighest};
-
-	struct PartInfo {
-		QString text;
-		PartPriority priority;
-		void bracesIfGreater(PartPriority externalPriority) {
-			if (externalPriority > priority) {
-				text = QString("(%1)").arg(text);
-			}
-		}
-		void bracesIfGreaterOrEqual(PartPriority externalPriority) {
-			if (externalPriority >= priority) {
-				text = QString("(%1)").arg(text);
-			}
-		}
-	};
-
 	QStack<PartInfo> codeParts;
 
 	foreach(RpnElement element, codeThread) {
@@ -274,7 +258,7 @@ QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
 	return codeParts.pop().text;
 }
 
-void ExprCalculator::addConstant(const QString &name, const Number &value)
+ConstantDescription ExprCalculator::addConstant(const QString &name, const Number &value)
 {
 	if (m_builtInConstants.contains(name)) {
 		THROW(EBuiltInRedifinition(name, EBuiltInRedifinition::Constant));
@@ -282,6 +266,9 @@ void ExprCalculator::addConstant(const QString &name, const Number &value)
 
 	m_constants.insert(name, value);
 	emit constantsListChanged();
+
+	ConstantDescription constantDescription = {name, value};
+	return constantDescription;
 }
 
 FunctionDescription ExprCalculator::addFunction(const QString &name, const RpnFunction &function)
@@ -331,7 +318,7 @@ QList<ConstantDescription> ExprCalculator::constantsList()
 	QHashIterator<QString, Number> i(m_constants);
 	while (i.hasNext()) {
 		i.next();
-		ConstantDescription constant = {i.key(), NumberToString(i.value())};
+		ConstantDescription constant = {i.key(), i.value()};
 		constantsList << constant;
 	}
 

@@ -61,14 +61,12 @@ ProcessingResult SyntaxAnalyzer::command()
 	}
 
 	// expression
-	else {		
+	else {
 		RpnCodeThread codeThread = expression(); // convert expression to RPN
 		ensureNoMoreLexemes();
-		Number number = m_exprCalculator->calculate(codeThread);
+		ExpressionDescription expression = m_exprCalculator->calculate(codeThread);
 		result.type = ResultExpressionCalculated;
-		CalculationResult calculatingResult = {NumberToString(number),
-			m_exprCalculator->rpnCodeThreadToString(codeThread)};
-		result.data.setValue(calculatingResult);
+		result.data.setValue(expression);
 	}
 
 	return result;
@@ -98,14 +96,11 @@ ConstantDescription SyntaxAnalyzer::constDeclaration()
 
 	// Expression
 	RpnCodeThread constThread = expression();
-	Number constValue = m_exprCalculator->calculate(constThread);
+	ExpressionDescription expression =m_exprCalculator->calculate(constThread);
 	m_lexicalAnalyzer->nextLexeme();
 
 	// add constant to list
-	m_exprCalculator->addConstant(constName, constValue);	
-
-	ConstantDescription description = {constName, NumberToString(constValue)};
-	return description;
+	return m_exprCalculator->addConstant(constName, expression.result);
 }
 
 // FunctionDeclaration = 'func' Indenifier '(' FormalArgument
