@@ -30,6 +30,7 @@ private:
 	static Controller *m_instance;
 	MainWindow *m_mainWindow;
 	HelpWindow *m_helpWindow;
+	QHelpEngine *m_helpEngine;
 	SyntaxAnalyzer *m_syntaxAnalyzer;
 };
 

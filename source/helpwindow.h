@@ -15,7 +15,7 @@ public:
 	HelpWindow(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	~HelpWindow();
 
-	void initializeWindow();
+	void initializeWindow(QHelpEngine *engine);
 };
 
 #endif // HELPWINDOW_H

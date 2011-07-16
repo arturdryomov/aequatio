@@ -136,7 +136,27 @@ void Controller::constantsAndFunctionsUpdated()
 void Controller::helpLaunched()
 {
 	if (!m_helpWindow) {
+
+		// Check help file for existing
+		if (!QFileInfo(helpFilename).exists()) {
+			QMessageBox::information(m_mainWindow, "Aequatio", "Help is not available");
+			return;
+		}
+
+		// Try to load Help Engine
+		if (!m_helpEngine) {
+			m_helpEngine = new QHelpEngine(helpFilename, this);
+		}
+		if (!m_helpEngine->setupData()) {
+			QMessageBox::warning(m_mainWindow, "Aequatio", "Help is not available");
+			delete m_helpEngine;
+			m_helpEngine = 0;
+			return;
+		}
+
+		// Operate object
 		m_helpWindow = new HelpWindow(m_mainWindow);
+		m_helpWindow->initializeWindow(m_helpEngine);
 	}
 
 	m_helpWindow->show();
@@ -149,6 +169,7 @@ Controller::Controller(QObject *parent) :
 	m_syntaxAnalyzer(new SyntaxAnalyzer(this))
 {
 	m_helpWindow = 0;
+	m_helpEngine = 0;
 	connect(m_syntaxAnalyzer, SIGNAL(constantsListChanged()), SLOT(constantsAndFunctionsUpdated()));
 	connect(m_syntaxAnalyzer, SIGNAL(functionsListChanged()), SLOT(constantsAndFunctionsUpdated()));
 }
