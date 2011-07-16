@@ -37,7 +37,7 @@ int Controller::runApplication(int argc, char *argv[])
 	
 	m_mainWindow = new MainWindow;
 	connect(m_mainWindow, SIGNAL(commandEntered(QString)), SLOT(commandEntered(QString)));
-	connect(m_mainWindow, SIGNAL(helpLaunched()), SLOT(helpLaunched()));
+	connect(m_mainWindow, SIGNAL(helpLaunchQueried()), SLOT(launchHelp()));
 	constantsAndFunctionsUpdated();
 	m_mainWindow->show();
 	
@@ -133,36 +133,33 @@ void Controller::constantsAndFunctionsUpdated()
 	m_mainWindow->updateSidebar(fullText);
 }
 
-void Controller::helpLaunched()
+void Controller::launchHelp()
 {
-	// Check file
-	if (!QFileInfo(helpFilename).exists()) {
-		QMessageBox::information(m_mainWindow, "Aequatio", "Help is not available");
+	if (!isHelpAvailable()) {
+		QMessageBox::warning(m_mainWindow, "Aequatio", tr("Help is not available."));
 		return;
 	}
 
-	// Run Assistant
-	QProcess *assistantProcess = new QProcess;
-	QStringList assistantArgs;
-	assistantArgs << QString("-collectionFile")
-		<< helpFilename
-		<< QString("-enableRemoteControl");
-	assistantProcess->start(QString("assistant"), assistantArgs);
-	if (!assistantProcess->waitForStarted()) {
-		return;
+	if (m_helpWindow == 0) {
+		m_helpWindow = new HelpWindow(m_mainWindow);
 	}
 
-	// Send commands about appearance
-	QByteArray assistantCommands;
-	assistantCommands.append("hide bookmarks;");
-	assistantCommands.append("setSource qthelp://aequatio/html/html/index.html\n");
-	assistantProcess->write(assistantCommands);
+	m_helpWindow->show();
+	m_helpWindow->activateWindow();
+}
+
+bool Controller::isHelpAvailable()
+{
+	QHelpEngine helpEngine(helpFilename);
+	return helpEngine.setupData();
 }
 
 Controller::Controller(QObject *parent) :
 	QObject(parent),
 	m_mainWindow(0),
+	m_helpWindow(0),
 	m_syntaxAnalyzer(new SyntaxAnalyzer(this))
+
 {
 	connect(m_syntaxAnalyzer, SIGNAL(constantsListChanged()), SLOT(constantsAndFunctionsUpdated()));
 	connect(m_syntaxAnalyzer, SIGNAL(functionsListChanged()), SLOT(constantsAndFunctionsUpdated()));

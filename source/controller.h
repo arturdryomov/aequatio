@@ -2,11 +2,10 @@
 #define CONTROLLER_H
 
 #include "mainwindow.h"
+#include "helpwindow.h"
 #include "syntaxanalyzer.h"
 
 #include <QObject>
-
-const QString helpFilename = "help.qhc";
 
 /* 
 	This class interconnects ui level and application level.
@@ -23,13 +22,16 @@ public:
 private slots:
 	void commandEntered(const QString &command);
 	void constantsAndFunctionsUpdated();
-	void helpLaunched();
+	void launchHelp();
+	bool isHelpAvailable();
 private:
 	explicit Controller(QObject *parent = 0);
 	~Controller();
 	
 	static Controller *m_instance;
 	MainWindow *m_mainWindow;
+	HelpWindow *m_helpWindow;
+	QHelpEngine *m_helpEngine;
 	SyntaxAnalyzer *m_syntaxAnalyzer;
 };
 
