@@ -2,6 +2,7 @@ QT	+= core gui
 
 TARGET = Aequatio
 TEMPLATE = app
+CONFIG += help
 
 mac {
 	ICON = appicon/Aequatio.icns
@@ -25,7 +26,9 @@ SOURCES += \
 	source/exceptions.cpp \
 	source/parsingexceptions.cpp \
 	source/calculatingexceptions.cpp \
-	source/aboutwindow.cpp
+	source/aboutwindow.cpp \
+    source/helpwindow.cpp \
+    source/helpbrowser.cpp
 
 
 HEADERS  += \
@@ -39,7 +42,9 @@ HEADERS  += \
 	source/exceptions.h \
 	source/parsingexceptions.h \
 	source/calculatingexceptions.h \
-	source/aboutwindow.h
+	source/aboutwindow.h \
+    source/helpwindow.h \
+    source/helpbrowser.h
 
 FORMS	+= \
 	source/mainwindow.ui \

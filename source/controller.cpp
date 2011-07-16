@@ -135,28 +135,12 @@ void Controller::constantsAndFunctionsUpdated()
 
 void Controller::helpLaunched()
 {
-	// Check file
-	if (!QFileInfo(helpFilename).exists()) {
-		QMessageBox::information(m_mainWindow, "Aequatio", "Help is not available");
-		return;
+	if (!m_helpWindow) {
+		m_helpWindow = new HelpWindow(m_mainWindow);
 	}
 
-	// Run Assistant
-	QProcess *assistantProcess = new QProcess;
-	QStringList assistantArgs;
-	assistantArgs << QString("-collectionFile")
-		<< helpFilename
-		<< QString("-enableRemoteControl");
-	assistantProcess->start(QString("assistant"), assistantArgs);
-	if (!assistantProcess->waitForStarted()) {
-		return;
-	}
-
-	// Send commands about appearance
-	QByteArray assistantCommands;
-	assistantCommands.append("hide bookmarks;");
-	assistantCommands.append("setSource qthelp://aequatio/html/html/index.html\n");
-	assistantProcess->write(assistantCommands);
+	m_helpWindow->show();
+	m_helpWindow->activateWindow();
 }
 
 Controller::Controller(QObject *parent) :
@@ -164,6 +148,7 @@ Controller::Controller(QObject *parent) :
 	m_mainWindow(0),
 	m_syntaxAnalyzer(new SyntaxAnalyzer(this))
 {
+	m_helpWindow = 0;
 	connect(m_syntaxAnalyzer, SIGNAL(constantsListChanged()), SLOT(constantsAndFunctionsUpdated()));
 	connect(m_syntaxAnalyzer, SIGNAL(functionsListChanged()), SLOT(constantsAndFunctionsUpdated()));
 }
