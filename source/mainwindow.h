@@ -15,7 +15,7 @@ class MainWindow : public QMainWindow
 	Q_OBJECT
 signals:
 	void commandEntered(const QString &);
-	void helpLaunched();
+	void helpLaunchQueried();
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();

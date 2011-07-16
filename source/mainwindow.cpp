@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
-	connect(ui->actionHelp, SIGNAL(triggered()), SIGNAL(helpLaunched()));
+	connect(ui->actionHelp, SIGNAL(triggered()), SIGNAL(helpLaunchQueried()));
 
 	setWindowIcon(QIcon(":/images/appicon.png"));
 	ui->errorInformationLabel->hide();

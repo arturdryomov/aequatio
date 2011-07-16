@@ -22,7 +22,8 @@ public:
 private slots:
 	void commandEntered(const QString &command);
 	void constantsAndFunctionsUpdated();
-	void helpLaunched();
+	void launchHelp();
+	bool isHelpAvailable();
 private:
 	explicit Controller(QObject *parent = 0);
 	~Controller();

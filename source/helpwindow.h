@@ -14,8 +14,8 @@ class HelpWindow : public QDialog
 public:
 	HelpWindow(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	~HelpWindow();
-
-	void initializeWindow(QHelpEngine *engine);
+private:
+	QHelpEngine *m_helpEngine;
 };
 
 #endif // HELPWINDOW_H

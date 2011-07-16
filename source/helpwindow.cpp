@@ -6,21 +6,17 @@
 #include <QFileInfo>
 #include <QMessageBox>
 
-HelpWindow::HelpWindow(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
+HelpWindow::HelpWindow(QWidget *parent, Qt::WindowFlags f) :
+	QDialog(parent, f),
+	m_helpEngine(new QHelpEngine(helpFilename, this))
 {
-}
+	m_helpEngine->setupData();
 
-HelpWindow::~HelpWindow()
-{
-}
-
-void HelpWindow::initializeWindow(QHelpEngine *helpEngine)
-{
 	QSize windowSizes(600, 400);
 	resize(windowSizes);
 
-	HelpBrowser *helpBrowser = new HelpBrowser(helpEngine, this);
-	QHelpContentWidget *helpWidget = helpEngine->contentWidget();
+	HelpBrowser *helpBrowser = new HelpBrowser(m_helpEngine, this);
+	QHelpContentWidget *helpWidget = m_helpEngine->contentWidget();
 
 	QSplitter *splitter = new QSplitter(Qt::Horizontal, this);
 	splitter->addWidget(helpWidget);
@@ -34,7 +30,12 @@ void HelpWindow::initializeWindow(QHelpEngine *helpEngine)
 	QGridLayout *layout = new QGridLayout(this) ;
 	layout->addWidget(splitter);
 
-	setWindowTitle("Aequatio Help");
+	setWindowTitle(tr("Aequatio Help"));
 
 	connect(helpWidget, SIGNAL(linkActivated(const QUrl &)), helpBrowser, SLOT(setSource(QUrl))) ;
 }
+
+HelpWindow::~HelpWindow()
+{
+}
+

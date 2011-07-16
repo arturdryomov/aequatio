@@ -37,7 +37,7 @@ int Controller::runApplication(int argc, char *argv[])
 	
 	m_mainWindow = new MainWindow;
 	connect(m_mainWindow, SIGNAL(commandEntered(QString)), SLOT(commandEntered(QString)));
-	connect(m_mainWindow, SIGNAL(helpLaunched()), SLOT(helpLaunched()));
+	connect(m_mainWindow, SIGNAL(helpLaunchQueried()), SLOT(launchHelp()));
 	constantsAndFunctionsUpdated();
 	m_mainWindow->show();
 	
@@ -133,43 +133,34 @@ void Controller::constantsAndFunctionsUpdated()
 	m_mainWindow->updateSidebar(fullText);
 }
 
-void Controller::helpLaunched()
+void Controller::launchHelp()
 {
-	if (!m_helpWindow) {
+	if (!isHelpAvailable()) {
+		QMessageBox::warning(m_mainWindow, "Aequatio", tr("Help is not available."));
+		return;
+	}
 
-		// Check help file for existing
-		if (!QFileInfo(helpFilename).exists()) {
-			QMessageBox::information(m_mainWindow, "Aequatio", "Help is not available");
-			return;
-		}
-
-		// Try to load Help Engine
-		if (!m_helpEngine) {
-			m_helpEngine = new QHelpEngine(helpFilename, this);
-		}
-		if (!m_helpEngine->setupData()) {
-			QMessageBox::warning(m_mainWindow, "Aequatio", "Help is not available");
-			delete m_helpEngine;
-			m_helpEngine = 0;
-			return;
-		}
-
-		// Operate object
+	if (m_helpWindow == 0) {
 		m_helpWindow = new HelpWindow(m_mainWindow);
-		m_helpWindow->initializeWindow(m_helpEngine);
 	}
 
 	m_helpWindow->show();
 	m_helpWindow->activateWindow();
 }
 
+bool Controller::isHelpAvailable()
+{
+	QHelpEngine helpEngine(helpFilename);
+	return helpEngine.setupData();
+}
+
 Controller::Controller(QObject *parent) :
 	QObject(parent),
 	m_mainWindow(0),
+	m_helpWindow(0),
 	m_syntaxAnalyzer(new SyntaxAnalyzer(this))
+
 {
-	m_helpWindow = 0;
-	m_helpEngine = 0;
 	connect(m_syntaxAnalyzer, SIGNAL(constantsListChanged()), SLOT(constantsAndFunctionsUpdated()));
 	connect(m_syntaxAnalyzer, SIGNAL(functionsListChanged()), SLOT(constantsAndFunctionsUpdated()));
 }
