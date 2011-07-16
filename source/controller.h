@@ -25,9 +25,6 @@ private slots:
 	void constantsAndFunctionsUpdated();
 	void launchHelp();
 	void launchLogview();
-	// FIXME
-	bool isHelpAvailable();
-	bool isLogAvailable(QString logPath);
 private:
 	explicit Controller(QObject *parent = 0);
 	~Controller();
@@ -38,6 +35,8 @@ private:
 	LogWindow *m_logWindow;
 	QHelpEngine *m_helpEngine;
 	SyntaxAnalyzer *m_syntaxAnalyzer;
+
+	bool isHelpAvailable();
 };
 
 #endif // CONTROLLER_H

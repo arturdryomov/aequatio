@@ -159,7 +159,7 @@ void Controller::launchLogview()
 {
 	QString logPath = QDir::temp().filePath(logFilename);
 
-	if (!isLogAvailable(logPath)) {
+	if (!QFileInfo(logPath).exists()) {
 		QMessageBox::information(m_mainWindow, "Aequatio", tr("Log is not available"));
 		return;
 	}
@@ -180,11 +180,6 @@ void Controller::launchLogview()
 
 	m_logWindow->show();
 	m_logWindow->activateWindow();
-}
-
-bool Controller::isLogAvailable(QString logPath)
-{
-	return QFileInfo(logPath).exists();
 }
 
 Controller::Controller(QObject *parent) :
