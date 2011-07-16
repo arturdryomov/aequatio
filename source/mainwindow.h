@@ -16,6 +16,7 @@ class MainWindow : public QMainWindow
 signals:
 	void commandEntered(const QString &);
 	void helpLaunchQueried();
+	void logviewLaunch();
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();

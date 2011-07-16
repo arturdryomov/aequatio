@@ -38,6 +38,7 @@ int Controller::runApplication(int argc, char *argv[])
 	m_mainWindow = new MainWindow;
 	connect(m_mainWindow, SIGNAL(commandEntered(QString)), SLOT(commandEntered(QString)));
 	connect(m_mainWindow, SIGNAL(helpLaunchQueried()), SLOT(launchHelp()));
+	connect(m_mainWindow, SIGNAL(logviewLaunch()), SLOT(launchLogview()));
 	constantsAndFunctionsUpdated();
 	m_mainWindow->show();
 	
@@ -154,10 +155,43 @@ bool Controller::isHelpAvailable()
 	return helpEngine.setupData();
 }
 
+void Controller::launchLogview()
+{
+	QString logPath = QDir::temp().filePath(logFilename);
+
+	if (!isLogAvailable(logPath)) {
+		QMessageBox::information(m_mainWindow, "Aequatio", tr("Log is not available"));
+		return;
+	}
+
+	if (m_logWindow == 0) {
+		QFile logFile(logPath);
+		if (!logFile.open(QIODevice::ReadOnly)) {
+			QMessageBox::warning(m_mainWindow, "Aequatio", tr("Log is not available"));
+			return;
+		}
+
+		m_logWindow = new LogWindow(m_mainWindow);
+		QString logContents = logFile.readAll().constData();
+		m_logWindow->setData(logContents);
+
+		logFile.close();
+	}
+
+	m_logWindow->show();
+	m_logWindow->activateWindow();
+}
+
+bool Controller::isLogAvailable(QString logPath)
+{
+	return QFileInfo(logPath).exists();
+}
+
 Controller::Controller(QObject *parent) :
 	QObject(parent),
 	m_mainWindow(0),
 	m_helpWindow(0),
+	m_logWindow(0),
 	m_syntaxAnalyzer(new SyntaxAnalyzer(this))
 
 {

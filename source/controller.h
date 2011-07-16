@@ -3,6 +3,7 @@
 
 #include "mainwindow.h"
 #include "helpwindow.h"
+#include "logwindow.h"
 #include "syntaxanalyzer.h"
 
 #include <QObject>
@@ -23,7 +24,10 @@ private slots:
 	void commandEntered(const QString &command);
 	void constantsAndFunctionsUpdated();
 	void launchHelp();
+	void launchLogview();
+	// FIXME
 	bool isHelpAvailable();
+	bool isLogAvailable(QString logPath);
 private:
 	explicit Controller(QObject *parent = 0);
 	~Controller();
@@ -31,6 +35,7 @@ private:
 	static Controller *m_instance;
 	MainWindow *m_mainWindow;
 	HelpWindow *m_helpWindow;
+	LogWindow *m_logWindow;
 	QHelpEngine *m_helpEngine;
 	SyntaxAnalyzer *m_syntaxAnalyzer;
 };

@@ -28,7 +28,8 @@ SOURCES += \
 	source/calculatingexceptions.cpp \
 	source/aboutwindow.cpp \
     source/helpwindow.cpp \
-    source/helpbrowser.cpp
+    source/helpbrowser.cpp \
+    source/logwindow.cpp
 
 
 HEADERS  += \
@@ -44,7 +45,8 @@ HEADERS  += \
 	source/calculatingexceptions.h \
 	source/aboutwindow.h \
     source/helpwindow.h \
-    source/helpbrowser.h
+    source/helpbrowser.h \
+    source/logwindow.h
 
 FORMS	+= \
 	source/mainwindow.ui \
