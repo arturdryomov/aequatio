@@ -161,7 +161,7 @@ QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
 		switch (element.type) {
 
 			case RpnElementOperand:
-				part.text = NumberToString(element.value.value<Number>());
+				part.text = numberToString(element.value.value<Number>());
 				part.priority = PriorityHighest;
 				break;
 
@@ -195,7 +195,7 @@ QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
 					right.bracesIfGreaterOrEqual(part.priority);
 					PartInfo left = codeParts.pop();
 					left.bracesIfGreater(part.priority);
-					part.text = QString("%1 - %2").arg(left.text, right.text);
+					part.text = QString("%1 − %2").arg(left.text, right.text);
 				}
 
 				else if (functionName == RpnFunctionMultiply) {

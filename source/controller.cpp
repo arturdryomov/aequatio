@@ -59,7 +59,7 @@ void Controller::commandEntered(const QString &command)
 				ExpressionDescription exprpession = result.data.value<ExpressionDescription>();
 				notificationText = QString("%1 = %2")
 					.arg(exprpession.expression)
-					.arg(NumberToString(exprpession.result));
+					.arg(numberToString(exprpession.result));
 				break;
 			}
 
@@ -67,7 +67,7 @@ void Controller::commandEntered(const QString &command)
 				ConstantDescription constant = result.data.value<ConstantDescription>();
 				notificationText = tr("Constant declared: %1 = %2")
 					.arg(constant.name)
-					.arg(NumberToString(constant.value));
+					.arg(numberToString(constant.value));
 				break;
 			}
 
@@ -107,7 +107,7 @@ void Controller::constantsAndFunctionsUpdated()
 	foreach (ConstantDescription constant, constants) {
 		constantsText += ListElementTemplate.arg(QString("%1 = %2")
 				.arg(constant.name)
-				.arg(NumberToString(constant.value))
+				.arg(numberToString(constant.value))
 			);
 	}
 	if (constantsText.isEmpty()) {
