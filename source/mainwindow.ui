@@ -100,7 +100,7 @@
      <x>0</x>
      <y>0</y>
      <width>700</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuView">
@@ -116,7 +116,7 @@
     <addaction name="actionHelp"/>
     <addaction name="actionAbout"/>
     <addaction name="separator"/>
-    <addaction name="actionDebug_Log"/>
+    <addaction name="actionDebugLog"/>
    </widget>
    <addaction name="menuView"/>
    <addaction name="menuHelp"/>
@@ -151,7 +151,7 @@
     <string>About</string>
    </property>
   </action>
-  <action name="actionDebug_Log">
+  <action name="actionDebugLog">
    <property name="text">
     <string>Debug Log</string>
    </property>

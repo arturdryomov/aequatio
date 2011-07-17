@@ -8,6 +8,8 @@
 
 #include <QObject>
 
+const QString ShowLogParam = "--showlog";
+
 /* 
 	This class interconnects ui level and application level.
 	Controller implements Singletone pattern.

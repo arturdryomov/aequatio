@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 	ui->setupUi(this);
 	connect(ui->actionHelp, SIGNAL(triggered()), SIGNAL(helpLaunchQueried()));
-	connect(ui->actionDebug_Log, SIGNAL(triggered()), SIGNAL(logviewLaunch()));
+	connect(ui->actionDebugLog, SIGNAL(triggered()), SIGNAL(logviewLaunch()));
 
 	setWindowIcon(QIcon(":/images/appicon.png"));
 	ui->errorInformationLabel->hide();
@@ -29,6 +29,11 @@ void MainWindow::resultReturned(const QString &result)
 {	
 	// drop result to console
 	ui->consoleEdit->append("→ " + result);
+}
+
+void MainWindow::setLogActionVisible(bool visible)
+{
+	ui->actionDebugLog->setVisible(visible);
 }
 
 void MainWindow::displayErrorInfo(const QString &info)

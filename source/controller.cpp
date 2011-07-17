@@ -40,6 +40,7 @@ int Controller::runApplication(int argc, char *argv[])
 	connect(m_mainWindow, SIGNAL(helpLaunchQueried()), SLOT(launchHelp()));
 	connect(m_mainWindow, SIGNAL(logviewLaunch()), SLOT(launchLogview()));
 	constantsAndFunctionsUpdated();
+	m_mainWindow->setLogActionVisible(qApp->arguments().contains(ShowLogParam, Qt::CaseInsensitive));
 	m_mainWindow->show();
 	
 	int result = a.exec();
