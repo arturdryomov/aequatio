@@ -11,7 +11,7 @@ public:
 	LogWindow(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	~LogWindow();
 
-	void setData(QString logContents);
+	void setData(const QString &logContents);
 private:
 	QTextEdit *m_textWidget;
 };

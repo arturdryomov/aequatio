@@ -8,18 +8,23 @@ LogWindow::LogWindow(QWidget *parent, Qt::WindowFlags f) :
 	setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
 	m_textWidget = new QTextEdit(this);
+	m_textWidget->setTextInteractionFlags(
+		Qt::TextSelectableByMouse
+		| Qt::TextSelectableByKeyboard
+		| Qt::LinksAccessibleByMouse
+		| Qt::LinksAccessibleByKeyboard);
 
 	QGridLayout *layout = new QGridLayout(this);
 	layout->addWidget(m_textWidget);
 
-	setWindowTitle(tr("Aequatio Debug Log"));
+	setWindowTitle(tr("Debug Log"));
 }
 
 LogWindow::~LogWindow()
 {
 }
 
-void LogWindow::setData(QString logContents)
+void LogWindow::setData(const QString &logContents)
 {
 	m_textWidget->setPlainText(logContents);
 }
