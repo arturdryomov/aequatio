@@ -7,8 +7,8 @@ namespace Ui {
 	class MainWindow;
 }
 
-const QString ListHeaderTemplate = "<h3>%1</h3>";
-const QString ListElementTemplate = "<p style='margin: 0px 0px 4px 20px'> %1 </p>";
+static const QString ListHeaderTemplate = "<h3>%1</h3>";
+static const QString ListElementTemplate = "<p style='margin: 0px 0px 4px 20px'> %1 </p>";
 
 class MainWindow : public QMainWindow
 {
@@ -20,7 +20,6 @@ signals:
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
-	void setLogActionVisible(bool visible);
 public slots:
 	void displayErrorInfo(const QString &info);
 	void hideErrorInfo();
