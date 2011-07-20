@@ -6,6 +6,8 @@ AboutWindow::AboutWindow(QWidget *parent) :
 	ui(new Ui::AboutWindow)
 {
 	ui->setupUi(this);
+	ui->textLabel->setText(ui->textLabel->text().arg(qApp->applicationVersion()));
+
 	setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
