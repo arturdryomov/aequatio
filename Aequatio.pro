@@ -20,11 +20,11 @@ DEFINES += "VERSION_REVISION=1000"
 
 
 mac {
-	ICON = appicon/Aequatio.icns
+	ICON = resource/icons/mac/aequatio.icns
 }
 
 win32 {
-	RC_FILE = appicon/Aequatio.rc
+	RC_FILE = resource/icons/windows/aequatio.rc
 	LIBS += -lGdi32 \
 		-lUser32
 }
@@ -68,7 +68,7 @@ FORMS	+= \
 	source/aboutwindow.ui
 
 RESOURCES += \
-	aequatio.qrc
+	resource/icons/aequatio.qrc
 
 CONFIG(release, debug|release) {
 	DESTDIR = release
