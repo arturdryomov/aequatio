@@ -16,31 +16,33 @@
 
       <a name="brief"><h2>Brief</h2></a>
 
-        <p>Aequatio provides using constants in your calculations.</p>
-        <p>There are two types of constants: internal and user-defined. You can use both of them simple typing name of constant instead number.</p>
+        <p>Aequatio allows using constants in calculations.</p>
+        <p>There are two types of constants: built-in and user-defined. You can use both of them by simply typing name of a constant.</p>
 
       <a name="using"><h2>Using</h2></a>
 
-        <a name="internal"><h3>Internal</h3></a>
+        <a name="internal"><h3>Built-in Constants</h3></a>
 
-          <p>For example, we have internal constant named as <i>pi</i>. I want to calculate circle square with radius <i>5</i>.</p>
-          <p>I’ll type that command:</p>
+          <p>For example, we have built-in constant named <i>pi</i> and want to calculate circle square with radius <i>5</i>.</p>
+          <p>We type the command:</p>
           <p id="code">&larr; pi * (5 ^ 2)</p>
-          <p>And Aequatio’ll give me the answer:</p>
-          <p id="code">&rarr; 78.539816339744831</p>
-          <p>Problem solved.</p>
-          <p>There is a <a href="intconstants.html">list</a> of internal constants.</p>
+          <p>And Aequatio gives us the solution:</p>
+          <p id="code">&rarr; pi × 5 ^ 2 = 78.5398</p>
+          <p>There is a <a href="builtin-constants.html">list</a> of built-in constants.</p>
 
-        <a name="user-defined"><h3>User-defined</h3></a>
+        <a name="user-defined"><h3>User-defined Constants</h3></a>
 
-          <p>Using user constants is the same as internal, but you must define constant before using it. Of course, you need to define constant with name, that is not using as internal.<p>
-          <p>For defining constant there is special command named <i>const</i>. Here you can see it’s format:</p>
-          <p id="code">const "constant name" = "constant value"</p>
-          <p>Let’s define constant with name <i>radius</i> and value <i>5</i>. I’ll peek an example with circle.<p>
+          <p>Using user-defined constants is the same as using built-in ones, except that you should previously define a constant.<p>
+          <p>There is a special command called <i>const</i> to define a constant. Here is its format:</p>
+          <p id="code">const &lt;constant name&gt; = &lt;constant value&gt;</p>
+          <p>Let’s define a constant with name <i>radius</i> and value <i>5</i>. We’ll peek an example with circle.<p>
           <p id="code">&larr; const radius = 5</p>
-          <p id="code">&rarr; Constant ‘radius’ now means ‘5’</p>
+          <p id="code">&rarr; Constant declared: radius = 5</p>
           <p id="code">&larr; pi * (radius ^ 2)</p>
-          <p id="code">&rarr; 78.539816339744831</p>
+          <p id="code">&rarr; pi × radius ^ 2 = 78.5398.</p>
+          <p>Constant value can be a number, another constant or even expression; for instance, the following command is absolutely correct:</p>
+          <p id="code">&larr; const square = pi * (5 ^ 2)</p>
+          <p id="code">&rarr; Constant declared: square = 78.5398.</p>
 
   </body>
 
