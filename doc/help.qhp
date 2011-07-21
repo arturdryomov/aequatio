@@ -10,10 +10,10 @@
     <toc>
       <section title="Aequatio Help" ref="html/index.html">
         <section title="Constants" ref="html/constants.html">
-          <section title="Internal Constants" ref="html/intconstants.html"></section>
+          <section title="Built-in Constants" ref="html/builtin-constants.html"></section>
         </section>
         <section title="Functions" ref="html/functions.html">
-          <section title="Internal Functions" ref="html/intfunctions.html"></section>
+          <section title="Built-in Functions" ref="html/builtin-functions.html"></section>
         </section>
       </section>
     </toc>
@@ -22,15 +22,15 @@
       <keyword name="Constants" ref="html/constants.html#title" />
       <keyword name="Constants Brief" ref="html/constants.html#brief" />
       <keyword name="Constants Using" ref="html/constants.html#using" />
-      <keyword name="Internal Constants Using" ref="html/constants.html#internal" />
+      <keyword name="Built-in Constants Using" ref="html/constants.html#builtin" />
       <keyword name="User-defined Constants Using" ref="html/constants.html#user-defined" />
-      <keyword name="Internal Constants" ref="html/intconstants.html#title" />
+      <keyword name="Built-in Constants" ref="html/intconstants.html#title" />
       <keyword name="Functions" ref="html/functions.html#title" />
       <keyword name="Functions Brief" ref="html/functions.html#brief" />
       <keyword name="Functions Using" ref="html/functions.html#using" />
-      <keyword name="Internal Functions Using" ref="html/functions.html#internal" />
+      <keyword name="Built-in Functions Using" ref="html/functions.html#builtin" />
       <keyword name="User-defined Functions Using" ref="html/functions.html#user-defined" />
-      <keyword name="Internal Functions" ref="html/intfunctions.html#title" />
+      <keyword name="Built-in Functions" ref="html/intfunctions.html#title" />
     </keywords>
     <files>
       <file>html/css/*.css</file>
