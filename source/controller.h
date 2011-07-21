@@ -37,6 +37,7 @@ private:
 	SyntaxAnalyzer *m_syntaxAnalyzer;
 
 	bool isHelpAvailable();
+	QString versionRevisionFromNumber(int number);
 };
 
 #endif // CONTROLLER_H

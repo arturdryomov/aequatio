@@ -30,6 +30,11 @@ void Controller::release()
 int Controller::runApplication(int argc, char *argv[])
 {
 	Application a(argc, argv);
+	a.setApplicationVersion(QString("%1.%2.%3 %4")
+		.arg(VERSION_MAJOR)
+		.arg(VERSION_MINOR)
+		.arg(VERSION_BUILD)
+		.arg(versionRevisionFromNumber(VERSION_REVISION)));
 	
 	// set codecs to unicode
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf8"));
@@ -196,4 +201,21 @@ Controller::Controller(QObject *parent) :
 
 Controller::~Controller()
 {
+}
+
+QString Controller::versionRevisionFromNumber(int number)
+{
+	if ((number > 9999) || (number < 1000)) return QString();
+
+	int firstNumber = number / 1000;
+	int secondNumber = (number / 100) % 10;
+
+	switch (firstNumber) {
+		case 1: return "Dev";
+		case 2: return QString("Pre %1").arg(secondNumber);
+		case 3: return QString("Alpha %1").arg(secondNumber);
+		case 4: return QString("Beta %1").arg(secondNumber);
+		case 5: return QString("Release Candidate %1").arg(secondNumber);
+		default: return QString();
+	}
 }

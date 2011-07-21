@@ -4,6 +4,21 @@ TARGET = Aequatio
 TEMPLATE = app
 CONFIG += help
 
+DEFINES += "VERSION_MAJOR=0"
+DEFINES += "VERSION_MINOR=1"
+DEFINES += "VERSION_BUILD=0"
+DEFINES += "VERSION_REVISION=1000"
+
+# VERSION_REVISION has following meaning:
+#   1xxx - dev build
+#   2axx - pre-release a
+#   3axx - alpha a
+#   4axx - beta a
+#   5axx - RC a
+#   9xxx - release
+#   6xxx-8xxx - reserved
+
+
 mac {
 	ICON = appicon/Aequatio.icns
 }
