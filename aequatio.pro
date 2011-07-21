@@ -1,6 +1,6 @@
 QT	+= core gui
 
-TARGET = Aequatio
+TARGET = aequatio
 TEMPLATE = app
 CONFIG += help
 
