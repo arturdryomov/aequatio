@@ -10,14 +10,14 @@
     <x>0</x>
     <y>0</y>
     <width>484</width>
-    <height>267</height>
+    <height>271</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>About Aequatio</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../aequatio.qrc">
+   <iconset>
     <normaloff>:/images/appicon.png</normaloff>:/images/appicon.png</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
@@ -53,7 +53,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../aequatio.qrc">:/images/appicon.png</pixmap>
+        <pixmap resource="../resource/icons/aequatio.qrc">:/images/linux/aequatio.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -120,7 +120,7 @@ Artur Dryomov, Dmitry Savchenko.
   </layout>
  </widget>
  <resources>
-  <include location="../aequatio.qrc"/>
+  <include location="../resource/icons/aequatio.qrc"/>
  </resources>
  <connections/>
 </ui>

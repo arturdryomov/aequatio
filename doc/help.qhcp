@@ -3,7 +3,7 @@
 	<assistant>
 		<title>Aequatio Help</title>
 		<startPage>qthelp://aequatio/html/html/index.html</startPage>
-		<applicationIcon>../appicon/32.png</applicationIcon>
+		<applicationIcon>../resource/icons/linux/aequatio.png</applicationIcon>
 		<enableFilterFunctionality>false</enableFilterFunctionality>
 		<enableDocumentationManager>false</enableDocumentationManager>
 		<enableAddressBar visible="false">false</enableAddressBar>
@@ -11,8 +11,7 @@
 			<text>About</text>
 		</aboutMenuText>
 		<aboutDialog>
-			<file>about.txt</file>
-			<icon>../appicon/256.png</icon>
+			<icon>../resource/icons/linux/aequatio.png</icon>
 		</aboutDialog>
 	</assistant>
 	<docFiles>
