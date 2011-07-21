@@ -6,7 +6,6 @@
 HelpBrowser::HelpBrowser(QHelpEngine *helpEngine, QWidget *parent) :
 	QTextBrowser(parent), m_helpEngine(helpEngine)
 {
-	this->setOpenExternalLinks(true);
 }
 
 QVariant HelpBrowser::loadResource(int type, const QUrl &name)
