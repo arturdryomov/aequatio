@@ -141,6 +141,11 @@ void Controller::constantsAndFunctionsUpdated()
 
 void Controller::launchHelp()
 {
+	if (!QFileInfo(helpFilename).exists()) {
+		QMessageBox::information(m_mainWindow, "Aequatio", tr("Help is not available"));
+		return;
+	}
+
 	if (!isHelpAvailable()) {
 		QMessageBox::warning(m_mainWindow, "Aequatio", tr("Help is not available."));
 		return;
