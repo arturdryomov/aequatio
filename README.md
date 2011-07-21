@@ -1,9 +1,14 @@
 # Aequatio
 
-## About
+## What is it
 
-### What is it
-Aequatio is our university math project for learning and practicing programming and other cool things such as Git.
+Aequatio is a simple math tool, that helps you to calculate your estimations.
 
-### What does aequatio mean
-It goes from latin language and means equation.
+“Aequatio” itself is a latin word and it means “equation”, so Aequatio tries to follow meaning of its name.
+
+Aequatio is open source software, it’s distributed under the terms of BSD License.
+
+## How to get it
+
+You can see source files here. Also you can get install packages for Linux 
+(Ubuntu, Arch), Windows and Mac OS X [here](https://code.google.com/p/aequatio-package/).
