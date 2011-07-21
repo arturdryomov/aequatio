@@ -2,10 +2,11 @@ DOC = help
 
 help.target = doc
 
-linux | unix | mac {
+linux | unix {
 	help.commands = \
-		mv $$PWD/$${DOC}.qch $$DESTDIR/$${DOC}.qch && \
-		mv $$PWD/$${DOC}.qhc $$DESTDIR/$${DOC}.qhc
+		mkdir -p $$OUT_PWD/share/doc/aequatio/ && \
+		mv $$PWD/$${DOC}.qch $$OUT_PWD/share/doc/aequatio/$${DOC}.qch && \
+		mv $$PWD/$${DOC}.qhc $$OUT_PWD/share/doc/aequatio/$${DOC}.qhc
 }
 
 win32 {

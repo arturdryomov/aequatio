@@ -6,7 +6,11 @@
 #include <QWidget>
 #include <QtGui>
 
-const QString helpFilename = "help.qhc";
+#ifdef Q_WS_X11
+	const QString helpFilename = "../share/doc/aequatio/help.qhc";
+#else
+	const QString helpFilename = "help.qhc";
+#endif
 
 class HelpWindow : public QDialog
 {
