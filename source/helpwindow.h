@@ -17,7 +17,7 @@ const QString helpFilename = "help.qhc";
 #endif
 
 #ifdef Q_WS_WIN
-	const QString helpPath = "\\help\\";
+	const QString helpPath = "/help/";
 #endif
 
 class HelpWindow : public QDialog
