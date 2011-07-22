@@ -36,7 +36,7 @@ private:
 	QHelpEngine *m_helpEngine;
 	SyntaxAnalyzer *m_syntaxAnalyzer;
 
-	bool isHelpAvailable();
+	bool isHelpAvailable(QString helpFullPath);
 	QString versionRevisionFromNumber(int number);
 };
 

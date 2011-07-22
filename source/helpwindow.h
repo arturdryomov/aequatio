@@ -6,10 +6,18 @@
 #include <QWidget>
 #include <QtGui>
 
+const QString helpFilename = "help.qhc";
+
 #ifdef Q_WS_X11
-	const QString helpFilename = "../share/doc/aequatio/help.qhc";
-#else
-	const QString helpFilename = "help.qhc";
+	const QString helpPath = "/../share/doc/aequatio/";
+#endif
+
+#ifdef Q_WS_MAC
+	const QString helpPath = "/../Resources/doc/";
+#endif
+
+#ifdef Q_WS_WIN
+	const QString helpPath = "\\help\\";
 #endif
 
 class HelpWindow : public QDialog

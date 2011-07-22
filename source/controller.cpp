@@ -141,12 +141,14 @@ void Controller::constantsAndFunctionsUpdated()
 
 void Controller::launchHelp()
 {
-	if (!QFileInfo(helpFilename).exists()) {
+	QString helpFullPath = qApp->applicationDirPath() + helpPath + helpFilename;
+
+	if (!QFileInfo(helpFullPath).exists()) {
 		QMessageBox::information(m_mainWindow, "Aequatio", tr("Help is not available"));
 		return;
 	}
 
-	if (!isHelpAvailable()) {
+	if (!isHelpAvailable(helpFullPath)) {
 		QMessageBox::warning(m_mainWindow, "Aequatio", tr("Help is not available."));
 		return;
 	}
@@ -159,9 +161,9 @@ void Controller::launchHelp()
 	m_helpWindow->activateWindow();
 }
 
-bool Controller::isHelpAvailable()
+bool Controller::isHelpAvailable(QString helpFullPath)
 {
-	QHelpEngine helpEngine(helpFilename);
+	QHelpEngine helpEngine(helpFullPath);
 	return helpEngine.setupData();
 }
 

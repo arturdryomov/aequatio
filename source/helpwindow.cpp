@@ -8,7 +8,7 @@
 
 HelpWindow::HelpWindow(QWidget *parent, Qt::WindowFlags f) :
 	QDialog(parent, f),
-	m_helpEngine(new QHelpEngine(helpFilename, this))
+	m_helpEngine(new QHelpEngine(qApp->applicationDirPath() + helpPath + helpFilename, this))
 {
 	m_helpEngine->setupData();
 

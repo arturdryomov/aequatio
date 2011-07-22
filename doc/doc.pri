@@ -9,13 +9,21 @@ linux | unix {
 		mv $$PWD/$${DOC}.qhc $$OUT_PWD/share/doc/aequatio/$${DOC}.qhc
 }
 
+mac {
+	help.commands = \
+		mkdir -p $$OUT_PWD/Resources/doc/ && \
+		mv $$PWD/$${DOC}.qch $$OUT_PWD/Resources/doc/$${DOC}.qch && \
+		mv $$PWD/$${DOC}.qhc $$OUT_PWD/Resources/doc/$${DOC}.qhc
+}
+
 win32 {
 	SOURCEDIR_WIN = $$PWD
 	SOURCEDIR_WIN ~= s,/,\\,g
-	DESTDIR_WIN = $$DESTDIR
+	DESTDIR_WIN = $$DESTDIR/help
 	DESTDIR_WIN ~= s,/,\\,g
 
 	help.commands = \
+		cmd /C if not exist $${DESTDIR_WIN} (mkdir $${DESTDIR_WIN}) && \
 		cmd /C move /Y $${SOURCEDIR_WIN}\\$${DOC}.qch $${DESTDIR_WIN}\\$${DOC}.qch && \
 		cmd /C move /Y $${SOURCEDIR_WIN}\\$${DOC}.qhc $${DESTDIR_WIN}\\$${DOC}.qhc
 }
