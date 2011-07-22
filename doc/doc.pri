@@ -2,7 +2,7 @@ DOC = help
 
 help.target = doc
 
-linux | unix {
+linux {
 	help.commands = \
 		mkdir -p $$OUT_PWD/share/doc/aequatio/ && \
 		mv $$PWD/$${DOC}.qch $$OUT_PWD/share/doc/aequatio/$${DOC}.qch && \
@@ -11,9 +11,9 @@ linux | unix {
 
 mac {
 	help.commands = \
-		mkdir -p $$OUT_PWD/Resources/doc/ && \
-		mv $$PWD/$${DOC}.qch $$OUT_PWD/Resources/doc/$${DOC}.qch && \
-		mv $$PWD/$${DOC}.qhc $$OUT_PWD/Resources/doc/$${DOC}.qhc
+		mkdir -p $$DESTDIR/$${TARGET}.app/Contents/Resources/doc && \
+		mv $$PWD/$${DOC}.qch $$DESTDIR/$${TARGET}.app/Contents/Resources/doc/$${DOC}.qch && \
+		mv $$PWD/$${DOC}.qhc $$DESTDIR/$${TARGET}.app/Contents/Resources/doc/$${DOC}.qhc
 }
 
 win32 {
