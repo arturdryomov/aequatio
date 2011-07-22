@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->actionHelp, SIGNAL(triggered()), SIGNAL(helpLaunchQueried()));
 	connect(ui->actionDebug_Log, SIGNAL(triggered()), SIGNAL(logviewLaunch()));
 
-	setWindowIcon(QIcon(":/images/appicon.png"));
+	setWindowIcon(QIcon(":/images/linux/aequatio.png"));
 	ui->errorInformationLabel->hide();
 	ui->actionShowFunctionsAndConstants->setChecked(false); // hide sidebar
 	ui->consoleEdit->append(tr("→ You are welcome to Aequatio! Enter math expression, please…"));
