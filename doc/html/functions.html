@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+    <title>Aequatio Help</title>
+
+    <link rel="stylesheet" type="text/css" href="css/master.css" />
+  </head>
+
+  <body>
+
+    <a name="title"><h1>Functions</h1></a>
+
+      <a name="brief"><h2>Brief</h2></a>
+
+        <p>Aequatio allows using functions in calculations.</p>
+        <p>There are two types of functions: built-in and user-defined. You can use both of them by simply typing name of a function with arguments in brackets.</p>
+
+      <a name="using"><h2>Using</h2></a>
+
+        <a name="builtin"><h3>Built-in Functions</h3></a>
+
+          <p>For example, we have internal function named <i>sin</i> and want to calculate sine of <i>2.4&nbsp;rad</i>.</p>
+          <p>We type the command:</p>
+          <p id="code">&larr; sin(2.4)</p>
+          <p>And Aequatio gives us the solution:</p>
+          <p id="code">sin(2.4) = 0.675463</p>
+          <p>There is a <a href="builtin-functions.html">list</a> of built-in functions.</p>
+
+        <a name="user-defined"><h3>User-defined Functions</h3></a>
+
+          <p>Using user-defined functions is the same as using built-in ones, except that you should previously define a function.<p>
+          <p>There is a special command called <i>func</i> to define a function. Here is its format:</p>
+          <p id="code">func &lt;function name&gt;(&lt;argument1&gt;, &lt;argument2&gt;,&nbsp;...) = &lt;operations that use arguments&gt;</p>
+          <p>Let’s define a function with name <i>radius</i>. We’ll peek an example with circle square.<p>
+          <p id="code">&larr; func radius(x) = pi * (x ^ 2)</p>
+          <p id="code">&rarr; Function declared: radius(x) = pi × x ^ 2</p>
+          <p id="code">&larr; radius(5)</p>
+          <p id="code">&rarr; radius(5) = 78.5398.</p>
+
+  </body>
+
+</html>

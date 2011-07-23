@@ -17,6 +17,7 @@ enum LexemeType {
 	LexemeClosingBracket,
 	LexemePower,
 	LexemeEqual,
+	LexemeComma,
 	LexemeIdentifier,
 	LexemeConst,
 	LexemeFunc,
@@ -34,18 +35,11 @@ class LexicalAnalyzer : public QObject
 public:
 	LexicalAnalyzer(QObject *parent = 0);
 	~LexicalAnalyzer();
+
 	void parse(const QString &input);
 	Lexeme lexeme();
 	void nextLexeme();
 	void previousLexeme();
-	class Exception
-	{
-	public:
-		explicit Exception(const QString &message) : m_message(message) {}
-		QString message() { return m_message; }
-	private:
-		QString m_message;
-	};
 private:
 	QString m_input;
 	int m_position;	
@@ -55,7 +49,7 @@ private:
 
 	void initializeReservedWords();
 	void skipWhitespace();
-	Lexeme EndLexeme();
+	Lexeme endLexeme();
 	void extractLexeme();
 	void extractIdentifier();
 	void extractNumber();
@@ -63,6 +57,7 @@ private:
 	void extractBracket();
 	void extractPower();
 	void extractEqual();
+	void extractComma();
 	void pushLexeme(LexemeType, QString);
 };
 
@@ -76,12 +71,16 @@ public:
 	static bool isSign(QChar);
 	static bool isBracket(QChar);
 	static bool isPower(QChar);
+	static bool isComma(QChar);
 	static bool isDigit(QChar);
 	static bool isLetter(QChar);
 	static bool isUnderscore(QChar);
 	static bool isLetterOrUnderscore(QChar);
 	static bool isEqual(QChar);
+	static bool isPlus(QChar);
+	static bool isMinus(QChar);
+	static bool isMultiply(QChar);
+	static bool isDivide(QChar);
 };
 
 #endif // LEXICALANALYZER_H
-

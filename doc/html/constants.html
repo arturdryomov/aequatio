@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+    <title>Aequatio Help</title>
+
+    <link rel="stylesheet" type="text/css" href="css/master.css" />
+  </head>
+
+  <body>
+
+    <a name="title"><h1>Constants</h1></a>
+
+      <a name="brief"><h2>Brief</h2></a>
+
+        <p>Aequatio allows using constants in calculations.</p>
+        <p>There are two types of constants: built-in and user-defined. You can use both of them by simply typing name of a constant.</p>
+
+      <a name="using"><h2>Using</h2></a>
+
+        <a name="builtin"><h3>Built-in Constants</h3></a>
+
+          <p>For example, we have built-in constant named <i>pi</i> and want to calculate circle square with radius <i>5</i>.</p>
+          <p>We type the command:</p>
+          <p id="code">&larr; pi * (5 ^ 2)</p>
+          <p>And Aequatio gives us the solution:</p>
+          <p id="code">&rarr; pi × 5 ^ 2 = 78.5398</p>
+          <p>There is a <a href="builtin-constants.html">list</a> of built-in constants.</p>
+
+        <a name="user-defined"><h3>User-defined Constants</h3></a>
+
+          <p>Using user-defined constants is the same as using built-in ones, except that you should previously define a constant.<p>
+          <p>There is a special command called <i>const</i> to define a constant. Here is its format:</p>
+          <p id="code">const &lt;constant name&gt; = &lt;constant value&gt;</p>
+          <p>Let’s define a constant with name <i>radius</i> and value <i>5</i>. We’ll peek an example with circle.<p>
+          <p id="code">&larr; const radius = 5</p>
+          <p id="code">&rarr; Constant declared: radius = 5</p>
+          <p id="code">&larr; pi * (radius ^ 2)</p>
+          <p id="code">&rarr; pi × radius ^ 2 = 78.5398.</p>
+          <p>Constant value can be a number, another constant or even expression; for instance, the following command is absolutely correct:</p>
+          <p id="code">&larr; const square = pi * (5 ^ 2)</p>
+          <p id="code">&rarr; Constant declared: square = 78.5398.</p>
+
+  </body>
+
+</html>

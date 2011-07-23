@@ -1,4 +1,5 @@
 #include "lexicalanalyzer.h"
+#include "parsingexceptions.h"
 
 LexicalAnalyzer::LexicalAnalyzer(QObject *parent) :
 	QObject(parent),
@@ -20,7 +21,7 @@ Lexeme LexicalAnalyzer::lexeme()
 		return m_lexemeListIterator->peekNext();
 	}
 	else {
-		return EndLexeme();
+		return endLexeme();
 	}
 }
 
@@ -41,10 +42,10 @@ void LexicalAnalyzer::previousLexeme()
 void LexicalAnalyzer::parse(const QString &input)
 {
 	m_lexemeList.clear();
-	m_input = input;
+	m_input = input.trimmed();
 	
 	if (m_input.isEmpty()) {
-		throw Exception(tr("Input is empty"));
+		THROW(EEmptyInput());
 	}
 
 	m_position = 0;
@@ -61,7 +62,7 @@ void LexicalAnalyzer::parse(const QString &input)
 	
 	// ensure there are lexemes
 	if (m_lexemeList.isEmpty()) {
-		throw Exception(tr("Lexeme list is empty"));
+		THROW(EInternal());
 	}	
 	
 	// create new constant iterator for lexemes
@@ -79,26 +80,31 @@ void LexicalAnalyzer::initializeReservedWords()
 
 void LexicalAnalyzer::extractLexeme()
 {
-	if (CheckChar::isDigit(m_input.at(m_position))) {
+	QChar current = m_input.at(m_position);
+
+	if (CheckChar::isDigit(current)) {
 		extractNumber();
 	}
-	else if (CheckChar::isOperation(m_input.at(m_position))) {
+	else if (CheckChar::isOperation(current)) {
 		extractOperation();
 	}
-	else if (CheckChar::isBracket(m_input.at(m_position))) {
+	else if (CheckChar::isBracket(current)) {
 		extractBracket();
 	}
-	else if (CheckChar::isPower(m_input.at(m_position))) {
+	else if (CheckChar::isPower(current)) {
 		extractPower();
 	}
-	else if (CheckChar::isEqual(m_input.at(m_position))) {
+	else if (CheckChar::isEqual(current)) {
 		extractEqual();
 	}
-	else if (CheckChar::isLetterOrUnderscore(m_input.at(m_position))) {
+	else if (CheckChar::isComma(current)) {
+		extractComma();
+	}
+	else if (CheckChar::isLetterOrUnderscore(current)) {
 		extractIdentifier();
 	}
 	else {
-		throw Exception(tr("Lexeme type is not supported"));
+		THROW(EIncorrectCharacter(current));
 	}
 }
 
@@ -109,20 +115,20 @@ void LexicalAnalyzer::extractIdentifier()
 
 	while ( (m_position <= inputLength) &&
 		( (CheckChar::isDigit(m_input.at(m_position))) ||
-			(CheckChar::isLetterOrUnderscore(m_input.at(m_position))) ) ) {
+		(CheckChar::isLetterOrUnderscore(m_input.at(m_position))) ) ) {
 		m_position++;
 	}
 
-	QString tempIdentifier = m_input.mid(startPosition, m_position - startPosition);
+	QString identifier = m_input.mid(startPosition, m_position - startPosition);
 
-	if (!tempIdentifier.isNull()) {
-		if (m_reservedWords.contains(tempIdentifier)) {
-			LexemeType lexemeType = m_reservedWords.value(tempIdentifier);
+	if (!identifier.isNull()) {
+		if (m_reservedWords.contains(identifier)) {
+			LexemeType lexemeType = m_reservedWords.value(identifier);
 			pushLexeme(lexemeType, QString());
 		}
 		else {
 			LexemeType lexemeType = LexemeIdentifier;
-			pushLexeme(lexemeType, tempIdentifier);
+			pushLexeme(lexemeType, identifier);
 		}
 	}
 }
@@ -139,7 +145,7 @@ void LexicalAnalyzer::extractNumber()
 	if ( (m_position < inputLength) && (CheckChar::isSeparator(m_input.at(m_position))) ) {
 		m_position++;
 		if ( (m_position > inputLength) || (!CheckChar::isDigit(m_input.at(m_position))) )  {
-			throw Exception(tr("Must be number after dot"));
+			THROW(ELexemeExpected("Number after dot"))
 		}
 		while ( (m_position <= inputLength) && (CheckChar::isDigit(m_input.at(m_position))) ) {
 			m_position++;
@@ -149,15 +155,15 @@ void LexicalAnalyzer::extractNumber()
 	if ( (m_position <= inputLength) && (CheckChar::isExponent(m_input.at(m_position))) ) {
 		m_position++;
 		if (m_position > inputLength) {
-			throw Exception(tr("Must be number or sign after exponent sign"));
+			THROW(ELexemeExpected("Number or sign after exponent character"))
 		}
 		if (CheckChar::isSign(m_input.at(m_position))) {
 			m_position++;
 		}
 		if ( (m_position > inputLength) || (!CheckChar::isDigit(m_input.at(m_position))) ) {
-			throw Exception(tr("Must be number or sign after exponent sign"));
+			THROW(ELexemeExpected("Number or sign after exponent character"))
 		}
-		while ( (m_position < inputLength) && (CheckChar::isDigit(m_input.at(m_position))) ) {
+		while ( (m_position <= inputLength) && (CheckChar::isDigit(m_input.at(m_position))) ) {
 			m_position++;
 		}
 	}
@@ -172,22 +178,25 @@ void LexicalAnalyzer::extractNumber()
 
 void LexicalAnalyzer::extractOperation()
 {
-	QString tempOperation = m_input.mid(m_position, 1);
+	QChar operation = m_input.at(m_position);
 	LexemeType lexemeType;
-	if (tempOperation == "+") {
+	if (CheckChar::isPlus(operation)) {
 		lexemeType = LexemePlus;
 	}
-	else if (tempOperation == "-") {
+	else if (CheckChar::isMinus(operation)) {
 		lexemeType = LexemeMinus;
 	}
-	else if (tempOperation == "*") {
+	else if (CheckChar::isMultiply(operation)) {
 		lexemeType = LexemeMultiply;
 	}
-	else if (tempOperation == "/") {
+	else if (CheckChar::isDivide(operation)) {
 		lexemeType = LexemeDivide;
 	}
+	else if (CheckChar::isPower(operation)) {
+		lexemeType = LexemePower;
+	}
 	else {
-		throw Exception(tr("Operation is not supported"));
+		THROW(EUnsupportedLexeme("Operation"));
 	}
 
 	pushLexeme(lexemeType, QString());
@@ -196,16 +205,16 @@ void LexicalAnalyzer::extractOperation()
 
 void LexicalAnalyzer::extractBracket()
 {
-	QString tempBracket = m_input.mid(m_position, 1);
+	QString bracket = m_input.mid(m_position, 1);
 	LexemeType lexemeType;
-	if (tempBracket == "(") {
+	if (bracket == "(") {
 		lexemeType = LexemeOpeningBracket;
 	}
-	else if (tempBracket == ")") {
+	else if (bracket == ")") {
 		lexemeType = LexemeClosingBracket;
 	}
 	else {
-		throw Exception(tr("Bracket type is not supported"));
+		THROW(EUnsupportedLexeme("Bracket"));
 	}
 
 	pushLexeme(lexemeType, QString());
@@ -214,13 +223,13 @@ void LexicalAnalyzer::extractBracket()
 
 void LexicalAnalyzer::extractPower()
 {
-	QString tempOperation = m_input.mid(m_position, 1);
+	QChar operation = m_input.at(m_position);
 	LexemeType lexemeType;
-	if (tempOperation == "^") {
+	if (CheckChar::isPower(operation)) {
 		lexemeType = LexemePower;
 	}
 	else {
-		throw Exception(tr("Power type is not supported"));
+		THROW(EUnsupportedLexeme("Power"));
 	}
 
 	pushLexeme(lexemeType, QString());
@@ -229,25 +238,40 @@ void LexicalAnalyzer::extractPower()
 
 void LexicalAnalyzer::extractEqual()
 {
-	QString tempOperation = m_input.mid(m_position, 1);
+	QChar operation = m_input.at(m_position);
 	LexemeType lexemeType;
-	if (tempOperation == "=") {
+	if (CheckChar::isEqual(operation)) {
 		lexemeType = LexemeEqual;
 	}
 	else {
-		throw Exception(tr("Equal type is not supported"));
+		THROW(EUnsupportedLexeme("Equal sign"));
 	}
 
 	pushLexeme(lexemeType, QString());
 	m_position++;
 }
 
+void LexicalAnalyzer::extractComma()
+{
+	QChar operation = m_input.at(m_position);
+	LexemeType lexemeType;
+	if (CheckChar::isComma(operation)) {
+		lexemeType = LexemeComma;
+	}
+	else {
+		THROW(EUnsupportedLexeme("Comma"));
+	}
+
+	pushLexeme(lexemeType, QString());
+	m_position++;	
+}
+
 void LexicalAnalyzer::pushLexeme(LexemeType lexemeType, QString lexemeData)
 {
-	Lexeme tempLexeme;
-	tempLexeme.type = lexemeType;
-	tempLexeme.value = lexemeData;
-	m_lexemeList.append(tempLexeme);
+	Lexeme lexeme;
+	lexeme.type = lexemeType;
+	lexeme.value = lexemeData;
+	m_lexemeList.append(lexeme);
 }
 
 void LexicalAnalyzer::skipWhitespace()
@@ -262,7 +286,7 @@ void LexicalAnalyzer::skipWhitespace()
 	}
 }
 
-Lexeme LexicalAnalyzer::EndLexeme()
+Lexeme LexicalAnalyzer::endLexeme()
 {
 	Lexeme result = {LexemeEol, QString()};
 	return result;
@@ -272,57 +296,45 @@ Lexeme LexicalAnalyzer::EndLexeme()
 
 bool CheckChar::isSeparator(QChar c)
 {
-	QList<QChar> separators;
-	separators << '.';
-	return separators.contains(c);
+	return c == '.';
 }
 
 bool CheckChar::isSpace(QChar c)
 {
-	QList<QChar> spaces;
-	spaces << ' ';
-	return spaces.contains(c);
+	return c == ' ';
 }
 
 bool CheckChar::isExponent(QChar c)
 {
-	QList<QChar> exponents;
-	exponents << 'e' << 'E';
+	QString exponents = "eE";
 	return exponents.contains(c);
 }
 
 bool CheckChar::isOperation(QChar c)
 {
-	QList<QChar> operations;
-	operations << '+' << '-' << '*' << '/';
-	return operations.contains(c);
+	return isMinus(c) || isPlus(c) || isMultiply(c) || isDivide(c) || isPower(c);
 }
 
 bool CheckChar::isSign(QChar c)
 {
-	QList<QChar> signs;
-	signs << '+' << '-';
+	QString signs = "+-";
 	return signs.contains(c);
 }
 
 bool CheckChar::isBracket(QChar c)
 {
-	QList<QChar> brackets;
-	brackets << '(' << ')';
+	QString brackets = "()";
 	return brackets.contains(c);
 }
 
 bool CheckChar::isPower(QChar c)
 {
-	QList<QChar> powers;
-	powers << '^';
-	return powers.contains(c);
+	return c == '^';
 }
 
 bool CheckChar::isDigit(QChar c)
 {
-	QList<QChar> digits;
-	digits << '1' << '2' << '3' << '4' << '5' << '6' << '7' << '8' << '9' << '0';
+	QString digits = "1234567890";
 	return digits.contains(c);
 }
 
@@ -348,14 +360,40 @@ bool CheckChar::isLetter(QChar c)
 
 bool CheckChar::isUnderscore(QChar c)
 {
-	QList<QChar> underscores;
-	underscores << '_';
-	return underscores.contains(c);
+	return c == '_';
 }
 
 bool CheckChar::isEqual(QChar c)
 {
-	QList<QChar> equals;
-	equals << '=';
-	return equals.contains(c);
+	return c == '=';
+}
+
+bool CheckChar::isComma(QChar c)
+{
+	return c == ',';
+}
+
+bool CheckChar::isPlus(QChar c)
+{
+	return c == '+';
+}
+
+bool CheckChar::isMinus(QChar c)
+{
+	// There are no beautiful way to work with unicode char literals
+	// GCC knows how to do that task, but MSVC++ isn't so cool
+	QString minuses = "-–−—";
+	return minuses.contains(c);
+}
+
+bool CheckChar::isMultiply(QChar c)
+{
+	QString multiplies = "*×";
+	return multiplies.contains(c);
+}
+
+bool CheckChar::isDivide(QChar c)
+{
+	QString divides = "/÷";
+	return divides.contains(c);
 }

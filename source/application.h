@@ -5,9 +5,9 @@
 
 class Application : public QApplication
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    Application(int &argc, char **argv);
+	Application(int &argc, char **argv);
 private:
 	QFont systemFont();
 };

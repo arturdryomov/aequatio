@@ -1,13 +1,22 @@
 #include "mainwindow.h"
-#include "QScrollBar"
 #include "ui_mainwindow.h"
+#include "aboutwindow.h"
+
+#include <QScrollBar>
 
 MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow)
 {
 	ui->setupUi(this);
+	connect(ui->actionHelp, SIGNAL(triggered()), SIGNAL(helpLaunchQueried()));
+	connect(ui->actionDebug_Log, SIGNAL(triggered()), SIGNAL(logviewLaunch()));
+
+	setWindowIcon(QIcon(":/images/linux/aequatio.png"));
+	ui->errorInformationLabel->hide();
+	ui->actionShowFunctionsAndConstants->setChecked(false); // hide sidebar
 	ui->consoleEdit->append(tr("→ You are welcome to Aequatio! Enter math expression, please…"));
+	ui->consoleEdit->append(""); // new line
 	ui->commandEdit->setFocus();	
 }
 
@@ -22,12 +31,26 @@ void MainWindow::resultReturned(const QString &result)
 	ui->consoleEdit->append("→ " + result);
 }
 
-void MainWindow::on_submitButton_clicked()
+void MainWindow::displayErrorInfo(const QString &info)
 {
-	// drop commandEdit text to console and send this text to external code
-	ui->consoleEdit->append("← " + ui->commandEdit->text());
+	ui->errorInformationLabel->setText(info);
+	ui->errorInformationLabel->show();
+}
+
+void MainWindow::hideErrorInfo()
+{
+	ui->errorInformationLabel->hide();
+}
+
+void MainWindow::updateSidebar(const QString &contents)
+{
+	ui->functionsAndConstantsList->setHtml(contents);
+}
+
+void MainWindow::commandEntered()
+{
 	emit commandEntered(ui->commandEdit->text());
-	ui->commandEdit->clear(); 
+	ui->commandEdit->clear();
 	ui->commandEdit->setFocus();
 }
 
@@ -37,3 +60,7 @@ void MainWindow::resizeEvent(QResizeEvent *)
 	ui->consoleEdit->verticalScrollBar()->setValue(ui->consoleEdit->verticalScrollBar()->maximum());
 }
 
+void MainWindow::aboutTriggered()
+{
+	AboutWindow(this).exec();
+}

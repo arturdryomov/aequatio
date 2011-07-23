@@ -1,51 +1,54 @@
 #ifndef SYNTAXANALYZER_H
 #define SYNTAXANALYZER_H
+
+#include "lexicalanalyzer.h"
+#include "exprcalculator.h"
+
 #include <QObject>
 #include <QString>
 #include <QVariant>
-#include <QList>
+#include <QVector>
 #include <QHash>
-#include "lexicalanalyzer.h"
-#include "exprcalculator.h"
+
+
+enum ProcessingResultType {ResultExpressionCalculated, ResultConstantDeclared, ResultFunctionDeclared};
+struct ProcessingResult {
+	ProcessingResultType type;
+	QVariant data; // depends on type, Number, ConstantDescription or FunctionDescription.
+};
 
 class SyntaxAnalyzer : public QObject
 {
 	Q_OBJECT
+signals:
+	void constantsListChanged();
+	void functionsListChanged();
 public:
 	explicit SyntaxAnalyzer(QObject *parent = 0);
 	~SyntaxAnalyzer();
-	
-	QString process(const QString &input);
-	
-	// This exception will be thrown if parsing error occurs.
-	// message() returns error description.
-	class Exception 
-	{
-	public:
-		explicit Exception(const QString &message) : m_message(message) {}
-		QString message() { return m_message; }
-	private:
-		QString m_message;
-	};
 
+	ProcessingResult process(const QString &input);
+	QList<ConstantDescription> constantsList();
+	QList<FunctionDescription> functionsList();
 private:
-	QString command(); // Command = ConstDeclaration | Expression
-	QString constDeclaration(); // ConstDeclaration = 'const' Identifier '=' {Unary Op} Number
-	RpnCodeThread expression(); // Expression = Summand {SummOperator Summand}
-	RpnCodeThread factor(); // Factor = (UnaryOp Factor) | (PowerBase ['^' Factor]) 
-	RpnCodeThread powerBase(); // PowerBase = Number | Constant | '('Expression')'
-	RpnElement multOperation(); // MultOperation = '*' | '/'
-	RpnCodeThread summand(); // Summand = Factor {MultOperator Factor}
-	RpnElement summOperation(); // SummOperation = '+' | '-'
+	ProcessingResult command();
+	ConstantDescription constDeclaration();
+	FunctionDescription functionDeclaration();
+	RpnCodeThread expression();
+	RpnCodeThread function();
+	RpnCodeThread factor();
+	RpnCodeThread powerBase();
+	RpnElement multOperation();
+	RpnCodeThread summand();	
+	RpnElement summOperation();
 	Number number();
-	Number constant(); //Constant = Identifier
-
+	RpnElement constant();	
+	void extractFormalArgument();
 	void ensureNoMoreLexemes();
 	
-	RpnCode *m_rpnCode;
-	LexicalAnalyzer *m_lexicalAnalyzer;	
+	LexicalAnalyzer *m_lexicalAnalyzer;
 	ExprCalculator *m_exprCalculator;
-	QHash<QString, Number> m_consts;
+	QList<QString> m_workingArguments;
 };
 
 class CheckLexeme
@@ -55,6 +58,5 @@ public:
 	static bool isSummOperation(Lexeme lexeme);
 	static bool isUnaryOperation(Lexeme lexeme);
 };
-
 
 #endif // SYNTAXANALYZER_H
