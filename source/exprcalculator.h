@@ -17,9 +17,17 @@ inline QString numberToString(const Number number)
 
 // RPN stands for ‘Reverse Polish notation’
 
+enum RpnArgumentType {ArgumentTypeNumber, ArgumentTypeFunction};
+
+struct RpnArgument {
+	QString name;
+	RpnArgumentType type;
+};
+bool operator ==(const RpnArgument &a1, const RpnArgument &a2);
+
 enum RpnElementType {
 	RpnElementOperand, // operand, value is Number
-	RpnElementArgument,// argument, value is ordinal number of the argument (int) and argument's name (RpnArgumentInfo)
+	RpnElementArgument,// argument, value is of type RpnArgument
 	RpnElementFunction,// function call, value is its name (QString)
 	RpnElementConstant // constant, value is its name (QString)
 };
@@ -33,7 +41,7 @@ struct RpnElement
 typedef QList<RpnElement> RpnCodeThread; // contains linear RPN code to calculate
 
 struct RpnFunction {
-	QList<QString> arguments;
+	QList<RpnArgument> arguments;
 	RpnCodeThread codeThread;
 };
 
@@ -130,6 +138,7 @@ private:
 
 Q_DECLARE_METATYPE(Number)
 Q_DECLARE_METATYPE(RpnElementType)
+Q_DECLARE_METATYPE(RpnArgument)
 Q_DECLARE_METATYPE(ConstantDescription)
 Q_DECLARE_METATYPE(FunctionDescription)
 Q_DECLARE_METATYPE(ExpressionDescription)

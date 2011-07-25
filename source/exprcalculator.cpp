@@ -7,6 +7,12 @@
 #define _USE_MATH_DEFINES
 #include <qmath.h>
 
+bool operator ==(const RpnArgument &a1, const RpnArgument &a2)
+{
+	return (a1.name == a2.name)
+		&& (a1.type == a2.type);
+}
+
 ExprCalculator::ExprCalculator(QObject *parent) : QObject(parent)
 {
 	initializeBuiltInFunctions();
@@ -15,7 +21,7 @@ ExprCalculator::ExprCalculator(QObject *parent) : QObject(parent)
 
 ExpressionDescription ExprCalculator::calculate(const RpnCodeThread &thread)
 {
-	RpnFunction function = {QList<QString>(), thread};
+	RpnFunction function = {QList<RpnArgument>(), thread};
 	m_functions.insert(RpnFunctionMain, function);
 	ExpressionDescription description = {rpnCodeThreadToString(thread),
 		calculateFunction(RpnFunctionMain, QList<Number>())};
@@ -43,7 +49,8 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<Number> fun
 			case RpnElementArgument: {
 				int argumentOrdinalNumber;
 				RpnFunction function = m_functions.value(functionName);
-				argumentOrdinalNumber = function.arguments.indexOf(element.value.toString());
+				RpnArgument argument = element.value.value<RpnArgument>();
+				argumentOrdinalNumber = function.arguments.indexOf(argument);
 				calculationStack.push(functionArguments[argumentOrdinalNumber]);
 				break;
 			}
@@ -141,7 +148,9 @@ FunctionDescription ExprCalculator::functionDescription(const QString &functionN
 	RpnFunction functionCode = m_functions.value(functionName);
 	FunctionDescription description;
 	description.name = functionName;
-	description.arguments = functionCode.arguments;
+	foreach (RpnArgument argument, functionCode.arguments) {
+		description.arguments << argument.name;
+	}
 	description.body = rpnCodeThreadToString(functionCode.codeThread);
 	return description;
 }

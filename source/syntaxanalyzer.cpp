@@ -399,11 +399,12 @@ RpnElement SyntaxAnalyzer::constant()
 {
 	RpnElement result;
 	QString constName = m_lexicalAnalyzer->lexeme().value;
-	
+
 	// it is a formal argument
-	if (m_workingArguments.contains(constName)) {
+	RpnArgument possibleArgument = {constName, ArgumentTypeNumber};
+	if (m_workingArguments.contains(possibleArgument)) {
 		result.type = RpnElementArgument;
-		result.value.setValue(constName);
+		result.value.setValue(possibleArgument);
 	}
 	
 	// it is a constant
@@ -428,10 +429,11 @@ void SyntaxAnalyzer::extractFormalArgument()
 	}
 	
 	QString argumentName = m_lexicalAnalyzer->lexeme().value;
-	if (m_workingArguments.contains(argumentName)) {
+	RpnArgument argument = {argumentName, ArgumentTypeNumber};
+	if (m_workingArguments.contains(argument)) {
 		THROW(EFormalArgumentReused(argumentName));
 	}
-	m_workingArguments.append(argumentName);
+	m_workingArguments.append(argument);
 	
 	m_lexicalAnalyzer->nextLexeme();
 }
