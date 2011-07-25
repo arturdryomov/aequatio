@@ -26,10 +26,11 @@ struct RpnArgument {
 bool operator ==(const RpnArgument &a1, const RpnArgument &a2);
 
 enum RpnElementType {
-	RpnElementOperand, // operand, value is Number
-	RpnElementArgument,// argument, value is of type RpnArgument
-	RpnElementFunction,// function call, value is its name (QString)
-	RpnElementConstant // constant, value is its name (QString)
+	RpnElementOperand,     // operand, value is Number
+	RpnElementArgument,    // argument, value is of type RpnArgument
+	RpnElementFunction,    // function call, value is its name (QString)
+	RpnElementConstant,    // constant, value is its name (QString)
+	RpnElementFunctionName // function name, value is QString; this can be actual argument of ArgumentTypeFunction type
 };
 
 struct RpnElement
@@ -100,6 +101,7 @@ public:
 	bool isFunction(const QString &name);
 	bool isConstant(const QString &name);
 	int functionArgumentsCount(const QString &name);
+	QList<RpnArgumentType> functionArguments(const QString &name);
 
 	QList<ConstantDescription> constantsList();
 	QList<FunctionDescription> functionsList();

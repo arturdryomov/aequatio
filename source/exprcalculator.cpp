@@ -50,8 +50,17 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<ActualArgum
 				break;
 			}
 
+			case RpnElementFunctionName: {
+				ActualArgument operand = {ArgumentTypeFunction, element.value.value<QString>()};
+				calculationStack.push(operand);
+				break;
+			}
+
 			// Get number and push to stack
 			case RpnElementArgument: {
+				// In more common case, RpnArgument::type here is not to be ArgumentTypeNumber.
+				// But now we don't support user-defined functions with functions as arguments.
+				// See note in the beginning of the method.
 				int argumentOrdinalNumber;
 				RpnFunction function = m_functions.value(functionName);
 				RpnArgument argument = element.value.value<RpnArgument>();
@@ -153,7 +162,23 @@ Number ExprCalculator::calculateBuiltInFunction(QString functionName, QList<Actu
 	}
 	else if (functionName == Tangent) {
 		return qTan(functionArguments[0].value.value<Number>());
-	} else {
+	}
+	else if (functionName == "test_new_function") {
+		QString functionToCall = functionArguments[0].value.value<QString>();
+		QList<ActualArgument> calledFunctionArguments;
+		calledFunctionArguments << functionArguments[1];
+
+		if (m_functions.contains(functionToCall)) {
+			return calculateFunction(functionToCall, calledFunctionArguments);
+		}
+		else if (m_builtInFunctions.contains(functionToCall)) {
+			return calculateBuiltInFunction(functionToCall, calledFunctionArguments);
+		}
+		else {
+			THROW(EInternal());
+		}
+	}
+	else {
 		THROW(EIncorrectRpnCode());
 	}
 	
@@ -191,6 +216,10 @@ QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
 				part.text = numberToString(element.value.value<Number>());
 				part.priority = PriorityHighest;
 				break;
+
+			case RpnElementFunctionName:
+				part.text = element.value.value<QString>();
+				part.priority = PriorityHighest;
 
 			case RpnElementConstant:
 				part.text = element.value.toString();
@@ -348,6 +377,24 @@ int ExprCalculator::functionArgumentsCount(const QString &name)
 	}
 }
 
+QList<RpnArgumentType> ExprCalculator::functionArguments(const QString &name)
+{
+	if (!isFunction(name)) {
+		THROW(EIncorrectRpnCode());
+	}
+
+	if (m_functions.contains(name)) {
+		QList<RpnArgumentType> result;
+		foreach (RpnArgument argument, m_functions.value(name).arguments) {
+			result << argument.type;
+		}
+		return result;
+	}
+	else {
+		return m_builtInFunctions.value(name);
+	}
+}
+
 QList<ConstantDescription> ExprCalculator::constantsList()
 {
 	QList<ConstantDescription> constantsList;
@@ -398,6 +445,9 @@ void ExprCalculator::initializeBuiltInFunctions()
 	m_builtInFunctions.insert(RpnFunctionDivide, arguments);
 	m_builtInFunctions.insert(RpnFunctionPower, arguments);
 
+	arguments.clear();
+	arguments << ArgumentTypeFunction << ArgumentTypeNumber;
+	m_builtInFunctions.insert("test_new_function", arguments);
 }
 
 void ExprCalculator::initializeBuiltInConstants()

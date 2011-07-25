@@ -188,9 +188,9 @@ RpnCodeThread SyntaxAnalyzer::function()
 		THROW(EInternal());
 	}	
 	QString functionName = m_lexicalAnalyzer->lexeme().value;		
-	int formalArgumentsCount;
+	QList<RpnArgumentType> formalArguments;
 	if (m_exprCalculator->isFunction(functionName)) {
-		formalArgumentsCount = m_exprCalculator->functionArgumentsCount(functionName);
+		formalArguments = m_exprCalculator->functionArguments(functionName);
 	} 	
 	else {
 		THROW(EUndeclaredUsed(functionName, EUndeclaredUsed::Function));
@@ -201,22 +201,39 @@ RpnCodeThread SyntaxAnalyzer::function()
 		THROW(ELexemeExpected(tr("Opening bracket after function name")));
 	}
 	
-	// Parse actual arguments and add them to tread. 
+	// Parse actual arguments and add them to thread.
 	// Ensure their count equals formal arguments count
-	int actualArgumentsCount = 0;
+
+	int actualArgumentIndex = 0;
 	do {
 		m_lexicalAnalyzer->nextLexeme();
-		result << expression();
-		actualArgumentsCount++;
-		if (actualArgumentsCount > formalArgumentsCount) {
-			THROW(EWrongArgumentsCount(functionName, formalArgumentsCount, actualArgumentsCount));
-		}		
+		if (actualArgumentIndex >= formalArguments.count()) {
+			// TODO: actualArgumentIndex is not equal to actual argument count here, tweak
+			THROW(EWrongArgumentsCount(functionName, formalArguments.count(), actualArgumentIndex));
+		}
+
+		switch (formalArguments.at(actualArgumentIndex)) {
+			case ArgumentTypeNumber: {
+				result << expression();
+				break;
+			}
+			case ArgumentTypeFunction: {
+				if (m_lexicalAnalyzer->lexeme().type != LexemeIdentifier) {
+					THROW(ELexemeExpected(tr("Function name")));
+				}
+				RpnElement rpnElement = {RpnElementFunctionName, m_lexicalAnalyzer->lexeme().value};
+				result << rpnElement;
+				m_lexicalAnalyzer->nextLexeme();
+				break;
+			}
+			default:
+				THROW(EInternal());
+		}
+
+		++actualArgumentIndex;
 	} while (m_lexicalAnalyzer->lexeme().type == LexemeComma);
 	
-	if (actualArgumentsCount != formalArgumentsCount) {
-		THROW(EWrongArgumentsCount(functionName, formalArgumentsCount, actualArgumentsCount));
-	}
-	
+
 	if (m_lexicalAnalyzer->lexeme().type != LexemeClosingBracket) {
 		THROW(ELexemeExpected(tr("Closing bracket after arguments list")));
 	}	
