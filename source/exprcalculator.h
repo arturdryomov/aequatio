@@ -131,8 +131,14 @@ private:
 	QString rpnCodeThreadToString(const RpnCodeThread &codeThread);
 	void initializeBuiltInFunctions();
 	void initializeBuiltInConstants();
-	Number calculateFunction(QString functionName, QList<Number> functionArguments);
-	Number calculateBuiltInFunction(QString functionName, QList<Number> functionArguments);
+
+	struct ActualArgument {
+		RpnArgumentType type;
+		QVariant value; // Number for ArgumentTypeNumber and QString for ArgumentTypeFunction
+	};
+
+	Number calculateFunction(QString functionName, QList<ActualArgument> functionArguments);
+	Number calculateBuiltInFunction(QString functionName, QList<ActualArgument> functionArguments);
 	FunctionDescription functionDescription(const QString &functionName);
 };
 
