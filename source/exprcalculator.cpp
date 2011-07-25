@@ -83,7 +83,7 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<ActualArgum
 
 				if (m_builtInFunctions.contains(calledFunctionName)) {
 					QList<ActualArgument> actualArguments;
-					for (int i = 0; i < m_builtInFunctions.value(calledFunctionName); i++) {
+					for (int i = 0; i < m_builtInFunctions.value(calledFunctionName).count(); i++) {
 						actualArguments.prepend(calculationStack.pop());
 					}
 					Number result = calculateBuiltInFunction(calledFunctionName, actualArguments);
@@ -263,7 +263,7 @@ QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
 				else {
 					int argumentsCount;
 					if (m_builtInFunctions.contains(functionName)) {
-						argumentsCount = m_builtInFunctions.value(functionName);
+						argumentsCount = m_builtInFunctions.value(functionName).count();
 					}
 					else if (m_functions.contains(functionName)) {
 						argumentsCount = m_functions.value(functionName).arguments.count();
@@ -344,7 +344,7 @@ int ExprCalculator::functionArgumentsCount(const QString &name)
 		return m_functions.value(name).arguments.count();
 	}
 	else {
-		return m_builtInFunctions.value(name);
+		return m_builtInFunctions.value(name).count();
 	}
 }
 
@@ -378,16 +378,26 @@ QList<FunctionDescription> ExprCalculator::functionsList()
 
 void ExprCalculator::initializeBuiltInFunctions()
 {
-	m_builtInFunctions.insert(RpnFunctionMain, 0);
-	m_builtInFunctions.insert(RpnFunctionPlus, 2);
-	m_builtInFunctions.insert(RpnFunctionMinus, 2);
-	m_builtInFunctions.insert(RpnFunctionMultiply, 2);
-	m_builtInFunctions.insert(RpnFunctionDivide, 2);
-	m_builtInFunctions.insert(RpnFunctionPower, 2);
-	m_builtInFunctions.insert(RpnFunctionUnaryMinus, 1);
-	m_builtInFunctions.insert(Sine, 1);
-	m_builtInFunctions.insert(Cosine, 1);
-	m_builtInFunctions.insert(Tangent, 1);
+	QList<RpnArgumentType> arguments;
+
+	// no arguments expected
+	m_builtInFunctions.insert(RpnFunctionMain, arguments);
+
+	// one Number argument expected
+	arguments << ArgumentTypeNumber;
+	m_builtInFunctions.insert(RpnFunctionUnaryMinus, arguments);
+	m_builtInFunctions.insert(Sine, arguments);
+	m_builtInFunctions.insert(Cosine, arguments);
+	m_builtInFunctions.insert(Tangent, arguments);
+
+	// two Number argument expected
+	arguments << ArgumentTypeNumber;
+	m_builtInFunctions.insert(RpnFunctionPlus, arguments);
+	m_builtInFunctions.insert(RpnFunctionMinus, arguments);
+	m_builtInFunctions.insert(RpnFunctionMultiply, arguments);
+	m_builtInFunctions.insert(RpnFunctionDivide, arguments);
+	m_builtInFunctions.insert(RpnFunctionPower, arguments);
+
 }
 
 void ExprCalculator::initializeBuiltInConstants()

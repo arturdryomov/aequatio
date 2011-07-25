@@ -106,7 +106,7 @@ public:
 private:
 	QList<QString> m_functionNames; // stores function in order of their declaration
 	QHash<QString, RpnFunction> m_functions;
-	QHash<QString, int> m_builtInFunctions;
+	QHash<QString, QList<RpnArgumentType> > m_builtInFunctions;
 	QHash<QString, Number> m_constants;
 	QHash<QString, Number> m_builtInConstants;
 	RpnCodeThread m_rpnCodeThread;
