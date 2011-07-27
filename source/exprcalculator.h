@@ -17,37 +17,55 @@ inline QString numberToString(const Number number)
 
 // RPN stands for ‘Reverse Polish notation’
 
-enum RpnArgumentType {ArgumentTypeNumber, ArgumentTypeFunction};
+enum RpnOperandType {RpnOperandNumber, RpnOperandFunctionName};
 
-struct RpnArgument {
-	QString name;
-	RpnArgumentType type;
+struct RpnOperand {
+  RpnOperandType type;
+
+  /* type == RpnOperandNumber -- value is a number, type Number,
+	  RpnOperandFunctionName -- value is a function name (QString) */
+  QVariant value;
 };
-bool operator ==(const RpnArgument &a1, const RpnArgument &a2);
 
 enum RpnElementType {
-	RpnElementOperand,     // operand, value is Number
-	RpnElementArgument,    // argument, value is of type RpnArgument
-	RpnElementFunction,    // function call, value is its name (QString)
-	RpnElementConstant,    // constant, value is its name (QString)
-	RpnElementFunctionName // function name, value is QString; this can be actual argument of ArgumentTypeFunction type
+  RpnElementOperand,
+  RpnElementConstant,
+  RpnElementFunctionCall,
+  RpnElementArgument
 };
 
-struct RpnElement
-{
-	RpnElementType type;
-	QVariant value; // this will hold a Number, parameter name, constant name or function name
+struct RpnElement {
+  RpnElementType type;
+
+  /* type == RpnElementOperand -- value is of type RpnOperand
+	  RpnElementConstant -- value is constant name, QString
+	  RpnElementFunctionCall -- value is function name, QString
+	  RpnElementArgument -- value is argument name, QString
+  */
+  QVariant value;
 };
 
-typedef QList<RpnElement> RpnCodeThread; // contains linear RPN code to calculate
+// без изменений
+typedef QList<RpnElement> RpnCodeThread;
+
+// this is not for RpnElement with type == RpnElementArgument,
+// this is for RpnFunction
+struct RpnArgument {
+  RpnOperandType type;
+  QString name;
+
+  // This is a storage for additional information that depends on type.
+  // type == RpnOperandNumber -- nothing.
+  // RpnOperandFunctionName -- number of function arguments, assuming that all this arguments
+  //    are of RpnOperandNumber type.
+  QVariant info;
+};
+bool operator ==(const RpnArgument &a1, const RpnArgument &a2);
 
 struct RpnFunction {
 	QList<RpnArgument> arguments;
 	RpnCodeThread codeThread;
 };
-
-typedef QHash<QString, RpnFunction> RpnCode;
-
 
 struct ConstantDescription {
 	QString name;
@@ -101,14 +119,14 @@ public:
 	bool isFunction(const QString &name);
 	bool isConstant(const QString &name);
 	int functionArgumentsCount(const QString &name);
-	QList<RpnArgumentType> functionArguments(const QString &name);
+	QList<RpnOperandType> functionArguments(const QString &name);
 
 	QList<ConstantDescription> constantsList();
 	QList<FunctionDescription> functionsList();
 private:
 	QList<QString> m_functionNames; // stores function in order of their declaration
 	QHash<QString, RpnFunction> m_functions;
-	QHash<QString, QList<RpnArgumentType> > m_builtInFunctions;
+	QHash<QString, QList<RpnOperandType> > m_builtInFunctions;
 	QHash<QString, Number> m_constants;
 	QHash<QString, Number> m_builtInConstants;
 	RpnCodeThread m_rpnCodeThread;
@@ -134,18 +152,16 @@ private:
 	void initializeBuiltInFunctions();
 	void initializeBuiltInConstants();
 
-	struct ActualArgument {
-		RpnArgumentType type;
-		QVariant value; // Number for ArgumentTypeNumber and QString for ArgumentTypeFunction
-	};
-
-	Number calculateFunction(QString functionName, QList<ActualArgument> functionArguments);
-	Number calculateBuiltInFunction(QString functionName, QList<ActualArgument> functionArguments);
+	Number calculateFunction(QString functionName, QList<RpnOperand> functionArguments);
+	Number calculateBuiltInFunction(QString functionName, QList<RpnOperand> functionArguments);
 	FunctionDescription functionDescription(const QString &functionName);
+	QString operandToText(const RpnOperand &operand);
 };
 
 Q_DECLARE_METATYPE(Number)
 Q_DECLARE_METATYPE(RpnElementType)
+Q_DECLARE_METATYPE(RpnOperandType)
+Q_DECLARE_METATYPE(RpnOperand)
 Q_DECLARE_METATYPE(RpnArgument)
 Q_DECLARE_METATYPE(ConstantDescription)
 Q_DECLARE_METATYPE(FunctionDescription)

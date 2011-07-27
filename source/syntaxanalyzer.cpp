@@ -188,7 +188,7 @@ RpnCodeThread SyntaxAnalyzer::function()
 		THROW(EInternal());
 	}	
 	QString functionName = m_lexicalAnalyzer->lexeme().value;		
-	QList<RpnArgumentType> formalArguments;
+	QList<RpnOperandType> formalArguments;
 	if (m_exprCalculator->isFunction(functionName)) {
 		formalArguments = m_exprCalculator->functionArguments(functionName);
 	} 	
@@ -213,15 +213,16 @@ RpnCodeThread SyntaxAnalyzer::function()
 		}
 
 		switch (formalArguments.at(actualArgumentIndex)) {
-			case ArgumentTypeNumber: {
+			case RpnOperandNumber: {
 				result << expression();
 				break;
 			}
-			case ArgumentTypeFunction: {
+			case RpnOperandFunctionName: {
 				if (m_lexicalAnalyzer->lexeme().type != LexemeIdentifier) {
 					THROW(ELexemeExpected(tr("Function name")));
 				}
-				RpnElement rpnElement = {RpnElementFunctionName, m_lexicalAnalyzer->lexeme().value};
+				RpnOperand rpnOperand = {RpnOperandFunctionName, m_lexicalAnalyzer->lexeme().value};
+				RpnElement rpnElement = {RpnElementOperand, QVariant::fromValue(rpnOperand)};
 				result << rpnElement;
 				m_lexicalAnalyzer->nextLexeme();
 				break;
@@ -241,7 +242,7 @@ RpnCodeThread SyntaxAnalyzer::function()
 	
 	// Add to thread a function call element
 	RpnElement functionCall;
-	functionCall.type = RpnElementFunction;
+	functionCall.type = RpnElementFunctionCall;
 	functionCall.value = functionName;
 	result << functionCall;
 	
@@ -260,7 +261,7 @@ RpnCodeThread SyntaxAnalyzer::factor()
 
 			m_lexicalAnalyzer->nextLexeme();
 
-			RpnElement unaryMinus = {RpnElementFunction, QVariant::fromValue(RpnFunctionUnaryMinus)};
+			RpnElement unaryMinus = {RpnElementFunctionCall, QVariant::fromValue(RpnFunctionUnaryMinus)};
 			RpnCodeThread operand = factor();
 
 			result << operand << unaryMinus;
@@ -276,13 +277,14 @@ RpnCodeThread SyntaxAnalyzer::factor()
 		}
 	}
 
+	// PowerBase ['^' Factor]
 	else {
 		RpnCodeThread base = powerBase();
 		result << base;
 
 		// ['^' Factor]
 		if (m_lexicalAnalyzer->lexeme().type == LexemePower) {
-			RpnElement power = {RpnElementFunction, QVariant::fromValue(RpnFunctionPower)};
+			RpnElement power = {RpnElementFunctionCall, QVariant::fromValue(RpnFunctionPower)};
 			m_lexicalAnalyzer->nextLexeme();
 			RpnCodeThread exponent = factor();
 
@@ -301,7 +303,8 @@ RpnCodeThread SyntaxAnalyzer::powerBase()
 	// Number
 	if (m_lexicalAnalyzer->lexeme().type == LexemeNumber) {
 		Number value = number();
-		RpnElement element = {RpnElementOperand, value};
+		RpnOperand operand = {RpnOperandNumber, value};
+		RpnElement element = {RpnElementOperand, QVariant::fromValue(operand)};
 		result << element;
 	}
 
@@ -345,7 +348,7 @@ RpnCodeThread SyntaxAnalyzer::powerBase()
 RpnElement SyntaxAnalyzer::multOperation()
 {
 	RpnElement result;
-	result.type = RpnElementFunction;
+	result.type = RpnElementFunctionCall;
 
 	if (m_lexicalAnalyzer->lexeme().type == LexemeMultiply) {
 		result.value.setValue(RpnFunctionMultiply);
@@ -384,7 +387,7 @@ RpnCodeThread SyntaxAnalyzer::summand()
 RpnElement SyntaxAnalyzer::summOperation()
 {
 	RpnElement result;
-	result.type = RpnElementFunction;
+	result.type = RpnElementFunctionCall;
 
 	if (m_lexicalAnalyzer->lexeme().type == LexemePlus) {
 		result.value.setValue(RpnFunctionPlus);
@@ -418,10 +421,10 @@ RpnElement SyntaxAnalyzer::constant()
 	QString constName = m_lexicalAnalyzer->lexeme().value;
 
 	// it is a formal argument
-	RpnArgument possibleArgument = {constName, ArgumentTypeNumber};
+	RpnArgument possibleArgument = {RpnOperandNumber, constName, QVariant()};
 	if (m_workingArguments.contains(possibleArgument)) {
 		result.type = RpnElementArgument;
-		result.value.setValue(possibleArgument);
+		result.value = constName;
 	}
 	
 	// it is a constant
@@ -446,7 +449,7 @@ void SyntaxAnalyzer::extractFormalArgument()
 	}
 	
 	QString argumentName = m_lexicalAnalyzer->lexeme().value;
-	RpnArgument argument = {argumentName, ArgumentTypeNumber};
+	RpnArgument argument = {RpnOperandNumber, argumentName, QVariant()};
 	if (m_workingArguments.contains(argument)) {
 		THROW(EFormalArgumentReused(argumentName));
 	}

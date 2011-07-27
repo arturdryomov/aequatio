@@ -10,7 +10,8 @@
 bool operator ==(const RpnArgument &a1, const RpnArgument &a2)
 {
 	return (a1.name == a2.name)
-		&& (a1.type == a2.type);
+		&& (a1.type == a2.type)
+		&& (a1.info == a2.info);
 }
 
 ExprCalculator::ExprCalculator(QObject *parent) : QObject(parent)
@@ -24,17 +25,14 @@ ExpressionDescription ExprCalculator::calculate(const RpnCodeThread &thread)
 	RpnFunction function = {QList<RpnArgument>(), thread};
 	m_functions.insert(RpnFunctionMain, function);
 	ExpressionDescription description = {rpnCodeThreadToString(thread),
-		calculateFunction(RpnFunctionMain, QList<ActualArgument>())};
+		calculateFunction(RpnFunctionMain, QList<RpnOperand>())};
 
 	return description;
 }
 
-Number ExprCalculator::calculateFunction(QString functionName, QList<ActualArgument> functionArguments)
+Number ExprCalculator::calculateFunction(QString functionName, QList<RpnOperand> functionArguments)
 {
-	// We will not check for argument types here at his time as currently user-defined functions
-	// can only take numbers as arguments.
-
-	QStack<ActualArgument> calculationStack;
+	QStack<RpnOperand> calculationStack;
 
 	RpnCodeThread currentThread = m_functions.value(functionName).codeThread;
 
@@ -43,35 +41,33 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<ActualArgum
 	foreach (RpnElement element, currentThread) {
 
 		switch (element.type) {
-			// Just push to numbers stack
+			// Just push to stack
 			case RpnElementOperand: {
-				ActualArgument operand = {ArgumentTypeNumber, element.value.value<Number>()};
-				calculationStack.push(operand);
+				calculationStack.push(element.value.value<RpnOperand>());
 				break;
 			}
 
-			case RpnElementFunctionName: {
-				ActualArgument operand = {ArgumentTypeFunction, element.value.value<QString>()};
-				calculationStack.push(operand);
-				break;
-			}
-
-			// Get number and push to stack
+			// Get actual value and push it to stack
 			case RpnElementArgument: {
-				// In more common case, RpnArgument::type here is not to be ArgumentTypeNumber.
-				// But now we don't support user-defined functions with functions as arguments.
-				// See note in the beginning of the method.
-				int argumentOrdinalNumber;
+				// We will not check for argument types here at his time as currently user-defined functions
+				// can only take numbers as arguments.
+				QString argumentName = element.value.value<QString>();
 				RpnFunction function = m_functions.value(functionName);
-				RpnArgument argument = element.value.value<RpnArgument>();
-				argumentOrdinalNumber = function.arguments.indexOf(argument);
-				calculationStack.push(functionArguments[argumentOrdinalNumber]);
+
+				for (int i = 0; i < function.arguments.count(); ++i) {
+					// find ordinal number of the argument with name argumentName
+					// and substitute it with actual value from funtionArguments
+					if (argumentName == function.arguments.at(i).name) {
+						calculationStack.push(functionArguments[i]);
+						break;
+					}
+				}
 				break;
 			}
 
 			// Find constant and push its value
 			case RpnElementConstant: {
-				ActualArgument operand = {ArgumentTypeNumber, QVariant()};
+				RpnOperand operand = {RpnOperandNumber, QVariant()};
 				if (m_builtInConstants.contains(element.value.toString())) {
 					operand.value = m_builtInConstants.value(element.value.toString());
 				}
@@ -87,26 +83,26 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<ActualArgum
 			}
 
 			// Find function and call it
-			case RpnElementFunction: {
-				QString calledFunctionName = element.value.toString();
+			case RpnElementFunctionCall: {
+				QString callingFunctionName = element.value.value<QString>();
 
-				if (m_builtInFunctions.contains(calledFunctionName)) {
-					QList<ActualArgument> actualArguments;
-					for (int i = 0; i < m_builtInFunctions.value(calledFunctionName).count(); i++) {
-						actualArguments.prepend(calculationStack.pop());
+				if (m_builtInFunctions.contains(callingFunctionName)) {
+					QList<RpnOperand> operands;
+					for (int i = 0; i < m_builtInFunctions.value(callingFunctionName).count(); i++) {
+						operands.prepend(calculationStack.pop());
 					}
-					Number result = calculateBuiltInFunction(calledFunctionName, actualArguments);
-					ActualArgument operand = {ArgumentTypeNumber, result};
+					Number result = calculateBuiltInFunction(callingFunctionName, operands);
+					RpnOperand operand = {RpnOperandNumber, result};
 					calculationStack.push(operand);
 				}
 
-				else if (m_functions.contains(calledFunctionName)) {
-					QList<ActualArgument> actualArguments;
-					for (int i = 0; i < m_functions.value(calledFunctionName).arguments.count(); i++) {
-						actualArguments.prepend(calculationStack.pop());
+				else if (m_functions.contains(callingFunctionName)) {
+					QList<RpnOperand> RpnOperands;
+					for (int i = 0; i < m_functions.value(callingFunctionName).arguments.count(); i++) {
+						RpnOperands.prepend(calculationStack.pop());
 					}
-					Number result = calculateFunction(calledFunctionName, actualArguments);
-					ActualArgument operand = {ArgumentTypeNumber, result};
+					Number result = calculateFunction(callingFunctionName, RpnOperands);
+					RpnOperand operand = {RpnOperandNumber, result};
 					calculationStack.push(operand);
 				}
 
@@ -123,15 +119,15 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<ActualArgum
 	if (calculationStack.count() != 1) {
 		THROW(EIncorrectRpnCode());
 	}
-	ActualArgument result = calculationStack.pop();
-	if (result.type != ArgumentTypeNumber) {
+	RpnOperand result = calculationStack.pop();
+	if (result.type != RpnOperandNumber) {
 		THROW(EIncorrectRpnCode());
 	}
 
 	return result.value.value<Number>();
 }
 
-Number ExprCalculator::calculateBuiltInFunction(QString functionName, QList<ActualArgument> functionArguments)
+Number ExprCalculator::calculateBuiltInFunction(QString functionName, QList<RpnOperand> functionArguments)
 {
 	// We will not check for argument types here. This code will soon be moved from ExprCalculator
 	// and respective checks will be made at that time.
@@ -165,7 +161,7 @@ Number ExprCalculator::calculateBuiltInFunction(QString functionName, QList<Actu
 	}
 	else if (functionName == "test_new_function") {
 		QString functionToCall = functionArguments[0].value.value<QString>();
-		QList<ActualArgument> calledFunctionArguments;
+		QList<RpnOperand> calledFunctionArguments;
 		calledFunctionArguments << functionArguments[1];
 
 		if (m_functions.contains(functionToCall)) {
@@ -198,6 +194,18 @@ FunctionDescription ExprCalculator::functionDescription(const QString &functionN
 	return description;
 }
 
+QString ExprCalculator::operandToText(const RpnOperand &operand)
+{
+	switch (operand.type) {
+		case RpnOperandNumber:
+			return numberToString(operand.value.value<Number>());
+		case RpnOperandFunctionName:
+			return operand.value.value<QString>();
+		default:
+			THROW(EIncorrectRpnCode());
+	}
+}
+
 QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
 {
 	// This code is quite alike with calculateFunction argorithm, but we store
@@ -213,27 +221,23 @@ QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
 		switch (element.type) {
 
 			case RpnElementOperand:
-				part.text = numberToString(element.value.value<Number>());
+				part.text = operandToText(element.value.value<RpnOperand>());
 				part.priority = PriorityHighest;
 				break;
 
-			case RpnElementFunctionName:
-				part.text = element.value.value<QString>();
-				part.priority = PriorityHighest;
-
 			case RpnElementConstant:
-				part.text = element.value.toString();
+				part.text = element.value.value<QString>();
 				part.priority = PriorityHighest;
 				break;
 
 			case RpnElementArgument: {
-				part.text = element.value.value<RpnArgument>().name;
+				part.text = element.value.value<QString>();
 				part.priority = PriorityHighest;
 				break;
 			}
 
-			case RpnElementFunction: {
-				QString functionName = element.value.toString();
+			case RpnElementFunctionCall: {
+				QString functionName = element.value.value<QString>();
 
 				// basic arithmetical operations
 				if (functionName == RpnFunctionPlus) {
@@ -377,14 +381,14 @@ int ExprCalculator::functionArgumentsCount(const QString &name)
 	}
 }
 
-QList<RpnArgumentType> ExprCalculator::functionArguments(const QString &name)
+QList<RpnOperandType> ExprCalculator::functionArguments(const QString &name)
 {
 	if (!isFunction(name)) {
 		THROW(EIncorrectRpnCode());
 	}
 
 	if (m_functions.contains(name)) {
-		QList<RpnArgumentType> result;
+		QList<RpnOperandType> result;
 		foreach (RpnArgument argument, m_functions.value(name).arguments) {
 			result << argument.type;
 		}
@@ -425,20 +429,20 @@ QList<FunctionDescription> ExprCalculator::functionsList()
 
 void ExprCalculator::initializeBuiltInFunctions()
 {
-	QList<RpnArgumentType> arguments;
+	QList<RpnOperandType> arguments;
 
 	// no arguments expected
 	m_builtInFunctions.insert(RpnFunctionMain, arguments);
 
 	// one Number argument expected
-	arguments << ArgumentTypeNumber;
+	arguments << RpnOperandNumber;
 	m_builtInFunctions.insert(RpnFunctionUnaryMinus, arguments);
 	m_builtInFunctions.insert(Sine, arguments);
 	m_builtInFunctions.insert(Cosine, arguments);
 	m_builtInFunctions.insert(Tangent, arguments);
 
 	// two Number argument expected
-	arguments << ArgumentTypeNumber;
+	arguments << RpnOperandNumber;
 	m_builtInFunctions.insert(RpnFunctionPlus, arguments);
 	m_builtInFunctions.insert(RpnFunctionMinus, arguments);
 	m_builtInFunctions.insert(RpnFunctionMultiply, arguments);
@@ -446,7 +450,7 @@ void ExprCalculator::initializeBuiltInFunctions()
 	m_builtInFunctions.insert(RpnFunctionPower, arguments);
 
 	arguments.clear();
-	arguments << ArgumentTypeFunction << ArgumentTypeNumber;
+	arguments << RpnOperandFunctionName << RpnOperandNumber;
 	m_builtInFunctions.insert("test_new_function", arguments);
 }
 
