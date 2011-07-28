@@ -119,14 +119,14 @@ public:
 	bool isFunction(const QString &name);
 	bool isConstant(const QString &name);
 	int functionArgumentsCount(const QString &name);
-	QList<RpnOperandType> functionArguments(const QString &name);
+	QList<RpnArgument> functionArguments(const QString &name);
 
 	QList<ConstantDescription> constantsList();
 	QList<FunctionDescription> functionsList();
 private:
 	QList<QString> m_functionNames; // stores function in order of their declaration
 	QHash<QString, RpnFunction> m_functions;
-	QHash<QString, QList<RpnOperandType> > m_builtInFunctions;
+	QHash<QString, QList<RpnArgument> > m_builtInFunctions; // rpnArgument.name is not used here
 	QHash<QString, Number> m_constants;
 	QHash<QString, Number> m_builtInConstants;
 	RpnCodeThread m_rpnCodeThread;

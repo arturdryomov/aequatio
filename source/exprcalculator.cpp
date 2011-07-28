@@ -381,18 +381,14 @@ int ExprCalculator::functionArgumentsCount(const QString &name)
 	}
 }
 
-QList<RpnOperandType> ExprCalculator::functionArguments(const QString &name)
+QList<RpnArgument> ExprCalculator::functionArguments(const QString &name)
 {
 	if (!isFunction(name)) {
 		THROW(EIncorrectRpnCode());
 	}
 
 	if (m_functions.contains(name)) {
-		QList<RpnOperandType> result;
-		foreach (RpnArgument argument, m_functions.value(name).arguments) {
-			result << argument.type;
-		}
-		return result;
+		return m_functions.value(name).arguments;
 	}
 	else {
 		return m_builtInFunctions.value(name);
@@ -429,20 +425,21 @@ QList<FunctionDescription> ExprCalculator::functionsList()
 
 void ExprCalculator::initializeBuiltInFunctions()
 {
-	QList<RpnOperandType> arguments;
+	QList<RpnArgument> arguments;
 
 	// no arguments expected
 	m_builtInFunctions.insert(RpnFunctionMain, arguments);
 
 	// one Number argument expected
-	arguments << RpnOperandNumber;
+	RpnArgument argumentNumber = {RpnOperandNumber, QString(), QVariant()};
+	arguments << argumentNumber;
 	m_builtInFunctions.insert(RpnFunctionUnaryMinus, arguments);
 	m_builtInFunctions.insert(Sine, arguments);
 	m_builtInFunctions.insert(Cosine, arguments);
 	m_builtInFunctions.insert(Tangent, arguments);
 
 	// two Number argument expected
-	arguments << RpnOperandNumber;
+	arguments << argumentNumber;
 	m_builtInFunctions.insert(RpnFunctionPlus, arguments);
 	m_builtInFunctions.insert(RpnFunctionMinus, arguments);
 	m_builtInFunctions.insert(RpnFunctionMultiply, arguments);
@@ -450,7 +447,9 @@ void ExprCalculator::initializeBuiltInFunctions()
 	m_builtInFunctions.insert(RpnFunctionPower, arguments);
 
 	arguments.clear();
-	arguments << RpnOperandFunctionName << RpnOperandNumber;
+	// 1 is argument count in function that is passed as and argument to "test_new_function"
+	RpnArgument argumentFunction = {RpnOperandFunctionName, QString(), QVariant::fromValue(1)};
+	arguments << argumentFunction << argumentNumber;
 	m_builtInFunctions.insert("test_new_function", arguments);
 }
 

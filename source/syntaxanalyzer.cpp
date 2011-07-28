@@ -188,7 +188,7 @@ RpnCodeThread SyntaxAnalyzer::function()
 		THROW(EInternal());
 	}	
 	QString functionName = m_lexicalAnalyzer->lexeme().value;		
-	QList<RpnOperandType> formalArguments;
+	QList<RpnArgument> formalArguments;
 	if (m_exprCalculator->isFunction(functionName)) {
 		formalArguments = m_exprCalculator->functionArguments(functionName);
 	} 	
@@ -202,7 +202,7 @@ RpnCodeThread SyntaxAnalyzer::function()
 	}
 	
 	// Parse actual arguments and add them to thread.
-	// Ensure their count equals formal arguments count
+	// Ensure their count equals formal arguments count and check for argument types compability.
 
 	int actualArgumentIndex = 0;
 	do {
@@ -212,7 +212,7 @@ RpnCodeThread SyntaxAnalyzer::function()
 			THROW(EWrongArgumentsCount(functionName, formalArguments.count(), actualArgumentIndex));
 		}
 
-		switch (formalArguments.at(actualArgumentIndex)) {
+		switch (formalArguments.at(actualArgumentIndex).type) {
 			case RpnOperandNumber: {
 				result << expression();
 				break;
@@ -221,7 +221,14 @@ RpnCodeThread SyntaxAnalyzer::function()
 				if (m_lexicalAnalyzer->lexeme().type != LexemeIdentifier) {
 					THROW(ELexemeExpected(tr("Function name")));
 				}
-				RpnOperand rpnOperand = {RpnOperandFunctionName, m_lexicalAnalyzer->lexeme().value};
+				QString argumentFunctionName = m_lexicalAnalyzer->lexeme().value;
+				// check argument count
+				if (m_exprCalculator->functionArguments(argumentFunctionName).count()
+					!= formalArguments.at(actualArgumentIndex).info.value<int>()) {
+					THROW(EParsing()); // TODO: more concrete exception needed
+				}
+
+				RpnOperand rpnOperand = {RpnOperandFunctionName, argumentFunctionName};
 				RpnElement rpnElement = {RpnElementOperand, QVariant::fromValue(rpnOperand)};
 				result << rpnElement;
 				m_lexicalAnalyzer->nextLexeme();
