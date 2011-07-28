@@ -37,7 +37,7 @@ enum RpnElementType {
 };
 
 struct RpnElement {
-	RpnElement(RpnElementType type_ = RpnElementOperand, const QVariant &value_ = QVariant::fromValue(RpnOperand()));
+	RpnElement(RpnElementType type_ = RpnElementOperand, const QVariant &value_ = QVariant());
 	bool operator ==(const RpnElement &another);
 
 	RpnElementType type;
