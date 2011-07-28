@@ -228,9 +228,8 @@ RpnCodeThread SyntaxAnalyzer::function()
 					THROW(EParsing()); // TODO: more concrete exception needed
 				}
 
-				RpnOperand rpnOperand = {RpnOperandFunctionName, argumentFunctionName};
-				RpnElement rpnElement = {RpnElementOperand, QVariant::fromValue(rpnOperand)};
-				result << rpnElement;
+				RpnOperand rpnOperand(RpnOperandFunctionName, argumentFunctionName);
+				result << RpnElement(RpnElementOperand, QVariant::fromValue(rpnOperand));
 				m_lexicalAnalyzer->nextLexeme();
 				break;
 			}
@@ -268,7 +267,7 @@ RpnCodeThread SyntaxAnalyzer::factor()
 
 			m_lexicalAnalyzer->nextLexeme();
 
-			RpnElement unaryMinus = {RpnElementFunctionCall, QVariant::fromValue(RpnFunctionUnaryMinus)};
+			RpnElement unaryMinus(RpnElementFunctionCall, QVariant::fromValue(RpnFunctionUnaryMinus));
 			RpnCodeThread operand = factor();
 
 			result << operand << unaryMinus;
@@ -291,7 +290,7 @@ RpnCodeThread SyntaxAnalyzer::factor()
 
 		// ['^' Factor]
 		if (m_lexicalAnalyzer->lexeme().type == LexemePower) {
-			RpnElement power = {RpnElementFunctionCall, QVariant::fromValue(RpnFunctionPower)};
+			RpnElement power(RpnElementFunctionCall, QVariant::fromValue(RpnFunctionPower));
 			m_lexicalAnalyzer->nextLexeme();
 			RpnCodeThread exponent = factor();
 
@@ -309,10 +308,8 @@ RpnCodeThread SyntaxAnalyzer::powerBase()
 
 	// Number
 	if (m_lexicalAnalyzer->lexeme().type == LexemeNumber) {
-		Number value = number();
-		RpnOperand operand = {RpnOperandNumber, value};
-		RpnElement element = {RpnElementOperand, QVariant::fromValue(operand)};
-		result << element;
+		RpnOperand operand(RpnOperandNumber, number());
+		result << RpnElement(RpnElementOperand, QVariant::fromValue(operand));
 	}
 
 	// Constant | Function
@@ -428,7 +425,7 @@ RpnElement SyntaxAnalyzer::constant()
 	QString constName = m_lexicalAnalyzer->lexeme().value;
 
 	// it is a formal argument
-	RpnArgument possibleArgument = {RpnOperandNumber, constName, QVariant()};
+	RpnArgument possibleArgument(RpnOperandNumber, constName, QVariant());
 	if (m_workingArguments.contains(possibleArgument)) {
 		result.type = RpnElementArgument;
 		result.value = constName;
@@ -456,7 +453,7 @@ void SyntaxAnalyzer::extractFormalArgument()
 	}
 	
 	QString argumentName = m_lexicalAnalyzer->lexeme().value;
-	RpnArgument argument = {RpnOperandNumber, argumentName, QVariant()};
+	RpnArgument argument(RpnOperandNumber, argumentName, QVariant());
 	if (m_workingArguments.contains(argument)) {
 		THROW(EFormalArgumentReused(argumentName));
 	}

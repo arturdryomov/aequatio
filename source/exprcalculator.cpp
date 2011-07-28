@@ -60,7 +60,7 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<RpnOperand>
 
 			// Find constant and push its value
 			case RpnElementConstant: {
-				RpnOperand operand = {RpnOperandNumber, QVariant()};
+				RpnOperand operand(RpnOperandNumber);
 				if (m_builtInConstants.contains(element.value.toString())) {
 					operand.value = m_builtInConstants.value(element.value.toString());
 				}
@@ -90,7 +90,7 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<RpnOperand>
 						operands.prepend(operand);
 					}
 					Number result = calculateBuiltInFunction(callingFunctionName, operands);
-					RpnOperand operand = {RpnOperandNumber, result};
+					RpnOperand operand(RpnOperandNumber, result);
 					calculationStack.push(operand);
 				}
 
@@ -102,7 +102,7 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<RpnOperand>
 						RpnOperands.prepend(calculationStack.pop());
 					}
 					Number result = calculateFunction(callingFunctionName, RpnOperands);
-					RpnOperand operand = {RpnOperandNumber, result};
+					RpnOperand operand(RpnOperandNumber, result);
 					calculationStack.push(operand);
 				}
 
@@ -431,15 +431,14 @@ void ExprCalculator::initializeBuiltInFunctions()
 	m_builtInFunctions.insert(RpnFunctionMain, arguments);
 
 	// one Number argument expected
-	RpnArgument argumentNumber = {RpnOperandNumber, QString(), QVariant()};
-	arguments << argumentNumber;
+	arguments << RpnArgument(RpnOperandNumber);
 	m_builtInFunctions.insert(RpnFunctionUnaryMinus, arguments);
 	m_builtInFunctions.insert(Sine, arguments);
 	m_builtInFunctions.insert(Cosine, arguments);
 	m_builtInFunctions.insert(Tangent, arguments);
 
 	// two Number argument expected
-	arguments << argumentNumber;
+	arguments << RpnArgument(RpnOperandNumber);
 	m_builtInFunctions.insert(RpnFunctionPlus, arguments);
 	m_builtInFunctions.insert(RpnFunctionMinus, arguments);
 	m_builtInFunctions.insert(RpnFunctionMultiply, arguments);
@@ -448,8 +447,8 @@ void ExprCalculator::initializeBuiltInFunctions()
 
 	arguments.clear();
 	// 1 is argument count in function that is passed as and argument to "test_new_function"
-	RpnArgument argumentFunction = {RpnOperandFunctionName, QString(), QVariant::fromValue(1)};
-	arguments << argumentFunction << argumentNumber;
+	arguments << RpnArgument(RpnOperandFunctionName, QString(), QVariant::fromValue(1))
+		<< RpnArgument(RpnOperandNumber);
 	m_builtInFunctions.insert("test_new_function", arguments);
 }
 

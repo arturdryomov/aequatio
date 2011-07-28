@@ -8,37 +8,45 @@ typedef qreal Number;
 // This is to unify Number to string converting.
 inline QString numberToString(const Number number)
 {
-    return QString::number(number).replace("-", "−");
+	return QString::number(number).replace("-", "−");
 }
 
 // RPN stands for ‘Reverse Polish notation’
 
-enum RpnOperandType {RpnOperandNumber, RpnOperandFunctionName};
+enum RpnOperandType {
+	RpnOperandNumber,
+	RpnOperandFunctionName
+};
 
-struct RpnOperand {
-  RpnOperandType type;
+struct RpnOperand
+{
+	RpnOperand(RpnOperandType type_ = RpnOperandNumber, const QVariant &value_ = QVariant());
+	bool operator ==(const RpnOperand &another);
 
-  /* type == RpnOperandNumber -- value is a number, type Number,
-      RpnOperandFunctionName -- value is a function name (QString) */
-  QVariant value;
+	RpnOperandType type;
+	/* type == RpnOperandNumber -- value is a number, type Number,
+	  RpnOperandFunctionName -- value is a function name (QString) */
+	QVariant value;
 };
 
 enum RpnElementType {
-  RpnElementOperand,
-  RpnElementConstant,
-  RpnElementFunctionCall,
-  RpnElementArgument
+	RpnElementOperand,
+	RpnElementConstant,
+	RpnElementFunctionCall,
+	RpnElementArgument
 };
 
 struct RpnElement {
-  RpnElementType type;
+	RpnElement(RpnElementType type_ = RpnElementOperand, const QVariant &value_ = QVariant::fromValue(RpnOperand()));
+	bool operator ==(const RpnElement &another);
 
-  /* type == RpnElementOperand -- value is of type RpnOperand
-      RpnElementConstant -- value is constant name, QString
-      RpnElementFunctionCall -- value is function name, QString
-      RpnElementArgument -- value is argument name, QString
+	RpnElementType type;
+	/* type == RpnElementOperand -- value is of type RpnOperand
+	  RpnElementConstant -- value is constant name, QString
+	  RpnElementFunctionCall -- value is function name, QString
+	  RpnElementArgument -- value is argument name, QString
   */
-  QVariant value;
+	QVariant value;
 };
 
 // без изменений
@@ -47,16 +55,18 @@ typedef QList<RpnElement> RpnCodeThread;
 // this is not for RpnElement with type == RpnElementArgument,
 // this is for RpnFunction
 struct RpnArgument {
-  RpnOperandType type;
-  QString name;
+	RpnArgument(RpnOperandType type_ = RpnOperandNumber, const QString &name_ = QString(),
+		const QVariant &info_ = QVariant());
+	bool operator ==(const RpnArgument &another);
 
-  // This is a storage for additional information that depends on type.
-  // type == RpnOperandNumber -- nothing.
-  // RpnOperandFunctionName -- number of function arguments, assuming that all this arguments
-  //    are of RpnOperandNumber type.
-  QVariant info;
+	RpnOperandType type;
+	QString name;
+	// This is a storage for additional information that depends on type.
+	// type == RpnOperandNumber -- nothing.
+	// RpnOperandFunctionName -- number of function arguments, assuming that all this arguments
+	//	are of RpnOperandNumber type.
+	QVariant info;
 };
-bool operator ==(const RpnArgument &a1, const RpnArgument &a2);
 
 struct RpnFunction {
 	QList<RpnArgument> arguments;

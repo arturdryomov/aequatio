@@ -1,8 +1,35 @@
 #include "rpncode.h"
 
-bool operator ==(const RpnArgument &a1, const RpnArgument &a2)
+RpnOperand::RpnOperand(RpnOperandType type_, const QVariant &value_) :
+	type(type_), value(value_)
 {
-	return (a1.name == a2.name)
-		&& (a1.type == a2.type)
-		&& (a1.info == a2.info);
+}
+
+bool RpnOperand::operator ==(const RpnOperand &another)
+{
+	return (type == another.type)
+		&& (value == another.value);
+}
+
+RpnElement::RpnElement(RpnElementType type_, const QVariant &value_) :
+	type(type_), value(value_)
+{
+}
+
+bool RpnElement::operator ==(const RpnElement &another)
+{
+	return (type == another.type)
+		&& (value == another.value);
+}
+
+RpnArgument::RpnArgument(RpnOperandType type_, const QString &name_, const QVariant &info_) :
+	type(type_), name(name_), info(info_)
+{
+}
+
+bool RpnArgument::operator ==(const RpnArgument &another)
+{
+	return (name == another.name)
+		&& (type == another.type)
+		&& (info == another.info);
 }
