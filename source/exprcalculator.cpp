@@ -7,13 +7,6 @@
 #define _USE_MATH_DEFINES
 #include <qmath.h>
 
-bool operator ==(const RpnArgument &a1, const RpnArgument &a2)
-{
-	return (a1.name == a2.name)
-		&& (a1.type == a2.type)
-		&& (a1.info == a2.info);
-}
-
 ExprCalculator::ExprCalculator(QObject *parent) : QObject(parent)
 {
 	initializeBuiltInFunctions();

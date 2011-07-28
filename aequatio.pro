@@ -44,7 +44,8 @@ SOURCES += \
 	source/aboutwindow.cpp \
 	source/helpwindow.cpp \
 	source/helpbrowser.cpp \
-	source/logwindow.cpp
+	source/logwindow.cpp \
+	source/rpncode.cpp
 
 
 HEADERS  += \
@@ -61,7 +62,8 @@ HEADERS  += \
 	source/aboutwindow.h \
 	source/helpwindow.h \
 	source/helpbrowser.h \
-	source/logwindow.h
+	source/logwindow.h \
+	source/rpncode.h
 
 FORMS	+= \
 	source/mainwindow.ui \
