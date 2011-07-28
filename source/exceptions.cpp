@@ -30,5 +30,3 @@ QString EInternal::message()
 {
 	return tr("Internal error occurred. Please, report this to developers.", "EInternal");
 }
-
-
