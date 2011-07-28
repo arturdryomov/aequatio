@@ -88,8 +88,13 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<RpnOperand>
 
 				if (m_builtInFunctions.contains(callingFunctionName)) {
 					QList<RpnOperand> operands;
-					for (int i = 0; i < m_builtInFunctions.value(callingFunctionName).count(); i++) {
-						operands.prepend(calculationStack.pop());
+					for (int i = m_builtInFunctions.value(callingFunctionName).count() - 1; i >= 0; --i) {
+						// perform type check
+						RpnOperand operand = calculationStack.pop();
+						if (operand.type != m_builtInFunctions.value(callingFunctionName).at(i).type) {
+							THROW(EIncorrectRpnCode());
+						}
+						operands.prepend(operand);
 					}
 					Number result = calculateBuiltInFunction(callingFunctionName, operands);
 					RpnOperand operand = {RpnOperandNumber, result};
@@ -98,6 +103,8 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<RpnOperand>
 
 				else if (m_functions.contains(callingFunctionName)) {
 					QList<RpnOperand> RpnOperands;
+					// no type checks here at the moment as user-defined functions can take only
+					// numbers as arguments.
 					for (int i = 0; i < m_functions.value(callingFunctionName).arguments.count(); i++) {
 						RpnOperands.prepend(calculationStack.pop());
 					}
