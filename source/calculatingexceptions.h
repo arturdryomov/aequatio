@@ -24,6 +24,15 @@ public:
 	QString message();
 };
 
+class ERecursiveFunction : public ECalculating
+{
+public:
+	ERecursiveFunction(const QString &functionName);
+	QString message();
+private:
+	QString m_functionName;
+};
+
 
 /* EInternal children */
 

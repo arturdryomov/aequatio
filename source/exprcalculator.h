@@ -156,6 +156,9 @@ private:
 	Number calculateBuiltInFunction(QString functionName, QList<RpnOperand> functionArguments);
 	FunctionDescription functionDescription(const QString &functionName);
 	QString operandToText(const RpnOperand &operand);
+	// Checks, whether functionName is called from code or from other functions that are called
+	// from code.
+	bool isFunctionUsed(const QString &functionName, const RpnCodeThread &code);
 };
 
 Q_DECLARE_METATYPE(Number)

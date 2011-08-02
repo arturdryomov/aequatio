@@ -21,3 +21,13 @@ QString EBuiltInRedifinition::message()
 			"built-in function with this name.", "EBuiltInRedifinition").arg(m_elementName);
 	}
 }
+
+ERecursiveFunction::ERecursiveFunction(const QString &functionName) : m_functionName(functionName)
+{
+}
+
+QString ERecursiveFunction::message()
+{
+	return tr("You cannot declare function “%1” this way because its calculation then will lead "
+		"to infinite recursive calls.", "ERecursiveFunction").arg(m_functionName);
+}
