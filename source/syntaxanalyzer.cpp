@@ -228,13 +228,14 @@ RpnCodeThread SyntaxAnalyzer::factor()
 
 	// UnaryOp Factor
 	if (CheckLexeme::isUnaryOperation(m_lexicalAnalyzer->lexeme())) {
+		LexemeType lexemeType = m_lexicalAnalyzer->lexeme().type;
 		m_lexicalAnalyzer->nextLexeme();
-		if (m_lexicalAnalyzer->lexeme().type == LexemeMinus) {
+		if (lexemeType == LexemeMinus) {
 			RpnElement unaryMinus(RpnElementFunctionCall, QVariant::fromValue(RpnFunctionUnaryMinus));
 			result << factor() << unaryMinus;
 		}
 
-		else if (m_lexicalAnalyzer->lexeme().type == LexemePlus) {
+		else if (lexemeType == LexemePlus) {
 			result = factor();
 		}
 
