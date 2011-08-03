@@ -46,7 +46,8 @@ SOURCES += \
 	source/helpbrowser.cpp \
 	source/logwindow.cpp \
 	source/rpncode.cpp \
-	source/basicfunctions.cpp
+	source/basicfunctions.cpp \
+	source/goldenratio.cpp
 
 
 HEADERS  += \
@@ -66,7 +67,8 @@ HEADERS  += \
 	source/logwindow.h \
 	source/rpncode.h \
 	source/builtinfunction.h \
-	source/basicfunctions.h
+	source/basicfunctions.h \
+	source/goldenratio.h
 
 FORMS	+= \
 	source/mainwindow.ui \
