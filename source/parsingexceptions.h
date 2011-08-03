@@ -37,6 +37,7 @@ public:
 	enum ElementType {Constant, Function};
 	EUndeclaredUsed(const QString &elementName, ElementType elementType);
 	QString message();
+private:
 	QString m_elementName;
 	ElementType m_elementType;
 };
@@ -44,11 +45,11 @@ public:
 class EWrongArgumentsCount : public EParsing
 {
 public:
-	EWrongArgumentsCount(const QString &functionName, int argumentsExpected, int argumentsPassed);
+	EWrongArgumentsCount(const QString &functionName, int argumentsExpected);
 	QString message();
+private:
 	QString m_functionName;
 	int m_argumentsExpected;
-	int m_argumentsPassed;
 };
 
 class EFormalArgumentReused : public EParsing
@@ -56,6 +57,7 @@ class EFormalArgumentReused : public EParsing
 public:
 	EFormalArgumentReused(const QString &argumentName);
 	QString message();
+private:
 	QString m_argumentName;
 };
 
@@ -64,7 +66,18 @@ class EIncorrectCharacter : public EParsing
 public:
 	EIncorrectCharacter(QChar c);
 	QString message();
+private:
 	QChar m_character;
+};
+
+// means that the function passed as an argument has incorrect signature.
+class EIncorrectFunctionArgument : public EParsing
+{
+public:
+	EIncorrectFunctionArgument(const QString &functionName);
+	QString message();
+private:
+	QString m_functionName;
 };
 
 /* EInternal children */
@@ -75,16 +88,10 @@ public:
 	EUnsupportedLexeme(const QString &unsupportedType);
 	// User does't need to know what is unsupported here.
 	// This info is for debug purpose only.
+protected:
+	LogItem logItem();
 private:
 	QString m_unsupported;
-};
-
-class EConversionToNumber : public EInternal
-{
-public:
-	EConversionToNumber(const QString &numberRepresentation);
-	QString message();
-	QString m_numberRepresentation;
 };
 
 #endif // PARSINGEXCEPTIONS_H

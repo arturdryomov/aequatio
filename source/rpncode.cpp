@@ -1,5 +1,17 @@
 #include "rpncode.h"
 
+EConversionToNumber::EConversionToNumber(const QString &numberRepresentation) :
+	m_numberRepresentation(numberRepresentation)
+{
+}
+
+QString EConversionToNumber::message()
+{
+	return tr("Error occurred while trying to convert “%1” into a number format. Let the developers "
+		"know about this, please.").arg(m_numberRepresentation);
+}
+
+
 RpnOperand::RpnOperand(RpnOperandType type_, const QVariant &value_) :
 	type(type_), value(value_)
 {

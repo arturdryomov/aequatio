@@ -202,8 +202,7 @@ RpnCodeThread SyntaxAnalyzer::function()
 	do {
 		m_lexicalAnalyzer->nextLexeme();
 		if (actualArgumentIndex >= formalArguments.count()) {
-			// TODO: actualArgumentIndex is not equal to actual argument count here, tweak
-			THROW(EWrongArgumentsCount(functionName, formalArguments.count(), actualArgumentIndex));
+			THROW(EWrongArgumentsCount(functionName, formalArguments.count()));
 		}
 		result << actualArgument(formalArguments.at(actualArgumentIndex));
 		++actualArgumentIndex;
@@ -363,11 +362,7 @@ RpnElement SyntaxAnalyzer::summOperation()
 
 Number SyntaxAnalyzer::number()
 {
-	bool ok = false;
-	Number result = m_lexicalAnalyzer->lexeme().value.toDouble(&ok);
-	if (!ok) {
-		THROW(EConversionToNumber(m_lexicalAnalyzer->lexeme().value));
-	}
+	Number result = stringToNumber(m_lexicalAnalyzer->lexeme().value);
 	m_lexicalAnalyzer->nextLexeme();
 	return result;
 }
@@ -407,7 +402,6 @@ RpnArgument SyntaxAnalyzer::formalArgument()
 	if (m_workingArguments.contains(argument)) {
 		THROW(EFormalArgumentReused(argumentName));
 	}
-//	m_workingArguments.append(argument);
 	m_lexicalAnalyzer->nextLexeme();
 
 	return argument;
@@ -429,7 +423,7 @@ RpnCodeThread SyntaxAnalyzer::actualArgument(const RpnArgument &correspondingFor
 			// check argument count
 			if (m_exprCalculator->functionArguments(argumentFunctionName).count()
 				!= correspondingFormalArgument.info.value<int>()) {
-				THROW(EParsing()); // TODO: more concrete exception needed
+				THROW(EIncorrectFunctionArgument(argumentFunctionName));
 			}
 
 			RpnOperand rpnOperand(RpnOperandFunctionName, argumentFunctionName);
