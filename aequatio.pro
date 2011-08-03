@@ -63,7 +63,8 @@ HEADERS  += \
 	source/helpwindow.h \
 	source/helpbrowser.h \
 	source/logwindow.h \
-	source/rpncode.h
+	source/rpncode.h \
+    source/builtinfunction.h
 
 FORMS	+= \
 	source/mainwindow.ui \
