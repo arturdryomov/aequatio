@@ -90,3 +90,12 @@ EUnsupportedLexeme::EUnsupportedLexeme(const QString &unsupportedType) : m_unsup
 {
 }
 
+LogItem EUnsupportedLexeme::logItem()
+{
+	LogItem item = EInternal::logItem();
+	Item unsupportedInfo = {"Unsupported lexeme", m_unsupported};
+	item.addons << unsupportedInfo;
+
+	return item;
+}
+

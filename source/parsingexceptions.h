@@ -88,6 +88,8 @@ public:
 	EUnsupportedLexeme(const QString &unsupportedType);
 	// User does't need to know what is unsupported here.
 	// This info is for debug purpose only.
+protected:
+	LogItem logItem();
 private:
 	QString m_unsupported;
 };
