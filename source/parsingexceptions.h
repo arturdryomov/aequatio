@@ -66,6 +66,15 @@ public:
 	QChar m_character;
 };
 
+// means that the function passed as an argument has incorrect signature.
+class EIncorrectFunctionArgument : public EParsing
+{
+public:
+	EIncorrectFunctionArgument(const QString &functionName);
+	QString message();
+	QString m_functionName;
+};
+
 /* EInternal children */
 
 class EUnsupportedLexeme : public EInternal

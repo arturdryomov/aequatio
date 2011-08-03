@@ -402,7 +402,6 @@ RpnArgument SyntaxAnalyzer::formalArgument()
 	if (m_workingArguments.contains(argument)) {
 		THROW(EFormalArgumentReused(argumentName));
 	}
-//	m_workingArguments.append(argument);
 	m_lexicalAnalyzer->nextLexeme();
 
 	return argument;
@@ -424,7 +423,7 @@ RpnCodeThread SyntaxAnalyzer::actualArgument(const RpnArgument &correspondingFor
 			// check argument count
 			if (m_exprCalculator->functionArguments(argumentFunctionName).count()
 				!= correspondingFormalArgument.info.value<int>()) {
-				THROW(EParsing()); // TODO: more concrete exception needed
+				THROW(EIncorrectFunctionArgument(argumentFunctionName));
 			}
 
 			RpnOperand rpnOperand(RpnOperandFunctionName, argumentFunctionName);

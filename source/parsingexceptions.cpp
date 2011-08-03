@@ -46,8 +46,8 @@ QString EUndeclaredUsed::message()
 }
 
 EWrongArgumentsCount::EWrongArgumentsCount(const QString &functionName, int argumentsExpected) :
-	m_functionName(functionName),
-	m_argumentsExpected(argumentsExpected)
+m_functionName(functionName),
+m_argumentsExpected(argumentsExpected)
 {
 }
 
@@ -76,6 +76,17 @@ QString EIncorrectCharacter::message()
 	return tr("Character “%1” is incorrect here.").arg(m_character);
 }
 
+EIncorrectFunctionArgument::EIncorrectFunctionArgument(const QString &functionName) : m_functionName(functionName)
+{
+}
+
+QString EIncorrectFunctionArgument::message()
+{
+	return tr("Function “%1” cannot be passed as an argument here as it has inappropriate "
+		"signature (list of arguments and their types).").arg(m_functionName);
+}
+
 EUnsupportedLexeme::EUnsupportedLexeme(const QString &unsupportedType) : m_unsupported(unsupportedType)
 {
 }
+
