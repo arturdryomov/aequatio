@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->setupUi(this);
 	connect(ui->actionHelp, SIGNAL(triggered()), SIGNAL(helpLaunchQueried()));
 	connect(ui->actionDebug_Log, SIGNAL(triggered()), SIGNAL(logviewLaunch()));
+	connect(ui->actionQuit, SIGNAL(triggered()), qApp, SLOT(quit()));
 
 	setWindowIcon(QIcon(":/images/linux/aequatio.png"));
 	ui->errorInformationLabel->hide();

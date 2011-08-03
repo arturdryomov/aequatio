@@ -287,6 +287,10 @@ FunctionDescription ExprCalculator::addFunction(const QString &name, const RpnFu
 		THROW(EBuiltInRedifinition(name, EBuiltInRedifinition::Function));
 	}
 
+	if (isFunctionUsed(name, function.codeThread)) {
+		THROW(ERecursiveFunction(name));
+	}
+
 	if (m_functionNames.contains(name)) {
 		m_functionNames.removeOne(name);
 	}
@@ -367,4 +371,27 @@ void ExprCalculator::initializeBuiltInConstants()
 {
 	m_builtInConstants.insert(Pi, M_PI);
 	m_builtInConstants.insert(E, M_E);
+}
+
+bool ExprCalculator::isFunctionUsed(const QString &functionName, const RpnCodeThread &code)
+{
+	foreach (RpnElement element, code) {
+		if (element.type != RpnElementFunction) continue;
+
+		QString calledFunctionName = element.value.value<QString>();
+		if (!m_functions.contains(calledFunctionName)) continue;
+
+		// is this our function call
+		if (calledFunctionName == functionName) {
+			return true;
+		}
+
+		// check recursively
+		RpnCodeThread calledFunctionCode = m_functions.value(calledFunctionName).codeThread;
+		if (isFunctionUsed(functionName, calledFunctionCode)) {
+			return true;
+		}
+	}
+
+	return false;
 }

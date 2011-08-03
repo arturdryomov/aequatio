@@ -2,7 +2,7 @@ DOC = help
 
 help.target = doc
 
-linux {
+linux* {
 	help.commands = \
 		mkdir -p $$OUT_PWD/share/doc/aequatio/ && \
 		mv $$PWD/$${DOC}.qch $$OUT_PWD/share/doc/aequatio/$${DOC}.qch && \

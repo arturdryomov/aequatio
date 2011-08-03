@@ -105,9 +105,11 @@
    </property>
    <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>View</string>
+     <string>Control</string>
     </property>
     <addaction name="actionShowFunctionsAndConstants"/>
+    <addaction name="separator"/>
+    <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -154,6 +156,14 @@
   <action name="actionDebug_Log">
    <property name="text">
     <string>Debug Log</string>
+   </property>
+  </action>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
    </property>
   </action>
  </widget>
