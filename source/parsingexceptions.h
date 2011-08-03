@@ -78,12 +78,4 @@ private:
 	QString m_unsupported;
 };
 
-class EConversionToNumber : public EInternal
-{
-public:
-	EConversionToNumber(const QString &numberRepresentation);
-	QString message();
-	QString m_numberRepresentation;
-};
-
 #endif // PARSINGEXCEPTIONS_H

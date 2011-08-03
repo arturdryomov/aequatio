@@ -1,14 +1,35 @@
 #ifndef RPNCODE_H
 #define RPNCODE_H
 
+#include "exceptions.h"
+
 #include <QVariant>
 
 typedef qreal Number;
 
-// This is to unify Number to string converting.
+class EConversionToNumber : public EInternal
+{
+public:
+	EConversionToNumber(const QString &numberRepresentation);
+	QString message();
+	QString m_numberRepresentation;
+};
+
+// This is to unify Number to string and string to Number converting.
 inline QString numberToString(const Number number)
 {
 	return QString::number(number).replace("-", "−");
+}
+
+inline Number stringToNumber(const QString &str)
+{
+	bool ok = false;
+	QString stringToConvert = str; // the compiler won't allow str.replace() as str is constant reference
+	Number result = stringToConvert.replace("−", "-").toDouble(&ok);
+	if (!ok) {
+		THROW(EConversionToNumber(stringToConvert));
+	}
+	return result;
 }
 
 // RPN stands for ‘Reverse Polish notation’

@@ -79,14 +79,3 @@ QString EIncorrectCharacter::message()
 EUnsupportedLexeme::EUnsupportedLexeme(const QString &unsupportedType) : m_unsupported(unsupportedType)
 {
 }
-
-EConversionToNumber::EConversionToNumber(const QString &numberRepresentation) :
-	m_numberRepresentation(numberRepresentation)
-{
-}
-
-QString EConversionToNumber::message()
-{
-	return tr("Error occurred while trying to convert “%1” into a number format. Let the developers "
-		"know about this, please.").arg(m_numberRepresentation);
-}

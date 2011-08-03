@@ -362,11 +362,7 @@ RpnElement SyntaxAnalyzer::summOperation()
 
 Number SyntaxAnalyzer::number()
 {
-	bool ok = false;
-	Number result = m_lexicalAnalyzer->lexeme().value.toDouble(&ok);
-	if (!ok) {
-		THROW(EConversionToNumber(m_lexicalAnalyzer->lexeme().value));
-	}
+	Number result = stringToNumber(m_lexicalAnalyzer->lexeme().value);
 	m_lexicalAnalyzer->nextLexeme();
 	return result;
 }
