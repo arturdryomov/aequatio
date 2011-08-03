@@ -202,8 +202,7 @@ RpnCodeThread SyntaxAnalyzer::function()
 	do {
 		m_lexicalAnalyzer->nextLexeme();
 		if (actualArgumentIndex >= formalArguments.count()) {
-			// TODO: actualArgumentIndex is not equal to actual argument count here, tweak
-			THROW(EWrongArgumentsCount(functionName, formalArguments.count(), actualArgumentIndex));
+			THROW(EWrongArgumentsCount(functionName, formalArguments.count()));
 		}
 		result << actualArgument(formalArguments.at(actualArgumentIndex));
 		++actualArgumentIndex;

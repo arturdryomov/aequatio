@@ -2,7 +2,7 @@
 
 QString ECalculating::message()
 {
-	return tr("An error occurred while performing calculation.", "ECalculating");
+	return tr("An error occurred while performing calculation.");
 }
 
 EBuiltInRedifinition::EBuiltInRedifinition(const QString &elementName, EBuiltInRedifinition::ElementType elementType) :
@@ -14,10 +14,10 @@ QString EBuiltInRedifinition::message()
 {
 	if (m_elementType == Constant) {
 		return tr("You cannot declare constant “%1” because there is already "
-			"built-in constant with this name.", "EBuiltInRedifinition").arg(m_elementName);
+			"built-in constant with this name.").arg(m_elementName);
 	}
 	else {
 		return tr("You cannot declare function “%1()” because there is already "
-			"built-in function with this name.", "EBuiltInRedifinition").arg(m_elementName);
+			"built-in function with this name.").arg(m_elementName);
 	}
 }

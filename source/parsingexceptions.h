@@ -44,11 +44,10 @@ public:
 class EWrongArgumentsCount : public EParsing
 {
 public:
-	EWrongArgumentsCount(const QString &functionName, int argumentsExpected, int argumentsPassed);
+	EWrongArgumentsCount(const QString &functionName, int argumentsExpected);
 	QString message();
 	QString m_functionName;
 	int m_argumentsExpected;
-	int m_argumentsPassed;
 };
 
 class EFormalArgumentReused : public EParsing
