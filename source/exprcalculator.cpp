@@ -130,57 +130,7 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<RpnOperand>
 
 Number ExprCalculator::calculateBuiltInFunction(QString functionName, QList<RpnOperand> functionArguments)
 {
-	// We will not check for argument types here. This code will soon be moved from ExprCalculator
-	// and respective checks will be made at that time.
-
-	if (functionName == RpnFunctionPlus) {
-		return BuiltInFunction::functions().value(RpnFunctionPlus)->calculate(0, functionArguments).value.value<Number>();
-	} 
-	else if (functionName == RpnFunctionMinus) {
-		return functionArguments[0].value.value<Number>() - functionArguments[1].value.value<Number>();
-	} 
-	else if (functionName == RpnFunctionMultiply) {
-		return functionArguments[0].value.value<Number>() * functionArguments[1].value.value<Number>();
-	} 
-	else if (functionName == RpnFunctionDivide) {
-		return functionArguments[0].value.value<Number>() / functionArguments[1].value.value<Number>();
-	} 
-	else if (functionName == RpnFunctionPower) {
-		return qPow(functionArguments[0].value.value<Number>(),  functionArguments[1].value.value<Number>());
-	} 
-	else if (functionName == RpnFunctionUnaryMinus) {
-		return -functionArguments[0].value.value<Number>();
-	}
-	else if (functionName == Sine) {
-		return qSin(functionArguments[0].value.value<Number>());
-	}
-	else if (functionName == Cosine) {
-		return qCos(functionArguments[0].value.value<Number>());
-	}
-	else if (functionName == Tangent) {
-		return qTan(functionArguments[0].value.value<Number>());
-	}
-	else if (functionName == "test_new_function") {
-		QString functionToCall = functionArguments[0].value.value<QString>();
-		QList<RpnOperand> calledFunctionArguments;
-		calledFunctionArguments << functionArguments[1];
-
-		if (m_functions.contains(functionToCall)) {
-			return calculateFunction(functionToCall, calledFunctionArguments);
-		}
-		else if (m_builtInFunctions.contains(functionToCall)) {
-			return calculateBuiltInFunction(functionToCall, calledFunctionArguments);
-		}
-		else {
-			THROW(EInternal());
-		}
-	}
-	else {
-		THROW(EIncorrectRpnCode());
-	}
-	
-	// Compiler needs this useless thing
-	return 0;
+	return BuiltInFunction::functions().value(functionName)->calculate(0, functionArguments).value.value<Number>();
 }
 
 FunctionDescription ExprCalculator::functionDescription(const QString &functionName)
