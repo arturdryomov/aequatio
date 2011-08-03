@@ -26,6 +26,7 @@ QList<RpnOperand> Plus::requiredArguments()
 	return arguments;
 }
 
+
 namespace
 {
 	Minus instanceMinus;
@@ -49,6 +50,7 @@ QList<RpnOperand> Minus::requiredArguments()
 
 	return arguments;
 }
+
 
 namespace
 {
@@ -74,6 +76,7 @@ QList<RpnOperand> Multiply::requiredArguments()
 	return arguments;
 }
 
+
 namespace
 {
 	Divide instanceDivide;
@@ -98,6 +101,7 @@ QList<RpnOperand> Divide::requiredArguments()
 	return arguments;
 }
 
+
 namespace
 {
 	Power instancePower;
@@ -121,6 +125,7 @@ QList<RpnOperand> Power::requiredArguments()
 
 	return arguments;
 }
+
 
 namespace
 {
@@ -170,6 +175,7 @@ QList<RpnOperand> CalcSine::requiredArguments()
 
 	return arguments;
 }
+
 
 namespace
 {
