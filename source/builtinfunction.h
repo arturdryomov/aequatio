@@ -27,8 +27,10 @@ public:
 		return functionsHash;
 	}
 
-	// Method for calculating everything
+	// Calculating everything
 	virtual RpnOperand calculate(FunctionCalculator* calculator, QList<RpnOperand> actualArguments) = 0;
+	// Arguments for calling function
+	virtual QList<RpnOperand> requiredArguments() = 0;
 };
 
 #endif // BUILTINFUNCTION_H

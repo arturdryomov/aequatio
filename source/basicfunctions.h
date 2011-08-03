@@ -11,6 +11,7 @@ public:
 	}
 
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnOperand> requiredArguments();
 };
 
 
@@ -22,6 +23,7 @@ public:
 	}
 
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnOperand> requiredArguments();
 };
 
 
@@ -33,6 +35,7 @@ public:
 	}
 
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnOperand> requiredArguments();
 };
 
 
@@ -44,6 +47,7 @@ public:
 	}
 
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnOperand> requiredArguments();
 };
 
 
@@ -55,6 +59,7 @@ public:
 	}
 
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnOperand> requiredArguments();
 };
 
 
@@ -66,6 +71,7 @@ public:
 	}
 
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnOperand> requiredArguments();
 };
 
 
@@ -77,6 +83,7 @@ public:
 	}
 
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnOperand> requiredArguments();
 };
 
 
@@ -88,6 +95,7 @@ public:
 	}
 
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnOperand> requiredArguments();
 };
 
 
@@ -99,6 +107,7 @@ public:
 	}
 
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnOperand> requiredArguments();
 };
 
 #endif // BASICFUNCTIONS_H

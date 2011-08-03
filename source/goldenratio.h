@@ -17,6 +17,7 @@ public:
 	}
 
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnOperand> requiredArguments();
 private:
 	Number countFunction(Number argument);
 	Number findMinimum();

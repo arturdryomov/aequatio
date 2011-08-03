@@ -18,6 +18,13 @@ RpnOperand Plus::calculate(FunctionCalculator *calculator, QList<RpnOperand> act
 	return result;
 }
 
+QList<RpnOperand> Plus::requiredArguments()
+{
+	QList<RpnOperand> arguments;
+	arguments << RpnOperand(RpnOperandNumber, QVariant()) << RpnOperand(RpnOperandNumber, QVariant());
+
+	return arguments;
+}
 
 namespace
 {
@@ -35,6 +42,13 @@ RpnOperand Minus::calculate(FunctionCalculator *calculator, QList<RpnOperand> ac
 	return result;
 }
 
+QList<RpnOperand> Minus::requiredArguments()
+{
+	QList<RpnOperand> arguments;
+	arguments << RpnOperand(RpnOperandNumber, QVariant()) << RpnOperand(RpnOperandNumber, QVariant());
+
+	return arguments;
+}
 
 namespace
 {
@@ -52,6 +66,13 @@ RpnOperand Multiply::calculate(FunctionCalculator *calculator, QList<RpnOperand>
 	return result;
 }
 
+QList<RpnOperand> Multiply::requiredArguments()
+{
+	QList<RpnOperand> arguments;
+	arguments << RpnOperand(RpnOperandNumber, QVariant()) << RpnOperand(RpnOperandNumber, QVariant());
+
+	return arguments;
+}
 
 namespace
 {
@@ -69,6 +90,13 @@ RpnOperand Divide::calculate(FunctionCalculator *calculator, QList<RpnOperand> a
 	return result;
 }
 
+QList<RpnOperand> Divide::requiredArguments()
+{
+	QList<RpnOperand> arguments;
+	arguments << RpnOperand(RpnOperandNumber, QVariant()) << RpnOperand(RpnOperandNumber, QVariant());
+
+	return arguments;
+}
 
 namespace
 {
@@ -86,6 +114,13 @@ RpnOperand Power::calculate(FunctionCalculator *calculator, QList<RpnOperand> ac
 	return result;
 }
 
+QList<RpnOperand> Power::requiredArguments()
+{
+	QList<RpnOperand> arguments;
+	arguments << RpnOperand(RpnOperandNumber, QVariant()) << RpnOperand(RpnOperandNumber, QVariant());
+
+	return arguments;
+}
 
 namespace
 {
@@ -101,6 +136,14 @@ RpnOperand UnaryMinus::calculate(FunctionCalculator *calculator, QList<RpnOperan
 	result.value = -actualArguments[0].value.value<Number>();
 
 	return result;
+}
+
+QList<RpnOperand> UnaryMinus::requiredArguments()
+{
+	QList<RpnOperand> arguments;
+	arguments << RpnOperand(RpnOperandNumber, QVariant());
+
+	return arguments;
 }
 
 
@@ -120,6 +163,13 @@ RpnOperand CalcSine::calculate(FunctionCalculator *calculator, QList<RpnOperand>
 	return result;
 }
 
+QList<RpnOperand> CalcSine::requiredArguments()
+{
+	QList<RpnOperand> arguments;
+	arguments << RpnOperand(RpnOperandNumber, QVariant());
+
+	return arguments;
+}
 
 namespace
 {
@@ -137,6 +187,14 @@ RpnOperand CalcCosine::calculate(FunctionCalculator *calculator, QList<RpnOperan
 	return result;
 }
 
+QList<RpnOperand> CalcCosine::requiredArguments()
+{
+	QList<RpnOperand> arguments;
+	arguments << RpnOperand(RpnOperandNumber, QVariant());
+
+	return arguments;
+}
+
 
 namespace
 {
@@ -152,4 +210,12 @@ RpnOperand CalcTangent::calculate(FunctionCalculator *calculator, QList<RpnOpera
 	result.value = qTan(actualArguments[0].value.value<Number>());
 
 	return result;
+}
+
+QList<RpnOperand> CalcTangent::requiredArguments()
+{
+	QList<RpnOperand> arguments;
+	arguments << RpnOperand(RpnOperandNumber, QVariant());
+
+	return arguments;
 }

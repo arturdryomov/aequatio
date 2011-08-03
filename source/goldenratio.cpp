@@ -22,6 +22,17 @@ RpnOperand GoldenRatio::calculate(FunctionCalculator *calculator, QList<RpnOpera
 	return result;
 }
 
+QList<RpnOperand> GoldenRatio::requiredArguments()
+{
+	QList<RpnOperand> arguments;
+	arguments << RpnOperand(RpnOperandFunctionName, QVariant())
+		<< RpnOperand(RpnOperandNumber, QVariant())
+		<< RpnOperand(RpnOperandNumber, QVariant())
+		<< RpnOperand(RpnOperandNumber, QVariant());
+
+	return arguments;
+}
+
 Number GoldenRatio::findMinimum()
 {
   Interval newInterval;
