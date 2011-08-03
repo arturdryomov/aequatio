@@ -1,5 +1,6 @@
 #include "exprcalculator.h"
 #include "calculatingexceptions.h"
+#include "builtinfunction.h"
 
 #include <QStack>
 #include <QStringList>
@@ -133,7 +134,7 @@ Number ExprCalculator::calculateBuiltInFunction(QString functionName, QList<RpnO
 	// and respective checks will be made at that time.
 
 	if (functionName == RpnFunctionPlus) {
-		return functionArguments[0].value.value<Number>() + functionArguments[1].value.value<Number>();
+		return BuiltInFunction::functions().value(RpnFunctionPlus)->calculate(0, functionArguments).value.value<Number>();
 	} 
 	else if (functionName == RpnFunctionMinus) {
 		return functionArguments[0].value.value<Number>() - functionArguments[1].value.value<Number>();
