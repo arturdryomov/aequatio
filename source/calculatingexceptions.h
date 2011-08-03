@@ -19,9 +19,10 @@ class EBuiltInRedifinition : public ECalculating
 public:
 	enum ElementType {Constant, Function};
 	EBuiltInRedifinition(const QString &elementName, ElementType elementType);
+	QString message();
+private:
 	QString m_elementName;
 	ElementType m_elementType;
-	QString message();
 };
 
 
