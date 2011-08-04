@@ -17,8 +17,8 @@
    <string>About Aequatio</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>:/images/appicon.png</normaloff>:/images/appicon.png</iconset>
+   <iconset resource="../resource/icons/aequatio.qrc">
+    <normaloff>:/images/linux/aequatio.png</normaloff>:/images/linux/aequatio.png</iconset>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="spacing">
