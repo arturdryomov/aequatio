@@ -3,11 +3,6 @@
 
 #include "builtinfunction.h"
 
-struct Interval {
-	Number leftBorder;
-	Number rightBorder;
-};
-
 // Class for finding minimum of function with Golden Ratio method
 class GoldenRatio : public BuiltInFunction
 {
@@ -26,6 +21,11 @@ private:
 	QString m_functionName;
 	Number m_ratio;
 	Number m_accuracy;
+
+	struct Interval {
+		Number leftBorder;
+		Number rightBorder;
+	};
 	Interval m_sourceInterval;
 };
 
