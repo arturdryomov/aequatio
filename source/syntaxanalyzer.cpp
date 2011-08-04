@@ -440,7 +440,7 @@ void SyntaxAnalyzer::ensureNoMoreLexemes()
 {
 	if (m_lexicalAnalyzer->lexeme().type != LexemeEol) {
 		THROW(EParsing());
-   }
+	}
 }
 
 bool CheckLexeme::isMultOperation(Lexeme lexeme)
