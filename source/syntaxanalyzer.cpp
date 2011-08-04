@@ -97,10 +97,14 @@ ConstantDescription SyntaxAnalyzer::constDeclaration()
 	// Expression
 	RpnCodeThread constThread = expression();
 	ExpressionDescription expression = m_exprCalculator->calculate(constThread);
+	// constant values can only be of Number type now
+	if (expression.result.type != RpnOperandNumber) {
+		THROW(EInternal());
+	}
 	m_lexicalAnalyzer->nextLexeme();
 
 	// add constant to list
-	return m_exprCalculator->addConstant(constName, expression.result);
+	return m_exprCalculator->addConstant(constName, expression.result.value.value<Number>());
 }
 
 // FunctionDeclaration = 'func' Indenifier '(' FormalArgument

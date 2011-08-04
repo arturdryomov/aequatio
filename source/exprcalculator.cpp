@@ -19,30 +19,30 @@ ExpressionDescription ExprCalculator::calculate(const RpnCodeThread &thread)
 	RpnFunction function = {QList<RpnArgument>(), thread};
 	m_userDefinedFunctions.insert(RpnFunctionMain, function);
 	ExpressionDescription description = {rpnCodeThreadToString(thread),
-		calculateUserDefinedFunction(RpnFunctionMain, QList<RpnOperand>())};
+		calculateUserDefinedFunction(RpnFunctionMain, QList<RpnOperand>()) };
 
 	return description;
 }
 
-RpnOperand ExprCalculator::calculateFunction(const QString &functionName, const QList<RpnOperand> &functionArguments)
+RpnOperand ExprCalculator::calculateFunction(const QString &functionName, const QList<RpnOperand> &actualArguments)
 {
 	if (BuiltInFunction::functions().contains(functionName)) {
 		// check for argument types equivalence
 		QList<RpnArgument> requiredArguments = BuiltInFunction::functions().value(functionName)->requiredArguments();
 		for (int i = 0; i < requiredArguments.count(); ++i) {
-			if (functionArguments.at(i).type != requiredArguments.at(i).type) {
+			if (actualArguments.at(i).type != requiredArguments.at(i).type) {
 				THROW(EIncorrectRpnCode());
 			}
 		}
 
 		// calculate
-		return RpnOperand(RpnOperandNumber, calculateBuiltInFunction(functionName, functionArguments));
+		return calculateBuiltInFunction(functionName, actualArguments);
 	}
 
 	else if (m_userDefinedFunctions.contains(functionName)) {
 		// no type checks here at the moment as user-defined functions can take only
 		// numbers as arguments.
-		return RpnOperand(RpnOperandNumber, calculateUserDefinedFunction(functionName, functionArguments));
+		return calculateUserDefinedFunction(functionName, actualArguments);
 	}
 
 	else {
@@ -50,7 +50,7 @@ RpnOperand ExprCalculator::calculateFunction(const QString &functionName, const 
 	}
 }
 
-Number ExprCalculator::calculateUserDefinedFunction(const QString &functionName, const QList<RpnOperand> &functionArguments)
+RpnOperand ExprCalculator::calculateUserDefinedFunction(const QString &functionName, const QList<RpnOperand> &actualArguments)
 {
 	QStack<RpnOperand> calculationStack;
 
@@ -78,7 +78,7 @@ Number ExprCalculator::calculateUserDefinedFunction(const QString &functionName,
 					// find ordinal number of the argument with name argumentName
 					// and substitute it with actual value from funtionArguments
 					if (argumentName == function.arguments.at(i).name) {
-						calculationStack.push(functionArguments[i]);
+						calculationStack.push(actualArguments[i]);
 						break;
 					}
 				}
@@ -91,8 +91,8 @@ Number ExprCalculator::calculateUserDefinedFunction(const QString &functionName,
 				if (m_builtInConstants.contains(element.value.toString())) {
 					operand.value = m_builtInConstants.value(element.value.toString());
 				}
-				else if (m_constants.contains(element.value.toString())) {
-					operand.value = m_constants.value(element.value.toString());
+				else if (m_userDefinedConstants.contains(element.value.toString())) {
+					operand.value = m_userDefinedConstants.value(element.value.toString());
 				}
 				else {
 					THROW(EIncorrectRpnCode());
@@ -107,7 +107,7 @@ Number ExprCalculator::calculateUserDefinedFunction(const QString &functionName,
 				QString callingFunctionName = element.value.value<QString>();
 
 				QList<RpnOperand> actualArguments;
-				for (int i = 0; i < functionArgumentsCount(callingFunctionName); ++i) {
+				for (int i = 0; i < functionArguments(callingFunctionName).count(); ++i) {
 					actualArguments.prepend(calculationStack.pop());
 				}
 
@@ -125,17 +125,19 @@ Number ExprCalculator::calculateUserDefinedFunction(const QString &functionName,
 	if (calculationStack.count() != 1) {
 		THROW(EIncorrectRpnCode());
 	}
+
 	RpnOperand result = calculationStack.pop();
+	// currently user-defined functions can return only numbers.
 	if (result.type != RpnOperandNumber) {
 		THROW(EIncorrectRpnCode());
 	}
-
-	return result.value.value<Number>();
+	return result;
 }
 
-Number ExprCalculator::calculateBuiltInFunction(const QString &functionName, const QList<RpnOperand> &functionArguments)
+RpnOperand ExprCalculator::calculateBuiltInFunction(const QString &functionName, const QList<RpnOperand> &actualArguments)
 {
-	return BuiltInFunction::functions().value(functionName)->calculate(m_functionCalculator, functionArguments).value.value<Number>();
+	return BuiltInFunction::functions().value(functionName)->calculate(
+		m_functionCalculator, actualArguments);
 }
 
 FunctionDescription ExprCalculator::functionDescription(const QString &functionName)
@@ -148,18 +150,6 @@ FunctionDescription ExprCalculator::functionDescription(const QString &functionN
 	}
 	description.body = rpnCodeThreadToString(functionCode.codeThread);
 	return description;
-}
-
-QString ExprCalculator::operandToText(const RpnOperand &operand)
-{
-	switch (operand.type) {
-		case RpnOperandNumber:
-			return numberToString(operand.value.value<Number>());
-		case RpnOperandFunctionName:
-			return operand.value.value<QString>();
-		default:
-			THROW(EIncorrectRpnCode());
-	}
 }
 
 QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
@@ -177,7 +167,7 @@ QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
 		switch (element.type) {
 
 			case RpnElementOperand:
-				part.text = operandToText(element.value.value<RpnOperand>());
+				part.text = element.value.value<RpnOperand>().toString();
 				part.priority = PriorityHighest;
 				break;
 
@@ -290,7 +280,7 @@ ConstantDescription ExprCalculator::addConstant(const QString &name, const Numbe
 		THROW(EBuiltInRedifinition(name, EBuiltInRedifinition::Constant));
 	}
 
-	m_constants.insert(name, value);
+	m_userDefinedConstants.insert(name, value);
 	emit constantsListChanged();
 
 	ConstantDescription constantDescription = {name, value};
@@ -320,34 +310,20 @@ bool ExprCalculator::isFunction(const QString &name)
 
 bool ExprCalculator::isConstant(const QString &name)
 {
-	return (m_constants.contains(name) || m_builtInConstants.contains(name));
-}
-
-int ExprCalculator::functionArgumentsCount(const QString &name)
-{
-	if (!isFunction(name)) {
-		THROW(EIncorrectRpnCode());
-	}
-
-	if (m_userDefinedFunctions.contains(name)) {
-		return m_userDefinedFunctions.value(name).arguments.count();
-	}
-	else {
-		return BuiltInFunction::functions().value(name)->requiredArguments().count();
-	}
+	return (m_userDefinedConstants.contains(name) || m_builtInConstants.contains(name));
 }
 
 QList<RpnArgument> ExprCalculator::functionArguments(const QString &name)
 {
-	if (!isFunction(name)) {
-		THROW(EIncorrectRpnCode());
+	if (BuiltInFunction::functions().contains(name)) {
+		return BuiltInFunction::functions().value(name)->requiredArguments();
 	}
 
-	if (m_userDefinedFunctions.contains(name)) {
+	else if (m_userDefinedFunctions.contains(name)) {
 		return m_userDefinedFunctions.value(name).arguments;
 	}
 	else {
-		return BuiltInFunction::functions().value(name)->requiredArguments();
+		THROW(EIncorrectRpnCode());
 	}
 }
 
@@ -355,7 +331,7 @@ QList<ConstantDescription> ExprCalculator::constantsList()
 {
 	QList<ConstantDescription> constantsList;
 
-	QHashIterator<QString, Number> i(m_constants);
+	QHashIterator<QString, Number> i(m_userDefinedConstants);
 	while (i.hasNext()) {
 		i.next();
 		ConstantDescription constant = {i.key(), i.value()};

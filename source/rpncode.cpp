@@ -1,4 +1,5 @@
 #include "rpncode.h"
+#include "calculatingexceptions.h"
 
 EConversionToNumber::EConversionToNumber(const QString &numberRepresentation) :
 	m_numberRepresentation(numberRepresentation)
@@ -15,6 +16,18 @@ QString EConversionToNumber::message()
 RpnOperand::RpnOperand(RpnOperandType type_, const QVariant &value_) :
 	type(type_), value(value_)
 {
+}
+
+QString RpnOperand::toString()
+{
+	switch (type) {
+		case RpnOperandNumber:
+			return numberToString(value.value<Number>());
+		case RpnOperandFunctionName:
+			return value.value<QString>();
+		default:
+			THROW(EIncorrectRpnCode());
+	}
 }
 
 bool RpnOperand::operator ==(const RpnOperand &another)

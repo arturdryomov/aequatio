@@ -22,7 +22,7 @@ struct FunctionDescription {
 
 struct ExpressionDescription {
 	QString expression;
-	Number result;
+	RpnOperand result;
 };
 
 // main function names
@@ -47,7 +47,6 @@ public:
 
 	bool isFunction(const QString &name);
 	bool isConstant(const QString &name);
-	int functionArgumentsCount(const QString &name);
 	QList<RpnArgument> functionArguments(const QString &name);
 
 	QList<ConstantDescription> constantsList();
@@ -55,10 +54,8 @@ public:
 private:
 	QList<QString> m_userDefinedFunctionNames; // stores function in order of their declaration
 	QHash<QString, RpnFunction> m_userDefinedFunctions;
-	QHash<QString, QList<RpnArgument> > m_builtInFunctions; // rpnArgument.name is not used here
-	QHash<QString, Number> m_constants;
+	QHash<QString, Number> m_userDefinedConstants;
 	QHash<QString, Number> m_builtInConstants;
-	RpnCodeThread m_rpnCodeThread;
 
 	friend class FunctionCalculator;
 	class FunctionCalculator : public BuiltInFunction::FunctionCalculator
@@ -94,12 +91,11 @@ private:
 	void initializeBuiltInConstants();
 
 	// defines whether functionName is built-in or user-defined and calculates it.
-	RpnOperand calculateFunction(const QString &functionName, const QList<RpnOperand> &functionArguments);
+	RpnOperand calculateFunction(const QString &functionName, const QList<RpnOperand> &actualArguments);
+	RpnOperand calculateUserDefinedFunction(const QString &functionName, const QList<RpnOperand> &actualArguments);
+	RpnOperand calculateBuiltInFunction(const QString &functionName, const QList<RpnOperand> &actualArguments);
 
-	Number calculateUserDefinedFunction(const QString &functionName, const QList<RpnOperand> &functionArguments);
-	Number calculateBuiltInFunction(const QString &functionName, const QList<RpnOperand> &functionArguments);
 	FunctionDescription functionDescription(const QString &functionName);
-	QString operandToText(const RpnOperand &operand);
 };
 
 Q_DECLARE_METATYPE(ConstantDescription)

@@ -50,6 +50,7 @@ enum RpnOperandType {
 struct RpnOperand
 {
 	RpnOperand(RpnOperandType type_ = RpnOperandNumber, const QVariant &value_ = QVariant());
+	QString toString();
 	bool operator ==(const RpnOperand &another);
 
 	RpnOperandType type;
