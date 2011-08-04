@@ -1,7 +1,7 @@
 #ifndef BUILTINFUNCTION_H
 #define BUILTINFUNCTION_H
 
-#include "exprcalculator.h"
+#include "rpncode.h"
 
 // Template and interface class for calculation sub-classes
 class BuiltInFunction

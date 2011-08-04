@@ -75,8 +75,6 @@ Number GoldenRatio::countFunction(Number argument)
 	RpnOperand functionArgument(RpnOperandNumber, argument);
 	functionArguments << functionArgument;
 
-	// TODO: Check funciton in built-in or user-defined?
-	// Maybe would be better for Syntax Analyzer.
 	RpnOperand result = m_calculator->calculate(m_functionName, functionArguments);
 	return result.value.value<Number>();
 }

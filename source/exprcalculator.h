@@ -2,6 +2,7 @@
 #define EXPRCALCULATOR_H
 
 #include "rpncode.h"
+#include "builtinfunction.h"
 
 #include <QHash>
 #include <QObject>
@@ -58,6 +59,18 @@ private:
 	QHash<QString, Number> m_constants;
 	QHash<QString, Number> m_builtInConstants;
 	RpnCodeThread m_rpnCodeThread;
+
+	friend class FunctionCalculator;
+	class FunctionCalculator : public BuiltInFunction::FunctionCalculator
+	{
+	public:
+		FunctionCalculator(ExprCalculator *exprCalculator) : m_exprCalculator(exprCalculator) {}
+		RpnOperand calculate(QString functionName, QList<RpnOperand> actualArguments);
+	private:
+		ExprCalculator *m_exprCalculator;
+	};
+
+	FunctionCalculator *m_functionCalculator;
 
 	// PartPriority and PartInfo are used in rpnCodeThreadToString() only.
 	enum PartPriority {PriorityPlusMinus, PriorityMultiplyDivide, PriorityPower,

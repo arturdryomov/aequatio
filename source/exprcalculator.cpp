@@ -1,6 +1,5 @@
 #include "exprcalculator.h"
 #include "calculatingexceptions.h"
-#include "builtinfunction.h"
 
 #include <QStack>
 #include <QStringList>
@@ -8,7 +7,9 @@
 #define _USE_MATH_DEFINES
 #include <qmath.h>
 
-ExprCalculator::ExprCalculator(QObject *parent) : QObject(parent)
+ExprCalculator::ExprCalculator(QObject *parent) :
+	QObject(parent),
+	m_functionCalculator(new FunctionCalculator(this))
 {
 	initializeBuiltInConstants();
 }
@@ -134,7 +135,7 @@ Number ExprCalculator::calculateUserDefinedFunction(const QString &functionName,
 
 Number ExprCalculator::calculateBuiltInFunction(const QString &functionName, const QList<RpnOperand> &functionArguments)
 {
-	return BuiltInFunction::functions().value(functionName)->calculate(0, functionArguments).value.value<Number>();
+	return BuiltInFunction::functions().value(functionName)->calculate(m_functionCalculator, functionArguments).value.value<Number>();
 }
 
 FunctionDescription ExprCalculator::functionDescription(const QString &functionName)
@@ -382,4 +383,9 @@ void ExprCalculator::initializeBuiltInConstants()
 {
 	m_builtInConstants.insert(Pi, M_PI);
 	m_builtInConstants.insert(E, M_E);
+}
+
+RpnOperand ExprCalculator::FunctionCalculator::calculate(QString functionName, QList<RpnOperand> actualArguments)
+{
+	return m_exprCalculator->calculateFunction(functionName, actualArguments);
 }
