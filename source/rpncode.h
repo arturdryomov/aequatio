@@ -5,6 +5,14 @@
 
 #include <QVariant>
 
+// basic arithmetic funciton names
+const QString RpnFunctionPlus = "@Plus@";
+const QString RpnFunctionMinus = "@Minus@";
+const QString RpnFunctionMultiply = "@Multiply@";
+const QString RpnFunctionDivide = "@Divide@";
+const QString RpnFunctionPower = "@Power@";
+const QString RpnFunctionUnaryMinus = "@UnaryMinus@";
+
 typedef qreal Number;
 
 class EConversionToNumber : public EInternal

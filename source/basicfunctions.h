@@ -78,7 +78,7 @@ public:
 class CalcSine : public BuiltInFunction
 {
 public:
-	CalcSine() : BuiltInFunction(Sine)
+	CalcSine() : BuiltInFunction("sin")
 	{
 	}
 
@@ -90,7 +90,7 @@ public:
 class CalcCosine : public BuiltInFunction
 {
 public:
-	CalcCosine() : BuiltInFunction(Cosine)
+	CalcCosine() : BuiltInFunction("cos")
 	{
 	}
 
@@ -102,7 +102,7 @@ public:
 class CalcTangent : public BuiltInFunction
 {
 public:
-	CalcTangent() : BuiltInFunction(Tangent)
+	CalcTangent() : BuiltInFunction("tan")
 	{
 	}
 

@@ -10,7 +10,6 @@
 
 ExprCalculator::ExprCalculator(QObject *parent) : QObject(parent)
 {
-	initializeBuiltInFunctions();
 	initializeBuiltInConstants();
 }
 
@@ -377,36 +376,6 @@ QList<FunctionDescription> ExprCalculator::functionsList()
 	}
 
 	return functionsList;
-}
-
-// TODO: Remove, leave only RpnFunctionMain
-void ExprCalculator::initializeBuiltInFunctions()
-{
-	QList<RpnArgument> arguments;
-
-	// no arguments expected
-	m_builtInFunctions.insert(RpnFunctionMain, arguments);
-
-	// one Number argument expected
-	arguments << RpnArgument(RpnOperandNumber);
-	m_builtInFunctions.insert(RpnFunctionUnaryMinus, arguments);
-	m_builtInFunctions.insert(Sine, arguments);
-	m_builtInFunctions.insert(Cosine, arguments);
-	m_builtInFunctions.insert(Tangent, arguments);
-
-	// two Number argument expected
-	arguments << RpnArgument(RpnOperandNumber);
-	m_builtInFunctions.insert(RpnFunctionPlus, arguments);
-	m_builtInFunctions.insert(RpnFunctionMinus, arguments);
-	m_builtInFunctions.insert(RpnFunctionMultiply, arguments);
-	m_builtInFunctions.insert(RpnFunctionDivide, arguments);
-	m_builtInFunctions.insert(RpnFunctionPower, arguments);
-
-	arguments.clear();
-	// 1 is argument count in function that is passed as and argument to "test_new_function"
-	arguments << RpnArgument(RpnOperandFunctionName, QString(), QVariant::fromValue(1))
-		<< RpnArgument(RpnOperandNumber);
-	m_builtInFunctions.insert("test_new_function", arguments);
 }
 
 void ExprCalculator::initializeBuiltInConstants()
