@@ -65,8 +65,8 @@ public:
 	QList<ConstantDescription> constantsList();
 	QList<FunctionDescription> functionsList();
 private:
-	QList<QString> m_functionNames; // stores function in order of their declaration
-	QHash<QString, RpnFunction> m_functions;
+	QList<QString> m_userDefinedFunctionNames; // stores function in order of their declaration
+	QHash<QString, RpnFunction> m_userDefinedFunctions;
 	QHash<QString, QList<RpnArgument> > m_builtInFunctions; // rpnArgument.name is not used here
 	QHash<QString, Number> m_constants;
 	QHash<QString, Number> m_builtInConstants;
@@ -93,8 +93,11 @@ private:
 	void initializeBuiltInFunctions();
 	void initializeBuiltInConstants();
 
-	Number calculateFunction(QString functionName, QList<RpnOperand> functionArguments);
-	Number calculateBuiltInFunction(QString functionName, QList<RpnOperand> functionArguments);
+	// defines whether functionName is built-in or user-defined and calculates it.
+	RpnOperand calculateFunction(const QString &functionName, const QList<RpnOperand> &functionArguments);
+
+	Number calculateUserDefinedFunction(const QString &functionName, const QList<RpnOperand> &functionArguments);
+	Number calculateBuiltInFunction(const QString &functionName, const QList<RpnOperand> &functionArguments);
 	FunctionDescription functionDescription(const QString &functionName);
 	QString operandToText(const RpnOperand &operand);
 };
