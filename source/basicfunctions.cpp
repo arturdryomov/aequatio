@@ -18,10 +18,10 @@ RpnOperand Plus::calculate(FunctionCalculator *calculator, QList<RpnOperand> act
 	return result;
 }
 
-QList<RpnOperand> Plus::requiredArguments()
+QList<RpnArgument> Plus::requiredArguments()
 {
-	QList<RpnOperand> arguments;
-	arguments << RpnOperand(RpnOperandNumber, QVariant()) << RpnOperand(RpnOperandNumber, QVariant());
+	QList<RpnArgument> arguments;
+	arguments << RpnArgument(RpnOperandNumber) << RpnArgument(RpnOperandNumber);
 
 	return arguments;
 }
@@ -43,10 +43,10 @@ RpnOperand Minus::calculate(FunctionCalculator *calculator, QList<RpnOperand> ac
 	return result;
 }
 
-QList<RpnOperand> Minus::requiredArguments()
+QList<RpnArgument> Minus::requiredArguments()
 {
-	QList<RpnOperand> arguments;
-	arguments << RpnOperand(RpnOperandNumber, QVariant()) << RpnOperand(RpnOperandNumber, QVariant());
+	QList<RpnArgument> arguments;
+	arguments << RpnArgument(RpnOperandNumber) << RpnArgument(RpnOperandNumber);
 
 	return arguments;
 }
@@ -68,10 +68,10 @@ RpnOperand Multiply::calculate(FunctionCalculator *calculator, QList<RpnOperand>
 	return result;
 }
 
-QList<RpnOperand> Multiply::requiredArguments()
+QList<RpnArgument> Multiply::requiredArguments()
 {
-	QList<RpnOperand> arguments;
-	arguments << RpnOperand(RpnOperandNumber, QVariant()) << RpnOperand(RpnOperandNumber, QVariant());
+	QList<RpnArgument> arguments;
+	arguments << RpnArgument(RpnOperandNumber) << RpnArgument(RpnOperandNumber);
 
 	return arguments;
 }
@@ -93,10 +93,10 @@ RpnOperand Divide::calculate(FunctionCalculator *calculator, QList<RpnOperand> a
 	return result;
 }
 
-QList<RpnOperand> Divide::requiredArguments()
+QList<RpnArgument> Divide::requiredArguments()
 {
-	QList<RpnOperand> arguments;
-	arguments << RpnOperand(RpnOperandNumber, QVariant()) << RpnOperand(RpnOperandNumber, QVariant());
+	QList<RpnArgument> arguments;
+	arguments << RpnArgument(RpnOperandNumber) << RpnArgument(RpnOperandNumber);
 
 	return arguments;
 }
@@ -118,10 +118,10 @@ RpnOperand Power::calculate(FunctionCalculator *calculator, QList<RpnOperand> ac
 	return result;
 }
 
-QList<RpnOperand> Power::requiredArguments()
+QList<RpnArgument> Power::requiredArguments()
 {
-	QList<RpnOperand> arguments;
-	arguments << RpnOperand(RpnOperandNumber, QVariant()) << RpnOperand(RpnOperandNumber, QVariant());
+	QList<RpnArgument> arguments;
+	arguments << RpnArgument(RpnOperandNumber) << RpnArgument(RpnOperandNumber);
 
 	return arguments;
 }
@@ -143,10 +143,10 @@ RpnOperand UnaryMinus::calculate(FunctionCalculator *calculator, QList<RpnOperan
 	return result;
 }
 
-QList<RpnOperand> UnaryMinus::requiredArguments()
+QList<RpnArgument> UnaryMinus::requiredArguments()
 {
-	QList<RpnOperand> arguments;
-	arguments << RpnOperand(RpnOperandNumber, QVariant());
+	QList<RpnArgument> arguments;
+	arguments << RpnArgument(RpnOperandNumber);
 
 	return arguments;
 }
@@ -168,10 +168,10 @@ RpnOperand CalcSine::calculate(FunctionCalculator *calculator, QList<RpnOperand>
 	return result;
 }
 
-QList<RpnOperand> CalcSine::requiredArguments()
+QList<RpnArgument> CalcSine::requiredArguments()
 {
-	QList<RpnOperand> arguments;
-	arguments << RpnOperand(RpnOperandNumber, QVariant());
+	QList<RpnArgument> arguments;
+	arguments << RpnArgument(RpnOperandNumber);
 
 	return arguments;
 }
@@ -193,10 +193,10 @@ RpnOperand CalcCosine::calculate(FunctionCalculator *calculator, QList<RpnOperan
 	return result;
 }
 
-QList<RpnOperand> CalcCosine::requiredArguments()
+QList<RpnArgument> CalcCosine::requiredArguments()
 {
-	QList<RpnOperand> arguments;
-	arguments << RpnOperand(RpnOperandNumber, QVariant());
+	QList<RpnArgument> arguments;
+	arguments << RpnArgument(RpnOperandNumber);
 
 	return arguments;
 }
@@ -218,10 +218,10 @@ RpnOperand CalcTangent::calculate(FunctionCalculator *calculator, QList<RpnOpera
 	return result;
 }
 
-QList<RpnOperand> CalcTangent::requiredArguments()
+QList<RpnArgument> CalcTangent::requiredArguments()
 {
-	QList<RpnOperand> arguments;
-	arguments << RpnOperand(RpnOperandNumber, QVariant());
+	QList<RpnArgument> arguments;
+	arguments << RpnArgument(RpnOperandNumber);
 
 	return arguments;
 }

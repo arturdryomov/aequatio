@@ -17,7 +17,7 @@ public:
 	}
 
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
-	QList<RpnOperand> requiredArguments();
+	QList<RpnArgument> requiredArguments();
 private:
 	Number countFunction(Number argument);
 	Number findMinimum();
@@ -26,7 +26,7 @@ private:
 	QString m_functionName;
 	Number m_ratio;
 	Number m_accuracy;
-  Interval m_sourceInterval;
+	Interval m_sourceInterval;
 };
 
 #endif // GOLDENRATIO_H

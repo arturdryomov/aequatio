@@ -30,7 +30,7 @@ public:
 	// Calculating everything
 	virtual RpnOperand calculate(FunctionCalculator* calculator, QList<RpnOperand> actualArguments) = 0;
 	// Arguments for calling function
-	virtual QList<RpnOperand> requiredArguments() = 0;
+	virtual QList<RpnArgument> requiredArguments() = 0;
 };
 
 #endif // BUILTINFUNCTION_H

@@ -82,7 +82,7 @@ Number ExprCalculator::calculateFunction(QString functionName, QList<RpnOperand>
 
 				if (BuiltInFunction::functions().contains(callingFunctionName)) {
 					QList<RpnOperand> operands;
-					QList<RpnOperand> requiredArguments = BuiltInFunction::functions().value(callingFunctionName)->requiredArguments();
+					QList<RpnArgument> requiredArguments = BuiltInFunction::functions().value(callingFunctionName)->requiredArguments();
 					for (int i = requiredArguments.count() - 1; i >= 0; --i) {
 						// perform type check
 						RpnOperand operand = calculationStack.pop();
@@ -343,8 +343,7 @@ QList<RpnArgument> ExprCalculator::functionArguments(const QString &name)
 		return m_functions.value(name).arguments;
 	}
 	else {
-		// TODO: What to do, maybe transform QList<RpnArgument> to QList<RpnOperand>
-		return m_builtInFunctions.value(name);
+		return BuiltInFunction::functions().value(name)->requiredArguments();
 	}
 }
 

@@ -22,13 +22,15 @@ RpnOperand GoldenRatio::calculate(FunctionCalculator *calculator, QList<RpnOpera
 	return result;
 }
 
-QList<RpnOperand> GoldenRatio::requiredArguments()
+QList<RpnArgument> GoldenRatio::requiredArguments()
 {
-	QList<RpnOperand> arguments;
-	arguments << RpnOperand(RpnOperandFunctionName, QVariant())
-		<< RpnOperand(RpnOperandNumber, QVariant())
-		<< RpnOperand(RpnOperandNumber, QVariant())
-		<< RpnOperand(RpnOperandNumber, QVariant());
+	QList<RpnArgument> arguments;
+	arguments
+		// 1 is argument count in function that is passed as and argument to GoldenRatio
+		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant::fromValue(1))
+		<< RpnArgument(RpnOperandNumber)
+		<< RpnArgument(RpnOperandNumber)
+		<< RpnArgument(RpnOperandNumber);
 
 	return arguments;
 }
