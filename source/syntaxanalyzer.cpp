@@ -212,6 +212,9 @@ RpnCodeThread SyntaxAnalyzer::function()
 		++actualArgumentIndex;
 	} while (m_lexicalAnalyzer->lexeme().type == LexemeComma);
 	
+	if (actualArgumentIndex != formalArguments.count()) {
+		THROW(EWrongArgumentsCount(functionName, formalArguments.count()));
+	}
 
 	if (m_lexicalAnalyzer->lexeme().type != LexemeClosingBracket) {
 		THROW(ELexemeExpected(tr("Closing bracket after arguments list")));
