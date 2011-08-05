@@ -128,7 +128,8 @@ FunctionDescription SyntaxAnalyzer::functionDeclaration()
 	if (m_lexicalAnalyzer->lexeme().type != LexemeOpeningBracket) {
 		THROW(ELexemeExpected(tr("Opening bracket after function name")));
 	}
-	
+
+	m_workingArguments.clear();
 	do {
 		m_lexicalAnalyzer->nextLexeme();
 		extractFormalArgument();
@@ -150,7 +151,6 @@ FunctionDescription SyntaxAnalyzer::functionDeclaration()
 	RpnFunction function;
 	function.arguments = m_workingArguments;
 	function.codeThread = expression();
-	m_workingArguments.clear();
 
 	return m_exprCalculator->addFunction(functionName, function);
 }
