@@ -293,10 +293,6 @@ FunctionDescription ExprCalculator::addFunction(const QString &name, const RpnFu
 		THROW(EBuiltInRedifinition(name, EBuiltInRedifinition::Function));
 	}
 
-	if (m_userDefinedFunctionNames.contains(name)) {
-		m_userDefinedFunctionNames.removeOne(name);
-	}
-	m_userDefinedFunctionNames.append(name);
 	m_userDefinedFunctions.insert(name, function);
 	emit functionsListChanged();
 
@@ -331,7 +327,7 @@ QList<ConstantDescription> ExprCalculator::constantsList()
 {
 	QList<ConstantDescription> constantsList;
 
-	QHashIterator<QString, Number> i(m_userDefinedConstants);
+	QMapIterator<QString, Number> i(m_userDefinedConstants);
 	while (i.hasNext()) {
 		i.next();
 		ConstantDescription constant = {i.key(), i.value()};
@@ -345,9 +341,11 @@ QList<FunctionDescription> ExprCalculator::functionsList()
 {
 	QList<FunctionDescription> functionsList;
 
-	foreach (QString functionName, m_userDefinedFunctionNames) {
-		if (functionName != RpnFunctionMain) {
-			FunctionDescription function = functionDescription(functionName);
+	QMapIterator<QString, RpnFunction> i(m_userDefinedFunctions);
+	while (i.hasNext()) {
+		i.next();
+		if (i.key() != RpnFunctionMain) {
+			FunctionDescription function = functionDescription(i.key());
 			functionsList << function;
 		}
 	}

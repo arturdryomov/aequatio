@@ -52,9 +52,8 @@ public:
 	QList<ConstantDescription> constantsList();
 	QList<FunctionDescription> functionsList();
 private:
-	QList<QString> m_userDefinedFunctionNames; // stores function in order of their declaration
-	QHash<QString, RpnFunction> m_userDefinedFunctions;
-	QHash<QString, Number> m_userDefinedConstants;
+	QMap<QString, RpnFunction> m_userDefinedFunctions;
+	QMap<QString, Number> m_userDefinedConstants;
 	QHash<QString, Number> m_builtInConstants;
 
 	friend class FunctionCalculator;
