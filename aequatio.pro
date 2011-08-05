@@ -47,7 +47,8 @@ SOURCES += \
 	source/logwindow.cpp \
 	source/rpncode.cpp \
 	source/basicfunctions.cpp \
-	source/goldenratio.cpp
+	source/goldenratio.cpp \
+	source/dichotomy.cpp
 
 
 HEADERS  += \
@@ -68,7 +69,8 @@ HEADERS  += \
 	source/rpncode.h \
 	source/builtinfunction.h \
 	source/basicfunctions.h \
-	source/goldenratio.h
+	source/goldenratio.h \
+	source/dichotomy.h
 
 FORMS	+= \
 	source/mainwindow.ui \
