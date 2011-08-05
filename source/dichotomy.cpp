@@ -70,4 +70,3 @@ Number Dichotomy::countFunction(Number argument)
 	RpnOperand result = m_calculator->calculate(m_functionName, functionArguments);
 	return result.value.value<Number>();
 }
-

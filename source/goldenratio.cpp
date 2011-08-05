@@ -39,28 +39,28 @@ Number GoldenRatio::findMinimum()
 {
 	Interval newInterval;
 	newInterval.leftBorder = m_sourceInterval.leftBorder +
-	m_ratio * (m_sourceInterval.rightBorder - m_sourceInterval.leftBorder);
+		m_ratio * (m_sourceInterval.rightBorder - m_sourceInterval.leftBorder);
 	newInterval.rightBorder = m_sourceInterval.leftBorder +
-	m_sourceInterval.rightBorder - newInterval.leftBorder;
-	double delta = 0;
+		m_sourceInterval.rightBorder - newInterval.leftBorder;
+	Number delta = 0;
 
 	do {
 		// Work with external function
-		double leftFunctionValue = countFunction(newInterval.leftBorder);
-		double rightFunctionValue = countFunction(newInterval.rightBorder);
+		Number leftFunctionValue = countFunction(newInterval.leftBorder);
+		Number rightFunctionValue = countFunction(newInterval.rightBorder);
 
 		// Make less interval
 		if (leftFunctionValue <= rightFunctionValue) {
 			m_sourceInterval.rightBorder = newInterval.rightBorder;
 			newInterval.rightBorder = newInterval.leftBorder;
 			newInterval.leftBorder = m_sourceInterval.leftBorder +
-			m_sourceInterval.rightBorder - newInterval.leftBorder;
+				m_sourceInterval.rightBorder - newInterval.leftBorder;
 		}
 		else {
 			m_sourceInterval.leftBorder = newInterval.leftBorder;
 			newInterval.leftBorder = newInterval.rightBorder;
 			newInterval.rightBorder = m_sourceInterval.leftBorder +
-			m_sourceInterval.rightBorder - newInterval.rightBorder;
+				m_sourceInterval.rightBorder - newInterval.rightBorder;
 		}
 
 		delta = fabs(m_sourceInterval.leftBorder - m_sourceInterval.rightBorder);
