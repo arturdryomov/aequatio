@@ -17,7 +17,7 @@ public:
 protected:
 	virtual LogItem logItem();
 	// Helper method. tr() is simply shorter than QApplication::translate()
-	QString tr(const QString &text, const QString &context);
+	QString tr(const char *sourceText, const char *disambiguation = 0, int n = -1);
 private:
 	QDateTime m_throwTime;
 };

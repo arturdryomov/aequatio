@@ -11,10 +11,15 @@
 #include <QHash>
 
 
-enum ProcessingResultType {ResultExpressionCalculated, ResultConstantDeclared, ResultFunctionDeclared};
+enum ProcessingResultType {
+	ResultExpressionCalculated,
+	ResultConstantDeclared,
+	ResultFunctionDeclared
+};
+
 struct ProcessingResult {
 	ProcessingResultType type;
-	QVariant data; // depends on type, Number, ConstantDescription or FunctionDescription.
+	QVariant data; // depends on type: Number, ConstantDescription or FunctionDescription respectively.
 };
 
 class SyntaxAnalyzer : public QObject
@@ -43,7 +48,8 @@ private:
 	RpnElement summOperation();
 	Number number();
 	RpnElement constant();	
-	void extractFormalArgument();
+	RpnArgument formalArgument();
+	RpnCodeThread actualArgument(const RpnArgument &correspondingFormalArgument);
 	void ensureNoMoreLexemes();
 	
 	LexicalAnalyzer *m_lexicalAnalyzer;

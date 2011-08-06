@@ -62,10 +62,10 @@ void Controller::commandEntered(const QString &command)
 		switch (result.type) {
 
 			case ResultExpressionCalculated: {
-				ExpressionDescription exprpession = result.data.value<ExpressionDescription>();
+				ExpressionDescription expression = result.data.value<ExpressionDescription>();
 				notificationText = QString("%1 = %2")
-					.arg(exprpession.expression)
-					.arg(numberToString(exprpession.result));
+					.arg(expression.expression)
+					.arg(expression.result.toString());
 				break;
 			}
 

@@ -5,7 +5,7 @@ TEMPLATE = app
 CONFIG += help
 
 DEFINES += "VERSION_MAJOR=0"
-DEFINES += "VERSION_MINOR=1"
+DEFINES += "VERSION_MINOR=2"
 DEFINES += "VERSION_BUILD=0"
 DEFINES += "VERSION_REVISION=1000"
 
@@ -44,7 +44,11 @@ SOURCES += \
 	source/aboutwindow.cpp \
 	source/helpwindow.cpp \
 	source/helpbrowser.cpp \
-	source/logwindow.cpp
+	source/logwindow.cpp \
+	source/rpncode.cpp \
+	source/basicfunctions.cpp \
+	source/goldenratio.cpp \
+	source/dichotomy.cpp
 
 
 HEADERS  += \
@@ -61,7 +65,12 @@ HEADERS  += \
 	source/aboutwindow.h \
 	source/helpwindow.h \
 	source/helpbrowser.h \
-	source/logwindow.h
+	source/logwindow.h \
+	source/rpncode.h \
+	source/builtinfunction.h \
+	source/basicfunctions.h \
+	source/goldenratio.h \
+	source/dichotomy.h
 
 FORMS	+= \
 	source/mainwindow.ui \
