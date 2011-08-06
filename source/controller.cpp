@@ -95,13 +95,18 @@ void Controller::commandEntered(const QString &command)
 	catch (EInternal &e) {
 		m_mainWindow->displayErrorInfo(e.message());
 		e.toLogger();
+		return;
 	}
 	catch (EParsing &e) {
-		m_mainWindow->displayErrorInfo(QString("<p><b>→ %1</b></p> <p>%2</p>").arg(command).arg(e.message()));
+		m_mainWindow->displayErrorInfo(e.message());
+		return;
 	}
 	catch (ECalculating &e) {
-		m_mainWindow->displayErrorInfo(QString("<p><b>%1</b></p> <p>%2</p>").arg(command).arg(e.message()));
+		m_mainWindow->displayErrorInfo(e.message());
+		return;
 	}
+
+	m_mainWindow->clearInputArea();
 }
 
 void Controller::constantsAndFunctionsUpdated()

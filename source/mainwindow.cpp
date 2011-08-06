@@ -51,8 +51,12 @@ void MainWindow::updateSidebar(const QString &contents)
 void MainWindow::commandEntered()
 {
 	emit commandEntered(ui->commandEdit->text());
-	ui->commandEdit->clear();
 	ui->commandEdit->setFocus();
+}
+
+void MainWindow::clearInputArea()
+{
+	ui->commandEdit->clear();
 }
 
 void MainWindow::resizeEvent(QResizeEvent *)

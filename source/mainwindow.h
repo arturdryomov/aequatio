@@ -20,6 +20,7 @@ signals:
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
+	void clearInputArea();
 public slots:
 	void displayErrorInfo(const QString &info);
 	void hideErrorInfo();
