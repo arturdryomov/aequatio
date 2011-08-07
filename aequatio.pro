@@ -48,7 +48,8 @@ SOURCES += \
 	source/rpncode.cpp \
 	source/basicfunctions.cpp \
 	source/goldenratio.cpp \
-	source/dichotomy.cpp
+	source/dichotomy.cpp \
+	source/uniform.cpp
 
 
 HEADERS  += \
@@ -70,7 +71,8 @@ HEADERS  += \
 	source/builtinfunction.h \
 	source/basicfunctions.h \
 	source/goldenratio.h \
-	source/dichotomy.h
+	source/dichotomy.h \
+	source/uniform.h
 
 FORMS	+= \
 	source/mainwindow.ui \
