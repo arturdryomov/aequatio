@@ -49,7 +49,8 @@ SOURCES += \
 	source/basicfunctions.cpp \
 	source/goldenratio.cpp \
 	source/dichotomy.cpp \
-	source/uniform.cpp
+	source/uniform.cpp \
+	source/bisection.cpp
 
 
 HEADERS  += \
@@ -72,7 +73,8 @@ HEADERS  += \
 	source/basicfunctions.h \
 	source/goldenratio.h \
 	source/dichotomy.h \
-	source/uniform.h
+	source/uniform.h \
+	source/bisection.h
 
 FORMS	+= \
 	source/mainwindow.ui \
