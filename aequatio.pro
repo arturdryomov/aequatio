@@ -50,7 +50,8 @@ SOURCES += \
 	source/goldenratio.cpp \
 	source/dichotomy.cpp \
 	source/uniform.cpp \
-	source/bisection.cpp
+	source/bisection.cpp \
+	source/fibonacci.cpp
 
 
 HEADERS  += \
@@ -74,7 +75,8 @@ HEADERS  += \
 	source/goldenratio.h \
 	source/dichotomy.h \
 	source/uniform.h \
-	source/bisection.h
+	source/bisection.h \
+	source/fibonacci.h
 
 FORMS	+= \
 	source/mainwindow.ui \
