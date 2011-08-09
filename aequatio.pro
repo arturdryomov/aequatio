@@ -51,7 +51,8 @@ SOURCES += \
 	source/dichotomy.cpp \
 	source/uniform.cpp \
 	source/bisection.cpp \
-	source/fibonacci.cpp
+	source/fibonacci.cpp \
+	source/quadraticinterpolation.cpp
 
 
 HEADERS  += \
@@ -76,7 +77,8 @@ HEADERS  += \
 	source/dichotomy.h \
 	source/uniform.h \
 	source/bisection.h \
-	source/fibonacci.h
+	source/fibonacci.h \
+	source/quadraticinterpolation.h
 
 FORMS	+= \
 	source/mainwindow.ui \
