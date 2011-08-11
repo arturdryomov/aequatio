@@ -52,7 +52,8 @@ SOURCES += \
 	source/uniform.cpp \
 	source/bisection.cpp \
 	source/fibonacci.cpp \
-	source/quadraticinterpolation.cpp
+	source/quadraticinterpolation.cpp \
+	source/configuration.cpp
 
 
 HEADERS  += \
@@ -78,7 +79,8 @@ HEADERS  += \
 	source/uniform.h \
 	source/bisection.h \
 	source/fibonacci.h \
-	source/quadraticinterpolation.h
+	source/quadraticinterpolation.h \
+	source/configuration.h
 
 FORMS	+= \
 	source/mainwindow.ui \
