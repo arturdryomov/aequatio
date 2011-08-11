@@ -213,6 +213,12 @@ void LexicalAnalyzer::extractBracket()
 	else if (bracket == ")") {
 		lexemeType = LexemeClosingBracket;
 	}
+	else if (bracket == "[") {
+		lexemeType = LexemeOpeningSquareBracket;
+	}
+	else if (bracket == "]") {
+		lexemeType = LexemeClosingSquareBracket;
+	}
 	else {
 		THROW(EUnsupportedLexeme("Bracket"));
 	}
@@ -323,7 +329,7 @@ bool CheckChar::isSign(QChar c)
 
 bool CheckChar::isBracket(QChar c)
 {
-	QString brackets = "()";
+	QString brackets = "()[]";
 	return brackets.contains(c);
 }
 
