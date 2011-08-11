@@ -63,9 +63,31 @@ void Controller::commandEntered(const QString &command)
 
 			case ResultExpressionCalculated: {
 				ExpressionDescription expression = result.data.value<ExpressionDescription>();
+
+				QString expressionResult;
+
+				// TODO: This is not cool, maybe reworking in some way
+				if (expression.result.type == RpnOperandVector) {
+					expressionResult = "[";
+					QList<Number> vectorElements =
+						expression.result.value.value<QList<Number> >();
+					QListIterator<Number> vectorIterator(vectorElements);
+					while (vectorIterator.hasNext()) {
+						expressionResult += QString::number(vectorIterator.next());
+						if (vectorIterator.hasNext()) {
+							expressionResult += ",";
+							expressionResult += " ";
+						}
+					}
+					expressionResult += "]";
+				}
+				else {
+					expressionResult = expression.result.toString();
+				}
+
 				notificationText = QString("%1 = %2")
 					.arg(expression.expression)
-					.arg(expression.result.toString());
+					.arg(expressionResult);
 				break;
 			}
 
