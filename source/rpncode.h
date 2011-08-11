@@ -44,6 +44,7 @@ inline Number stringToNumber(const QString &str)
 
 enum RpnOperandType {
 	RpnOperandNumber,
+	RpnOperandVector,
 	RpnOperandFunctionName
 };
 
@@ -55,6 +56,7 @@ struct RpnOperand
 
 	RpnOperandType type;
 	/* type == RpnOperandNumber -- value is a number, type Number,
+		RpnOperandVector -- value is vector of numbers (QList<Number>),
 	  RpnOperandFunctionName -- value is a function name (QString) */
 	QVariant value;
 };
@@ -93,6 +95,7 @@ struct RpnArgument {
 	QString name;
 	// This is a storage for additional information that depends on type.
 	// type == RpnOperandNumber -- nothing.
+	// RpnOperandVector -- nothing.
 	// RpnOperandFunctionName -- number of function arguments, assuming that all this arguments
 	//	are of RpnOperandNumber type.
 	QVariant info;
