@@ -99,7 +99,7 @@ ConstantDescription SyntaxAnalyzer::constDeclaration()
 	ExpressionDescription expression = m_exprCalculator->calculate(constThread);
 	// constant values can only be of Number type now
 	if (expression.result.type != RpnOperandNumber) {
-		THROW(EInternal());
+		THROW(EIncorrectConstantDeclaration());
 	}
 	m_lexicalAnalyzer->nextLexeme();
 

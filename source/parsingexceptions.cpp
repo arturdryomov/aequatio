@@ -76,6 +76,15 @@ QString EIncorrectCharacter::message()
 	return tr("Character “%1” is incorrect here.").arg(m_character);
 }
 
+EIncorrectConstantDeclaration::EIncorrectConstantDeclaration()
+{
+}
+
+QString EIncorrectConstantDeclaration::message()
+{
+	return tr("Constant must be number or result of expression which is number");
+}
+
 EIncorrectFunctionArgument::EIncorrectFunctionArgument(const QString &functionName) : m_functionName(functionName)
 {
 }

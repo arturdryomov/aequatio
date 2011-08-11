@@ -70,6 +70,13 @@ private:
 	QChar m_character;
 };
 
+class EIncorrectConstantDeclaration : public EParsing
+{
+public:
+	EIncorrectConstantDeclaration();
+	QString message();
+};
+
 // means that the function passed as an argument has incorrect signature.
 class EIncorrectFunctionArgument : public EParsing
 {
