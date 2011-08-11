@@ -40,6 +40,7 @@ private:
 	ConstantDescription constDeclaration();
 	FunctionDescription functionDeclaration();
 	RpnCodeThread expression();
+	RpnCodeThread vector();
 	RpnCodeThread function();
 	RpnCodeThread factor();
 	RpnCodeThread powerBase();

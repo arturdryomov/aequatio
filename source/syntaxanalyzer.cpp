@@ -176,6 +176,34 @@ RpnCodeThread SyntaxAnalyzer::expression()
 	return result;
 }
 
+// Vector = '[' Expression, { ',' Expression } ']'
+RpnCodeThread SyntaxAnalyzer::vector()
+{
+	RpnCodeThread result;
+	QList<Number> vectorElements;
+
+	if (m_lexicalAnalyzer->lexeme().type != LexemeOpeningSquareBracket) {
+		THROW(ELexemeExpected(tr("Opening bracket for vector initialization")));
+	}
+
+	do {
+		m_lexicalAnalyzer->nextLexeme();
+		if (m_lexicalAnalyzer->lexeme().type != LexemeNumber) {
+			THROW(ELexemeExpected(tr("Number")));
+		}
+		vectorElements << stringToNumber(m_lexicalAnalyzer->lexeme().value);
+		m_lexicalAnalyzer->nextLexeme();
+	} while (m_lexicalAnalyzer->lexeme().type == LexemeComma);
+
+	if (m_lexicalAnalyzer->lexeme().type != LexemeClosingSquareBracket) {
+		THROW(ELexemeExpected(tr("Closing bracket for vector initialization")));
+	}
+
+	RpnOperand operand(RpnOperandVector, QVariant::fromValue(vectorElements) );
+	result << RpnElement(RpnElementOperand, QVariant::fromValue(operand));
+	return result;
+}
+
 // Function = Identifier'(' ActualArgument{ ',' ActualArgument}')'
 RpnCodeThread SyntaxAnalyzer::function()
 {
@@ -420,6 +448,9 @@ RpnCodeThread SyntaxAnalyzer::actualArgument(const RpnArgument &correspondingFor
 
 		case RpnOperandNumber:
 			return expression();
+
+		case RpnOperandVector:
+			return vector();
 
 		case RpnOperandFunctionName: {
 			if (m_lexicalAnalyzer->lexeme().type != LexemeIdentifier) {

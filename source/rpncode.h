@@ -107,6 +107,7 @@ struct RpnFunction {
 };
 
 Q_DECLARE_METATYPE(Number)
+Q_DECLARE_METATYPE(QList<Number>)
 Q_DECLARE_METATYPE(RpnElementType)
 Q_DECLARE_METATYPE(RpnOperandType)
 Q_DECLARE_METATYPE(RpnOperand)
