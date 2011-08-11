@@ -198,6 +198,7 @@ RpnCodeThread SyntaxAnalyzer::vector()
 	if (m_lexicalAnalyzer->lexeme().type != LexemeClosingSquareBracket) {
 		THROW(ELexemeExpected(tr("Closing bracket for vector initialization")));
 	}
+	m_lexicalAnalyzer->nextLexeme();
 
 	RpnOperand operand(RpnOperandVector, QVariant::fromValue(vectorElements) );
 	result << RpnElement(RpnElementOperand, QVariant::fromValue(operand));
