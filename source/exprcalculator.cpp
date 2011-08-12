@@ -128,7 +128,7 @@ RpnOperand ExprCalculator::calculateUserDefinedFunction(const QString &functionN
 
 	RpnOperand result = calculationStack.pop();
 	// currently user-defined functions can return only numbers.
-	if (result.type != RpnOperandNumber) {
+	if ((result.type != RpnOperandNumber) && (result.type != RpnOperandVector)) {
 		THROW(EIncorrectRpnCode());
 	}
 	return result;
