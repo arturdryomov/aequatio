@@ -66,7 +66,7 @@ void Controller::commandEntered(const QString &command)
 
 				QString expressionResult;
 
-				// TODO: This is not cool, maybe reworking in some way
+				// NOTE: This is not cool, maybe reworking in some way
 				if (expression.result.type == RpnOperandVector) {
 					expressionResult = "[";
 					QList<Number> vectorElements =

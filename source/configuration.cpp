@@ -38,9 +38,8 @@ QList<RpnArgument> Configuration::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
-		// 2 is argument count in function that is passed as and argument
-		// TODO: Fix it, function can pass any arguments you like
-		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant::fromValue(2))
+		// NOTE: QVariant() shows that number of arguments is not fixed, maybe there is other way
+		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant())
 		<< RpnArgument(RpnOperandVector)
 		<< RpnArgument(RpnOperandNumber)
 		<< RpnArgument(RpnOperandVector)
@@ -55,7 +54,7 @@ QList<Number> Configuration::findMinimum()
 	QList<Number> currentPoint = m_sourcePoint;
 
 	forever {
-		// TODO: Maybe must be iterators
+		// NOTE: Maybe must be iterators
 		for (int i = 0; i < currentPoint.size(); i++) {
 			if (countFunction(increaseDirection(currentPoint, i)) < countFunction(currentPoint)) {
 				currentPoint = increaseDirection(currentPoint, i);
@@ -109,8 +108,6 @@ QList<Number> Configuration::decreaseDirection(QList<Number> point, int directio
 	return result;
 }
 
-// TODO: This method is more common, it would be better for going to parent class
-// TODO: If going to parent class, change prototype parametrs to (FunctionCalculator*, QList<Number)
 Number Configuration::countFunction(QList<Number> arguments)
 {
 	QList<RpnOperand> functionArguments;

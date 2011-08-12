@@ -54,7 +54,6 @@ Number Unirorm::findMinimum()
 	return pointMinimum;
 }
 
-// TODO: This method repeats everywhere, maybe better move to parent class
 Number Unirorm::countFunction(Number argument)
 {
 	QList<RpnOperand> functionArguments;

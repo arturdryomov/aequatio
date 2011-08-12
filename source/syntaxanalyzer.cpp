@@ -459,10 +459,12 @@ RpnCodeThread SyntaxAnalyzer::actualArgument(const RpnArgument &correspondingFor
 			}
 			QString argumentFunctionName = m_lexicalAnalyzer->lexeme().value;
 
-			// check argument count
-			if (m_exprCalculator->functionArguments(argumentFunctionName).count()
-				!= correspondingFormalArgument.info.value<int>()) {
-				THROW(EIncorrectFunctionArgument(argumentFunctionName));
+			// check argument count if number of arguments is fixed
+			if (m_exprCalculator->functionArguments(argumentFunctionName).first().info != QVariant()) {
+				if (m_exprCalculator->functionArguments(argumentFunctionName).count()
+					!= correspondingFormalArgument.info.value<int>()) {
+					THROW(EIncorrectFunctionArgument(argumentFunctionName));
+				}
 			}
 
 			RpnOperand rpnOperand(RpnOperandFunctionName, argumentFunctionName);

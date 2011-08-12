@@ -1,6 +1,6 @@
 #include "bisection.h"
 
-// TODO: Maybe better call it from higher level
+// NOTE: Maybe better call it from higher level
 #include <qmath.h>
 
 namespace
