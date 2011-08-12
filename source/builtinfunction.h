@@ -2,6 +2,7 @@
 #define BUILTINFUNCTION_H
 
 #include "rpncode.h"
+#include "calculatingexceptions.h"
 
 // Template and interface class for calculation sub-classes
 class BuiltInFunction
@@ -12,6 +13,7 @@ public:
 	{
 	public:
 		virtual RpnOperand calculate(QString functionName, QList<RpnOperand> actualArguments) = 0;
+		virtual QList<RpnArgument> functionArguments(const QString &name) = 0;
 	};
 
 	// Common constructor for registration of sub-classes

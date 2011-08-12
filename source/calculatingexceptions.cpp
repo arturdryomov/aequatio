@@ -31,3 +31,15 @@ QString ERecursiveFunction::message()
 	return tr("You cannot declare function “%1” this way because its calculation then will lead "
 		"to infinite recursive calls.", "ERecursiveFunction").arg(m_functionName);
 }
+
+EWrongParametersCount::EWrongParametersCount(const QString &parameterName, int parametersExpected) :
+m_parameterName(parameterName),
+m_parametersExpected(parametersExpected)
+{
+}
+
+QString EWrongParametersCount::message()
+{
+	return tr("%1 expected %n argument(s).", "", m_parametersExpected)
+		.arg(m_parameterName);
+}

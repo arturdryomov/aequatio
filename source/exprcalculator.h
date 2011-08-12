@@ -62,6 +62,7 @@ private:
 	public:
 		FunctionCalculator(ExprCalculator *exprCalculator) : m_exprCalculator(exprCalculator) {}
 		RpnOperand calculate(QString functionName, QList<RpnOperand> actualArguments);
+		QList<RpnArgument> functionArguments(const QString &name);
 	private:
 		ExprCalculator *m_exprCalculator;
 	};

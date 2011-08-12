@@ -10,10 +10,21 @@ namespace
 RpnOperand Configuration::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
 	m_calculator = calculator;
+
 	m_functionName = actualArguments[0].value.value<QString>();
-	m_sourcePoint = actualArguments[1].value.value<QList<Number> >();
+	m_sourcePoint = actualArguments[1].value.value<QList<Number> >();	
+
+	if (m_calculator->functionArguments(m_functionName).size() != m_sourcePoint.size()) {
+		THROW(EWrongParametersCount(QObject::tr("Source point"), m_calculator->functionArguments(m_functionName).size()));
+	}
+
 	m_stopValue = actualArguments[2].value.value<Number>();
 	m_steps = actualArguments[3].value.value<QList<Number> >();
+
+	if (m_calculator->functionArguments(m_functionName).size() != m_steps.size()) {
+		THROW(EWrongParametersCount(QObject::tr("Coordinate steps"), m_calculator->functionArguments(m_functionName).size()));
+	}
+
 	m_accelerationStep = actualArguments[4].value.value<Number>();
 	m_decreaseStep = actualArguments[5].value.value<Number>();
 

@@ -34,6 +34,15 @@ private:
 	QString m_functionName;
 };
 
+class EWrongParametersCount : public ECalculating
+{
+public:
+	EWrongParametersCount(const QString &parameterName, int argumentsExpected);
+	QString message();
+private:
+	QString m_parameterName;
+	int m_parametersExpected;
+};
 
 /* EInternal children */
 

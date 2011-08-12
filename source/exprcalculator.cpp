@@ -408,3 +408,8 @@ RpnOperand ExprCalculator::FunctionCalculator::calculate(QString functionName, Q
 {
 	return m_exprCalculator->calculateFunction(functionName, actualArguments);
 }
+
+QList<RpnArgument> ExprCalculator::FunctionCalculator::functionArguments(const QString &name)
+{
+	return m_exprCalculator->functionArguments(name);
+}
