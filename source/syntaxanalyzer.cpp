@@ -188,11 +188,14 @@ RpnCodeThread SyntaxAnalyzer::vector()
 
 	do {
 		m_lexicalAnalyzer->nextLexeme();
-		if (m_lexicalAnalyzer->lexeme().type != LexemeNumber) {
-			THROW(ELexemeExpected(tr("Number")));
+
+		RpnCodeThread elementThread = expression();
+		ExpressionDescription expression = m_exprCalculator->calculate(elementThread);
+		if (expression.result.type != RpnOperandNumber) {
+			THROW(EIncorrectFunctionArgument("Number"));
 		}
-		vectorElements << stringToNumber(m_lexicalAnalyzer->lexeme().value);
-		m_lexicalAnalyzer->nextLexeme();
+
+		vectorElements << expression.result.value.value<Number>();
 	} while (m_lexicalAnalyzer->lexeme().type == LexemeComma);
 
 	if (m_lexicalAnalyzer->lexeme().type != LexemeClosingSquareBracket) {
