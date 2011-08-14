@@ -68,7 +68,7 @@ QList<Number> Configuration::findMinimum()
 			QList<Number> oldSourcePoint = m_sourcePoint;
 			m_sourcePoint = currentPoint;
 			for (int i = 0; i < currentPoint.size(); i++) {
-				currentPoint[i] =m_sourcePoint[i] + m_accelerationStep * (m_sourcePoint[i] - oldSourcePoint[i]);
+				currentPoint[i] = m_sourcePoint[i] + m_accelerationStep * (m_sourcePoint[i] - oldSourcePoint[i]);
 			}
 		}
 		else {

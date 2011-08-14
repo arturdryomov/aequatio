@@ -53,7 +53,8 @@ SOURCES += \
 	source/bisection.cpp \
 	source/fibonacci.cpp \
 	source/quadraticinterpolation.cpp \
-	source/configuration.cpp
+	source/configuration.cpp \
+	source/rosenbrock.cpp
 
 
 HEADERS  += \
@@ -80,7 +81,8 @@ HEADERS  += \
 	source/bisection.h \
 	source/fibonacci.h \
 	source/quadraticinterpolation.h \
-	source/configuration.h
+	source/configuration.h \
+	source/rosenbrock.h
 
 FORMS	+= \
 	source/mainwindow.ui \
