@@ -54,7 +54,8 @@ SOURCES += \
 	source/fibonacci.cpp \
 	source/quadraticinterpolation.cpp \
 	source/configuration.cpp \
-	source/rosenbrock.cpp
+	source/rosenbrock.cpp \
+	source/adaptiverandom.cpp
 
 
 HEADERS  += \
@@ -82,7 +83,8 @@ HEADERS  += \
 	source/fibonacci.h \
 	source/quadraticinterpolation.h \
 	source/configuration.h \
-	source/rosenbrock.h
+	source/rosenbrock.h \
+	source/adaptiverandom.h
 
 FORMS	+= \
 	source/mainwindow.ui \
