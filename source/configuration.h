@@ -14,11 +14,6 @@ public:
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
 	QList<RpnArgument> requiredArguments();
 private:
-	Number countFunction(QList<Number> arguments);
-	QList<Number> findMinimum();
-	QList<Number> increaseDirection(QList<Number> point, int direction);
-	QList<Number> decreaseDirection(QList<Number> point, int direction);
-
 	FunctionCalculator* m_calculator;
 	QString m_functionName;
 	QList<Number> m_sourcePoint;
@@ -26,6 +21,13 @@ private:
 	QList<Number> m_steps;
 	Number m_accelerationStep;
 	Number m_decreaseStep;
+
+	Number countFunction(QList<Number> arguments);
+
+	QList<Number> findMinimum();
+
+	QList<Number> increaseDirection(QList<Number> point, int direction);
+	QList<Number> decreaseDirection(QList<Number> point, int direction);
 };
 
 #endif // CONFIGURATION_H

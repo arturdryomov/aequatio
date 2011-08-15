@@ -28,6 +28,7 @@ RpnOperand Configuration::calculate(FunctionCalculator *calculator, QList<RpnOpe
 	m_accelerationStep = actualArguments[4].value.value<Number>();
 	m_decreaseStep = actualArguments[5].value.value<Number>();
 
+
 	RpnOperand result;
 	result.type = RpnOperandVector;
 	result.value = QVariant::fromValue(findMinimum());
@@ -82,7 +83,7 @@ QList<Number> Configuration::findMinimum()
 			}
 
 			if (isFinish) {
-				// Loop exit condition
+				// Exit condition
 				return m_sourcePoint;
 			}
 			else {
@@ -107,6 +108,7 @@ QList<Number> Configuration::decreaseDirection(QList<Number> point, int directio
 
 	return result;
 }
+
 
 Number Configuration::countFunction(QList<Number> arguments)
 {
