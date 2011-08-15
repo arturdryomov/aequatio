@@ -26,7 +26,7 @@ QList<RpnArgument> QuadraticInterpolation::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
-		// 1 is argument count in function that is passed as and argument to GoldenRatio
+		// 1 is argument count in function that is passed as and argument
 		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant::fromValue(1))
 		<< RpnArgument(RpnOperandNumber)
 		<< RpnArgument(RpnOperandNumber)
@@ -38,12 +38,12 @@ QList<RpnArgument> QuadraticInterpolation::requiredArguments()
 
 Number QuadraticInterpolation::findMinimum()
 {
-	bool initializePoints = true;
+	bool needInitializePoints = true;
 
 	forever {
 		Number secondPoint, thirdPoint;
 
-		if (initializePoints) {
+		if (needInitializePoints) {
 			secondPoint = m_startPoint + m_stepSize;
 
 			if (countFunction(m_startPoint) > countFunction(secondPoint)) {
@@ -69,7 +69,7 @@ Number QuadraticInterpolation::findMinimum()
 		if (denominator == 0) {
 			m_startPoint = minimumPoint;
 
-			initializePoints = true;
+			needInitializePoints = true;
 			continue;
 		}
 
@@ -96,12 +96,12 @@ Number QuadraticInterpolation::findMinimum()
 			m_startPoint = points[0];
 			thirdPoint = points[1];
 
-			initializePoints = false;
+			needInitializePoints = false;
 		}
 		else {
 			m_startPoint = quadraticPoint;
 
-			initializePoints = true;
+			needInitializePoints = true;
 		}
 	}
 }

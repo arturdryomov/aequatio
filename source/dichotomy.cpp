@@ -26,7 +26,7 @@ QList<RpnArgument> Dichotomy::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
-		// 1 is argument count in function that is passed as and argument to GoldenRatio
+		// 1 is argument count in function that is passed as and argument
 		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant::fromValue(1))
 		<< RpnArgument(RpnOperandNumber)
 		<< RpnArgument(RpnOperandNumber)
@@ -54,8 +54,8 @@ Number Dichotomy::findMinimum()
 			m_sourceInterval.leftBorder = newInterval.leftBorder;
 		}
 
-		// Loop exit condition
 		if (qAbs(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) <= m_accuracy) {
+			// Exit condition
 			return (m_sourceInterval.leftBorder + m_sourceInterval.rightBorder) / 2;
 		}
 	}

@@ -14,16 +14,17 @@ public:
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
 	QList<RpnArgument> requiredArguments();
 private:
-	Number countFunction(Number argument);
-	Number findMinimum();
-	Number minimumPointValue(Number first, Number second, Number third);
-
 	FunctionCalculator* m_calculator;
 	QString m_functionName;
 	Number m_startPoint;
 	Number m_stepSize;
 	Number m_firstAccuracy;
 	Number m_secondAccuracy;
+
+	Number countFunction(Number argument);
+
+	Number findMinimum();
+	Number minimumPointValue(Number first, Number second, Number third);
 };
 
 #endif // QUADRATIC_INTERPOLATION_H

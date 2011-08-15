@@ -14,19 +14,20 @@ public:
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
 	QList<RpnArgument> requiredArguments();
 private:
-	Number countFunction(Number argument);
-	Number findMinimum();
+	struct Interval {
+		Number leftBorder;
+		Number rightBorder;
+	};
+	Interval m_sourceInterval;
 
 	FunctionCalculator* m_calculator;
 	QString m_functionName;
 	Number m_ratio;
 	Number m_accuracy;
 
-	struct Interval {
-		Number leftBorder;
-		Number rightBorder;
-	};
-	Interval m_sourceInterval;
+	Number countFunction(Number argument);
+
+	Number findMinimum();
 };
 
 #endif // GOLDENRATIO_H

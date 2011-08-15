@@ -25,7 +25,7 @@ QList<RpnArgument> Unirorm::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
-		// 1 is argument count in function that is passed as and argument to GoldenRatio
+		// 1 is argument count in function that is passed as and argument
 		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant::fromValue(1))
 		<< RpnArgument(RpnOperandNumber)
 		<< RpnArgument(RpnOperandNumber)
@@ -45,6 +45,7 @@ Number Unirorm::findMinimum()
 		Number point = m_sourceInterval.leftBorder + i *
 			(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) /
 			(m_iterationNumber + 1);
+
 		if (countFunction(point) < functionMinumum) {
 			functionMinumum = countFunction(point);
 			pointMinimum = point;
@@ -54,7 +55,6 @@ Number Unirorm::findMinimum()
 	return pointMinimum;
 }
 
-// TODO: This method repeats everywhere, maybe better move to parent class
 Number Unirorm::countFunction(Number argument)
 {
 	QList<RpnOperand> functionArguments;

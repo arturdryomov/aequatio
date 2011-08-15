@@ -14,18 +14,19 @@ public:
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
 	QList<RpnArgument> requiredArguments();
 private:
-	Number countFunction(Number argument);
-	Number findMinimum();
-
-	FunctionCalculator* m_calculator;
-	QString m_functionName;
-	Number m_accuracy;
-
 	struct Interval {
 		Number leftBorder;
 		Number rightBorder;
 	};
+
+	FunctionCalculator* m_calculator;
+	QString m_functionName;
+	Number m_accuracy;
 	Interval m_sourceInterval;
+
+	Number countFunction(Number argument);
+
+	Number findMinimum();
 };
 
 #endif // BISECTION_H
