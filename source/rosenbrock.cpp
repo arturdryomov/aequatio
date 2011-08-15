@@ -30,6 +30,7 @@ RpnOperand Rosenbrock::calculate(FunctionCalculator *calculator, QList<RpnOperan
 	m_wrongStepsNumber = actualArguments[6].value.value<Number>();
 
 	// Set start directions
+	m_directions.clear();
 	for (int i = 0; i < m_sourcePoint.size(); i++) {
 		m_directions << QList<Number>();
 		for (int k = 0; k < m_sourcePoint.size(); k++) {
