@@ -16,6 +16,13 @@ RpnOperand Dichotomy::calculate(FunctionCalculator *calculator, QList<RpnOperand
 	m_accuracy = actualArguments[3].value.value<Number>();
 	m_space = actualArguments[4].value.value<Number>();
 
+	if (m_accuracy <= 0) {
+		THROW(EWrongArgument(QObject::tr("accuracy"), QObject::tr("more than 0")) )
+	}
+	if (m_space <= 0) {
+		THROW(EWrongArgument(QObject::tr("configuration small number"), QObject::tr("more than 0")) )
+	}
+
 	RpnOperand result;
 	result.type = RpnOperandNumber;
 	result.value = findMinimum();

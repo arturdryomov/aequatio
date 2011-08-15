@@ -17,6 +17,13 @@ RpnOperand Fibonacci::calculate(FunctionCalculator *calculator, QList<RpnOperand
 	m_difference = actualArguments[4].value.value<Number>();
 	getIterationsNumber();
 
+	if (m_resultIntervalLength <= 0) {
+		THROW(EWrongArgument(QObject::tr("length of finish interval"), QObject::tr("more than 0")) )
+	}
+	if (m_difference <= 0) {
+		THROW(EWrongArgument(QObject::tr("difference constant"), QObject::tr("more than 0")) )
+	}
+
 	RpnOperand result;
 	result.type = RpnOperandNumber;
 	result.value = findMinimum();

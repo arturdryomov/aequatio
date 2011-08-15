@@ -16,6 +16,10 @@ RpnOperand QuadraticInterpolation::calculate(FunctionCalculator *calculator, QLi
 	m_firstAccuracy = actualArguments[3].value.value<Number>();
 	m_secondAccuracy = actualArguments[4].value.value<Number>();
 
+	if (m_stepSize <= 0) {
+		THROW(EWrongArgument(QObject::tr("step size"), QObject::tr("more than 0")) )
+	}
+
 	RpnOperand result;
 	result.type = RpnOperandNumber;
 	result.value = findMinimum();

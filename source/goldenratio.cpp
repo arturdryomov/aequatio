@@ -16,6 +16,10 @@ RpnOperand GoldenRatio::calculate(FunctionCalculator *calculator, QList<RpnOpera
 	m_accuracy = actualArguments[3].value.value<Number>();
 	m_ratio = (3 - qSqrt(5)) / 2;
 
+	if (m_accuracy <= 0) {
+		THROW(EWrongArgument(QObject::tr("accuracy"), QObject::tr("more than 0")) )
+	}
+
 	RpnOperand result;
 	result.type = RpnOperandNumber;
 	result.value = findMinimum();

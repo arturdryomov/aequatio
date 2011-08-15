@@ -31,3 +31,13 @@ QString ERecursiveFunction::message()
 	return tr("You cannot declare function “%1” this way because its calculation then will lead "
 		"to infinite recursive calls.", "ERecursiveFunction").arg(m_functionName);
 }
+
+EWrongArgument::EWrongArgument(const QString &argumentName, const QString &argumentCondition) :
+	m_argumentName(argumentName), m_argumentCondition(argumentCondition)
+{
+}
+
+QString EWrongArgument::message()
+{
+	return tr("Wrong argument condition: %1 must be %2").arg(m_argumentName).arg(m_argumentCondition);
+}

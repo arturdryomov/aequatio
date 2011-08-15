@@ -34,6 +34,15 @@ private:
 	QString m_functionName;
 };
 
+class EWrongArgument : public ECalculating
+{
+public:
+	EWrongArgument(const QString &argumentName, const QString &argumentCondition);
+	QString message();
+private:
+	QString m_argumentName;
+	QString m_argumentCondition;
+};
 
 /* EInternal children */
 

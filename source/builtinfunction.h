@@ -2,6 +2,7 @@
 #define BUILTINFUNCTION_H
 
 #include "rpncode.h"
+#include "calculatingexceptions.h"
 
 // Template and interface class for calculation sub-classes
 class BuiltInFunction
