@@ -110,4 +110,26 @@ public:
 	QList<RpnArgument> requiredArguments();
 };
 
+class Abs : public BuiltInFunction
+{
+public:
+	Abs() : BuiltInFunction("abs")
+	{
+	}
+
+	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnArgument> requiredArguments();
+};
+
+class Sqrt : public BuiltInFunction
+{
+public:
+	Sqrt() : BuiltInFunction("sqrt")
+	{
+	}
+
+	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnArgument> requiredArguments();
+};
+
 #endif // BASICFUNCTIONS_H
