@@ -11,6 +11,7 @@ namespace
 RpnOperand Bisection::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
 	m_calculator = calculator;
+	// TODO: Insert check for input valuses (for all classes)
 	m_functionName = actualArguments[0].value.value<QString>();
 	m_sourceInterval.leftBorder = actualArguments[1].value.value<Number>();
 	m_sourceInterval.rightBorder = actualArguments[2].value.value<Number>();

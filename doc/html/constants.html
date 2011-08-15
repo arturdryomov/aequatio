@@ -25,24 +25,34 @@
 
           <p>For example, we have built-in constant named <i>pi</i> and want to calculate circle square with radius <i>5</i>.</p>
           <p>We type the command:</p>
-          <p id="code">&larr; pi * (5 ^ 2)</p>
+          <div class="code">
+            <p>&larr; pi * (5 ^ 2)</p>
+          </div>
           <p>And Aequatio gives us the solution:</p>
-          <p id="code">&rarr; pi × 5 ^ 2 = 78.5398</p>
+          <div class="code">
+            <p>&rarr; pi × 5 ^ 2 = 78.5398</p>
+          </div>
           <p>There is a <a href="builtin-constants.html">list</a> of built-in constants.</p>
 
         <a name="user-defined"><h3>User-defined Constants</h3></a>
 
           <p>Using user-defined constants is the same as using built-in ones, except that you should previously define a constant.<p>
           <p>There is a special command called <i>const</i> to define a constant. Here is its format:</p>
-          <p id="code">const &lt;constant name&gt; = &lt;constant value&gt;</p>
+          <div class="code">
+            <p>const &lt;constant name&gt; = &lt;constant value&gt;</p>
+          </div>
           <p>Let’s define a constant with name <i>radius</i> and value <i>5</i>. We’ll peek an example with circle.<p>
-          <p id="code">&larr; const radius = 5</p>
-          <p id="code">&rarr; Constant declared: radius = 5</p>
-          <p id="code">&larr; pi * (radius ^ 2)</p>
-          <p id="code">&rarr; pi × radius ^ 2 = 78.5398.</p>
+          <div class="code">
+            <p>&larr; const radius = 5</p>
+            <p>&rarr; Constant declared: radius = 5</p>
+            <p>&larr; pi * (radius ^ 2)</p>
+            <p>&rarr; pi × radius ^ 2 = 78.5398.</p>
+          </div>
           <p>Constant value can be a number, another constant or even expression; for instance, the following command is absolutely correct:</p>
-          <p id="code">&larr; const square = pi * (5 ^ 2)</p>
-          <p id="code">&rarr; Constant declared: square = 78.5398.</p>
+          <div class="code">
+            <p>&larr; const square = pi * (5 ^ 2)</p>
+            <p>&rarr; Constant declared: square = 78.5398.</p>
+          </div>
 
   </body>
 

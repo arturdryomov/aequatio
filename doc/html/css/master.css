@@ -38,11 +38,16 @@ h2 {
   font-size: 1.5em;
 }
 
+h3 {
+  font-size: 1.2em;
+}
+
 p {
   line-height: normal;
 }
 
-p#code {
+div.code {
+  font-size: 12px;
   font-family: "Droid Sans Mono", Consolas, "Courier New", monospace;
   text-indent: 1em;
 }
