@@ -11,7 +11,6 @@ namespace
 RpnOperand AdaptiveRandom::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
 	m_calculator = calculator;
-
 	m_functionName = actualArguments[0].value.value<QString>();
 
 	m_sourcePoint = actualArguments[1].value.value<QList<Number> >();
@@ -21,11 +20,12 @@ RpnOperand AdaptiveRandom::calculate(FunctionCalculator *calculator, QList<RpnOp
 
 	m_acceleration = actualArguments[2].value.value<Number>();
 	m_decrease = actualArguments[3].value.value<Number>();
-	m_wrongStepsNumber = actualArguments[4].value.value<Number>();
-	m_iterationsNumber = actualArguments[5].value.value<Number>();
+	m_wrongStepsCount = actualArguments[4].value.value<Number>();
+	m_iterationsCount = actualArguments[5].value.value<Number>();
 	m_minimumStepSize = actualArguments[6].value.value<Number>();
 	m_stepSize = 1;
 
+	// Initialize random
 	srand(time(NULL));
 
 	RpnOperand result;
@@ -80,7 +80,7 @@ QList<Number> AdaptiveRandom::findMinimum()
 				m_stepSize *= m_acceleration;
 				iterationCount++;
 
-				if (iterationCount < m_iterationsNumber) {
+				if (iterationCount < m_iterationsCount) {
 					failCount = 1;
 					continue;
 				}
@@ -89,28 +89,28 @@ QList<Number> AdaptiveRandom::findMinimum()
 					return m_sourcePoint;
 				}
 			}
+		}
 
-			if (failCount < m_wrongStepsNumber) {
-				failCount++;
-			}
-			else if (m_stepSize <= m_minimumStepSize) {
-				// Exit condition
-				return m_sourcePoint;
-			}
-			else {
-				m_stepSize *= m_decrease;
-				failCount = 1;
-			}
+		if (failCount < m_wrongStepsCount) {
+			failCount++;
+		}
+		else if (m_stepSize <= m_minimumStepSize) {
+			// Exit condition
+			return m_sourcePoint;
+		}
+		else {
+			m_stepSize *= m_decrease;
+			failCount = 1;
 		}
 	}
 }
 
 
-QList<Number> AdaptiveRandom::generateRandomNumbers(int number, Number lowerLimit, Number higherLimit)
+QList<Number> AdaptiveRandom::generateRandomNumbers(int count, Number lowerLimit, Number higherLimit)
 {
 	QList<Number> result;
 
-	for (int i = 0; i < number; i++) {
+	for (int i = 0; i < count; i++) {
 		result << getRandomNumber(qAbs(lowerLimit - higherLimit)) + lowerLimit;
 	}
 
@@ -123,11 +123,12 @@ Number AdaptiveRandom::getRandomNumber(Number limit)
 	Number result;
 
 	do {
-		result = rand() / (RAND_MAX / (limit + 1) );
+		result = rand() / (RAND_MAX / (limit + 1));
 	} while (result > limit);
 
 	return result;
 }
+
 
 QList<Number> AdaptiveRandom::productListNumber(QList<Number> list, Number number)
 {
@@ -194,6 +195,7 @@ QList<Number> AdaptiveRandom::quotientListNumber(QList<Number> source, Number di
 
 	return result;
 }
+
 
 Number AdaptiveRandom::countFunction(QList<Number> arguments)
 {

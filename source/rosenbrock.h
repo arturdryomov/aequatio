@@ -15,6 +15,16 @@ public:
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
 	QList<RpnArgument> requiredArguments();
 private:
+	FunctionCalculator* m_calculator;
+	QString m_functionName;
+	QList<Number> m_sourcePoint;
+	Number m_stopValue;
+	Number m_accelerationStep;
+	Number m_decreaseStep;
+	QList<Number> m_steps;
+	Number m_wrongStepsNumber;
+	QList<QList<Number> > m_directions;
+
 	QList<Number> findMinimum();
 
 	Number countFunction(QList<Number> arguments);
@@ -33,16 +43,6 @@ private:
 	Number productListList(QList<Number> source, QList<Number> item);
 	Number modulusList(QList<Number> list);
 	QList<Number> quotientListNumber(QList<Number> source, Number divisor);
-
-	FunctionCalculator* m_calculator;
-	QString m_functionName;
-	QList<Number> m_sourcePoint;
-	Number m_stopValue;
-	Number m_accelerationStep;
-	Number m_decreaseStep;
-	QList<Number> m_steps;
-	Number m_wrongStepsNumber;
-	QList<QList<Number> > m_directions;
 };
 
 #endif // ROSENBROCK_H

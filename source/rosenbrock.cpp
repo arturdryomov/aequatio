@@ -29,6 +29,7 @@ RpnOperand Rosenbrock::calculate(FunctionCalculator *calculator, QList<RpnOperan
 
 	m_wrongStepsNumber = actualArguments[6].value.value<Number>();
 
+	// Set start directions
 	for (int i = 0; i < m_sourcePoint.size(); i++) {
 		m_directions << QList<Number>();
 		for (int k = 0; k < m_sourcePoint.size(); k++) {
@@ -66,7 +67,6 @@ QList<RpnArgument> Rosenbrock::requiredArguments()
 
 QList<Number> Rosenbrock::findMinimum()
 {
-	// Step 1
 	QList<Number> firstCurrentPoint = m_sourcePoint;
 	QList<Number> sourceSteps = m_steps;
 	QList<Number> currentPoint = firstCurrentPoint;
@@ -134,8 +134,6 @@ QList<Number> Rosenbrock::findMinimum()
 }
 
 
-
-
 void Rosenbrock::getNewDirections(QList<Number> stepSizes)
 {
 	QList<QList<Number> > gramStepOne;
@@ -191,6 +189,7 @@ QList<Number> Rosenbrock::getStepLengths(QList<Number> currentPoint, QList<Numbe
 
 	return solveEquationSystem(equationCoefficients);
 }
+
 
 // First list of coefficients is equations results
 QList<Number> Rosenbrock::solveEquationSystem(QList<QList<Number> > coefficients)
@@ -274,6 +273,7 @@ QList<Number> Rosenbrock::increaseDirection(QList<Number> point, int direction)
 	return result;
 }
 
+
 QList<Number> Rosenbrock::productListNumber(QList<Number> list, Number number)
 {
 	QList<Number> result;
@@ -339,6 +339,7 @@ QList<Number> Rosenbrock::quotientListNumber(QList<Number> source, Number diviso
 
 	return result;
 }
+
 
 Number Rosenbrock::countFunction(QList<Number> arguments)
 {
