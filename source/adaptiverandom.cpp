@@ -1,7 +1,7 @@
 #include "adaptiverandom.h"
 
 #include <qmath.h>
-#include <cstdlib>
+#include <ctime>
 
 namespace
 {
