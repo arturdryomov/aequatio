@@ -4,6 +4,8 @@
 #include "rpncode.h"
 #include "calculatingexceptions.h"
 
+#include <qmath.h>
+
 // Template and interface class for calculation sub-classes
 class BuiltInFunction
 {

@@ -1,7 +1,5 @@
 #include "configuration.h"
 
-#include <qmath.h>
-
 namespace
 {
 	Configuration instance;
@@ -39,7 +37,6 @@ QList<RpnArgument> Configuration::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
-		// NOTE: QVariant() shows that number of arguments is not fixed, maybe there is other way
 		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant())
 		<< RpnArgument(RpnOperandVector)
 		<< RpnArgument(RpnOperandNumber)

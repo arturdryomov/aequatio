@@ -1,7 +1,5 @@
 #include "goldenratio.h"
 
-#include <qmath.h>
-
 namespace
 {
 	GoldenRatio instance;

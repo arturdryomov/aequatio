@@ -1,7 +1,5 @@
 #include "uniform.h"
 
-#include <qmath.h>
-
 namespace
 {
 	Uniform instance;

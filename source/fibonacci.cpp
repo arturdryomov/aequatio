@@ -1,7 +1,5 @@
 #include "fibonacci.h"
 
-#include <qmath.h>
-
 namespace
 {
 	Fibonacci instance;

@@ -1,7 +1,5 @@
 #include "rosenbrock.h"
 
-#include <qmath.h>
-
 namespace
 {
 	Rosenbrock instance;
@@ -54,7 +52,6 @@ QList<RpnArgument> Rosenbrock::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
-		// NOTE: QVariant() shows that number of arguments is not fixed, maybe there is other way
 		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant())
 		<< RpnArgument(RpnOperandVector)
 		<< RpnArgument(RpnOperandNumber)
