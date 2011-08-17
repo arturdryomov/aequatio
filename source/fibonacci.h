@@ -14,10 +14,11 @@ public:
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
 	QList<RpnArgument> requiredArguments();
 private:
-	Number countFunction(Number argument);
-	Number findMinimum();
-	void getIterationsNumber();
-	Number fibonacciNumber(int position);
+	struct Interval {
+		Number leftBorder;
+		Number rightBorder;
+	};
+	Interval m_sourceInterval;
 
 	FunctionCalculator* m_calculator;
 	QString m_functionName;
@@ -25,11 +26,11 @@ private:
 	Number m_difference;
 	Number m_iterationsNumber;
 
-	struct Interval {
-		Number leftBorder;
-		Number rightBorder;
-	};
-	Interval m_sourceInterval;
+	Number countFunction(Number argument);
+
+	Number findMinimum();
+	void getIterationsNumber();
+	Number getFibonacciNumber(int position);
 };
 
 #endif // FIBONACCI_H

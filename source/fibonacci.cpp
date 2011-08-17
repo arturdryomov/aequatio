@@ -17,6 +17,13 @@ RpnOperand Fibonacci::calculate(FunctionCalculator *calculator, QList<RpnOperand
 	m_difference = actualArguments[4].value.value<Number>();
 	getIterationsNumber();
 
+	if (m_resultIntervalLength <= 0) {
+		THROW(EWrongArgument(QObject::tr("length of finish interval"), QObject::tr("more than 0")) )
+	}
+	if (m_difference <= 0) {
+		THROW(EWrongArgument(QObject::tr("difference constant"), QObject::tr("more than 0")) )
+	}
+
 	RpnOperand result;
 	result.type = RpnOperandNumber;
 	result.value = findMinimum();
@@ -27,7 +34,7 @@ QList<RpnArgument> Fibonacci::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
-		// 1 is argument count in function that is passed as and argument to GoldenRatio
+		// 1 is argument count in function that is passed as and argument
 		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant::fromValue(1))
 		<< RpnArgument(RpnOperandNumber)
 		<< RpnArgument(RpnOperandNumber)
@@ -37,14 +44,42 @@ QList<RpnArgument> Fibonacci::requiredArguments()
 	return arguments;
 }
 
+void Fibonacci::getIterationsNumber()
+{
+	m_iterationsNumber = 0;
+
+	while (getFibonacciNumber(m_iterationsNumber) <
+		qAbs(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) /
+		m_resultIntervalLength) {
+
+		m_iterationsNumber++;
+	}
+}
+
+// TODO: Decide what int to use (qint32 or other)
+Number Fibonacci::getFibonacciNumber(int position)
+{
+	switch(position) {
+		case 0: {
+			return 1;
+		};
+		case 1: {
+			return 1;
+		};
+		default: {
+			return getFibonacciNumber(position - 1) + getFibonacciNumber(position - 2);
+		};
+	};
+}
+
 Number Fibonacci::findMinimum()
 {
 	Interval newInterval;
 	newInterval.leftBorder = m_sourceInterval.leftBorder +
-		(fibonacciNumber(m_iterationsNumber - 2) / fibonacciNumber(m_iterationsNumber)) *
+		(getFibonacciNumber(m_iterationsNumber - 2) / getFibonacciNumber(m_iterationsNumber)) *
 		(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder);
 	newInterval.rightBorder = m_sourceInterval.leftBorder +
-		(fibonacciNumber(m_iterationsNumber - 1) / fibonacciNumber(m_iterationsNumber)) *
+		(getFibonacciNumber(m_iterationsNumber - 1) / getFibonacciNumber(m_iterationsNumber)) *
 		(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder);
 
 	for (int iteration = 0; iteration <= m_iterationsNumber - 3; iteration++) {
@@ -52,16 +87,16 @@ Number Fibonacci::findMinimum()
 			m_sourceInterval.rightBorder = newInterval.rightBorder;
 			newInterval.rightBorder = newInterval.leftBorder;
 			newInterval.leftBorder = m_sourceInterval.leftBorder +
-				(fibonacciNumber(m_iterationsNumber - iteration - 3) /
-					fibonacciNumber(m_iterationsNumber - iteration - 1)) *
+				(getFibonacciNumber(m_iterationsNumber - iteration - 3) /
+					getFibonacciNumber(m_iterationsNumber - iteration - 1)) *
 				(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder);
 		}
 		else {
 			m_sourceInterval.leftBorder = newInterval.leftBorder;
 			newInterval.leftBorder = newInterval.rightBorder;
 			newInterval.rightBorder = m_sourceInterval.leftBorder +
-				(fibonacciNumber(m_iterationsNumber - iteration - 2) /
-					fibonacciNumber(m_iterationsNumber - iteration - 1)) *
+				(getFibonacciNumber(m_iterationsNumber - iteration - 2) /
+					getFibonacciNumber(m_iterationsNumber - iteration - 1)) *
 				(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder);
 		}
 	}
@@ -76,35 +111,6 @@ Number Fibonacci::findMinimum()
 	}
 
 	return (m_sourceInterval.rightBorder + m_sourceInterval.leftBorder) / 2;
-}
-
-void Fibonacci::getIterationsNumber()
-{
-
-	m_iterationsNumber = 0;
-
-	while (fibonacciNumber(m_iterationsNumber) <
-		qAbs(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) /
-		m_resultIntervalLength) {
-
-		m_iterationsNumber++;
-	}
-}
-
-// TODO: Decide what int to use (qint32 or other)
-Number Fibonacci::fibonacciNumber(int position)
-{
-	switch(position) {
-		case 0: {
-			return 1;
-		};
-		case 1: {
-			return 1;
-		};
-		default: {
-			return fibonacciNumber(position - 1) + fibonacciNumber(position - 2);
-		};
-	};
 }
 
 Number Fibonacci::countFunction(Number argument)

@@ -16,6 +16,10 @@ RpnOperand GoldenRatio::calculate(FunctionCalculator *calculator, QList<RpnOpera
 	m_accuracy = actualArguments[3].value.value<Number>();
 	m_ratio = (3 - qSqrt(5)) / 2;
 
+	if (m_accuracy <= 0) {
+		THROW(EWrongArgument(QObject::tr("accuracy"), QObject::tr("more than 0")) )
+	}
+
 	RpnOperand result;
 	result.type = RpnOperandNumber;
 	result.value = findMinimum();
@@ -26,7 +30,7 @@ QList<RpnArgument> GoldenRatio::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
-		// 1 is argument count in function that is passed as and argument to GoldenRatio
+		// 1 is argument count in function that is passed as and argument
 		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant::fromValue(1))
 		<< RpnArgument(RpnOperandNumber)
 		<< RpnArgument(RpnOperandNumber)
@@ -45,11 +49,9 @@ Number GoldenRatio::findMinimum()
 	Number delta = 0;
 
 	do {
-		// Work with external function
 		Number leftFunctionValue = countFunction(newInterval.leftBorder);
 		Number rightFunctionValue = countFunction(newInterval.rightBorder);
 
-		// Make less interval
 		if (leftFunctionValue <= rightFunctionValue) {
 			m_sourceInterval.rightBorder = newInterval.rightBorder;
 			newInterval.rightBorder = newInterval.leftBorder;

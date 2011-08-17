@@ -16,6 +16,10 @@ RpnOperand Bisection::calculate(FunctionCalculator *calculator, QList<RpnOperand
 	m_sourceInterval.rightBorder = actualArguments[2].value.value<Number>();
 	m_accuracy = actualArguments[3].value.value<Number>();
 
+	if (m_accuracy <= 0) {
+		THROW(EWrongArgument(QObject::tr("accuracy"), QObject::tr("more than 0")) )
+	}
+
 	RpnOperand result;
 	result.type = RpnOperandNumber;
 	result.value = findMinimum();
@@ -26,8 +30,9 @@ QList<RpnArgument> Bisection::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
-		// 1 is argument count in function that is passed as and argument to GoldenRatio
+		// 1 is argument count in function that is passed as and argument
 		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant::fromValue(1))
+		// TODO: Sometime change to vector interval argument (and for other classes too)
 		<< RpnArgument(RpnOperandNumber)
 		<< RpnArgument(RpnOperandNumber)
 		<< RpnArgument(RpnOperandNumber);
@@ -41,8 +46,10 @@ Number Bisection::findMinimum()
 
 	forever {
 		Interval newInterval = {
-			m_sourceInterval.leftBorder + qAbs(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) / 4,
-			m_sourceInterval.rightBorder - qAbs(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) / 4
+			m_sourceInterval.leftBorder +
+				qAbs(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) / 4,
+			m_sourceInterval.rightBorder -
+				qAbs(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) / 4
 		};
 
 		if (countFunction(newInterval.leftBorder) < countFunction(middlePoint)) {
@@ -60,8 +67,8 @@ Number Bisection::findMinimum()
 			}
 		}
 
-		// Exit condition
 		if (qAbs(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) <= m_accuracy) {
+			// Exit condition
 			return middlePoint;
 		}
 	}

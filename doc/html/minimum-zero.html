@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+    <title>Aequatio Help</title>
+
+    <link rel="stylesheet" type="text/css" href="css/master.css" />
+  </head>
+
+  <body>
+
+		<a name="title"><h1>Finding Minimum: Zero Order</h1></a>
+
+			<h2>One-dimensional minimization</h2>
+
+				<p>These methods operate only one variable functions.</p>
+
+				<a name="uniform"><h3>Uniform</h3></a>
+
+					<p>uniform(<i>f</i>, [<i>a</i>, <i>b</i>], <i>N</i>)</p>
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li>[<i>a</i>, <i>b</i>] — search interval;</li>
+						<li><i>N</i> — number of iterations.</li>
+					</ul>
+
+					<p>Example<p>
+
+					<div class="code">
+						<p>&larr; func f(x) = 2 * (x ^ 2) - 12 * x</p>
+						<p>&rarr; Function declared: f(x) = 2 × x ^ 2 − 12 × x</p>
+						<p>&larr; uniform(f, [0, 10], 9)</p>
+						<p>&rarr; uniform(f, [0, 10], 9) = 3</p>
+					</div>
+
+				<a name="bisection"><h3>Bisection</h3></a>
+
+					<p>bisection(<i>f</i>, [<i>a</i>, <i>b</i>], <i>l</i>)</p>
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li>[<i>a</i>, <i>b</i>] — search interval;</li>
+						<li><i>l > 0</i> — accuracy.</li>
+					</ul>
+
+					<p>Example<p>
+
+					<div class="code">
+						<p>&larr; func f(x) = 2 * (x ^ 2) - 12 * x</p>
+						<p>&rarr; Function declared: f(x) = 2 × x ^ 2 − 12 × x</p>
+						<p>&larr; bisection(f, [0, 10], 1)</p>
+						<p>&rarr; bisection(f, [0, 10], 1) = 3.125</p>
+					</div>
+
+				<a name="dichotomy"><h3>Dichotomy</h3></a>
+
+					<p>dichotomy(<i>f</i>, [<i>a</i>, <i>b</i>], <i>l</i>, <i>&epsilon;</i>)</p>
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li>[<i>a</i>, <i>b</i>] — search interval;</li>
+						<li><i>l > 0</i> — accuracy;</li>
+						<li><i>&epsilon; > 0</i> — small number.</li>
+					</ul>
+
+					<p>Example<p>
+
+					<div class="code">
+						<p>&larr; func f(x) = 2 * (x ^ 2) - 12 * x</p>
+						<p>&rarr; Function declared: f(x) = 2 × x ^ 2 − 12 × x</p>
+						<p>&larr; dichotomy(f, [0, 10], 1, 0.2)</p>
+						<p>&rarr; dichotomy(f, [0, 10], 1, 0.2) = 2.85625</p>
+					</div>
+
+				<a name="golden-ratio"><h3>Golden Ratio</h3></a>
+
+					<p>golden_ratio(<i>f</i>, [<i>a</i>, <i>b</i>], <i>l</i>)</p>
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li>[<i>a</i>, <i>b</i>] — search interval;</li>
+						<li><i>l > 0</i> — accuracy.</li>
+					</ul>
+
+					<p>Example<p>
+
+					<div class="code">
+						<p>&larr; func f(x) = 2 * (x ^ 2) - 12 * x</p>
+						<p>&rarr; Function declared: f(x) = 2 × x ^ 2 − 12 × x</p>
+						<p>&larr; golden_ratio(f, [0, 10], 1)</p>
+						<p>&rarr; golden_ratio(f, [0, 10], 1) = 2.81153</p>
+					</div>
+
+				<a name="fibonacci"><h3>Fibonacci</h3></a>
+
+					<p>fibonacci(<i>f</i>, [<i>a</i>, <i>b</i>], <i>l</i>, <i>&epsilon;</i>)</p>
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li>[<i>a</i>, <i>b</i>] — search interval;</li>
+						<li><i>l > 0</i> — length of finish interval;</li>
+						<li><i>&epsilon; > 0</i> — difference constant.</li>
+					</ul>
+
+					<p>Example<p>
+
+					<div class="code">
+						<p>&larr; func f(x) = 2 * (x ^ 2) - 12 * x</p>
+						<p>&rarr; Function declared: f(x) = 2 × x ^ 2 − 12 × x</p>
+						<p>&larr; fibonacci(f, [0, 10], 1, 0.01)</p>
+						<p>&rarr; fibonacci(f, [0, 10], 1, 0.01) = 2.69731</p>
+					</div>
+
+				<a name="quad-interpolation"><h3>Quadratic Interpolation</h3></a>
+
+					quadratic_interpolation
+					(<i>f</i>, <i>x</i>, <i>&Delta;x</i>,
+					<i>&epsilon;<sub>1</sub></i>,
+					<i>&epsilon;<sub>2</sub></i>)
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li><i>x</i> — start point;</li>
+						<li><i>&Delta;x > 0</i> — step size; </li>
+						<li>
+						<i>&epsilon;<sub>1</sub></i>, <i>&epsilon;<sub>2</sub></i> — small numbers,
+						which set accuracy.</i>
+						</li>
+					</ul>
+
+					<p>Example<p>
+
+					<div class="code">
+						<p>&larr; func f(x) = 2 * (x ^ 2) + 16 / x</p>
+						<p>&rarr; Function declared: f(x) = 2 × x ^ 2 + 16 ÷ x</p>
+						<p>&larr; quadratic_interpolation(f, 1, 1, 0.003, 0.03)</p>
+						<p>&rarr; quadratic_interpolation(f, 1, 1, 0.003, 0.03) = 1.61214</p>
+					</div>
+
+  </body>
+
+</html>

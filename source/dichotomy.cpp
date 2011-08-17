@@ -16,6 +16,13 @@ RpnOperand Dichotomy::calculate(FunctionCalculator *calculator, QList<RpnOperand
 	m_accuracy = actualArguments[3].value.value<Number>();
 	m_space = actualArguments[4].value.value<Number>();
 
+	if (m_accuracy <= 0) {
+		THROW(EWrongArgument(QObject::tr("accuracy"), QObject::tr("more than 0")) )
+	}
+	if (m_space <= 0) {
+		THROW(EWrongArgument(QObject::tr("configuration small number"), QObject::tr("more than 0")) )
+	}
+
 	RpnOperand result;
 	result.type = RpnOperandNumber;
 	result.value = findMinimum();
@@ -26,7 +33,7 @@ QList<RpnArgument> Dichotomy::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
-		// 1 is argument count in function that is passed as and argument to GoldenRatio
+		// 1 is argument count in function that is passed as and argument
 		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant::fromValue(1))
 		<< RpnArgument(RpnOperandNumber)
 		<< RpnArgument(RpnOperandNumber)
@@ -54,8 +61,8 @@ Number Dichotomy::findMinimum()
 			m_sourceInterval.leftBorder = newInterval.leftBorder;
 		}
 
-		// Loop exit condition
 		if (qAbs(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) <= m_accuracy) {
+			// Exit condition
 			return (m_sourceInterval.leftBorder + m_sourceInterval.rightBorder) / 2;
 		}
 	}

@@ -225,3 +225,53 @@ QList<RpnArgument> CalcTangent::requiredArguments()
 
 	return arguments;
 }
+
+
+namespace
+{
+	Abs instanceAbs;
+}
+
+RpnOperand Abs::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+{
+	Q_UNUSED(calculator);
+
+	RpnOperand result;
+	result.type = RpnOperandNumber;
+	result.value = qAbs(actualArguments[0].value.value<Number>());
+
+	return result;
+}
+
+QList<RpnArgument> Abs::requiredArguments()
+{
+	QList<RpnArgument> arguments;
+	arguments << RpnArgument(RpnOperandNumber);
+
+	return arguments;
+}
+
+
+namespace
+{
+	Sqrt instanceSqrt;
+}
+
+RpnOperand Sqrt::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+{
+	Q_UNUSED(calculator);
+
+	RpnOperand result;
+	result.type = RpnOperandNumber;
+	result.value = qSqrt(actualArguments[0].value.value<Number>());
+
+	return result;
+}
+
+QList<RpnArgument> Sqrt::requiredArguments()
+{
+	QList<RpnArgument> arguments;
+	arguments << RpnArgument(RpnOperandNumber);
+
+	return arguments;
+}
