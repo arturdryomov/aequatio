@@ -4,10 +4,10 @@
 #include "builtinfunction.h"
 
 // Class for finding minimum of function with Unirorm method
-class Unirorm : public BuiltInFunction
+class Uniform : public BuiltInFunction
 {
 public:
-	Unirorm() : BuiltInFunction("uniform")
+	Uniform() : BuiltInFunction("uniform")
 	{
 	}
 
