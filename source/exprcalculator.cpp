@@ -167,24 +167,7 @@ QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
 		switch (element.type) {
 
 			case RpnElementOperand:
-				if (element.value.value<RpnOperand>().type == RpnOperandVector) {
-					// Present vector as string
-					part.text = "[";
-					QList<Number> vectorElements =
-						element.value.value<RpnOperand>().value.value<QList<Number> >();
-					QListIterator<Number> vectorIterator(vectorElements);
-					while (vectorIterator.hasNext()) {
-						part.text += QString::number(vectorIterator.next());
-						if (vectorIterator.hasNext()) {
-							part.text += ",";
-							part.text += " ";
-						}
-					}
-					part.text += "]";
-				}
-				else {
-					part.text = element.value.value<RpnOperand>().toString();
-				}
+				part.text = element.value.value<RpnOperand>().toString();
 				part.priority = PriorityHighest;
 				break;
 
