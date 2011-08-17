@@ -82,7 +82,7 @@ EIncorrectConstantDeclaration::EIncorrectConstantDeclaration()
 
 QString EIncorrectConstantDeclaration::message()
 {
-	return tr("Constant must be number or result of expression which is number");
+	return tr("Constant value can be a number or an expression the result of which is a number.");
 }
 
 EIncorrectFunctionArgument::EIncorrectFunctionArgument(const QString &functionName) : m_functionName(functionName)
