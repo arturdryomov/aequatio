@@ -87,6 +87,12 @@ private:
 	QString m_functionName;
 };
 
+// vector elements can be only of a number type
+class EIncorrectVectorInitialization : public EParsing
+{
+	QString message();
+};
+
 /* EInternal children */
 
 class EUnsupportedLexeme : public EInternal

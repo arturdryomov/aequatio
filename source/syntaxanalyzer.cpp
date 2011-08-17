@@ -179,7 +179,6 @@ RpnCodeThread SyntaxAnalyzer::expression()
 // Vector = '[' Expression, { ',' Expression } ']'
 RpnCodeThread SyntaxAnalyzer::vector()
 {
-	RpnCodeThread result;
 	QList<Number> vectorElements;
 
 	if (m_lexicalAnalyzer->lexeme().type != LexemeOpeningSquareBracket) {
@@ -192,7 +191,7 @@ RpnCodeThread SyntaxAnalyzer::vector()
 		RpnCodeThread elementThread = expression();
 		ExpressionDescription expression = m_exprCalculator->calculate(elementThread);
 		if (expression.result.type != RpnOperandNumber) {
-			THROW(EIncorrectFunctionArgument("Number"));
+			THROW(EIncorrectVectorInitialization());
 		}
 
 		vectorElements << expression.result.value.value<Number>();
@@ -203,7 +202,9 @@ RpnCodeThread SyntaxAnalyzer::vector()
 	}
 	m_lexicalAnalyzer->nextLexeme();
 
-	RpnOperand operand(RpnOperandVector, QVariant::fromValue(vectorElements) );
+	RpnOperand operand(RpnOperandVector, QVariant::fromValue(vectorElements));
+
+	RpnCodeThread result;
 	result << RpnElement(RpnElementOperand, QVariant::fromValue(operand));
 	return result;
 }

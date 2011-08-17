@@ -95,6 +95,13 @@ QString EIncorrectFunctionArgument::message()
 		"signature (list of arguments and their types).").arg(m_functionName);
 }
 
+QString EIncorrectVectorInitialization::message()
+{
+	return tr("Incorrect vector initialization. It should look like "
+		"<i>[number1, number2, ..., numberN </i>");
+}
+
+
 EUnsupportedLexeme::EUnsupportedLexeme(const QString &unsupportedType) : m_unsupported(unsupportedType)
 {
 }
