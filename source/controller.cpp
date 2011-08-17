@@ -61,13 +61,14 @@ void Controller::commandEntered(const QString &command)
 
 		switch (result.type) {
 
-		case ResultExpressionCalculated: {
-			ExpressionDescription expression = result.data.value<ExpressionDescription>();
-			notificationText = QString("%1 = %2")
-				.arg(expression.expression)
-				.arg(expression.result.toString());
-			break;
-		}
+			case ResultExpressionCalculated: {
+				ExpressionDescription expression = result.data.value<ExpressionDescription>();
+				notificationText = QString("%1 = %2")
+					.arg(expression.expression)
+					.arg(expression.result.toString());
+				break;
+			}
+
 			case ResultConstantDeclared: {
 				ConstantDescription constant = result.data.value<ConstantDescription>();
 				notificationText = tr("Constant declared: %1 = %2")
