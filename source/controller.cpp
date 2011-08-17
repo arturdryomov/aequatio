@@ -61,36 +61,13 @@ void Controller::commandEntered(const QString &command)
 
 		switch (result.type) {
 
-			case ResultExpressionCalculated: {
-				ExpressionDescription expression = result.data.value<ExpressionDescription>();
-
-				QString expressionResult;
-
-				// NOTE: This is not cool, maybe reworking in some way
-				if (expression.result.type == RpnOperandVector) {
-					expressionResult = "[";
-					QList<Number> vectorElements =
-						expression.result.value.value<QList<Number> >();
-					QListIterator<Number> vectorIterator(vectorElements);
-					while (vectorIterator.hasNext()) {
-						expressionResult += QString::number(vectorIterator.next());
-						if (vectorIterator.hasNext()) {
-							expressionResult += ",";
-							expressionResult += " ";
-						}
-					}
-					expressionResult += "]";
-				}
-				else {
-					expressionResult = expression.result.toString();
-				}
-
-				notificationText = QString("%1 = %2")
-					.arg(expression.expression)
-					.arg(expressionResult);
-				break;
-			}
-
+		case ResultExpressionCalculated: {
+			ExpressionDescription expression = result.data.value<ExpressionDescription>();
+			notificationText = QString("%1 = %2")
+				.arg(expression.expression)
+				.arg(expression.result.toString());
+			break;
+		}
 			case ResultConstantDeclared: {
 				ConstantDescription constant = result.data.value<ConstantDescription>();
 				notificationText = tr("Constant declared: %1 = %2")

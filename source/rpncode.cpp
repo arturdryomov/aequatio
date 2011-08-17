@@ -21,10 +21,26 @@ RpnOperand::RpnOperand(RpnOperandType type_, const QVariant &value_) :
 QString RpnOperand::toString()
 {
 	switch (type) {
+
 		case RpnOperandNumber:
 			return numberToString(value.value<Number>());
+
 		case RpnOperandFunctionName:
 			return value.value<QString>();
+
+		case RpnOperandVector: {
+			QString result = "[";
+
+			QListIterator<Number> vectorIterator(value.value<QList<Number> >());
+			while (vectorIterator.hasNext()) {
+				result += numberToString(vectorIterator.next());
+				if (vectorIterator.hasNext()) {
+					result += ", ";
+				}
+			}
+			result += "]";
+		}
+
 		default:
 			THROW(EIncorrectRpnCode());
 	}
