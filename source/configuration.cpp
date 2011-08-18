@@ -17,6 +17,10 @@ RpnOperand Configuration::calculate(FunctionCalculator *calculator, QList<RpnOpe
 	}
 
 	m_stopValue = actualArguments[2].value.value<Number>();
+	if (m_stopValue <= 0) {
+		THROW(EWrongArgument(QObject::tr("stop value"), QObject::tr("more than 0")) )
+	}
+
 	m_steps = actualArguments[3].value.value<QList<Number> >();
 
 	if (m_calculator->functionArguments(m_functionName).size() != m_steps.size()) {
@@ -24,7 +28,13 @@ RpnOperand Configuration::calculate(FunctionCalculator *calculator, QList<RpnOpe
 	}
 
 	m_accelerationStep = actualArguments[4].value.value<Number>();
+	if (m_accelerationStep <= 0) {
+		THROW(EWrongArgument(QObject::tr("acceleration coefficient"), QObject::tr("more than 0")) )
+	}
 	m_decreaseStep = actualArguments[5].value.value<Number>();
+	if (m_decreaseStep <= 1) {
+		THROW(EWrongArgument(QObject::tr("decrease step coefficient"), QObject::tr("more than 1")) )
+	}
 
 
 	RpnOperand result;

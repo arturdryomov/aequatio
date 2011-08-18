@@ -17,8 +17,19 @@ RpnOperand Rosenbrock::calculate(FunctionCalculator *calculator, QList<RpnOperan
 	}
 
 	m_stopValue = actualArguments[2].value.value<Number>();
+	if (m_stopValue <= 0) {
+		THROW(EWrongArgument(QObject::tr("stop value"), QObject::tr("more than 0")) )
+	}
+
 	m_accelerationStep = actualArguments[3].value.value<Number>();
+	if (m_accelerationStep <= 1) {
+		THROW(EWrongArgument(QObject::tr("acceleration coefficient"), QObject::tr("more than 1")) )
+	}
+
 	m_decreaseStep = actualArguments[4].value.value<Number>();
+	if ((m_decreaseStep <= -1) || (m_decreaseStep >= 0)) {
+		THROW(EWrongArgument(QObject::tr("decrease coefficient"), QObject::tr("more than -1 and less than 0")) )
+	}
 
 	m_steps = actualArguments[5].value.value<QList<Number> >();
 	if (m_calculator->functionArguments(m_functionName).size() != m_steps.size()) {

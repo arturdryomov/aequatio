@@ -18,7 +18,15 @@ RpnOperand AdaptiveRandom::calculate(FunctionCalculator *calculator, QList<RpnOp
 	}
 
 	m_acceleration = actualArguments[2].value.value<Number>();
+	if (m_acceleration <= 1) {
+		THROW(EWrongArgument(QObject::tr("acceleration coefficient"), QObject::tr("more than 1")) )
+	}
+
 	m_decrease = actualArguments[3].value.value<Number>();
+	if ((m_decrease <= 0) || (m_decrease >= 1)) {
+		THROW(EWrongArgument(QObject::tr("decrease coefficient"), QObject::tr("more than 0 and less than 1")) )
+	}
+
 	m_wrongStepsCount = actualArguments[4].value.value<Number>();
 	m_iterationsCount = actualArguments[5].value.value<Number>();
 	m_minimumStepSize = actualArguments[6].value.value<Number>();
