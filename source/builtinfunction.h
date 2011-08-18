@@ -4,6 +4,7 @@
 #include "rpncode.h"
 #include "calculatingexceptions.h"
 
+#define _USE_MATH_DEFINES
 #include <qmath.h>
 
 // Template and interface class for calculation sub-classes

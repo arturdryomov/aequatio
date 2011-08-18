@@ -11,7 +11,7 @@ RpnOperand Rosenbrock::calculate(FunctionCalculator *calculator, QList<RpnOperan
 
 	m_functionName = actualArguments[0].value.value<QString>();
 
-	m_sourcePoint = actualArguments[1].value.value<QList<Number> >();
+	m_sourcePoint = RpnVector::extractSingleVector(actualArguments[1].value.value<RpnVector>());
 	if (m_calculator->functionArguments(m_functionName).size() != m_sourcePoint.size()) {
 		THROW(EWrongParametersCount(QObject::tr("Source point"), m_calculator->functionArguments(m_functionName).size()));
 	}
@@ -31,7 +31,7 @@ RpnOperand Rosenbrock::calculate(FunctionCalculator *calculator, QList<RpnOperan
 		THROW(EWrongArgument(QObject::tr("decrease coefficient"), QObject::tr("more than -1 and less than 0")) )
 	}
 
-	m_steps = actualArguments[5].value.value<QList<Number> >();
+	m_steps = RpnVector::extractSingleVector(actualArguments[5].value.value<RpnVector>());
 	if (m_calculator->functionArguments(m_functionName).size() != m_steps.size()) {
 		THROW(EWrongParametersCount(QObject::tr("Coordinate steps"), m_calculator->functionArguments(m_functionName).size()));
 	}
@@ -52,10 +52,9 @@ RpnOperand Rosenbrock::calculate(FunctionCalculator *calculator, QList<RpnOperan
 		}
 	}
 
-
 	RpnOperand result;
 	result.type = RpnOperandVector;
-	result.value = QVariant::fromValue(findMinimum());
+	result.value = QVariant::fromValue(RpnVector::packageSingleVector(findMinimum()));
 	return result;
 }
 

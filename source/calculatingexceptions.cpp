@@ -54,3 +54,15 @@ QString EWrongArgument::message()
 {
 	return tr("Wrong argument condition: %1 must be %2").arg(m_argumentName).arg(m_argumentCondition);
 }
+
+EWrongVectorDimension::EWrongVectorDimension(int expectedDimension, int actualDimension) :
+	m_expectedDimension(expectedDimension), m_actualDimension(actualDimension)
+{
+}
+
+QString EWrongVectorDimension::message()
+{
+		return tr("%1-dimensional vector was expected but %2-dimensional was passed.")
+			.arg(m_expectedDimension)
+			.arg(m_actualDimension);
+}

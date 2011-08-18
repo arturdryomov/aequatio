@@ -41,6 +41,7 @@ private:
 	FunctionDescription functionDeclaration();
 	RpnCodeThread expression();
 	RpnCodeThread vector();
+	RpnVector extractVector();
 	RpnCodeThread function();
 	RpnCodeThread factor();
 	RpnCodeThread powerBase();

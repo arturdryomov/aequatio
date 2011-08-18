@@ -54,6 +54,16 @@ private:
 	QString m_argumentCondition;
 };
 
+class EWrongVectorDimension : public ECalculating
+{
+public:
+	EWrongVectorDimension(int expectedDimension, int actualDimension);
+	QString message();
+private:
+	int m_expectedDimension;
+	int m_actualDimension;
+};
+
 /* EInternal children */
 
 

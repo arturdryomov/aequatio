@@ -179,33 +179,56 @@ RpnCodeThread SyntaxAnalyzer::expression()
 // Vector = '[' Expression, { ',' Expression } ']'
 RpnCodeThread SyntaxAnalyzer::vector()
 {
-	QList<Number> vectorElements;
+	RpnOperand operand(RpnOperandVector, QVariant::fromValue(extractVector()));
+	RpnCodeThread result;
+	result << RpnElement(RpnElementOperand, QVariant::fromValue(operand));
+	return result;
+}
 
+// extracts vector recursively
+RpnVector SyntaxAnalyzer::extractVector()
+{
 	if (m_lexicalAnalyzer->lexeme().type != LexemeOpeningSquareBracket) {
 		THROW(ELexemeExpected(tr("Opening bracket for vector initialization")));
 	}
 
-	do {
-		m_lexicalAnalyzer->nextLexeme();
+	m_lexicalAnalyzer->nextLexeme();
 
-		RpnCodeThread elementThread = expression();
-		ExpressionDescription expression = m_exprCalculator->calculate(elementThread);
-		if (expression.result.type != RpnOperandNumber) {
-			THROW(EIncorrectVectorInitialization());
-		}
+	RpnVector result;
 
-		vectorElements << expression.result.value.value<Number>();
-	} while (m_lexicalAnalyzer->lexeme().type == LexemeComma);
+	// Multi-dimensional vector. Recursive calls
+	if (m_lexicalAnalyzer->lexeme().type == LexemeOpeningSquareBracket) {
+		m_lexicalAnalyzer->previousLexeme();
+		RpnVector element;
+		do {
+			m_lexicalAnalyzer->nextLexeme();
+			element = extractVector();
+			result.values << QVariant::fromValue(element.values);
+		} while (m_lexicalAnalyzer->lexeme().type == LexemeComma);
+		result.dimensions = element.dimensions + 1;
+	}
+
+	// One-dimensional vector
+	else {
+		m_lexicalAnalyzer->previousLexeme();
+		do {
+			m_lexicalAnalyzer->nextLexeme();
+			RpnCodeThread elementThread = expression();
+			ExpressionDescription expression = m_exprCalculator->calculate(elementThread);
+			if (expression.result.type != RpnOperandNumber) {
+				THROW(EIncorrectVectorInitialization());
+			}
+
+			result.values << expression.result.value;
+		} while (m_lexicalAnalyzer->lexeme().type == LexemeComma);
+		result.dimensions = 1;
+	}
 
 	if (m_lexicalAnalyzer->lexeme().type != LexemeClosingSquareBracket) {
 		THROW(ELexemeExpected(tr("Closing bracket for vector initialization")));
 	}
 	m_lexicalAnalyzer->nextLexeme();
 
-	RpnOperand operand(RpnOperandVector, QVariant::fromValue(vectorElements));
-
-	RpnCodeThread result;
-	result << RpnElement(RpnElementOperand, QVariant::fromValue(operand));
 	return result;
 }
 

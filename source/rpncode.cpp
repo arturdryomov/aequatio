@@ -12,6 +12,65 @@ QString EConversionToNumber::message()
 		"know about this, please.").arg(m_numberRepresentation);
 }
 
+RpnVector::RpnVector(int dimensions_, const QList<QVariant> &values_) :
+	dimensions(dimensions_), values(values_)
+{
+}
+
+QString RpnVector::toString()
+{
+	QString result = "[";
+
+	if (dimensions == 1) {
+		QListIterator<QVariant> iterator(values);
+		while (iterator.hasNext()) {
+			result += numberToString(iterator.next().value<Number>());
+			if (iterator.hasNext()) {
+				result += ", ";
+			}
+		}
+	}
+
+	else {
+		QListIterator<QVariant> iterator(values);
+		while (iterator.hasNext()) {
+			RpnVector element(dimensions - 1, iterator.next().value<QList<QVariant> >());
+			result += element.toString();
+			if (iterator.hasNext()) {
+				result += ", ";
+			}
+		}
+	}
+
+	result += "]";
+
+	return result;
+}
+
+// Helper methods. Provide to-from QList<Number> conversion for 1-dimensional vectors.
+QList<Number> RpnVector::extractSingleVector(RpnVector vector)
+{
+	if (vector.dimensions != 1) {
+		THROW(EWrongVectorDimension(1, vector.dimensions));
+	}
+
+	QList<Number> result;
+	foreach (QVariant element, vector.values) {
+		result << element.value<Number>();
+	}
+
+	return result;
+}
+
+RpnVector RpnVector::packageSingleVector(QList<Number> list)
+{
+	RpnVector result;
+	foreach (Number element, list) {
+		result.values << QVariant::fromValue(element);
+	}
+
+	return result;
+}
 
 RpnOperand::RpnOperand(RpnOperandType type_, const QVariant &value_) :
 	type(type_), value(value_)
@@ -28,18 +87,8 @@ QString RpnOperand::toString()
 		case RpnOperandFunctionName:
 			return value.value<QString>();
 
-		case RpnOperandVector: {
-			QString result = "[";
-
-			QListIterator<Number> vectorIterator(value.value<QList<Number> >());
-			while (vectorIterator.hasNext()) {
-				result += numberToString(vectorIterator.next());
-				if (vectorIterator.hasNext()) {
-					result += ", ";
-				}
-			}
-			result += "]";
-		}
+		case RpnOperandVector:
+			return value.value<RpnVector>().toString();
 
 		default:
 			THROW(EIncorrectRpnCode());
@@ -72,5 +121,6 @@ bool RpnArgument::operator ==(const RpnArgument &another)
 {
 	return (name == another.name)
 		&& (type == another.type)
-		&& (info == another.info);
+	&& (info == another.info);
 }
+
