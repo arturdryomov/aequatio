@@ -16,109 +16,172 @@
 
       <p>These are built-in functions you can <a href="functions.html#using">use</a>.
 
-      <table>
-        <tr>
-          <th>Name</th>
-          <th>Meaning</th>
-        </tr>
-        <tr>
-          <td><i>number</i> ^ <i>degree</i></td>
-          <td>Involutes <i>number</i> in <i>degree</i></td>
-        </tr>
-        <tr class="alt">
-          <td>sin(<i>number</i>)</td>
-          <td>Returns sine of <i>number</i></td>
-        </tr>
-        <tr>
-          <td>cos(<i>number</i>)</td>
-          <td>Returns cosine of <i>number</i></td>
-        </tr>
-        <tr class="alt">
-          <td>tan(<i>number</i>)</td>
-          <td>Returns tangent of <i>number</i></td>
-        </tr>
-        <tr>
-          <td>abs(<i>number</i>)</td>
-          <td>Gives modulus of <i>number</i></td>
-        </tr>
-        <tr class="alt">
-          <td>sqrt(<i>number</i>)</td>
-          <td>Calculates square root of <i>number</i></td>
-        </tr>
-        <tr>
-          <td><a href="minimum-zero.html#uniform">uniform(<i>f</i>, [<i>a</i>, <i>b</i>], <i>N</i>)</a></td>
-          <td rowspan="9">
-            Find out minimum of function.
-            For information about parameters go to function page.
-          </td>
-        </tr>
-        <tr class="alt">
-          <td><a href="minimum-zero.html#bisection">bisection(<i>f</i>, [<i>a</i>, <i>b</i>], <i>l</i>)</a></td>
-        </tr>
-        <tr>
-          <td><a href="minimum-zero.html#dichotomy">dichotomy(<i>f</i>, [<i>a</i>, <i>b</i>], <i>&epsilon;</i>, <i>l</i>)</a></td>
-        </tr>
-        <tr class="alt">
-          <td><a href="minimum-zero.html#golden-ratio">golden_ratio(<i>f</i>, [<i>a</i>, <i>b</i>], <i>l</i>)</a></td>
-        </tr>
-        <tr>
-          <td><a href="minimum-zero.html#fibonacci">fibonacci(<i>f</i>, [<i>a</i>, <i>b</i>], <i>l</i>, <i>&epsilon;</i>)</a></td>
-        </tr>
-        <tr class="alt">
-          <td>
-            <a href="minimum-zero.html#quad-interpolation">
-              quadratic_interpolation
-               (<i>f</i>, <i>x</i>, <i>&Delta;x</i>,
-                <i>&epsilon;<sub>1</sub></i>,
-                <i>&epsilon;<sub>2</sub></i>)
-            </a>
-          </td>
-        </tr>
-        <tr>
-					<td>
-            <a href="minimum-zero.html#configuration">
-							configuration(
-								<i>f</i>, 
-								[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;],
-								<i>&epsilon;</i>,
-								[<i>&Delta;<sub>1</sub></i>, <i>&Delta;<sub>2</sub></i>, &hellip;],
-								<i>&lambda;</i>,
-								<i>&alpha;</i>,
-							)
-						</a>
-					</td>
-				</tr>
-        <tr class="alt">
-          <td>
-            <a href="minimum-zero.html#rosenbrock">
-							rosenbrock(
-								<i>f</i>, 
-								[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;],
-								<i>&epsilon;</i>,
-								<i>&alpha;</i>,
-								<i>&beta;</i>,
-								[<i>&Delta;<sub>1</sub></i>, <i>&Delta;<sub>2</sub></i>, &hellip;],
-								<i>N</i>
-							)
-						</a>
-          </td>
-        </tr>
-        <tr>
-					<td>
-            <a href="minimum-zero.html#adaptive-random">
-							adaptive_random(
-								<i>f</i>, 
-								[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;],
-								<i>&alpha;</i>,
-								<i>&beta;</i>,
-								<i>M</i>,
-								<i>N</i>,
-								<i>R</i>
-							)
-						</a>
-          </td>
-        </tr>
-      </table>
+			<h2>Common</h2>
+
+				<table>
+					<tr>
+						<th>Name</th>
+						<th>Meaning</th>
+					</tr>
+					<tr>
+						<td><i>number</i> ^ <i>degree</i></td>
+						<td>Involutes <i>number</i> in <i>degree</i></td>
+					</tr>
+					<tr class="alt">
+						<td>sin(<i>number</i>)</td>
+						<td>Returns sine of <i>number</i></td>
+					</tr>
+					<tr>
+						<td>cos(<i>number</i>)</td>
+						<td>Returns cosine of <i>number</i></td>
+					</tr>
+					<tr class="alt">
+						<td>tan(<i>number</i>)</td>
+						<td>Returns tangent of <i>number</i></td>
+					</tr>
+					<tr>
+						<td>abs(<i>number</i>)</td>
+						<td>Gives modulus of <i>number</i></td>
+					</tr>
+					<tr class="alt">
+						<td>sqrt(<i>number</i>)</td>
+						<td>Calculates square root of <i>number</i></td>
+					</tr>
+				</table>
+
+			<h2>Minimization</h2>
+
+				<table>
+					<tr>
+						<th>Name</th>
+						<th>Meaning</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="minimum-zero.html#uniform">
+								uniform(
+									<i>f</i>, 
+									<i>a</i>, 
+									<i>b</i>, 
+									<i>N</i>
+								)
+							</a>
+						</td>
+						<td>Uniform method</td>
+					</tr>
+					<tr class="alt">
+						<td>
+							<a href="minimum-zero.html#bisection">
+								bisection(
+									<i>f</i>, 
+									<i>a</i>, 
+									<i>b</i>, 
+									<i>l</i>
+								)
+							</a>
+						</td>
+						<td>Bisection method</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="minimum-zero.html#dichotomy">
+								dichotomy(
+									<i>f</i>, 
+									<i>a</i>, 
+									<i>b</i>, 
+									<i>&epsilon;</i>, 
+									<i>l</i>
+								)
+							</a>
+						</td>
+						<td>Dichotomy method</td>
+					</tr>
+					<tr class="alt">
+						<td>
+							<a href="minimum-zero.html#golden-ratio">
+								golden_ratio(
+									<i>f</i>, 
+									<i>a</i>, 
+									<i>b</i>, 
+									<i>l</i>
+								)
+							</a>
+						</td>
+						<td>Golden Ratio method</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="minimum-zero.html#fibonacci">
+								fibonacci(
+									<i>f</i>, 
+									<i>a</i>, 
+									<i>b</i>, 
+									<i>l</i>, 
+									<i>&epsilon;</i>
+								)
+							</a>
+						</td>
+						<td>Fibonacci method</td>
+					</tr>
+					<tr class="alt">
+						<td>
+							<a href="minimum-zero.html#quad-interpolation">
+								quadratic_interpolation
+								 (<i>f</i>, <i>x</i>, <i>&Delta;x</i>,
+									<i>&epsilon;<sub>1</sub></i>,
+									<i>&epsilon;<sub>2</sub></i>)
+							</a>
+						</td>
+						<td>Quadratic Interpolation method</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="minimum-zero.html#configuration">
+								configuration(
+									<i>f</i>, 
+									[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;],
+									<i>&epsilon;</i>,
+									[<i>&Delta;<sub>1</sub></i>, <i>&Delta;<sub>2</sub></i>, &hellip;],
+									<i>&lambda;</i>,
+									<i>&alpha;</i>,
+								)
+							</a>
+						</td>
+						<td>Configuration method</td>
+					</tr>
+					<tr class="alt">
+						<td>
+							<a href="minimum-zero.html#rosenbrock">
+								rosenbrock(
+									<i>f</i>, 
+									[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;],
+									<i>&epsilon;</i>,
+									<i>&alpha;</i>,
+									<i>&beta;</i>,
+									[<i>&Delta;<sub>1</sub></i>, <i>&Delta;<sub>2</sub></i>, &hellip;],
+									<i>N</i>
+								)
+							</a>
+						</td>
+						<td>Rosenbrock method</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="minimum-zero.html#adaptive-random">
+								adaptive_random(
+									<i>f</i>, 
+									[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;],
+									<i>&alpha;</i>,
+									<i>&beta;</i>,
+									<i>M</i>,
+									<i>N</i>,
+									<i>R</i>
+								)
+							</a>
+						</td>
+						<td>Adaptive Random method</td>
+					</tr>
+				</table>
 
   </body>
 
