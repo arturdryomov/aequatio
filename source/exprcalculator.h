@@ -2,7 +2,7 @@
 #define EXPRCALCULATOR_H
 
 #include "rpncode.h"
-#include "builtinfunction.h"
+#include "builtinfunctions/builtinfunction.h"
 
 #include <QHash>
 #include <QObject>

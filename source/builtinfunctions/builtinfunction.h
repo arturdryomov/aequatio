@@ -1,8 +1,8 @@
 #ifndef BUILTINFUNCTION_H
 #define BUILTINFUNCTION_H
 
-#include "rpncode.h"
-#include "calculatingexceptions.h"
+#include "../rpncode.h"
+#include "../calculatingexceptions.h"
 
 #define _USE_MATH_DEFINES
 #include <qmath.h>
