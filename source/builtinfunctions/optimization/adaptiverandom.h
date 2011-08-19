@@ -1,7 +1,7 @@
 #ifndef ADAPTIVE_RANDOM_H
 #define ADAPTIVE_RANDOM_H
 
-#include "builtinfunction.h"
+#include "../builtinfunction.h"
 
 // Class for finding minimum of function with Adaptive Random method
 class AdaptiveRandom : public BuiltInFunction

@@ -1,7 +1,7 @@
 #ifndef BISECTION_H
 #define BISECTION_H
 
-#include "builtinfunction.h"
+#include "../builtinfunction.h"
 
 // Class for finding minimum of function with Bisection method
 class Bisection : public BuiltInFunction

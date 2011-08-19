@@ -1,7 +1,7 @@
 #ifndef UNIFORM_H
 #define UNIFORM_H
 
-#include "builtinfunction.h"
+#include "../builtinfunction.h"
 
 // Class for finding minimum of function with Unirorm method
 class Uniform : public BuiltInFunction

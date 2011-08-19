@@ -1,7 +1,7 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
-#include "builtinfunction.h"
+#include "../builtinfunction.h"
 
 // Class for finding minimum of function with Configuration method
 class Configuration : public BuiltInFunction

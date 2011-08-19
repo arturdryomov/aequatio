@@ -1,7 +1,7 @@
 #ifndef GOLDENRATIO_H
 #define GOLDENRATIO_H
 
-#include "builtinfunction.h"
+#include "../builtinfunction.h"
 
 // Class for finding minimum of function with Golden Ratio method
 class GoldenRatio : public BuiltInFunction

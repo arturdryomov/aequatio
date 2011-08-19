@@ -1,7 +1,7 @@
 #ifndef ROSENBROCK_H
 #define ROSENBROCK_H
 
-#include "builtinfunction.h"
+#include "../builtinfunction.h"
 
 // Class for finding minimum of function with Rosenbrock method
 // TODO: Check it, second primer from book is not working fine, questions about 3(1) step

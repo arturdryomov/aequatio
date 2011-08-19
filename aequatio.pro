@@ -45,6 +45,7 @@ SOURCES += \
 	source/helpbrowser.cpp \
 	source/logwindow.cpp \
 	source/rpncode.cpp \
+	source/builtinfunctions/mathutils.cpp \
 	source/builtinfunctions/basicfunctions.cpp \
 	source/builtinfunctions/optimization/uniform.cpp \
 	source/builtinfunctions/optimization/bisection.cpp \
@@ -55,7 +56,6 @@ SOURCES += \
 	source/builtinfunctions/optimization/configuration.cpp \
 	source/builtinfunctions/optimization/rosenbrock.cpp \
 	source/builtinfunctions/optimization/adaptiverandom.cpp
-
 
 HEADERS  += \
 	source/mainwindow.h \
@@ -73,6 +73,7 @@ HEADERS  += \
 	source/helpbrowser.h \
 	source/logwindow.h \
 	source/rpncode.h \
+	source/builtinfunctions/mathutils.h \
 	source/builtinfunctions/builtinfunction.h \
 	source/builtinfunctions/basicfunctions.h \
 	source/builtinfunctions/optimization/uniform.h \

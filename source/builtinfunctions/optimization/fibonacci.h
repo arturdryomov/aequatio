@@ -1,7 +1,7 @@
 #ifndef FIBONACCI_H
 #define FIBONACCI_H
 
-#include "builtinfunction.h"
+#include "../builtinfunction.h"
 
 // Class for finding minimum of function with Fibonacci method
 class Fibonacci : public BuiltInFunction

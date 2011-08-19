@@ -1,7 +1,7 @@
 #ifndef DICHOTOMY_H
 #define DICHOTOMY_H
 
-#include "builtinfunction.h"
+#include "../builtinfunction.h"
 
 // Class for finding minimum of function with Dichotomy method
 class Dichotomy : public BuiltInFunction
