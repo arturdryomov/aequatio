@@ -33,16 +33,7 @@ private:
 	void getNewDirections(QList<Number> stepSizes);
 	QList<Number> getStepLengths(QList<Number> currentPoint, QList<Number> previousPoint);
 
-	Number countDeterminant(QVector<QVector<Number> > matrix);
 	QList<Number> solveEquationSystem(QList<QList<Number> > coefficients);
-
-	// List operatins
-	QList<Number> productListNumber(QList<Number> list, Number number);
-	QList<Number> diffListList(QList<Number> source, QList<Number> subtractin);
-	QList<Number> sumListList(QList<Number> source, QList<Number> item);
-	Number productListList(QList<Number> source, QList<Number> item);
-	Number modulusList(QList<Number> list);
-	QList<Number> quotientListNumber(QList<Number> source, Number divisor);
 };
 
 #endif // ROSENBROCK_H

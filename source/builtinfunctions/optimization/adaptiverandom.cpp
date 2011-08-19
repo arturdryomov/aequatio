@@ -65,19 +65,19 @@ QList<Number> AdaptiveRandom::findMinimum()
 	forever {
 		QList<Number> randomPoint = generateRandomNumbers(m_sourcePoint.size(), -1, 1);
 
-		QList<Number> currentPoint = sumListList(
+		QList<Number> currentPoint = MathUtils::sumListList(
 			m_sourcePoint,
-			productListNumber(
-				quotientListNumber(randomPoint, modulusList(randomPoint)),
+			MathUtils::productListNumber(
+				MathUtils::quotientListNumber(randomPoint, MathUtils::modulusList(randomPoint)),
 				m_stepSize
 			)
 		);
 
 		if (countFunction(currentPoint) < countFunction(m_sourcePoint)) {
-			QList<Number> newPoint = sumListList(
+			QList<Number> newPoint = MathUtils::sumListList(
 				m_sourcePoint,
-				productListNumber(
-					diffListList(currentPoint, m_sourcePoint),
+				MathUtils::productListNumber(
+					MathUtils::diffListList(currentPoint, m_sourcePoint),
 					m_acceleration
 				)
 			);
@@ -132,73 +132,6 @@ Number AdaptiveRandom::getRandomNumber(Number limit)
 	do {
 		result = rand() / (RAND_MAX / (limit + 1));
 	} while (result > limit);
-
-	return result;
-}
-
-
-QList<Number> AdaptiveRandom::productListNumber(QList<Number> list, Number number)
-{
-	QList<Number> result;
-
-	foreach (Number element, list) {
-		result << element * number;
-	}
-
-	return result;
-}
-
-QList<Number> AdaptiveRandom::diffListList(QList<Number> source, QList<Number> subtractin)
-{
-	QList<Number> result;
-
-	for (int i = 0; i < source.size(); i++) {
-		result << source[i] - subtractin[i];
-	}
-
-	return result;
-}
-
-QList<Number> AdaptiveRandom::sumListList(QList<Number> source, QList<Number> item)
-{
-	QList<Number> result;
-
-	for (int i = 0; i < source.size(); i++) {
-		result << source[i] + item[i];
-	}
-
-	return result;
-}
-
-Number AdaptiveRandom::productListList(QList<Number> source, QList<Number> item)
-{
-	Number result = 0;
-
-	for (int i = 0; i < source.size(); i++) {
-		result += source[i] * item[i];
-	}
-
-	return result;
-}
-
-Number AdaptiveRandom::modulusList(QList<Number> list)
-{
-	Number result = 0;
-
-	foreach (Number element, list) {
-		result += qPow(element, 2);
-	}
-
-	return qSqrt(result);
-}
-
-QList<Number> AdaptiveRandom::quotientListNumber(QList<Number> source, Number divisor)
-{
-	QList<Number> result;
-
-	foreach (Number element, source) {
-		result << element / divisor;
-	}
 
 	return result;
 }

@@ -73,6 +73,7 @@ QList<RpnArgument> Rosenbrock::requiredArguments()
 	return arguments;
 }
 
+
 QList<Number> Rosenbrock::findMinimum()
 {
 	QList<Number> firstCurrentPoint = m_sourcePoint;
@@ -127,7 +128,7 @@ QList<Number> Rosenbrock::findMinimum()
 			}
 		}
 
-		Number modulus = modulusList(diffListList(currentPoint, m_sourcePoint));
+		Number modulus = MathUtils::modulusList(MathUtils::diffListList(currentPoint, m_sourcePoint));
 		if (modulus <= m_stopValue) {
 			// Main loop exit condition
 			return currentPoint;
@@ -153,10 +154,10 @@ void Rosenbrock::getNewDirections(QList<Number> stepSizes)
 			QList<Number> element;
 			for (int j = i; j < stepSizes.size(); j++) {
 				if (element != QList<Number>()) {
-					element = sumListList(element, productListNumber(m_directions[j], stepSizes[j]));
+					element = MathUtils::sumListList(element, MathUtils::productListNumber(m_directions[j], stepSizes[j]));
 				}
 				else {
-					element = productListNumber(m_directions[j], stepSizes[j]);
+					element = MathUtils::productListNumber(m_directions[j], stepSizes[j]);
 				}
 			}
 			gramStepOne << element;
@@ -173,16 +174,16 @@ void Rosenbrock::getNewDirections(QList<Number> stepSizes)
 		else {
 			QList<Number> subtractin;
 			for (int j = 0; j < i; j++) {
-				subtractin = productListNumber(gramStepTwo[j], productListList(gramStepOne[i], gramStepTwo[j]));
+				subtractin = MathUtils::productListNumber(gramStepTwo[j], MathUtils::productListList(gramStepOne[i], gramStepTwo[j]));
 				if (j != 0) {
-					subtractin = sumListList(subtractin, gramStepTwo[j]);
+					subtractin = MathUtils::sumListList(subtractin, gramStepTwo[j]);
 				}
 			}
 
-			element = diffListList(gramStepOne[i], subtractin);
+			element = MathUtils::diffListList(gramStepOne[i], subtractin);
 		}
 
-		m_directions[i] = quotientListNumber(element, modulusList(element));
+		m_directions[i] = MathUtils::quotientListNumber(element, MathUtils::modulusList(element));
 		gramStepTwo << m_directions[i];
 	}
 }
@@ -190,7 +191,7 @@ void Rosenbrock::getNewDirections(QList<Number> stepSizes)
 QList<Number> Rosenbrock::getStepLengths(QList<Number> currentPoint, QList<Number> previousPoint)
 {
 	QList<QList<Number> > equationCoefficients;
-	equationCoefficients << diffListList(currentPoint, previousPoint);
+	equationCoefficients << MathUtils::diffListList(currentPoint, previousPoint);
 	foreach (QList<Number> direction, m_directions) {
 		equationCoefficients << direction;
 	}
@@ -208,7 +209,7 @@ QList<Number> Rosenbrock::solveEquationSystem(QList<QList<Number> > coefficients
 	for (int i = 1; i < coefficients.size(); i++) {
 		mainMatrix << QVector<Number>::fromList(coefficients[i]);
 	}
-	Number mainDeterminant = countDeterminant(mainMatrix);
+	Number mainDeterminant = MathUtils::countDeterminant(mainMatrix);
 
 
 	for (int i = 1; i < coefficients.size(); i++) {
@@ -222,49 +223,7 @@ QList<Number> Rosenbrock::solveEquationSystem(QList<QList<Number> > coefficients
 			}
 		}
 
-		result << countDeterminant(elementMatrix) / mainDeterminant;
-	}
-
-	return result;
-}
-
-Number Rosenbrock::countDeterminant(QVector<QVector<Number> > matrix)
-{
-	Number result = 0;
-
-	if (matrix.size() == 1) {
-		result = matrix[0][0];
-	}
-	else if (matrix.size() == 2) {
-		result = matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
-	}
-	else {
-		// Go threw first line
-		for (int i = 0; i < matrix.size(); i++) {
-			// Initialize minor matrix
-			QVector<QVector<Number> > minorMatrix;
-			minorMatrix.resize(matrix.size() - 1);
-			for (int j = 0; j < minorMatrix.size(); j++) {
-				minorMatrix[j].resize(matrix.size() - 1);
-			}
-
-			// Fill minor matrix
-			for (int j = 0; j < matrix.size(); j++) {
-				int k = 0;
-				for (int l = 0; l < matrix.size(); l++) {
-					// Don't conpy the minor column
-					if (l != i) {
-						minorMatrix[j - 1][k] = minorMatrix[j][l];
-						k++;
-					}
-				}
-			}
-
-			result +=
-				qPow(-1, 1 + i + 1) *
-				minorMatrix[0][i] *
-				countDeterminant(minorMatrix);
-		}
+		result << MathUtils::countDeterminant(elementMatrix) / mainDeterminant;
 	}
 
 	return result;
@@ -276,73 +235,6 @@ QList<Number> Rosenbrock::increaseDirection(QList<Number> point, int direction)
 
 	for (int i = 0; i < point.size(); i++) {
 		result[i] += m_directions[direction][i] * m_steps[direction];
-	}
-
-	return result;
-}
-
-
-QList<Number> Rosenbrock::productListNumber(QList<Number> list, Number number)
-{
-	QList<Number> result;
-
-	foreach (Number element, list) {
-		result << element * number;
-	}
-
-	return result;
-}
-
-QList<Number> Rosenbrock::diffListList(QList<Number> source, QList<Number> subtractin)
-{
-	QList<Number> result;
-
-	for (int i = 0; i < source.size(); i++) {
-		result << source[i] - subtractin[i];
-	}
-
-	return result;
-}
-
-QList<Number> Rosenbrock::sumListList(QList<Number> source, QList<Number> item)
-{
-	QList<Number> result;
-
-	for (int i = 0; i < source.size(); i++) {
-		result << source[i] + item[i];
-	}
-
-	return result;
-}
-
-Number Rosenbrock::productListList(QList<Number> source, QList<Number> item)
-{
-	Number result = 0;
-
-	for (int i = 0; i < source.size(); i++) {
-		result += source[i] * item[i];
-	}
-
-	return result;
-}
-
-Number Rosenbrock::modulusList(QList<Number> list)
-{
-	Number result = 0;
-
-	foreach (Number element, list) {
-		result += qPow(element, 2);
-	}
-
-	return qSqrt(result);
-}
-
-QList<Number> Rosenbrock::quotientListNumber(QList<Number> source, Number divisor)
-{
-	QList<Number> result;
-
-	foreach (Number element, source) {
-		result << element / divisor;
 	}
 
 	return result;

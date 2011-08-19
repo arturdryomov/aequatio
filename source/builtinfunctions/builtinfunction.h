@@ -3,6 +3,7 @@
 
 #include "../rpncode.h"
 #include "../calculatingexceptions.h"
+#include "mathutils.h"
 
 #define _USE_MATH_DEFINES
 #include <qmath.h>
