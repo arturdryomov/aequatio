@@ -10,6 +10,11 @@ RpnOperand Cramer::calculate(FunctionCalculator *calculator, QList<RpnOperand> a
 	Q_UNUSED(calculator);
 
 	m_coefficientsMatrix = RpnVector::extractDoubleVector(actualArguments[0].value.value<RpnVector>());
+	foreach (QList<Number> coefficientsList, m_coefficientsMatrix) {
+		if (coefficientsList.size() != m_coefficientsMatrix.first().size()) {
+			THROW(EWrongArgument(QObject::tr("coefficient vectors"), QObject::tr("one size")));
+		}
+	}
 
 	RpnOperand result;
 	result.type = RpnOperandVector;
