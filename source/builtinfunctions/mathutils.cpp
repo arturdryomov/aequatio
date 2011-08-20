@@ -87,12 +87,12 @@ Number MathUtils::countDeterminant(QVector<QVector<Number> > matrix)
 			}
 
 			// Fill minor matrix
-			for (int j = 0; j < matrix.size(); j++) {
+			for (int j = 1; j < matrix.size(); j++) {
 				int k = 0;
 				for (int l = 0; l < matrix.size(); l++) {
-					// Don't conpy the minor column
+					// Don't copy the minor column
 					if (l != i) {
-						minorMatrix[j - 1][k] = minorMatrix[j][l];
+						minorMatrix[j - 1][k] = matrix[j][l];
 						k++;
 					}
 				}
@@ -100,7 +100,7 @@ Number MathUtils::countDeterminant(QVector<QVector<Number> > matrix)
 
 			result +=
 				qPow(-1, 1 + i + 1) *
-				minorMatrix[0][i] *
+				matrix[0][i] *
 				countDeterminant(minorMatrix);
 		}
 	}
