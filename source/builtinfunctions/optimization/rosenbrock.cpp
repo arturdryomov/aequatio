@@ -11,7 +11,7 @@ RpnOperand Rosenbrock::calculate(FunctionCalculator *calculator, QList<RpnOperan
 
 	m_functionName = actualArguments[0].value.value<QString>();
 
-	m_sourcePoint = RpnVector::extractSingleVector(actualArguments[1].value.value<RpnVector>());
+	m_sourcePoint = RpnVector::toOneDimensional(actualArguments[1].value.value<RpnVector>());
 	if (m_calculator->functionArguments(m_functionName).size() != m_sourcePoint.size()) {
 		THROW(EWrongParametersCount(QObject::tr("Source point"), m_calculator->functionArguments(m_functionName).size()));
 	}
@@ -31,7 +31,7 @@ RpnOperand Rosenbrock::calculate(FunctionCalculator *calculator, QList<RpnOperan
 		THROW(EWrongArgument(QObject::tr("decrease coefficient"), QObject::tr("more than -1 and less than 0")) )
 	}
 
-	m_steps = RpnVector::extractSingleVector(actualArguments[5].value.value<RpnVector>());
+	m_steps = RpnVector::toOneDimensional(actualArguments[5].value.value<RpnVector>());
 	if (m_calculator->functionArguments(m_functionName).size() != m_steps.size()) {
 		THROW(EWrongParametersCount(QObject::tr("Coordinate steps"), m_calculator->functionArguments(m_functionName).size()));
 	}
@@ -54,7 +54,7 @@ RpnOperand Rosenbrock::calculate(FunctionCalculator *calculator, QList<RpnOperan
 
 	RpnOperand result;
 	result.type = RpnOperandVector;
-	result.value = QVariant::fromValue(RpnVector::packageSingleVector(findMinimum()));
+	result.value = QVariant::fromValue(RpnVector::fromOneDimensional(findMinimum()));
 	return result;
 }
 
@@ -204,11 +204,11 @@ QList<Number> Rosenbrock::getStepLengths(QList<Number> currentPoint, QList<Numbe
 QList<Number> Rosenbrock::solveEquationSystem(QList<QList<Number> > coefficients)
 {
 	QList<RpnOperand> arguments;
-	RpnOperand vectorArgument(RpnOperandVector, QVariant::fromValue(RpnVector::packageDoubleVector(coefficients)));
+	RpnOperand vectorArgument(RpnOperandVector, QVariant::fromValue(RpnVector::fromTwoDimensional(coefficients)));
 	arguments << vectorArgument;
 
 	RpnOperand result = m_calculator->calculate("cramer", arguments);
-	return RpnVector::extractSingleVector(result.value.value<RpnVector>());
+	return RpnVector::toOneDimensional(result.value.value<RpnVector>());
 }
 
 QList<Number> Rosenbrock::increaseDirection(QList<Number> point, int direction)

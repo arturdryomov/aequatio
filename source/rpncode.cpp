@@ -47,8 +47,9 @@ QString RpnVector::toString()
 	return result;
 }
 
-// Helper methods. Provide to-from QList<Number> conversion for 1-dimensional vectors.
-QList<Number> RpnVector::extractSingleVector(RpnVector vector)
+// Helper methods. Provide to-from QList<Number> conversion for 1- and 2-dimensional vectors.
+
+QList<Number> RpnVector::toOneDimensional(RpnVector vector)
 {
 	if (vector.dimensions != 1) {
 		THROW(EWrongVectorDimension(1, vector.dimensions));
@@ -62,7 +63,7 @@ QList<Number> RpnVector::extractSingleVector(RpnVector vector)
 	return result;
 }
 
-RpnVector RpnVector::packageSingleVector(QList<Number> list)
+RpnVector RpnVector::fromOneDimensional(QList<Number> list)
 {
 	RpnVector result;
 	foreach (Number element, list) {
@@ -72,7 +73,7 @@ RpnVector RpnVector::packageSingleVector(QList<Number> list)
 	return result;
 }
 
-QList<QList<Number> > RpnVector::extractDoubleVector(RpnVector vector)
+QList<QList<Number> > RpnVector::toTwoDimensional(RpnVector vector)
 {
 	if (vector.dimensions != 2) {
 		THROW(EWrongVectorDimension(2, vector.dimensions));
@@ -91,15 +92,14 @@ QList<QList<Number> > RpnVector::extractDoubleVector(RpnVector vector)
 	return result;
 }
 
-RpnVector RpnVector::packageDoubleVector(QList<QList<Number> > list)
+RpnVector RpnVector::fromTwoDimensional(QList<QList<Number> > list)
 {
-	RpnVector result;
-	result.dimensions = 2;
+	RpnVector result(2);
 
-	foreach (QList<Number> numberList, list) {
+	foreach (QList<Number> elementList, list) {
 		QVariantList variantList;
-		foreach (Number element, numberList) {
-			variantList << QVariant::fromValue(element);
+		foreach (Number number, elementList) {
+			variantList <<QVariant::fromValue(number);
 		}
 		result.values << QVariant::fromValue(variantList);
 	}

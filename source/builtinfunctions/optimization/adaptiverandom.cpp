@@ -12,7 +12,7 @@ RpnOperand AdaptiveRandom::calculate(FunctionCalculator *calculator, QList<RpnOp
 	m_calculator = calculator;
 	m_functionName = actualArguments[0].value.value<QString>();
 
-	m_sourcePoint = RpnVector::extractSingleVector(actualArguments[1].value.value<RpnVector>());
+	m_sourcePoint = RpnVector::toOneDimensional(actualArguments[1].value.value<RpnVector>());
 	if (m_calculator->functionArguments(m_functionName).size() != m_sourcePoint.size()) {
 		THROW(EWrongParametersCount(QObject::tr("Source point"), m_calculator->functionArguments(m_functionName).size()));
 	}
@@ -37,7 +37,7 @@ RpnOperand AdaptiveRandom::calculate(FunctionCalculator *calculator, QList<RpnOp
 
 	RpnOperand result;
 	result.type = RpnOperandVector;
-	result.value = QVariant::fromValue(RpnVector::packageSingleVector(findMinimum()));
+	result.value = QVariant::fromValue(RpnVector::fromOneDimensional(findMinimum()));
 	return result;
 }
 

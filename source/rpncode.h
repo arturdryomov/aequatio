@@ -54,10 +54,10 @@ struct RpnVector {
 	QList<QVariant> values; // QVariant is a Number or another QList<QVariant>,
 	                        // depending on dimensions.
 	QString toString();
-	static QList<Number> extractSingleVector(RpnVector vector);
-	static RpnVector packageSingleVector(QList<Number> list);
-	static QList<QList<Number> > extractDoubleVector(RpnVector vector);
-	static RpnVector packageDoubleVector(QList<QList<Number> > list);
+	static QList<Number> toOneDimensional(RpnVector vector);
+	static RpnVector fromOneDimensional(QList<Number> list);
+	static QList<QList<Number> > toTwoDimensional(RpnVector vector);
+	static RpnVector fromTwoDimensional(QList<QList<Number> >);
 };
 
 struct RpnOperand

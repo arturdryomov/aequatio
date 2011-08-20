@@ -11,7 +11,7 @@ RpnOperand Configuration::calculate(FunctionCalculator *calculator, QList<RpnOpe
 
 	m_functionName = actualArguments[0].value.value<QString>();
 
-	m_sourcePoint = RpnVector::extractSingleVector(actualArguments[1].value.value<RpnVector>());
+	m_sourcePoint = RpnVector::toOneDimensional(actualArguments[1].value.value<RpnVector>());
 
 	if (m_calculator->functionArguments(m_functionName).size() != m_sourcePoint.size()) {
 		THROW(EWrongParametersCount(QObject::tr("Source point"), m_calculator->functionArguments(m_functionName).size()));
@@ -22,7 +22,7 @@ RpnOperand Configuration::calculate(FunctionCalculator *calculator, QList<RpnOpe
 		THROW(EWrongArgument(QObject::tr("stop value"), QObject::tr("more than 0")) )
 	}
 
-	m_steps = RpnVector::extractSingleVector(actualArguments[3].value.value<RpnVector>());
+	m_steps = RpnVector::toOneDimensional(actualArguments[3].value.value<RpnVector>());
 
 	if (m_calculator->functionArguments(m_functionName).size() != m_steps.size()) {
 		THROW(EWrongParametersCount(QObject::tr("Coordinate steps"), m_calculator->functionArguments(m_functionName).size()));
@@ -40,7 +40,7 @@ RpnOperand Configuration::calculate(FunctionCalculator *calculator, QList<RpnOpe
 
 	RpnOperand result;
 	result.type = RpnOperandVector;
-	result.value = QVariant::fromValue(RpnVector::packageSingleVector(findMinimum()));
+	result.value = QVariant::fromValue(RpnVector::fromOneDimensional(findMinimum()));
 	return result;
 }
 

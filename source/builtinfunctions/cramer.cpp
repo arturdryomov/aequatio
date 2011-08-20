@@ -9,7 +9,7 @@ RpnOperand Cramer::calculate(FunctionCalculator *calculator, QList<RpnOperand> a
 {
 	Q_UNUSED(calculator);
 
-	m_coefficientsMatrix = RpnVector::extractDoubleVector(actualArguments[0].value.value<RpnVector>());
+	m_coefficientsMatrix = RpnVector::toTwoDimensional(actualArguments[0].value.value<RpnVector>());
 	foreach (QList<Number> coefficientsList, m_coefficientsMatrix) {
 		if (coefficientsList.size() != m_coefficientsMatrix.first().size()) {
 			THROW(EWrongArgument(QObject::tr("coefficient vectors"), QObject::tr("one size")));
@@ -18,7 +18,7 @@ RpnOperand Cramer::calculate(FunctionCalculator *calculator, QList<RpnOperand> a
 
 	RpnOperand result;
 	result.type = RpnOperandVector;
-	result.value = QVariant::fromValue(RpnVector::packageSingleVector(solveEquationSystem()));
+	result.value = QVariant::fromValue(RpnVector::fromOneDimensional(solveEquationSystem()));
 	return result;
 }
 
