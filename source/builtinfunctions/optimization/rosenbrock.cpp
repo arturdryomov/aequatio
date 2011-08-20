@@ -203,30 +203,12 @@ QList<Number> Rosenbrock::getStepLengths(QList<Number> currentPoint, QList<Numbe
 // First list of coefficients is equations results
 QList<Number> Rosenbrock::solveEquationSystem(QList<QList<Number> > coefficients)
 {
-	QList<Number> result;
+	QList<RpnOperand> arguments;
+	RpnOperand vectorArgument(RpnOperandVector, QVariant::fromValue(RpnVector::packageDoubleVector(coefficients)));
+	arguments << vectorArgument;
 
-	QVector<QVector<Number> > mainMatrix;
-	for (int i = 1; i < coefficients.size(); i++) {
-		mainMatrix << QVector<Number>::fromList(coefficients[i]);
-	}
-	Number mainDeterminant = MathUtils::countDeterminant(mainMatrix);
-
-
-	for (int i = 1; i < coefficients.size(); i++) {
-		QVector<QVector<Number> > elementMatrix;
-		for (int j = 1; j < coefficients.size(); j++) {
-			if (j == i) {
-				elementMatrix << QVector<Number>::fromList(coefficients[0]);
-			}
-			else {
-				elementMatrix << QVector<Number>::fromList(coefficients[j]);
-			}
-		}
-
-		result << MathUtils::countDeterminant(elementMatrix) / mainDeterminant;
-	}
-
-	return result;
+	RpnOperand result = m_calculator->calculate("cramer", arguments);
+	return RpnVector::extractSingleVector(result.value.value<RpnVector>());
 }
 
 QList<Number> Rosenbrock::increaseDirection(QList<Number> point, int direction)

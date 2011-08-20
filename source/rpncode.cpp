@@ -91,6 +91,22 @@ QList<QList<Number> > RpnVector::extractDoubleVector(RpnVector vector)
 	return result;
 }
 
+RpnVector RpnVector::packageDoubleVector(QList<QList<Number> > list)
+{
+	RpnVector result;
+	result.dimensions = 2;
+
+	foreach (QList<Number> numberList, list) {
+		QVariantList variantList;
+		foreach (Number element, numberList) {
+			variantList << QVariant::fromValue(element);
+		}
+		result.values << QVariant::fromValue(variantList);
+	}
+
+	return result;
+}
+
 RpnOperand::RpnOperand(RpnOperandType type_, const QVariant &value_) :
 	type(type_), value(value_)
 {
