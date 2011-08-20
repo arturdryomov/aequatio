@@ -46,6 +46,7 @@ SOURCES += \
 	source/logwindow.cpp \
 	source/rpncode.cpp \
 	source/builtinfunctions/mathutils.cpp \
+	source/builtinfunctions/cramer.cpp \
 	source/builtinfunctions/basicfunctions.cpp \
 	source/builtinfunctions/optimization/uniform.cpp \
 	source/builtinfunctions/optimization/bisection.cpp \
@@ -74,6 +75,7 @@ HEADERS  += \
 	source/logwindow.h \
 	source/rpncode.h \
 	source/builtinfunctions/mathutils.h \
+	source/builtinfunctions/cramer.h \
 	source/builtinfunctions/builtinfunction.h \
 	source/builtinfunctions/basicfunctions.h \
 	source/builtinfunctions/optimization/uniform.h \

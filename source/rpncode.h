@@ -56,6 +56,7 @@ struct RpnVector {
 	QString toString();
 	static QList<Number> extractSingleVector(RpnVector vector);
 	static RpnVector packageSingleVector(QList<Number> list);
+	static QList<QList<Number> > extractDoubleVector(RpnVector vector);
 };
 
 struct RpnOperand

@@ -72,6 +72,25 @@ RpnVector RpnVector::packageSingleVector(QList<Number> list)
 	return result;
 }
 
+QList<QList<Number> > RpnVector::extractDoubleVector(RpnVector vector)
+{
+	if (vector.dimensions != 2) {
+		THROW(EWrongVectorDimension(2, vector.dimensions));
+	}
+
+	QList<QList<Number> > result;
+	foreach (QVariant elementVector, vector.values) {
+		QVariantList variantList = elementVector.value<QVariantList>();
+		QList<Number> numberList;
+		foreach (QVariant elementNumber, variantList) {
+			numberList << elementNumber.value<Number>();
+		}
+		result << numberList;
+	}
+
+	return result;
+}
+
 RpnOperand::RpnOperand(RpnOperandType type_, const QVariant &value_) :
 	type(type_), value(value_)
 {
