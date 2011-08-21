@@ -107,3 +107,13 @@ Number MathUtils::countDeterminant(QVector<QVector<Number> > matrix)
 
 	return result;
 }
+
+bool MathUtils::equal(Number number1, Number number2)
+{
+	return qFuzzyCompare(number1, number2);
+}
+
+bool MathUtils::isNull(Number number)
+{
+	return qFuzzyCompare(number + 1.0, 1.0); // see qFuzzyCompare(double, double) documentation
+}

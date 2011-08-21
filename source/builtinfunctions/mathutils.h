@@ -14,6 +14,9 @@ public:
 	static QList<Number> divideVectorByNumber(QList<Number> vector, Number divisor);
 
 	static Number countDeterminant(QVector<QVector<Number> > matrix);
+
+	static bool equal(Number number1, Number number2);
+	static bool isNull(Number number);
 };
 
 #endif // MATHUTILS_H

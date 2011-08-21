@@ -56,7 +56,8 @@ SOURCES += \
 	source/builtinfunctions/optimization/quadraticinterpolation.cpp \
 	source/builtinfunctions/optimization/configuration.cpp \
 	source/builtinfunctions/optimization/rosenbrock.cpp \
-	source/builtinfunctions/optimization/adaptiverandom.cpp
+	source/builtinfunctions/optimization/adaptiverandom.cpp \
+	source/builtinfunctions/gauss.cpp
 
 HEADERS  += \
 	source/mainwindow.h \
@@ -86,7 +87,8 @@ HEADERS  += \
 	source/builtinfunctions/optimization/quadraticinterpolation.h \
 	source/builtinfunctions/optimization/configuration.h \
 	source/builtinfunctions/optimization/rosenbrock.h \
-	source/builtinfunctions/optimization/adaptiverandom.h
+	source/builtinfunctions/optimization/adaptiverandom.h \
+	source/builtinfunctions/gauss.h
 
 FORMS	+= \
 	source/mainwindow.ui \
