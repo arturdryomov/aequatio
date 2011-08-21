@@ -49,7 +49,7 @@
 					</tr>
 				</table>
 
-			<h2>Solving equations</h2>
+			<h2>Equations Solving</h2>
 				
 				<table>
 					<tr>
@@ -58,16 +58,34 @@
 					</tr>
 					<tr>
 						<td>
-							cramer([
-								[<i>b<sub>1</sub></i>, <i>b<sub>2</sub></i>, &hellip;],
-								[<i>a<sub>11</sub></i>, <i>a<sub>12</sub></i>, &hellip;],
-								[<i>a<sub>21</sub></i>, <i>a<sub>22</sub></i>, &hellip;],
-								&hellip;
-							])
+							<a href="equations-solving.html#cramer">
+								cramer([
+									[<i>b<sub>1</sub></i>, <i>b<sub>2</sub></i>, &hellip;, <i>b<sub>n</sub></i>],
+									[<i>a<sub>11</sub></i>, <i>a<sub>12</sub></i>, &hellip;, <i>a<sub>1n</sub></i>],
+									[<i>a<sub>21</sub></i>, <i>a<sub>22</sub></i>, &hellip;, <i>a<sub>2n</sub></i>],
+									&hellip;
+									[<i>a<sub>n1</sub></i>, <i>a<sub>n2</sub></i>, &hellip;, <i>a<sub>nn</sub></i>]
+								])
+							</a>
 						</td>
 						<td>
-							Solves system of equations with Cramer method.
-							<i>b</i> — right side of equations, <i>a</i> — coefficients in left.
+							Solves system of linear equations with Cramer method.
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="equations-solving.html#gauss">
+								gauss([
+									[<i>a<sub>11</sub></i>, <i>a<sub>12</sub></i>, &hellip;, <i>a<sub>1n</sub></i>, <i>b<sub>1</sub></i>], 
+									[<i>a<sub>21</sub></i>, <i>a<sub>22</sub></i>, &hellip;, <i>a<sub>2n</sub></i>, <i>b<sub>2</sub></i>], 
+									&hellip;,
+									[<i>a<sub>n1</sub></i>, <i>a<sub>n2</sub></i>, &hellip;, <i>a<sub>nn</sub></i>, <i>b<sub>n</sub></i>]
+								]
+								)
+							</a>
+						</td>
+						<td>
+							Solves system of linear equations with Gauss method.
 						</td>
 					</tr>
 				</table>
