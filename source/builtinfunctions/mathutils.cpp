@@ -1,65 +1,65 @@
 #include "mathutils.h"
 
-QList<Number> MathUtils::productListNumber(QList<Number> list, Number number)
+QList<Number> MathUtils::multiplyVectorByNumber(QList<Number> vector, Number number)
 {
 	QList<Number> result;
 
-	foreach (Number element, list) {
+	foreach (Number element, vector) {
 		result << element * number;
 	}
 
 	return result;
 }
 
-QList<Number> MathUtils::diffListList(QList<Number> source, QList<Number> subtractin)
+QList<Number> MathUtils::subtractVectorFromVector(QList<Number> source, QList<Number> subtrahend)
 {
 	QList<Number> result;
 
 	for (int i = 0; i < source.size(); i++) {
-		result << source[i] - subtractin[i];
+		result << source[i] - subtrahend[i];
 	}
 
 	return result;
 }
 
-QList<Number> MathUtils::sumListList(QList<Number> source, QList<Number> item)
+QList<Number> MathUtils::addVectorToVector(QList<Number> source, QList<Number> summand)
 {
 	QList<Number> result;
 
 	for (int i = 0; i < source.size(); i++) {
-		result << source[i] + item[i];
+		result << source[i] + summand[i];
 	}
 
 	return result;
 }
 
-Number MathUtils::productListList(QList<Number> source, QList<Number> item)
+Number MathUtils::multiplyVectorByVectorScalar(QList<Number> source, QList<Number> factor)
 {
 	Number result = 0;
 
 	for (int i = 0; i < source.size(); i++) {
-		result += source[i] * item[i];
+		result += source[i] * factor[i];
 	}
 
 	return result;
 }
 
-Number MathUtils::modulusList(QList<Number> list)
+Number MathUtils::vectorNorm(QList<Number> vector)
 {
 	Number result = 0;
 
-	foreach (Number element, list) {
+	foreach (Number element, vector) {
 		result += qPow(element, 2);
 	}
 
 	return qSqrt(result);
 }
 
-QList<Number> MathUtils::quotientListNumber(QList<Number> source, Number divisor)
+QList<Number> MathUtils::divideVectorByNumber(QList<Number> vector, Number divisor)
 {
 	QList<Number> result;
 
-	foreach (Number element, source) {
+	foreach (Number element, vector) {
 		result << element / divisor;
 	}
 

@@ -6,12 +6,12 @@
 class MathUtils
 {
 public:
-	static QList<Number> productListNumber(QList<Number> list, Number number);
-	static QList<Number> diffListList(QList<Number> source, QList<Number> subtractin);
-	static QList<Number> sumListList(QList<Number> source, QList<Number> item);
-	static Number productListList(QList<Number> source, QList<Number> item);
-	static Number modulusList(QList<Number> list);
-	static QList<Number> quotientListNumber(QList<Number> source, Number divisor);
+	static QList<Number> multiplyVectorByNumber(QList<Number> vector, Number number);
+	static QList<Number> subtractVectorFromVector(QList<Number> source, QList<Number> subtrahend);
+	static QList<Number> addVectorToVector(QList<Number> source, QList<Number> summand);
+	static Number multiplyVectorByVectorScalar(QList<Number> source, QList<Number> factor);
+	static Number vectorNorm(QList<Number> vector);
+	static QList<Number> divideVectorByNumber(QList<Number> vector, Number divisor);
 
 	static Number countDeterminant(QVector<QVector<Number> > matrix);
 };

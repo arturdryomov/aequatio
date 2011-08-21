@@ -128,7 +128,7 @@ QList<Number> Rosenbrock::findMinimum()
 			}
 		}
 
-		Number modulus = MathUtils::modulusList(MathUtils::diffListList(currentPoint, m_sourcePoint));
+		Number modulus = MathUtils::vectorNorm(MathUtils::subtractVectorFromVector(currentPoint, m_sourcePoint));
 		if (modulus <= m_stopValue) {
 			// Main loop exit condition
 			return currentPoint;
@@ -154,10 +154,10 @@ void Rosenbrock::getNewDirections(QList<Number> stepSizes)
 			QList<Number> element;
 			for (int j = i; j < stepSizes.size(); j++) {
 				if (element != QList<Number>()) {
-					element = MathUtils::sumListList(element, MathUtils::productListNumber(m_directions[j], stepSizes[j]));
+					element = MathUtils::addVectorToVector(element, MathUtils::multiplyVectorByNumber(m_directions[j], stepSizes[j]));
 				}
 				else {
-					element = MathUtils::productListNumber(m_directions[j], stepSizes[j]);
+					element = MathUtils::multiplyVectorByNumber(m_directions[j], stepSizes[j]);
 				}
 			}
 			gramStepOne << element;
@@ -174,16 +174,16 @@ void Rosenbrock::getNewDirections(QList<Number> stepSizes)
 		else {
 			QList<Number> subtractin;
 			for (int j = 0; j < i; j++) {
-				subtractin = MathUtils::productListNumber(gramStepTwo[j], MathUtils::productListList(gramStepOne[i], gramStepTwo[j]));
+				subtractin = MathUtils::multiplyVectorByNumber(gramStepTwo[j], MathUtils::multiplyVectorByVectorScalar(gramStepOne[i], gramStepTwo[j]));
 				if (j != 0) {
-					subtractin = MathUtils::sumListList(subtractin, gramStepTwo[j]);
+					subtractin = MathUtils::addVectorToVector(subtractin, gramStepTwo[j]);
 				}
 			}
 
-			element = MathUtils::diffListList(gramStepOne[i], subtractin);
+			element = MathUtils::subtractVectorFromVector(gramStepOne[i], subtractin);
 		}
 
-		m_directions[i] = MathUtils::quotientListNumber(element, MathUtils::modulusList(element));
+		m_directions[i] = MathUtils::divideVectorByNumber(element, MathUtils::vectorNorm(element));
 		gramStepTwo << m_directions[i];
 	}
 }
@@ -191,7 +191,7 @@ void Rosenbrock::getNewDirections(QList<Number> stepSizes)
 QList<Number> Rosenbrock::getStepLengths(QList<Number> currentPoint, QList<Number> previousPoint)
 {
 	QList<QList<Number> > equationCoefficients;
-	equationCoefficients << MathUtils::diffListList(currentPoint, previousPoint);
+	equationCoefficients << MathUtils::subtractVectorFromVector(currentPoint, previousPoint);
 	foreach (QList<Number> direction, m_directions) {
 		equationCoefficients << direction;
 	}

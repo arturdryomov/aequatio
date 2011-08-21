@@ -65,19 +65,19 @@ QList<Number> AdaptiveRandom::findMinimum()
 	forever {
 		QList<Number> randomPoint = generateRandomNumbers(m_sourcePoint.size(), -1, 1);
 
-		QList<Number> currentPoint = MathUtils::sumListList(
+		QList<Number> currentPoint = MathUtils::addVectorToVector(
 			m_sourcePoint,
-			MathUtils::productListNumber(
-				MathUtils::quotientListNumber(randomPoint, MathUtils::modulusList(randomPoint)),
+			MathUtils::multiplyVectorByNumber(
+				MathUtils::divideVectorByNumber(randomPoint, MathUtils::vectorNorm(randomPoint)),
 				m_stepSize
 			)
 		);
 
 		if (countFunction(currentPoint) < countFunction(m_sourcePoint)) {
-			QList<Number> newPoint = MathUtils::sumListList(
+			QList<Number> newPoint = MathUtils::addVectorToVector(
 				m_sourcePoint,
-				MathUtils::productListNumber(
-					MathUtils::diffListList(currentPoint, m_sourcePoint),
+				MathUtils::multiplyVectorByNumber(
+					MathUtils::subtractVectorFromVector(currentPoint, m_sourcePoint),
 					m_acceleration
 				)
 			);
