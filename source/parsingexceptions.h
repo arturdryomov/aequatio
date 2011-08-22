@@ -70,6 +70,13 @@ private:
 	QChar m_character;
 };
 
+class EIncorrectConstantDeclaration : public EParsing
+{
+public:
+	EIncorrectConstantDeclaration();
+	QString message();
+};
+
 // means that the function passed as an argument has incorrect signature.
 class EIncorrectFunctionArgument : public EParsing
 {
@@ -78,6 +85,12 @@ public:
 	QString message();
 private:
 	QString m_functionName;
+};
+
+// vector elements can be only of a number type
+class EIncorrectVectorInitialization : public EParsing
+{
+	QString message();
 };
 
 /* EInternal children */

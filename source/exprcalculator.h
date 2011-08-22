@@ -2,7 +2,7 @@
 #define EXPRCALCULATOR_H
 
 #include "rpncode.h"
-#include "builtinfunction.h"
+#include "builtinfunctions/builtinfunction.h"
 
 #include <QHash>
 #include <QObject>
@@ -62,6 +62,7 @@ private:
 	public:
 		FunctionCalculator(ExprCalculator *exprCalculator) : m_exprCalculator(exprCalculator) {}
 		RpnOperand calculate(QString functionName, QList<RpnOperand> actualArguments);
+		QList<RpnArgument> functionArguments(const QString &name);
 	private:
 		ExprCalculator *m_exprCalculator;
 	};

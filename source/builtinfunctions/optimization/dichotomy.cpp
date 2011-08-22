@@ -1,7 +1,5 @@
 #include "dichotomy.h"
 
-#include <qmath.h>
-
 namespace
 {
 	Dichotomy instance;

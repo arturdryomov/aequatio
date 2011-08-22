@@ -44,7 +44,20 @@ inline Number stringToNumber(const QString &str)
 
 enum RpnOperandType {
 	RpnOperandNumber,
+	RpnOperandVector,
 	RpnOperandFunctionName
+};
+
+struct RpnVector {
+	RpnVector(int dimensions_ = 1, const QList<QVariant> &values_ = QList<QVariant>());
+	int dimensions;
+	QList<QVariant> values; // QVariant is a Number or another QList<QVariant>,
+	                        // depending on dimensions.
+	QString toString();
+	static QList<Number> toOneDimensional(RpnVector vector);
+	static RpnVector fromOneDimensional(QList<Number> list);
+	static QList<QList<Number> > toTwoDimensional(RpnVector vector);
+	static RpnVector fromTwoDimensional(QList<QList<Number> >);
 };
 
 struct RpnOperand
@@ -55,7 +68,8 @@ struct RpnOperand
 
 	RpnOperandType type;
 	/* type == RpnOperandNumber -- value is a number, type Number,
-	  RpnOperandFunctionName -- value is a function name (QString) */
+	   RpnOperandVector -- value is RpnVector,
+	   RpnOperandFunctionName -- value is a function name (QString) */
 	QVariant value;
 };
 
@@ -93,6 +107,7 @@ struct RpnArgument {
 	QString name;
 	// This is a storage for additional information that depends on type.
 	// type == RpnOperandNumber -- nothing.
+	// RpnOperandVector -- nothing.
 	// RpnOperandFunctionName -- number of function arguments, assuming that all this arguments
 	//	are of RpnOperandNumber type.
 	QVariant info;
@@ -106,6 +121,7 @@ struct RpnFunction {
 Q_DECLARE_METATYPE(Number)
 Q_DECLARE_METATYPE(RpnElementType)
 Q_DECLARE_METATYPE(RpnOperandType)
+Q_DECLARE_METATYPE(RpnVector)
 Q_DECLARE_METATYPE(RpnOperand)
 Q_DECLARE_METATYPE(RpnArgument)
 

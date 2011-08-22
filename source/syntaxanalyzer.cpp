@@ -99,7 +99,7 @@ ConstantDescription SyntaxAnalyzer::constDeclaration()
 	ExpressionDescription expression = m_exprCalculator->calculate(constThread);
 	// constant values can only be of Number type now
 	if (expression.result.type != RpnOperandNumber) {
-		THROW(EInternal());
+		THROW(EIncorrectConstantDeclaration());
 	}
 	m_lexicalAnalyzer->nextLexeme();
 
@@ -172,6 +172,62 @@ RpnCodeThread SyntaxAnalyzer::expression()
 		RpnElement operation = summOperation();
 		result << summand() << operation;
 	}
+
+	return result;
+}
+
+// Vector = '[' Expression, { ',' Expression } ']'
+RpnCodeThread SyntaxAnalyzer::vector()
+{
+	RpnOperand operand(RpnOperandVector, QVariant::fromValue(extractVector()));
+	RpnCodeThread result;
+	result << RpnElement(RpnElementOperand, QVariant::fromValue(operand));
+	return result;
+}
+
+// extracts vector recursively
+RpnVector SyntaxAnalyzer::extractVector()
+{
+	if (m_lexicalAnalyzer->lexeme().type != LexemeOpeningSquareBracket) {
+		THROW(ELexemeExpected(tr("Opening bracket for vector initialization")));
+	}
+
+	m_lexicalAnalyzer->nextLexeme();
+
+	RpnVector result;
+
+	// Multi-dimensional vector. Recursive calls
+	if (m_lexicalAnalyzer->lexeme().type == LexemeOpeningSquareBracket) {
+		m_lexicalAnalyzer->previousLexeme();
+		RpnVector element;
+		do {
+			m_lexicalAnalyzer->nextLexeme();
+			element = extractVector();
+			result.values << QVariant::fromValue(element.values);
+		} while (m_lexicalAnalyzer->lexeme().type == LexemeComma);
+		result.dimensions = element.dimensions + 1;
+	}
+
+	// One-dimensional vector
+	else {
+		m_lexicalAnalyzer->previousLexeme();
+		do {
+			m_lexicalAnalyzer->nextLexeme();
+			RpnCodeThread elementThread = expression();
+			ExpressionDescription expression = m_exprCalculator->calculate(elementThread);
+			if (expression.result.type != RpnOperandNumber) {
+				THROW(EIncorrectVectorInitialization());
+			}
+
+			result.values << expression.result.value;
+		} while (m_lexicalAnalyzer->lexeme().type == LexemeComma);
+		result.dimensions = 1;
+	}
+
+	if (m_lexicalAnalyzer->lexeme().type != LexemeClosingSquareBracket) {
+		THROW(ELexemeExpected(tr("Closing bracket for vector initialization")));
+	}
+	m_lexicalAnalyzer->nextLexeme();
 
 	return result;
 }
@@ -421,16 +477,21 @@ RpnCodeThread SyntaxAnalyzer::actualArgument(const RpnArgument &correspondingFor
 		case RpnOperandNumber:
 			return expression();
 
+		case RpnOperandVector:
+			return vector();
+
 		case RpnOperandFunctionName: {
 			if (m_lexicalAnalyzer->lexeme().type != LexemeIdentifier) {
 				THROW(ELexemeExpected(tr("Function name")));
 			}
 			QString argumentFunctionName = m_lexicalAnalyzer->lexeme().value;
 
-			// check argument count
-			if (m_exprCalculator->functionArguments(argumentFunctionName).count()
-				!= correspondingFormalArgument.info.value<int>()) {
-				THROW(EIncorrectFunctionArgument(argumentFunctionName));
+			// check argument count if number of arguments is fixed
+			if (m_exprCalculator->functionArguments(argumentFunctionName).first().info != QVariant()) {
+				if (m_exprCalculator->functionArguments(argumentFunctionName).count()
+					!= correspondingFormalArgument.info.value<int>()) {
+					THROW(EIncorrectFunctionArgument(argumentFunctionName));
+				}
 			}
 
 			RpnOperand rpnOperand(RpnOperandFunctionName, argumentFunctionName);

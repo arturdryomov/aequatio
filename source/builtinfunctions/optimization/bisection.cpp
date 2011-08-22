@@ -1,8 +1,5 @@
 #include "bisection.h"
 
-// TODO: Maybe better call it from higher level
-#include <qmath.h>
-
 namespace
 {
 	Bisection instance;
@@ -32,7 +29,6 @@ QList<RpnArgument> Bisection::requiredArguments()
 	arguments
 		// 1 is argument count in function that is passed as and argument
 		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant::fromValue(1))
-		// TODO: Sometime change to vector interval argument (and for other classes too)
 		<< RpnArgument(RpnOperandNumber)
 		<< RpnArgument(RpnOperandNumber)
 		<< RpnArgument(RpnOperandNumber);

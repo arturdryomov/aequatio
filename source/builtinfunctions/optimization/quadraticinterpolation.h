@@ -1,7 +1,7 @@
 #ifndef QUADRATIC_INTERPOLATION_H
 #define QUADRATIC_INTERPOLATION_H
 
-#include "builtinfunction.h"
+#include "../builtinfunction.h"
 
 // Class for finding minimum of function with Quadratic Interpolation method
 class QuadraticInterpolation : public BuiltInFunction

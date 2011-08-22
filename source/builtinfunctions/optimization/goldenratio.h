@@ -1,13 +1,13 @@
-#ifndef UNIFORM_H
-#define UNIFORM_H
+#ifndef GOLDENRATIO_H
+#define GOLDENRATIO_H
 
-#include "builtinfunction.h"
+#include "../builtinfunction.h"
 
-// Class for finding minimum of function with Unirorm method
-class Unirorm : public BuiltInFunction
+// Class for finding minimum of function with Golden Ratio method
+class GoldenRatio : public BuiltInFunction
 {
 public:
-	Unirorm() : BuiltInFunction("uniform")
+	GoldenRatio() : BuiltInFunction("golden_ratio")
 	{
 	}
 
@@ -22,11 +22,12 @@ private:
 
 	FunctionCalculator* m_calculator;
 	QString m_functionName;
-	Number m_iterationNumber;
+	Number m_ratio;
+	Number m_accuracy;
 
 	Number countFunction(Number argument);
 
 	Number findMinimum();
 };
 
-#endif // UNIFORM_H
+#endif // GOLDENRATIO_H

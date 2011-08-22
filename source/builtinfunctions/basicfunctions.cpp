@@ -1,7 +1,5 @@
 #include "basicfunctions.h"
 
-#include <qmath.h>
-
 namespace
 {
 	Plus instancePlus;

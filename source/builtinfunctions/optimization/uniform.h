@@ -1,13 +1,13 @@
-#ifndef BISECTION_H
-#define BISECTION_H
+#ifndef UNIFORM_H
+#define UNIFORM_H
 
-#include "builtinfunction.h"
+#include "../builtinfunction.h"
 
-// Class for finding minimum of function with Bisection method
-class Bisection : public BuiltInFunction
+// Class for finding minimum of function with Unirorm method
+class Uniform : public BuiltInFunction
 {
 public:
-	Bisection() : BuiltInFunction("bisection")
+	Uniform() : BuiltInFunction("uniform")
 	{
 	}
 
@@ -18,15 +18,15 @@ private:
 		Number leftBorder;
 		Number rightBorder;
 	};
+	Interval m_sourceInterval;
 
 	FunctionCalculator* m_calculator;
 	QString m_functionName;
-	Number m_accuracy;
-	Interval m_sourceInterval;
+	Number m_iterationNumber;
 
 	Number countFunction(Number argument);
 
 	Number findMinimum();
 };
 
-#endif // BISECTION_H
+#endif // UNIFORM_H

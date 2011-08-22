@@ -127,8 +127,8 @@ RpnOperand ExprCalculator::calculateUserDefinedFunction(const QString &functionN
 	}
 
 	RpnOperand result = calculationStack.pop();
-	// currently user-defined functions can return only numbers.
-	if (result.type != RpnOperandNumber) {
+	// currently user-defined functions can return only numbers or vectors.
+	if ((result.type != RpnOperandNumber) && (result.type != RpnOperandVector)) {
 		THROW(EIncorrectRpnCode());
 	}
 	return result;
@@ -390,4 +390,9 @@ bool ExprCalculator::isFunctionUsed(const QString &functionName, const RpnCodeTh
 RpnOperand ExprCalculator::FunctionCalculator::calculate(QString functionName, QList<RpnOperand> actualArguments)
 {
 	return m_exprCalculator->calculateFunction(functionName, actualArguments);
+}
+
+QList<RpnArgument> ExprCalculator::FunctionCalculator::functionArguments(const QString &name)
+{
+	return m_exprCalculator->functionArguments(name);
 }

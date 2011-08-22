@@ -1,13 +1,13 @@
-#ifndef GOLDENRATIO_H
-#define GOLDENRATIO_H
+#ifndef DICHOTOMY_H
+#define DICHOTOMY_H
 
-#include "builtinfunction.h"
+#include "../builtinfunction.h"
 
-// Class for finding minimum of function with Golden Ratio method
-class GoldenRatio : public BuiltInFunction
+// Class for finding minimum of function with Dichotomy method
+class Dichotomy : public BuiltInFunction
 {
 public:
-	GoldenRatio() : BuiltInFunction("golden_ratio")
+	Dichotomy() : BuiltInFunction("dichotomy")
 	{
 	}
 
@@ -22,7 +22,7 @@ private:
 
 	FunctionCalculator* m_calculator;
 	QString m_functionName;
-	Number m_ratio;
+	Number m_space;
 	Number m_accuracy;
 
 	Number countFunction(Number argument);
@@ -30,4 +30,4 @@ private:
 	Number findMinimum();
 };
 
-#endif // GOLDENRATIO_H
+#endif // DICHOTOMY_H

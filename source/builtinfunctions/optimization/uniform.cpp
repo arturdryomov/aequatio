@@ -1,13 +1,11 @@
 #include "uniform.h"
 
-#include <qmath.h>
-
 namespace
 {
-	Unirorm instance;
+	Uniform instance;
 }
 
-RpnOperand Unirorm::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+RpnOperand Uniform::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
 	m_calculator = calculator;
 	m_functionName = actualArguments[0].value.value<QString>();
@@ -21,7 +19,7 @@ RpnOperand Unirorm::calculate(FunctionCalculator *calculator, QList<RpnOperand> 
 	return result;
 }
 
-QList<RpnArgument> Unirorm::requiredArguments()
+QList<RpnArgument> Uniform::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
@@ -34,7 +32,7 @@ QList<RpnArgument> Unirorm::requiredArguments()
 	return arguments;
 }
 
-Number Unirorm::findMinimum()
+Number Uniform::findMinimum()
 {
 	Number pointMinimum = m_sourceInterval.leftBorder +
 		(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) /
@@ -55,7 +53,7 @@ Number Unirorm::findMinimum()
 	return pointMinimum;
 }
 
-Number Unirorm::countFunction(Number argument)
+Number Uniform::countFunction(Number argument)
 {
 	QList<RpnOperand> functionArguments;
 	RpnOperand functionArgument(RpnOperandNumber, argument);

@@ -18,7 +18,6 @@ DEFINES += "VERSION_REVISION=1000"
 #   9xxx - release
 #   6xxx-8xxx - reserved
 
-
 mac {
 	ICON = resource/icons/mac/aequatio.icns
 }
@@ -46,14 +45,19 @@ SOURCES += \
 	source/helpbrowser.cpp \
 	source/logwindow.cpp \
 	source/rpncode.cpp \
-	source/basicfunctions.cpp \
-	source/goldenratio.cpp \
-	source/dichotomy.cpp \
-	source/uniform.cpp \
-	source/bisection.cpp \
-	source/fibonacci.cpp \
-	source/quadraticinterpolation.cpp
-
+	source/builtinfunctions/mathutils.cpp \
+	source/builtinfunctions/cramer.cpp \
+	source/builtinfunctions/basicfunctions.cpp \
+	source/builtinfunctions/optimization/uniform.cpp \
+	source/builtinfunctions/optimization/bisection.cpp \
+	source/builtinfunctions/optimization/dichotomy.cpp \
+	source/builtinfunctions/optimization/goldenratio.cpp \
+	source/builtinfunctions/optimization/fibonacci.cpp \
+	source/builtinfunctions/optimization/quadraticinterpolation.cpp \
+	source/builtinfunctions/optimization/configuration.cpp \
+	source/builtinfunctions/optimization/rosenbrock.cpp \
+	source/builtinfunctions/optimization/adaptiverandom.cpp \
+	source/builtinfunctions/gauss.cpp
 
 HEADERS  += \
 	source/mainwindow.h \
@@ -71,14 +75,20 @@ HEADERS  += \
 	source/helpbrowser.h \
 	source/logwindow.h \
 	source/rpncode.h \
-	source/builtinfunction.h \
-	source/basicfunctions.h \
-	source/goldenratio.h \
-	source/dichotomy.h \
-	source/uniform.h \
-	source/bisection.h \
-	source/fibonacci.h \
-	source/quadraticinterpolation.h
+	source/builtinfunctions/mathutils.h \
+	source/builtinfunctions/cramer.h \
+	source/builtinfunctions/builtinfunction.h \
+	source/builtinfunctions/basicfunctions.h \
+	source/builtinfunctions/optimization/uniform.h \
+	source/builtinfunctions/optimization/bisection.h \
+	source/builtinfunctions/optimization/dichotomy.h \
+	source/builtinfunctions/optimization/goldenratio.h \
+	source/builtinfunctions/optimization/fibonacci.h \
+	source/builtinfunctions/optimization/quadraticinterpolation.h \
+	source/builtinfunctions/optimization/configuration.h \
+	source/builtinfunctions/optimization/rosenbrock.h \
+	source/builtinfunctions/optimization/adaptiverandom.h \
+	source/builtinfunctions/gauss.h
 
 FORMS	+= \
 	source/mainwindow.ui \

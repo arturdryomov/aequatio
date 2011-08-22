@@ -1,7 +1,5 @@
 #include "quadraticinterpolation.h"
 
-#include <qmath.h>
-
 namespace
 {
 	QuadraticInterpolation instance;
