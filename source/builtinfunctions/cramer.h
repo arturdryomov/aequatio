@@ -15,7 +15,13 @@ public:
 private:
 	QList<QList<Number> > m_coefficientsMatrix;
 
-	QList<Number> solveEquationSystem();
+	QList<Number> findSolution();
+};
+
+class ENoSolution : public ECalculating
+{
+public:
+	QString message();
 };
 
 #endif // CRAMER_H

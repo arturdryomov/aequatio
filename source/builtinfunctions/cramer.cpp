@@ -10,49 +10,60 @@ RpnOperand Cramer::calculate(FunctionCalculator *calculator, QList<RpnOperand> a
 	Q_UNUSED(calculator);
 
 	m_coefficientsMatrix = RpnVector::toTwoDimensional(actualArguments[0].value.value<RpnVector>());
-	foreach (QList<Number> coefficientsList, m_coefficientsMatrix) {
-		if (coefficientsList.size() != m_coefficientsMatrix.first().size()) {
+	foreach (QList<Number> coefficientsEquation, m_coefficientsMatrix) {
+		if (coefficientsEquation.size() != m_coefficientsMatrix.first().size()) {
 			THROW(EWrongArgument(QObject::tr("coefficient vectors"), QObject::tr("one size")));
 		}
 	}
 
-	RpnOperand result;
-	result.type = RpnOperandVector;
-	result.value = QVariant::fromValue(RpnVector::fromOneDimensional(solveEquationSystem()));
-	return result;
+	try {
+		QList<Number> result = findSolution();
+		return RpnOperand(RpnOperandVector, QVariant::fromValue(RpnVector::fromOneDimensional(result)));
+	} catch (ENoSolution &e) {
+		Q_UNUSED(e)
+		return RpnOperand(RpnOperandNumber, QVariant::fromValue(MathUtils::getNaN()));
+	}
 }
 
 
 QList<RpnArgument> Cramer::requiredArguments()
 {
 	QList<RpnArgument> arguments;
-	arguments
-		<< RpnArgument(RpnOperandVector);
+	arguments << RpnArgument(RpnOperandVector);
 
 	return arguments;
 }
 
 
-// First list of coefficients is equations results
-QList<Number> Cramer::solveEquationSystem()
+QList<Number> Cramer::findSolution()
 {
 	QList<Number> result;
 
 	QVector<QVector<Number> > mainMatrix;
-	for (int i = 1; i < m_coefficientsMatrix.size(); i++) {
-		mainMatrix << QVector<Number>::fromList(m_coefficientsMatrix[i]);
+	foreach (QList<Number> coefficientsEquation, m_coefficientsMatrix) {
+		coefficientsEquation.removeLast();
+		mainMatrix << QVector<Number>::fromList(coefficientsEquation);
 	}
 	Number mainDeterminant = MathUtils::countDeterminant(mainMatrix);
 
-	for (int i = 1; i < m_coefficientsMatrix.size(); i++) {
+	if (MathUtils::isNull(mainDeterminant)) {
+		THROW(ENoSolution());
+	}
+
+	for (int i = 0; i < m_coefficientsMatrix.size(); i++) {
 		QVector<QVector<Number> > elementMatrix;
-		for (int j = 1; j < m_coefficientsMatrix.size(); j++) {
-			if (j == i) {
-				elementMatrix << QVector<Number>::fromList(m_coefficientsMatrix[0]);
+
+		foreach (QList<Number> coefficientsEquation, m_coefficientsMatrix) {
+			QVector<Number> coefficientsRow;
+			for (int j = 0; j < coefficientsEquation.size() - 1; j++) {
+				if (j == i) {
+					coefficientsRow << coefficientsEquation.last();
+				}
+				else {
+					coefficientsRow << coefficientsEquation.at(j);
+				}
 			}
-			else {
-				elementMatrix << QVector<Number>::fromList(m_coefficientsMatrix[j]);
-			}
+			elementMatrix << coefficientsRow;
 		}
 
 		result << MathUtils::countDeterminant(elementMatrix) / mainDeterminant;
@@ -60,3 +71,5 @@ QList<Number> Cramer::solveEquationSystem()
 
 	return result;
 }
+
+
