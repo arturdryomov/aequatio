@@ -1,4 +1,5 @@
 #include "mathutils.h"
+#include <limits>
 
 QList<Number> MathUtils::multiplyVectorByNumber(QList<Number> vector, Number number)
 {
@@ -116,4 +117,15 @@ bool MathUtils::equal(Number number1, Number number2)
 bool MathUtils::isNull(Number number)
 {
 	return qFuzzyCompare(number + 1.0, 1.0); // see qFuzzyCompare(double, double) documentation
+}
+
+Number MathUtils::getNaN()
+{
+	return std::numeric_limits<Number>::quiet_NaN();
+}
+
+bool MathUtils::isNaN(const Number number)
+{
+	volatile Number value = number;
+	return value != value;
 }

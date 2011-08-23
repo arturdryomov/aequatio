@@ -24,21 +24,8 @@ public:
 };
 
 // This is to unify Number to string and string to Number converting.
-inline QString numberToString(const Number number)
-{
-	return QString::number(number).replace("-", "−");
-}
-
-inline Number stringToNumber(const QString &str)
-{
-	bool ok = false;
-	QString stringToConvert = str; // the compiler won't allow str.replace() as str is constant reference
-	Number result = stringToConvert.replace("−", "-").toDouble(&ok);
-	if (!ok) {
-		THROW(EConversionToNumber(stringToConvert));
-	}
-	return result;
-}
+QString numberToString(const Number number);
+Number stringToNumber(const QString &str);
 
 // RPN stands for ‘Reverse Polish notation’
 

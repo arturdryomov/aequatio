@@ -17,6 +17,8 @@ public:
 
 	static bool equal(Number number1, Number number2);
 	static bool isNull(Number number);
+	static Number getNaN();
+	static bool isNaN(const Number number);
 };
 
 #endif // MATHUTILS_H

@@ -1,5 +1,26 @@
 #include "rpncode.h"
 #include "calculatingexceptions.h"
+#include "builtinfunctions/mathutils.h"
+
+QString numberToString(const Number number)
+{
+	if (MathUtils::isNaN(number)) {
+		return ("Ø"); // empty set
+	}
+
+	return QString::number(number).replace("-", "−");
+}
+
+Number stringToNumber(const QString &str)
+{
+	bool ok = false;
+	QString stringToConvert = str; // the compiler won't allow str.replace() as str is constant reference
+	Number result = stringToConvert.replace("−", "-").toDouble(&ok);
+	if (!ok) {
+		THROW(EConversionToNumber(stringToConvert));
+	}
+	return result;
+}
 
 EConversionToNumber::EConversionToNumber(const QString &numberRepresentation) :
 	m_numberRepresentation(numberRepresentation)

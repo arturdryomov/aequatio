@@ -13,8 +13,13 @@ RpnOperand Gauss::calculate(BuiltInFunction::FunctionCalculator *calculator, QLi
 		THROW(EWrongArgument("matrix", "n × (n + 1) size"));
 	}
 
-	QList<Number> result = findSolution(coefficients);
-	return RpnOperand(RpnOperandVector, QVariant::fromValue(RpnVector::fromOneDimensional(result)));
+	try {
+		QList<Number> result = findSolution(coefficients);
+		return RpnOperand(RpnOperandVector, QVariant::fromValue(RpnVector::fromOneDimensional(result)));
+	} catch (ENoSolution &e) {
+		Q_UNUSED(e)
+		return RpnOperand(RpnOperandNumber, QVariant::fromValue(MathUtils::getNaN()));
+	}
 }
 
 QList<RpnArgument> Gauss::requiredArguments()
