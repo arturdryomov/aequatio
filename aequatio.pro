@@ -57,7 +57,8 @@ SOURCES += \
 	source/builtinfunctions/optimization/configuration.cpp \
 	source/builtinfunctions/optimization/rosenbrock.cpp \
 	source/builtinfunctions/optimization/adaptiverandom.cpp \
-	source/builtinfunctions/gauss.cpp
+	source/builtinfunctions/gauss.cpp \
+	source/builtinfunctions/optimization/returningrandom.cpp
 
 HEADERS  += \
 	source/mainwindow.h \
@@ -88,7 +89,8 @@ HEADERS  += \
 	source/builtinfunctions/optimization/configuration.h \
 	source/builtinfunctions/optimization/rosenbrock.h \
 	source/builtinfunctions/optimization/adaptiverandom.h \
-	source/builtinfunctions/gauss.h
+	source/builtinfunctions/gauss.h \
+	source/builtinfunctions/optimization/returningrandom.h
 
 FORMS	+= \
 	source/mainwindow.ui \

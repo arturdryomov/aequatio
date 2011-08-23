@@ -232,6 +232,35 @@
 						<p>&rarr; adaptive_random(f, [8, 9], 1.618, 0.618, 3, 10, 0.8) = [4.81129, 6.39804]</p>
 					</div>
 
+				<a name="returning-random"><h3>Returning Random</h3></a>
+
+					returning_random(
+						<i>f</i>, 
+						[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;],
+						<i>&beta;</i>,
+						<i>M</i>,
+						<i>N</i>,
+						<i>R</i>
+					)
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li>[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;] — start point,
+							number of coordinates in number of function arguments;</li>
+						<li><i>0  &lt; &beta; &lt; 1</i> — decrease coefficient;</li>
+						<li><i>M</i> — number of fail tests;</li>
+						<li><i>N</i> — maximum number of iterations;</li>
+						<li><i>R</i> — minimum step size.</li>
+					</ul>
+
+					<p>Example<p>
+
+					<div class="code">
+						<p>&larr; func f(x, y) = 4 * ( (x - 5) ^ 2 ) + (y - 6) ^ 2</p>
+						<p>&rarr; Function declared: f(x, y) = 4 × (x − 5) ^ 2 + (y − 6) ^ 2</p>
+						<p>&larr; returning_random(f, [8, 9], 0.618, 3, 10, 0.8)</p>
+						<p>&rarr; returning_random(f, [8, 9], 0.618, 3, 10, 0.8) = [4.8834, 5.96406]</p>
+					</div>
+
   </body>
 
 </html>
