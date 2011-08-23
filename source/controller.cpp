@@ -228,6 +228,6 @@ QString Controller::versionRevisionFromNumber(int number)
 		case 3: return QString("Alpha %1").arg(secondNumber);
 		case 4: return QString("Beta %1").arg(secondNumber);
 		case 5: return QString("Release Candidate %1").arg(secondNumber);
-		default: return QString();
+		default: return QString("Final");
 	}
 }
