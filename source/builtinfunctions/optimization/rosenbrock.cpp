@@ -190,13 +190,19 @@ void Rosenbrock::getNewDirections(QList<Number> stepSizes)
 
 QList<Number> Rosenbrock::getStepLengths(QList<Number> currentPoint, QList<Number> previousPoint)
 {
-	QList<QList<Number> > equationCoefficients;
-	equationCoefficients << MathUtils::subtractVectorFromVector(currentPoint, previousPoint);
-	foreach (QList<Number> direction, m_directions) {
-		equationCoefficients << direction;
+	QList<QList<Number> > equationsCoefficients;
+	for (int i = 0; i < currentPoint.size(); i++) {
+		QList<Number> equationCoefficients;
+		foreach (QList<Number> direction, m_directions) {
+			equationCoefficients << direction.at(i);
+		}
+		equationCoefficients << MathUtils::subtractVectorFromVector(currentPoint, previousPoint).at(i);
+
+		equationsCoefficients << equationCoefficients;
 	}
 
-	return solveEquationSystem(equationCoefficients);
+
+	return solveEquationSystem(equationsCoefficients);
 }
 
 
