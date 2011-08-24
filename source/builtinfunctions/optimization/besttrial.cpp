@@ -40,7 +40,7 @@ QList<RpnArgument> BestTrial::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
-		// NOTE: QVariant() shows that number of arguments is not fixed, maybe there is other way
+		// QVariant() shows that number of arguments is not fixed, maybe there is other way
 		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant())
 		<< RpnArgument(RpnOperandVector)
 		<< RpnArgument(RpnOperandNumber)
@@ -58,7 +58,7 @@ QList<Number> BestTrial::findMinimum()
 	forever {
 		QList<QList<Number> > randomPoints;
 		for (int i = 0; i < m_stepsCount; i++) {
-			randomPoints << generateRandomNumbers(m_sourcePoint.size(), -1, 1);
+			randomPoints << MathUtils::generateRandomNumbers(m_sourcePoint.size(), -1, 1);
 		}
 
 		QList<QList<Number> > currentPoints;
@@ -95,30 +95,6 @@ QList<Number> BestTrial::findMinimum()
 			m_stepSize *= m_decrease;
 		}
 	}
-}
-
-// TODO: Move to MathUtils
-QList<Number> BestTrial::generateRandomNumbers(int count, Number lowerLimit, Number higherLimit)
-{
-	QList<Number> result;
-
-	for (int i = 0; i < count; i++) {
-		result << getRandomNumber(qAbs(lowerLimit - higherLimit)) + lowerLimit;
-	}
-
-	return result;
-}
-
-// Return a random number between 0 and limit
-Number BestTrial::getRandomNumber(Number limit)
-{
-	Number result;
-
-	do {
-		result = rand() / (RAND_MAX / (limit + 1));
-	} while (result > limit);
-
-	return result;
 }
 
 QList<Number> BestTrial::getSpecialMinimum(QList<QList<Number> > points)

@@ -24,12 +24,9 @@ private:
 	Number m_stepSize;
 
 	QList<Number> findMinimum();
+	QList<Number> getSpecialMinimum(QList<QList<Number> > points);
 
 	Number countFunction(QList<Number> arguments);
-
-	QList<Number> generateRandomNumbers(int count, Number lowerLimit, Number higherLimit);
-	Number getRandomNumber(Number limit);
-	QList<Number> getSpecialMinimum(QList<QList<Number> > points);
 };
 
 #endif // BEST_TRIAL_H

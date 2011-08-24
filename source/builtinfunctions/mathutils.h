@@ -19,6 +19,9 @@ public:
 	static bool isNull(Number number);
 	static Number getNaN();
 	static bool isNaN(const Number number);
+
+	static QList<Number> generateRandomNumbers(int count, Number lowerLimit, Number higherLimit);
+	static Number getRandomNumber(Number higherLimit);
 };
 
 #endif // MATHUTILS_H

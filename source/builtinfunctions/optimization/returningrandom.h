@@ -26,9 +26,6 @@ private:
 	QList<Number> findMinimum();
 
 	Number countFunction(QList<Number> arguments);
-
-	QList<Number> generateRandomNumbers(int count, Number lowerLimit, Number higherLimit);
-	Number getRandomNumber(Number limit);
 };
 
 #endif // RETURNING_RANDOM_H

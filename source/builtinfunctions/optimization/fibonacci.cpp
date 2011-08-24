@@ -54,7 +54,6 @@ void Fibonacci::getIterationsNumber()
 	}
 }
 
-// TODO: Decide what int to use (qint32 or other)
 Number Fibonacci::getFibonacciNumber(int position)
 {
 	switch(position) {

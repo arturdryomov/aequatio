@@ -129,3 +129,26 @@ bool MathUtils::isNaN(const Number number)
 	volatile Number value = number;
 	return value != value;
 }
+
+QList<Number> MathUtils::generateRandomNumbers(int count, Number lowerLimit, Number higherLimit)
+{
+	QList<Number> result;
+
+	for (int i = 0; i < count; i++) {
+		result << getRandomNumber(qAbs(lowerLimit - higherLimit)) + lowerLimit;
+	}
+
+	return result;
+}
+
+// Return a random number between 0 and higher limit
+Number MathUtils::getRandomNumber(Number higherLimit)
+{
+	Number result;
+
+	do {
+		result = rand() / (RAND_MAX / (higherLimit + 1));
+	} while (result > higherLimit);
+
+	return result;
+}

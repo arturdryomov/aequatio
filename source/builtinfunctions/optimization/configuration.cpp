@@ -63,7 +63,6 @@ QList<Number> Configuration::findMinimum()
 	QList<Number> currentPoint = m_sourcePoint;
 
 	forever {
-		// NOTE: Maybe must be iterators
 		for (int i = 0; i < currentPoint.size(); i++) {
 			if (countFunction(increaseDirection(currentPoint, i)) < countFunction(currentPoint)) {
 				currentPoint = increaseDirection(currentPoint, i);

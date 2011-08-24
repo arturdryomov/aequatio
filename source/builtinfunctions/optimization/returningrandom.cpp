@@ -40,7 +40,7 @@ QList<RpnArgument> ReturningRandom::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
-		// NOTE: QVariant() shows that number of arguments is not fixed, maybe there is other way
+		// QVariant() shows that number of arguments is not fixed, maybe there is other way
 		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant())
 		<< RpnArgument(RpnOperandVector)
 		<< RpnArgument(RpnOperandNumber)
@@ -57,7 +57,7 @@ QList<Number> ReturningRandom::findMinimum()
 	int iterationCount = 0;
 
 	forever {
-		QList<Number> randomPoint = generateRandomNumbers(m_sourcePoint.size(), -1, 1);
+		QList<Number> randomPoint = MathUtils::generateRandomNumbers(m_sourcePoint.size(), -1, 1);
 
 		QList<Number> currentPoint = MathUtils::addVectorToVector(
 			m_sourcePoint,
@@ -92,30 +92,6 @@ QList<Number> ReturningRandom::findMinimum()
 			failCount = 1;
 		}
 	}
-}
-
-
-QList<Number> ReturningRandom::generateRandomNumbers(int count, Number lowerLimit, Number higherLimit)
-{
-	QList<Number> result;
-
-	for (int i = 0; i < count; i++) {
-		result << getRandomNumber(qAbs(lowerLimit - higherLimit)) + lowerLimit;
-	}
-
-	return result;
-}
-
-// Return a random number between 0 and limit
-Number ReturningRandom::getRandomNumber(Number limit)
-{
-	Number result;
-
-	do {
-		result = rand() / (RAND_MAX / (limit + 1));
-	} while (result > limit);
-
-	return result;
 }
 
 
