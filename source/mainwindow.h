@@ -33,7 +33,8 @@ protected:
 private slots:
 	void aboutTriggered();
 private:
-	Ui::MainWindow *ui;	
+	Ui::MainWindow *ui;
+	void setSplitterSizes();
 };
 
 #endif // MAINWINDOW_H

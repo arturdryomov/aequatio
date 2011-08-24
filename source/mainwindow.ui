@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>700</width>
-    <height>400</height>
+    <width>800</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>700</width>
-    <height>400</height>
+    <width>800</width>
+    <height>500</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -26,10 +26,13 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
+      <property name="childrenCollapsible">
+       <bool>false</bool>
+      </property>
       <widget class="QTextEdit" name="functionsAndConstantsList">
        <property name="minimumSize">
         <size>
-         <width>200</width>
+         <width>150</width>
          <height>0</height>
         </size>
        </property>
@@ -43,7 +46,7 @@
          <widget class="QTextEdit" name="consoleEdit">
           <property name="minimumSize">
            <size>
-            <width>400</width>
+            <width>350</width>
             <height>0</height>
            </size>
           </property>
@@ -99,8 +102,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>700</width>
-     <height>22</height>
+     <width>800</width>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuView">

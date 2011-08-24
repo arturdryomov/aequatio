@@ -15,10 +15,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	setWindowIcon(QIcon(":/images/linux/aequatio.png"));
 	ui->errorInformationLabel->hide();
+	setSplitterSizes();
 	ui->actionShowFunctionsAndConstants->setChecked(false); // hide sidebar
 	ui->consoleEdit->append(tr("→ You are welcome to Aequatio! Enter math expression, please…"));
 	ui->consoleEdit->append(""); // new line
-	ui->commandEdit->setFocus();	
+	ui->commandEdit->setFocus();
 }
 
 MainWindow::~MainWindow()
@@ -68,4 +69,11 @@ void MainWindow::resizeEvent(QResizeEvent *)
 void MainWindow::aboutTriggered()
 {
 	AboutWindow(this).exec();
+}
+
+void MainWindow::setSplitterSizes()
+{
+	QList<int> sizes;
+	sizes << width() / 4 * 1 << width() / 4 * 3; // 1/4 and 3/4
+	ui->splitter->setSizes(sizes);
 }
