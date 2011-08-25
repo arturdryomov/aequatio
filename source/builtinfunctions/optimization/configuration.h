@@ -22,12 +22,10 @@ private:
 	Number m_accelerationStep;
 	Number m_decreaseStep;
 
-	Number countFunction(QList<Number> arguments);
-
 	QList<Number> findMinimum();
-
 	QList<Number> increaseDirection(QList<Number> point, int direction);
 	QList<Number> decreaseDirection(QList<Number> point, int direction);
+	Number countFunction(QList<Number> arguments);
 };
 
 #endif // CONFIGURATION_H

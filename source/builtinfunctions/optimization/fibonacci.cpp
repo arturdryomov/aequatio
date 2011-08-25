@@ -7,14 +7,16 @@ namespace
 
 RpnOperand Fibonacci::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
+	// Initialize algorithm variables
 	m_calculator = calculator;
-	m_functionName = actualArguments[0].value.value<QString>();
-	m_sourceInterval.leftBorder = actualArguments[1].value.value<Number>();
-	m_sourceInterval.rightBorder = actualArguments[2].value.value<Number>();
-	m_resultIntervalLength = actualArguments[3].value.value<Number>();
-	m_difference = actualArguments[4].value.value<Number>();
-	getIterationsNumber();
+	m_functionName = actualArguments.at(0).value.value<QString>();
+	m_sourceInterval.leftBorder = actualArguments.at(1).value.value<Number>();
+	m_sourceInterval.rightBorder = actualArguments.at(2).value.value<Number>();
+	m_resultIntervalLength = actualArguments.at(3).value.value<Number>();
+	m_difference = actualArguments.at(4).value.value<Number>();
+	initializeIterationsNumber();
 
+	// Check values of variables for currect algorithm work
 	if (m_resultIntervalLength <= 0) {
 		THROW(EWrongArgument(QObject::tr("length of finish interval"), QObject::tr("more than 0")) )
 	}
@@ -24,7 +26,7 @@ RpnOperand Fibonacci::calculate(FunctionCalculator *calculator, QList<RpnOperand
 
 	RpnOperand result;
 	result.type = RpnOperandNumber;
-	result.value = findMinimum();
+	result.value = QVariant::fromValue(findMinimum());
 	return result;
 }
 
@@ -42,11 +44,11 @@ QList<RpnArgument> Fibonacci::requiredArguments()
 	return arguments;
 }
 
-void Fibonacci::getIterationsNumber()
+void Fibonacci::initializeIterationsNumber()
 {
 	m_iterationsNumber = 0;
 
-	while (getFibonacciNumber(m_iterationsNumber) <
+	while (fibonacciNumber(m_iterationsNumber) <
 		qAbs(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) /
 		m_resultIntervalLength) {
 
@@ -54,7 +56,7 @@ void Fibonacci::getIterationsNumber()
 	}
 }
 
-Number Fibonacci::getFibonacciNumber(int position)
+Number Fibonacci::fibonacciNumber(int position)
 {
 	switch(position) {
 		case 0: {
@@ -64,7 +66,7 @@ Number Fibonacci::getFibonacciNumber(int position)
 			return 1;
 		};
 		default: {
-			return getFibonacciNumber(position - 1) + getFibonacciNumber(position - 2);
+			return fibonacciNumber(position - 1) + fibonacciNumber(position - 2);
 		};
 	};
 }
@@ -72,28 +74,33 @@ Number Fibonacci::getFibonacciNumber(int position)
 Number Fibonacci::findMinimum()
 {
 	Interval newInterval;
+
 	newInterval.leftBorder = m_sourceInterval.leftBorder +
-		(getFibonacciNumber(m_iterationsNumber - 2) / getFibonacciNumber(m_iterationsNumber)) *
+		(fibonacciNumber(m_iterationsNumber - 2) / fibonacciNumber(m_iterationsNumber)) *
 		(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder);
+
 	newInterval.rightBorder = m_sourceInterval.leftBorder +
-		(getFibonacciNumber(m_iterationsNumber - 1) / getFibonacciNumber(m_iterationsNumber)) *
+		(fibonacciNumber(m_iterationsNumber - 1) / fibonacciNumber(m_iterationsNumber)) *
 		(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder);
 
 	for (int iteration = 0; iteration <= m_iterationsNumber - 3; iteration++) {
 		if (countFunction(newInterval.leftBorder) <= countFunction(newInterval.rightBorder)) {
 			m_sourceInterval.rightBorder = newInterval.rightBorder;
 			newInterval.rightBorder = newInterval.leftBorder;
+
 			newInterval.leftBorder = m_sourceInterval.leftBorder +
-				(getFibonacciNumber(m_iterationsNumber - iteration - 3) /
-					getFibonacciNumber(m_iterationsNumber - iteration - 1)) *
+				(fibonacciNumber(m_iterationsNumber - iteration - 3) /
+					fibonacciNumber(m_iterationsNumber - iteration - 1)) *
 				(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder);
 		}
+
 		else {
 			m_sourceInterval.leftBorder = newInterval.leftBorder;
 			newInterval.leftBorder = newInterval.rightBorder;
+
 			newInterval.rightBorder = m_sourceInterval.leftBorder +
-				(getFibonacciNumber(m_iterationsNumber - iteration - 2) /
-					getFibonacciNumber(m_iterationsNumber - iteration - 1)) *
+				(fibonacciNumber(m_iterationsNumber - iteration - 2) /
+					fibonacciNumber(m_iterationsNumber - iteration - 1)) *
 				(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder);
 		}
 	}

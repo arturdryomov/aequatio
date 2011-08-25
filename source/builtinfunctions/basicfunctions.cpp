@@ -11,7 +11,7 @@ RpnOperand Plus::calculate(FunctionCalculator *calculator, QList<RpnOperand> act
 
 	RpnOperand result;
 	result.type = RpnOperandNumber;
-	result.value = actualArguments[0].value.value<Number>() + actualArguments[1].value.value<Number>();
+	result.value = actualArguments.at(0).value.value<Number>() + actualArguments.at(1).value.value<Number>();
 
 	return result;
 }
@@ -36,7 +36,7 @@ RpnOperand Minus::calculate(FunctionCalculator *calculator, QList<RpnOperand> ac
 
 	RpnOperand result;
 	result.type = RpnOperandNumber;
-	result.value = actualArguments[0].value.value<Number>() - actualArguments[1].value.value<Number>();
+	result.value = actualArguments.at(0).value.value<Number>() - actualArguments.at(1).value.value<Number>();
 
 	return result;
 }
@@ -61,7 +61,7 @@ RpnOperand Multiply::calculate(FunctionCalculator *calculator, QList<RpnOperand>
 
 	RpnOperand result;
 	result.type = RpnOperandNumber;
-	result.value = actualArguments[0].value.value<Number>() * actualArguments[1].value.value<Number>();
+	result.value = actualArguments.at(0).value.value<Number>() * actualArguments.at(1).value.value<Number>();
 
 	return result;
 }
@@ -86,7 +86,7 @@ RpnOperand Divide::calculate(FunctionCalculator *calculator, QList<RpnOperand> a
 
 	RpnOperand result;
 	result.type = RpnOperandNumber;
-	result.value = actualArguments[0].value.value<Number>() / actualArguments[1].value.value<Number>();
+	result.value = actualArguments.at(0).value.value<Number>() / actualArguments.at(1).value.value<Number>();
 
 	return result;
 }
@@ -111,7 +111,7 @@ RpnOperand Power::calculate(FunctionCalculator *calculator, QList<RpnOperand> ac
 
 	RpnOperand result;
 	result.type = RpnOperandNumber;
-	result.value = qPow(actualArguments[0].value.value<Number>(), actualArguments[1].value.value<Number>());
+	result.value = qPow(actualArguments.at(0).value.value<Number>(), actualArguments.at(1).value.value<Number>());
 
 	return result;
 }
@@ -136,7 +136,7 @@ RpnOperand UnaryMinus::calculate(FunctionCalculator *calculator, QList<RpnOperan
 
 	RpnOperand result;
 	result.type = RpnOperandNumber;
-	result.value = -actualArguments[0].value.value<Number>();
+	result.value = -actualArguments.at(0).value.value<Number>();
 
 	return result;
 }
@@ -152,21 +152,21 @@ QList<RpnArgument> UnaryMinus::requiredArguments()
 
 namespace
 {
-	CalcSine instanceCalcSine;
+	Sine instanceCalcSine;
 }
 
-RpnOperand CalcSine::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+RpnOperand Sine::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
 	Q_UNUSED(calculator);
 
 	RpnOperand result;
 	result.type = RpnOperandNumber;
-	result.value = qSin(actualArguments[0].value.value<Number>());
+	result.value = qSin(actualArguments.at(0).value.value<Number>());
 
 	return result;
 }
 
-QList<RpnArgument> CalcSine::requiredArguments()
+QList<RpnArgument> Sine::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments << RpnArgument(RpnOperandNumber);
@@ -177,21 +177,21 @@ QList<RpnArgument> CalcSine::requiredArguments()
 
 namespace
 {
-	CalcCosine instanceCalcCosine;
+	Cosine instanceCalcCosine;
 }
 
-RpnOperand CalcCosine::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+RpnOperand Cosine::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
 	Q_UNUSED(calculator);
 
 	RpnOperand result;
 	result.type = RpnOperandNumber;
-	result.value = qCos(actualArguments[0].value.value<Number>());
+	result.value = qCos(actualArguments.at(0).value.value<Number>());
 
 	return result;
 }
 
-QList<RpnArgument> CalcCosine::requiredArguments()
+QList<RpnArgument> Cosine::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments << RpnArgument(RpnOperandNumber);
@@ -202,21 +202,21 @@ QList<RpnArgument> CalcCosine::requiredArguments()
 
 namespace
 {
-	CalcTangent instanceCalcTangent;
+	Tangent instanceCalcTangent;
 }
 
-RpnOperand CalcTangent::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+RpnOperand Tangent::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
 	Q_UNUSED(calculator);
 
 	RpnOperand result;
 	result.type = RpnOperandNumber;
-	result.value = qTan(actualArguments[0].value.value<Number>());
+	result.value = qTan(actualArguments.at(0).value.value<Number>());
 
 	return result;
 }
 
-QList<RpnArgument> CalcTangent::requiredArguments()
+QList<RpnArgument> Tangent::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments << RpnArgument(RpnOperandNumber);
@@ -236,7 +236,7 @@ RpnOperand Abs::calculate(FunctionCalculator *calculator, QList<RpnOperand> actu
 
 	RpnOperand result;
 	result.type = RpnOperandNumber;
-	result.value = qAbs(actualArguments[0].value.value<Number>());
+	result.value = qAbs(actualArguments.at(0).value.value<Number>());
 
 	return result;
 }
@@ -261,7 +261,7 @@ RpnOperand Sqrt::calculate(FunctionCalculator *calculator, QList<RpnOperand> act
 
 	RpnOperand result;
 	result.type = RpnOperandNumber;
-	result.value = qSqrt(actualArguments[0].value.value<Number>());
+	result.value = qSqrt(actualArguments.at(0).value.value<Number>());
 
 	return result;
 }

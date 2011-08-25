@@ -3,6 +3,7 @@
 
 #include "builtinfunction.h"
 
+// Common class for operations working in algorithms
 class MathUtils
 {
 public:

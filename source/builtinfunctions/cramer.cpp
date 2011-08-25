@@ -9,9 +9,9 @@ RpnOperand Cramer::calculate(FunctionCalculator *calculator, QList<RpnOperand> a
 {
 	Q_UNUSED(calculator);
 
-	m_coefficientsMatrix = RpnVector::toTwoDimensional(actualArguments[0].value.value<RpnVector>());
-	foreach (QList<Number> coefficientsEquation, m_coefficientsMatrix) {
-		if (coefficientsEquation.size() != m_coefficientsMatrix.first().size()) {
+	m_matrixCoefficients = RpnVector::toTwoDimensional(actualArguments[0].value.value<RpnVector>());
+	foreach (QList<Number> coefficientsEquation, m_matrixCoefficients) {
+		if (coefficientsEquation.size() != m_matrixCoefficients.first().size()) {
 			THROW(EWrongArgument(QObject::tr("coefficient vectors"), QObject::tr("one size")));
 		}
 	}
@@ -25,7 +25,6 @@ RpnOperand Cramer::calculate(FunctionCalculator *calculator, QList<RpnOperand> a
 	}
 }
 
-
 QList<RpnArgument> Cramer::requiredArguments()
 {
 	QList<RpnArgument> arguments;
@@ -34,42 +33,43 @@ QList<RpnArgument> Cramer::requiredArguments()
 	return arguments;
 }
 
-
 QList<Number> Cramer::findSolution()
 {
 	QList<Number> result;
 
 	QVector<QVector<Number> > mainMatrix;
-	foreach (QList<Number> coefficientsEquation, m_coefficientsMatrix) {
-		coefficientsEquation.removeLast();
-		mainMatrix << QVector<Number>::fromList(coefficientsEquation);
+	foreach (QList<Number> equationCoefficients, m_matrixCoefficients) {
+		// Remove result column
+		equationCoefficients.removeLast();
+		mainMatrix << QVector<Number>::fromList(equationCoefficients);
 	}
 	Number mainDeterminant = MathUtils::countDeterminant(mainMatrix);
 
+	// System has no solution with null main determinant
 	if (MathUtils::isNull(mainDeterminant)) {
 		THROW(ENoSolution());
 	}
 
-	for (int i = 0; i < m_coefficientsMatrix.size(); i++) {
-		QVector<QVector<Number> > elementMatrix;
+	for (int i = 0; i < m_matrixCoefficients.size(); i++) {
+		QVector<QVector<Number> > variableMatrix;
 
-		foreach (QList<Number> coefficientsEquation, m_coefficientsMatrix) {
+		foreach (QList<Number> equationCoefficients, m_matrixCoefficients) {
 			QVector<Number> coefficientsRow;
-			for (int j = 0; j < coefficientsEquation.size() - 1; j++) {
+			for (int j = 0; j < equationCoefficients.size() - 1; j++) {
 				if (j == i) {
-					coefficientsRow << coefficientsEquation.last();
+					// Replace variable column with result column
+					coefficientsRow << equationCoefficients.last();
 				}
 				else {
-					coefficientsRow << coefficientsEquation.at(j);
+					coefficientsRow << equationCoefficients.at(j);
 				}
 			}
-			elementMatrix << coefficientsRow;
+			variableMatrix << coefficientsRow;
 		}
 
-		result << MathUtils::countDeterminant(elementMatrix) / mainDeterminant;
+		// Count variable result and push it
+		result << MathUtils::countDeterminant(variableMatrix) / mainDeterminant;
 	}
 
 	return result;
 }
-
-

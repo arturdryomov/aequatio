@@ -7,13 +7,15 @@ namespace
 
 RpnOperand Dichotomy::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
+	// Initialize algorithm variables
 	m_calculator = calculator;
-	m_functionName = actualArguments[0].value.value<QString>();
-	m_sourceInterval.leftBorder = actualArguments[1].value.value<Number>();
-	m_sourceInterval.rightBorder = actualArguments[2].value.value<Number>();
-	m_accuracy = actualArguments[3].value.value<Number>();
-	m_space = actualArguments[4].value.value<Number>();
+	m_functionName = actualArguments.at(0).value.value<QString>();
+	m_sourceInterval.leftBorder = actualArguments.at(1).value.value<Number>();
+	m_sourceInterval.rightBorder = actualArguments.at(2).value.value<Number>();
+	m_accuracy = actualArguments.at(3).value.value<Number>();
+	m_space = actualArguments.at(4).value.value<Number>();
 
+	// Check values of variables for currect algorithm work
 	if (m_accuracy <= 0) {
 		THROW(EWrongArgument(QObject::tr("accuracy"), QObject::tr("more than 0")) )
 	}
@@ -23,7 +25,7 @@ RpnOperand Dichotomy::calculate(FunctionCalculator *calculator, QList<RpnOperand
 
 	RpnOperand result;
 	result.type = RpnOperandNumber;
-	result.value = findMinimum();
+	result.value = QVariant::fromValue(findMinimum());
 	return result;
 }
 
@@ -50,9 +52,7 @@ Number Dichotomy::findMinimum()
 		newInterval.rightBorder = (m_sourceInterval.leftBorder +
 			m_sourceInterval.rightBorder + m_space) / 2;
 
-		Number leftFunctionValue = countFunction(newInterval.leftBorder);
-		Number rightFunctionValue = countFunction(newInterval.rightBorder);
-		if (leftFunctionValue <= rightFunctionValue) {
+		if (countFunction(newInterval.leftBorder) <= countFunction(newInterval.rightBorder)) {
 			m_sourceInterval.rightBorder = newInterval.rightBorder;
 		}
 		else {

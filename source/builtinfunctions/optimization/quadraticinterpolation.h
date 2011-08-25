@@ -21,10 +21,9 @@ private:
 	Number m_firstAccuracy;
 	Number m_secondAccuracy;
 
-	Number countFunction(Number argument);
-
 	Number findMinimum();
 	Number minimumPointValue(Number first, Number second, Number third);
+	Number countFunction(Number argument);
 };
 
 #endif // QUADRATIC_INTERPOLATION_H

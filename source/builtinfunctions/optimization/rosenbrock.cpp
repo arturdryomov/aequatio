@@ -7,39 +7,19 @@ namespace
 
 RpnOperand Rosenbrock::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
+	// Initialize algorithm variables
 	m_calculator = calculator;
-
-	m_functionName = actualArguments[0].value.value<QString>();
-
-	m_sourcePoint = RpnVector::toOneDimensional(actualArguments[1].value.value<RpnVector>());
-	if (m_calculator->functionArguments(m_functionName).size() != m_sourcePoint.size()) {
-		THROW(EWrongParametersCount(QObject::tr("Source point"), m_calculator->functionArguments(m_functionName).size()));
-	}
-
-	m_stopValue = actualArguments[2].value.value<Number>();
-	if (m_stopValue <= 0) {
-		THROW(EWrongArgument(QObject::tr("stop value"), QObject::tr("more than 0")) )
-	}
-
-	m_accelerationStep = actualArguments[3].value.value<Number>();
-	if (m_accelerationStep <= 1) {
-		THROW(EWrongArgument(QObject::tr("acceleration coefficient"), QObject::tr("more than 1")) )
-	}
-
-	m_decreaseStep = actualArguments[4].value.value<Number>();
-	if ((m_decreaseStep <= -1) || (m_decreaseStep >= 0)) {
-		THROW(EWrongArgument(QObject::tr("decrease coefficient"), QObject::tr("more than -1 and less than 0")) )
-	}
-
-	m_steps = RpnVector::toOneDimensional(actualArguments[5].value.value<RpnVector>());
-	if (m_calculator->functionArguments(m_functionName).size() != m_steps.size()) {
-		THROW(EWrongParametersCount(QObject::tr("Coordinate steps"), m_calculator->functionArguments(m_functionName).size()));
-	}
-
-	m_wrongStepsNumber = actualArguments[6].value.value<Number>();
+	m_functionName = actualArguments.at(0).value.value<QString>();
+	m_sourcePoint = RpnVector::toOneDimensional(actualArguments.at(1).value.value<RpnVector>());
+	m_stopValue = actualArguments.at(2).value.value<Number>();
+	m_accelerationStep = actualArguments.at(3).value.value<Number>();
+	m_decreaseStep = actualArguments.at(4).value.value<Number>();
+	m_steps = RpnVector::toOneDimensional(actualArguments.at(5).value.value<RpnVector>());
+	m_wrongStepsNumber = actualArguments.at(6).value.value<Number>();
 
 	// Set start directions
 	m_directions.clear();
+	// Fill directions
 	for (int i = 0; i < m_sourcePoint.size(); i++) {
 		m_directions << QList<Number>();
 		for (int k = 0; k < m_sourcePoint.size(); k++) {
@@ -52,6 +32,23 @@ RpnOperand Rosenbrock::calculate(FunctionCalculator *calculator, QList<RpnOperan
 		}
 	}
 
+	// Check values of variables for currect algorithm work
+	if (m_calculator->functionArguments(m_functionName).size() != m_sourcePoint.size()) {
+		THROW(EWrongParametersCount(QObject::tr("Source point"), m_calculator->functionArguments(m_functionName).size()));
+	}
+	if (m_stopValue <= 0) {
+		THROW(EWrongArgument(QObject::tr("stop value"), QObject::tr("more than 0")) )
+	}
+	if (m_accelerationStep <= 1) {
+		THROW(EWrongArgument(QObject::tr("acceleration coefficient"), QObject::tr("more than 1")) )
+	}
+	if ((m_decreaseStep <= -1) || (m_decreaseStep >= 0)) {
+		THROW(EWrongArgument(QObject::tr("decrease coefficient"), QObject::tr("more than -1 and less than 0")) )
+	}
+	if (m_calculator->functionArguments(m_functionName).size() != m_steps.size()) {
+		THROW(EWrongParametersCount(QObject::tr("Coordinate steps"), m_calculator->functionArguments(m_functionName).size()));
+	}
+
 	RpnOperand result;
 	result.type = RpnOperandVector;
 	result.value = QVariant::fromValue(RpnVector::fromOneDimensional(findMinimum()));
@@ -62,6 +59,7 @@ QList<RpnArgument> Rosenbrock::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
+		// QVariant() shows that number of arguments is not fixed
 		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant())
 		<< RpnArgument(RpnOperandVector)
 		<< RpnArgument(RpnOperandNumber)
@@ -72,7 +70,6 @@ QList<RpnArgument> Rosenbrock::requiredArguments()
 
 	return arguments;
 }
-
 
 QList<Number> Rosenbrock::findMinimum()
 {
@@ -142,9 +139,10 @@ QList<Number> Rosenbrock::findMinimum()
 	}
 }
 
-
 void Rosenbrock::getNewDirections(QList<Number> stepSizes)
 {
+	// Two steps of getting new directions by Gram algorithm
+
 	QList<QList<Number> > gramStepOne;
 	for (int i = 0; i < stepSizes.size(); i++) {
 		if (stepSizes[i] == 0) {
@@ -205,8 +203,6 @@ QList<Number> Rosenbrock::getStepLengths(QList<Number> currentPoint, QList<Numbe
 	return solveEquationSystem(equationsCoefficients);
 }
 
-
-// First list of coefficients is equations results
 QList<Number> Rosenbrock::solveEquationSystem(QList<QList<Number> > coefficients)
 {
 	QList<RpnOperand> arguments;
@@ -227,7 +223,6 @@ QList<Number> Rosenbrock::increaseDirection(QList<Number> point, int direction)
 
 	return result;
 }
-
 
 Number Rosenbrock::countFunction(QList<Number> arguments)
 {

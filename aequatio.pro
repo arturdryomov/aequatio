@@ -1,4 +1,4 @@
-QT	+= core gui
+QT += core gui
 
 TARGET = aequatio
 TEMPLATE = app
@@ -47,6 +47,7 @@ SOURCES += \
 	source/rpncode.cpp \
 	source/builtinfunctions/mathutils.cpp \
 	source/builtinfunctions/cramer.cpp \
+	source/builtinfunctions/gauss.cpp \
 	source/builtinfunctions/basicfunctions.cpp \
 	source/builtinfunctions/optimization/uniform.cpp \
 	source/builtinfunctions/optimization/bisection.cpp \
@@ -57,7 +58,6 @@ SOURCES += \
 	source/builtinfunctions/optimization/configuration.cpp \
 	source/builtinfunctions/optimization/rosenbrock.cpp \
 	source/builtinfunctions/optimization/adaptiverandom.cpp \
-	source/builtinfunctions/gauss.cpp \
 	source/builtinfunctions/optimization/returningrandom.cpp \
 	source/builtinfunctions/optimization/besttrial.cpp
 
@@ -79,6 +79,7 @@ HEADERS  += \
 	source/rpncode.h \
 	source/builtinfunctions/mathutils.h \
 	source/builtinfunctions/cramer.h \
+	source/builtinfunctions/gauss.h \
 	source/builtinfunctions/builtinfunction.h \
 	source/builtinfunctions/basicfunctions.h \
 	source/builtinfunctions/optimization/uniform.h \
@@ -90,7 +91,6 @@ HEADERS  += \
 	source/builtinfunctions/optimization/configuration.h \
 	source/builtinfunctions/optimization/rosenbrock.h \
 	source/builtinfunctions/optimization/adaptiverandom.h \
-	source/builtinfunctions/gauss.h \
 	source/builtinfunctions/optimization/returningrandom.h \
 	source/builtinfunctions/optimization/besttrial.h
 

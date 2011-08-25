@@ -25,7 +25,6 @@ private:
 
 	QList<Number> findMinimum();
 	QList<Number> getSpecialMinimum(QList<QList<Number> > points);
-
 	Number countFunction(QList<Number> arguments);
 };
 

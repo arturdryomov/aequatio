@@ -7,15 +7,16 @@ namespace
 
 RpnOperand Uniform::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
+	// Initialize algorithm variables
 	m_calculator = calculator;
-	m_functionName = actualArguments[0].value.value<QString>();
-	m_sourceInterval.leftBorder = actualArguments[1].value.value<Number>();
-	m_sourceInterval.rightBorder = actualArguments[2].value.value<Number>();
-	m_iterationNumber = actualArguments[3].value.value<Number>();
+	m_functionName = actualArguments.at(0).value.value<QString>();
+	m_sourceInterval.leftBorder = actualArguments.at(1).value.value<Number>();
+	m_sourceInterval.rightBorder = actualArguments.at(2).value.value<Number>();
+	m_iterationNumber = actualArguments.at(3).value.value<Number>();
 
 	RpnOperand result;
 	result.type = RpnOperandNumber;
-	result.value = findMinimum();
+	result.value = QVariant::fromValue(findMinimum());
 	return result;
 }
 
@@ -34,10 +35,10 @@ QList<RpnArgument> Uniform::requiredArguments()
 
 Number Uniform::findMinimum()
 {
-	Number pointMinimum = m_sourceInterval.leftBorder +
+	Number minimumPoint = m_sourceInterval.leftBorder +
 		(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) /
 		(m_iterationNumber + 1);
-	Number functionMinumum = countFunction(pointMinimum);
+	Number functionMinumum = countFunction(minimumPoint);
 
 	for (int i = 1; i <= m_iterationNumber; i++) {
 		Number point = m_sourceInterval.leftBorder + i *
@@ -46,11 +47,11 @@ Number Uniform::findMinimum()
 
 		if (countFunction(point) < functionMinumum) {
 			functionMinumum = countFunction(point);
-			pointMinimum = point;
+			minimumPoint = point;
 		}
 	}
 
-	return pointMinimum;
+	return minimumPoint;
 }
 
 Number Uniform::countFunction(Number argument)

@@ -13,10 +13,11 @@ public:
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
 	QList<RpnArgument> requiredArguments();
 private:
-	QList<QList<Number> > m_coefficientsMatrix;
+	QList<QList<Number> > m_matrixCoefficients;
 
 	QList<Number> findSolution();
 };
+
 
 class ENoSolution : public ECalculating
 {

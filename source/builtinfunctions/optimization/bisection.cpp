@@ -7,19 +7,21 @@ namespace
 
 RpnOperand Bisection::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
+	// Initialize algorithm variables
 	m_calculator = calculator;
 	m_functionName = actualArguments[0].value.value<QString>();
 	m_sourceInterval.leftBorder = actualArguments[1].value.value<Number>();
 	m_sourceInterval.rightBorder = actualArguments[2].value.value<Number>();
 	m_accuracy = actualArguments[3].value.value<Number>();
 
+	// Check values of variables for currect algorithm work
 	if (m_accuracy <= 0) {
 		THROW(EWrongArgument(QObject::tr("accuracy"), QObject::tr("more than 0")) )
 	}
 
 	RpnOperand result;
 	result.type = RpnOperandNumber;
-	result.value = findMinimum();
+	result.value = QVariant::fromValue(findMinimum());
 	return result;
 }
 
@@ -52,15 +54,13 @@ Number Bisection::findMinimum()
 			m_sourceInterval.rightBorder = middlePoint;
 			middlePoint = newInterval.leftBorder;
 		}
-		else {
-			if (countFunction(newInterval.rightBorder) < countFunction(middlePoint)) {
+		else if (countFunction(newInterval.rightBorder) < countFunction(middlePoint)) {
 				m_sourceInterval.leftBorder = middlePoint;
 				middlePoint = newInterval.rightBorder;
-			}
-			else {
-				m_sourceInterval.leftBorder = newInterval.leftBorder;
-				m_sourceInterval.rightBorder = newInterval.rightBorder;
-			}
+		}
+		else {
+			m_sourceInterval.leftBorder = newInterval.leftBorder;
+			m_sourceInterval.rightBorder = newInterval.rightBorder;
 		}
 
 		if (qAbs(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) <= m_accuracy) {

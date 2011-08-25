@@ -9,25 +9,25 @@ namespace
 
 RpnOperand BestTrial::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
+	// Initialize algorithm variables
 	m_calculator = calculator;
-	m_functionName = actualArguments[0].value.value<QString>();
+	m_functionName = actualArguments.at(0).value.value<QString>();
+	m_sourcePoint = RpnVector::toOneDimensional(actualArguments.at(1).value.value<RpnVector>());
+	m_decrease = actualArguments.at(2).value.value<Number>();
+	m_stepsCount = actualArguments.at(3).value.value<Number>();
+	m_iterationsCount = actualArguments.at(4).value.value<Number>();
+	m_minimumStepSize = actualArguments.at(5).value.value<Number>();
+	m_stepSize = 1;
 
-	m_sourcePoint = RpnVector::toOneDimensional(actualArguments[1].value.value<RpnVector>());
+	// Check values of variables for currect algorithm work
 	if (m_calculator->functionArguments(m_functionName).size() != m_sourcePoint.size()) {
 		THROW(EWrongParametersCount(QObject::tr("Source point"), m_calculator->functionArguments(m_functionName).size()));
 	}
-
-	m_decrease = actualArguments[2].value.value<Number>();
 	if ((m_decrease <= 0) || (m_decrease >= 1)) {
 		THROW(EWrongArgument(QObject::tr("decrease coefficient"), QObject::tr("more than 0 and less than 1")) )
 	}
 
-	m_stepsCount = actualArguments[3].value.value<Number>();
-	m_iterationsCount = actualArguments[4].value.value<Number>();
-	m_minimumStepSize = actualArguments[5].value.value<Number>();
-	m_stepSize = 1;
-
-	// Initialize random
+	// Initialize random, random number generator from MathUtils needs it
 	srand(time(NULL));
 
 	RpnOperand result;
@@ -40,7 +40,7 @@ QList<RpnArgument> BestTrial::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
-		// QVariant() shows that number of arguments is not fixed, maybe there is other way
+		// QVariant() shows that number of arguments is not fixed
 		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant())
 		<< RpnArgument(RpnOperandVector)
 		<< RpnArgument(RpnOperandNumber)
@@ -66,7 +66,7 @@ QList<Number> BestTrial::findMinimum()
 			currentPoints << MathUtils::addVectorToVector(
 				m_sourcePoint,
 				MathUtils::multiplyVectorByNumber(
-					MathUtils::divideVectorByNumber(randomPoints[i], MathUtils::vectorNorm(randomPoints[i])),
+					MathUtils::divideVectorByNumber(randomPoints.at(i), MathUtils::vectorNorm(randomPoints.at(i))),
 					m_stepSize
 				)
 			);
@@ -76,6 +76,7 @@ QList<Number> BestTrial::findMinimum()
 
 		if (countFunction(currentPoint) < countFunction(m_sourcePoint)) {
 			m_sourcePoint = currentPoint;
+			iterationCount++;
 
 			if (iterationCount < m_iterationsCount) {
 				continue;
@@ -101,17 +102,14 @@ QList<Number> BestTrial::getSpecialMinimum(QList<QList<Number> > points)
 {
 	QList<Number> result = points.first();
 
-	Number minimumFunctionResult = countFunction(result);
 	foreach (QList<Number> point, points) {
-		if (countFunction(point) < minimumFunctionResult) {
+		if (countFunction(point) < countFunction(result)) {
 			result = point;
-			minimumFunctionResult = countFunction(point);
 		}
 	}
 
 	return result;
 }
-
 
 Number BestTrial::countFunction(QList<Number> arguments)
 {

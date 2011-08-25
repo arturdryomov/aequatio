@@ -9,30 +9,29 @@ namespace
 
 RpnOperand AdaptiveRandom::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
+	// Initialize algorithm variables
 	m_calculator = calculator;
-	m_functionName = actualArguments[0].value.value<QString>();
+	m_functionName = actualArguments.at(0).value.value<QString>();
+	m_sourcePoint = RpnVector::toOneDimensional(actualArguments.at(1).value.value<RpnVector>());
+	m_acceleration = actualArguments.at(2).value.value<Number>();
+	m_decrease = actualArguments.at(3).value.value<Number>();
+	m_wrongStepsCount = actualArguments.at(4).value.value<Number>();
+	m_iterationsCount = actualArguments.at(5).value.value<Number>();
+	m_minimumStepSize = actualArguments.at(6).value.value<Number>();
+	m_stepSize = 1;
 
-	m_sourcePoint = RpnVector::toOneDimensional(actualArguments[1].value.value<RpnVector>());
+	// Check values of variables for currect algorithm work
 	if (m_calculator->functionArguments(m_functionName).size() != m_sourcePoint.size()) {
 		THROW(EWrongParametersCount(QObject::tr("Source point"), m_calculator->functionArguments(m_functionName).size()));
 	}
-
-	m_acceleration = actualArguments[2].value.value<Number>();
 	if (m_acceleration <= 1) {
 		THROW(EWrongArgument(QObject::tr("acceleration coefficient"), QObject::tr("more than 1")) )
 	}
-
-	m_decrease = actualArguments[3].value.value<Number>();
 	if ((m_decrease <= 0) || (m_decrease >= 1)) {
 		THROW(EWrongArgument(QObject::tr("decrease coefficient"), QObject::tr("more than 0 and less than 1")) )
 	}
 
-	m_wrongStepsCount = actualArguments[4].value.value<Number>();
-	m_iterationsCount = actualArguments[5].value.value<Number>();
-	m_minimumStepSize = actualArguments[6].value.value<Number>();
-	m_stepSize = 1;
-
-	// Initialize random
+	// Initialize random, random number generator from MathUtils needs it
 	srand(time(NULL));
 
 	RpnOperand result;
@@ -45,7 +44,7 @@ QList<RpnArgument> AdaptiveRandom::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
-		// QVariant() shows that number of arguments is not fixed, maybe there is other way
+		// QVariant() shows that number of arguments is not fixed
 		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant())
 		<< RpnArgument(RpnOperandVector)
 		<< RpnArgument(RpnOperandNumber)
@@ -111,7 +110,6 @@ QList<Number> AdaptiveRandom::findMinimum()
 		}
 	}
 }
-
 
 Number AdaptiveRandom::countFunction(QList<Number> arguments)
 {

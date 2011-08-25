@@ -26,13 +26,10 @@ private:
 	QList<QList<Number> > m_directions;
 
 	QList<Number> findMinimum();
-
-	Number countFunction(QList<Number> arguments);
-
 	QList<Number> increaseDirection(QList<Number> point, int direction);
 	void getNewDirections(QList<Number> stepSizes);
 	QList<Number> getStepLengths(QList<Number> currentPoint, QList<Number> previousPoint);
-
+	Number countFunction(QList<Number> arguments);
 	QList<Number> solveEquationSystem(QList<QList<Number> > coefficients);
 };
 

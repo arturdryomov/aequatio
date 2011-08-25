@@ -17,7 +17,7 @@ QList<Number> MathUtils::subtractVectorFromVector(QList<Number> source, QList<Nu
 	QList<Number> result;
 
 	for (int i = 0; i < source.size(); i++) {
-		result << source[i] - subtrahend[i];
+		result << source.at(i) - subtrahend.at(i);
 	}
 
 	return result;
@@ -28,7 +28,7 @@ QList<Number> MathUtils::addVectorToVector(QList<Number> source, QList<Number> s
 	QList<Number> result;
 
 	for (int i = 0; i < source.size(); i++) {
-		result << source[i] + summand[i];
+		result << source.at(i) + summand.at(i);
 	}
 
 	return result;
@@ -39,7 +39,7 @@ Number MathUtils::multiplyVectorByVectorScalar(QList<Number> source, QList<Numbe
 	Number result = 0;
 
 	for (int i = 0; i < source.size(); i++) {
-		result += source[i] * factor[i];
+		result += source.at(i) * factor.at(i);
 	}
 
 	return result;
@@ -72,10 +72,11 @@ Number MathUtils::countDeterminant(QVector<QVector<Number> > matrix)
 	Number result = 0;
 
 	if (matrix.size() == 1) {
-		result = matrix[0][0];
+		result = matrix.at(0).at(0);
 	}
 	else if (matrix.size() == 2) {
-		result = matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+		result = matrix.at(0).at(0) * matrix.at(1).at(1) -
+			matrix.at(0).at(1) * matrix.at(1).at(0);
 	}
 	else {
 		// Go threw first line
@@ -142,6 +143,7 @@ QList<Number> MathUtils::generateRandomNumbers(int count, Number lowerLimit, Num
 }
 
 // Return a random number between 0 and higher limit
+// For currect using initialize random first with srand function
 Number MathUtils::getRandomNumber(Number higherLimit)
 {
 	Number result;

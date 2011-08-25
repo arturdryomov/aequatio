@@ -18,16 +18,15 @@ private:
 		Number leftBorder;
 		Number rightBorder;
 	};
-	Interval m_sourceInterval;
 
+	Interval m_sourceInterval;
 	FunctionCalculator* m_calculator;
 	QString m_functionName;
 	Number m_space;
 	Number m_accuracy;
 
-	Number countFunction(Number argument);
-
 	Number findMinimum();
+	Number countFunction(Number argument);
 };
 
 #endif // DICHOTOMY_H

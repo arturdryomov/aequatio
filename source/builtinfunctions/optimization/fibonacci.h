@@ -18,19 +18,18 @@ private:
 		Number leftBorder;
 		Number rightBorder;
 	};
-	Interval m_sourceInterval;
 
+	Interval m_sourceInterval;
 	FunctionCalculator* m_calculator;
 	QString m_functionName;
 	Number m_resultIntervalLength;
 	Number m_difference;
 	Number m_iterationsNumber;
 
-	Number countFunction(Number argument);
-
 	Number findMinimum();
-	void getIterationsNumber();
-	Number getFibonacciNumber(int position);
+	void initializeIterationsNumber();
+	Number fibonacciNumber(int position);
+	Number countFunction(Number argument);
 };
 
 #endif // FIBONACCI_H

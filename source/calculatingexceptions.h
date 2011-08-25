@@ -14,6 +14,7 @@ public:
 	QString message();
 };
 
+
 class EBuiltInRedifinition : public ECalculating
 {
 public:
@@ -25,6 +26,7 @@ private:
 	ElementType m_elementType;
 };
 
+
 class ERecursiveFunction : public ECalculating
 {
 public:
@@ -33,6 +35,7 @@ public:
 private:
 	QString m_functionName;
 };
+
 
 class EWrongParametersCount : public ECalculating
 {
@@ -44,6 +47,7 @@ private:
 	int m_parametersExpected;
 };
 
+
 class EWrongArgument : public ECalculating
 {
 public:
@@ -53,6 +57,7 @@ private:
 	QString m_argumentName;
 	QString m_argumentCondition;
 };
+
 
 class EWrongVectorDimension : public ECalculating
 {

@@ -15,6 +15,7 @@ public:
 	QString message();
 };
 
+
 class ELexemeExpected : public EParsing
 {
 public:
@@ -25,11 +26,13 @@ private:
 	QString m_expected;
 };
 
+
 class EEmptyInput : public EParsing
 {
 public:
 	QString message();
 };
+
 
 class EUndeclaredUsed : public EParsing
 {
@@ -42,6 +45,7 @@ private:
 	ElementType m_elementType;
 };
 
+
 class EWrongArgumentsCount : public EParsing
 {
 public:
@@ -52,6 +56,7 @@ private:
 	int m_argumentsExpected;
 };
 
+
 class EFormalArgumentReused : public EParsing
 {
 public:
@@ -60,6 +65,7 @@ public:
 private:
 	QString m_argumentName;
 };
+
 
 class EIncorrectCharacter : public EParsing
 {
@@ -70,12 +76,14 @@ private:
 	QChar m_character;
 };
 
+
 class EIncorrectConstantDeclaration : public EParsing
 {
 public:
 	EIncorrectConstantDeclaration();
 	QString message();
 };
+
 
 // means that the function passed as an argument has incorrect signature.
 class EIncorrectFunctionArgument : public EParsing
@@ -87,11 +95,13 @@ private:
 	QString m_functionName;
 };
 
+
 // vector elements can be only of a number type
 class EIncorrectVectorInitialization : public EParsing
 {
 	QString message();
 };
+
 
 /* EInternal children */
 

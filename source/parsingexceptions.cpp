@@ -23,10 +23,12 @@ LogItem ELexemeExpected::logItem()
 	return item;
 }
 
+
 QString EEmptyInput::message()
 {
 	return tr("You’ve entered empty command.");
 }
+
 
 EUndeclaredUsed::EUndeclaredUsed(const QString &elementName, ElementType elementType) :
 	m_elementName(elementName), m_elementType(elementType)
@@ -45,6 +47,7 @@ QString EUndeclaredUsed::message()
 	}
 }
 
+
 EWrongArgumentsCount::EWrongArgumentsCount(const QString &functionName, int argumentsExpected) :
 m_functionName(functionName),
 m_argumentsExpected(argumentsExpected)
@@ -57,6 +60,7 @@ QString EWrongArgumentsCount::message()
 		.arg(m_functionName);
 }
 
+
 EFormalArgumentReused::EFormalArgumentReused(const QString &argumentName) : m_argumentName(argumentName)
 {
 }
@@ -67,6 +71,7 @@ QString EFormalArgumentReused::message()
 		.arg(m_argumentName);
 }
 
+
 EIncorrectCharacter::EIncorrectCharacter(QChar c) : m_character(c)
 {
 }
@@ -75,6 +80,7 @@ QString EIncorrectCharacter::message()
 {
 	return tr("Character “%1” is incorrect here.").arg(m_character);
 }
+
 
 EIncorrectConstantDeclaration::EIncorrectConstantDeclaration()
 {
@@ -85,6 +91,7 @@ QString EIncorrectConstantDeclaration::message()
 	return tr("Constant value can be a number or an expression the result of which is a number.");
 }
 
+
 EIncorrectFunctionArgument::EIncorrectFunctionArgument(const QString &functionName) : m_functionName(functionName)
 {
 }
@@ -94,6 +101,7 @@ QString EIncorrectFunctionArgument::message()
 	return tr("Function “%1” cannot be passed as an argument here as it has inappropriate "
 		"signature (list of arguments and their types).").arg(m_functionName);
 }
+
 
 QString EIncorrectVectorInitialization::message()
 {
@@ -114,4 +122,3 @@ LogItem EUnsupportedLexeme::logItem()
 
 	return item;
 }
-

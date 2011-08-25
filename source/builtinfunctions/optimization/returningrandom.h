@@ -24,7 +24,6 @@ private:
 	Number m_stepSize;
 
 	QList<Number> findMinimum();
-
 	Number countFunction(QList<Number> arguments);
 };
 

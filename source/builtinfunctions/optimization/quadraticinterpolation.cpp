@@ -7,20 +7,22 @@ namespace
 
 RpnOperand QuadraticInterpolation::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
+	// Initialize algorithm variables
 	m_calculator = calculator;
-	m_functionName = actualArguments[0].value.value<QString>();
-	m_startPoint = actualArguments[1].value.value<Number>();
-	m_stepSize = actualArguments[2].value.value<Number>();
-	m_firstAccuracy = actualArguments[3].value.value<Number>();
-	m_secondAccuracy = actualArguments[4].value.value<Number>();
+	m_functionName = actualArguments.at(0).value.value<QString>();
+	m_startPoint = actualArguments.at(1).value.value<Number>();
+	m_stepSize = actualArguments.at(2).value.value<Number>();
+	m_firstAccuracy = actualArguments.at(3).value.value<Number>();
+	m_secondAccuracy = actualArguments.at(4).value.value<Number>();
 
+	// Check values of variables for currect algorithm work
 	if (m_stepSize <= 0) {
 		THROW(EWrongArgument(QObject::tr("step size"), QObject::tr("more than 0")) )
 	}
 
 	RpnOperand result;
 	result.type = RpnOperandNumber;
-	result.value = findMinimum();
+	result.value = QVariant::fromValue(findMinimum());
 	return result;
 }
 

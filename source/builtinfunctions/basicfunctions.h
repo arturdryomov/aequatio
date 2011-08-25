@@ -75,10 +75,10 @@ public:
 };
 
 
-class CalcSine : public BuiltInFunction
+class Sine : public BuiltInFunction
 {
 public:
-	CalcSine() : BuiltInFunction("sin")
+	Sine() : BuiltInFunction("sin")
 	{
 	}
 
@@ -87,10 +87,10 @@ public:
 };
 
 
-class CalcCosine : public BuiltInFunction
+class Cosine : public BuiltInFunction
 {
 public:
-	CalcCosine() : BuiltInFunction("cos")
+	Cosine() : BuiltInFunction("cos")
 	{
 	}
 
@@ -99,16 +99,17 @@ public:
 };
 
 
-class CalcTangent : public BuiltInFunction
+class Tangent : public BuiltInFunction
 {
 public:
-	CalcTangent() : BuiltInFunction("tan")
+	Tangent() : BuiltInFunction("tan")
 	{
 	}
 
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
 	QList<RpnArgument> requiredArguments();
 };
+
 
 class Abs : public BuiltInFunction
 {
@@ -120,6 +121,7 @@ public:
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
 	QList<RpnArgument> requiredArguments();
 };
+
 
 class Sqrt : public BuiltInFunction
 {

@@ -18,15 +18,14 @@ private:
 		Number leftBorder;
 		Number rightBorder;
 	};
-	Interval m_sourceInterval;
 
+	Interval m_sourceInterval;
 	FunctionCalculator* m_calculator;
 	QString m_functionName;
 	Number m_iterationNumber;
 
-	Number countFunction(Number argument);
-
 	Number findMinimum();
+	Number countFunction(Number argument);
 };
 
 #endif // UNIFORM_H

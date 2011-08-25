@@ -24,9 +24,8 @@ private:
 	Number m_accuracy;
 	Interval m_sourceInterval;
 
-	Number countFunction(Number argument);
-
 	Number findMinimum();
+	Number countFunction(Number argument);
 };
 
 #endif // BISECTION_H

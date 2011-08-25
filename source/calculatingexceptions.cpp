@@ -5,6 +5,7 @@ QString ECalculating::message()
 	return tr("An error occurred while performing calculation.");
 }
 
+
 EBuiltInRedifinition::EBuiltInRedifinition(const QString &elementName, EBuiltInRedifinition::ElementType elementType) :
 	m_elementName(elementName), m_elementType(elementType)
 {
@@ -21,6 +22,7 @@ QString EBuiltInRedifinition::message()
 			"built-in function with this name.").arg(m_elementName);
 	}
 }
+
 
 ERecursiveFunction::ERecursiveFunction(const QString &functionName) : m_functionName(functionName)
 {
@@ -45,6 +47,7 @@ QString EWrongParametersCount::message()
 		.arg(m_parameterName);
 }
 
+
 EWrongArgument::EWrongArgument(const QString &argumentName, const QString &argumentCondition) :
 	m_argumentName(argumentName), m_argumentCondition(argumentCondition)
 {
@@ -54,6 +57,7 @@ QString EWrongArgument::message()
 {
 	return tr("Wrong argument condition: %1 must be %2.").arg(m_argumentName).arg(m_argumentCondition);
 }
+
 
 EWrongVectorDimension::EWrongVectorDimension(int expectedDimension, int actualDimension) :
 	m_expectedDimension(expectedDimension), m_actualDimension(actualDimension)
