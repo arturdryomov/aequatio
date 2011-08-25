@@ -110,6 +110,16 @@ Number MathUtils::countDeterminant(QVector<QVector<Number> > matrix)
 	return result;
 }
 
+bool MathUtils::isBetween(Number value, Number left, Number right, bool canBeEqual)
+{
+	if (canBeEqual) {
+		return (value >= left) && (value <= right);
+	}
+	else {
+		return (value > left) && (value < right);
+	}
+}
+
 bool MathUtils::equal(Number number1, Number number2)
 {
 	return qFuzzyCompare(number1, number2);

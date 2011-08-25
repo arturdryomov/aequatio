@@ -59,7 +59,8 @@ SOURCES += \
 	source/builtinfunctions/optimization/rosenbrock.cpp \
 	source/builtinfunctions/optimization/adaptiverandom.cpp \
 	source/builtinfunctions/optimization/returningrandom.cpp \
-	source/builtinfunctions/optimization/besttrial.cpp
+	source/builtinfunctions/optimization/besttrial.cpp \
+	source/builtinfunctions/optimization/neldermead.cpp
 
 HEADERS  += \
 	source/mainwindow.h \
@@ -92,7 +93,8 @@ HEADERS  += \
 	source/builtinfunctions/optimization/rosenbrock.h \
 	source/builtinfunctions/optimization/adaptiverandom.h \
 	source/builtinfunctions/optimization/returningrandom.h \
-	source/builtinfunctions/optimization/besttrial.h
+	source/builtinfunctions/optimization/besttrial.h \
+	source/builtinfunctions/optimization/neldermead.h
 
 FORMS	+= \
 	source/mainwindow.ui \

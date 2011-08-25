@@ -16,6 +16,7 @@ public:
 
 	static Number countDeterminant(QVector<QVector<Number> > matrix);
 
+	static bool isBetween(Number value, Number left, Number right, bool canBeEqual = false);
 	static bool equal(Number number1, Number number2);
 	static bool isNull(Number number);
 	static Number getNaN();
