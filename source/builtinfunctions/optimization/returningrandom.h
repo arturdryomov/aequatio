@@ -17,9 +17,9 @@ private:
 	FunctionCalculator* m_calculator;
 	QString m_functionName;
 	QList<Number> m_sourcePoint;
-	Number m_decrease;
+	Number m_decreaseCoefficient;
 	Number m_wrongStepsCount;
-	Number m_iterationsCount;
+	Number m_maximumIterationsCount;
 	Number m_minimumStepSize;
 	Number m_stepSize;
 

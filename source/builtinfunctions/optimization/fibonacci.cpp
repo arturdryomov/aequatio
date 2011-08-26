@@ -13,14 +13,14 @@ RpnOperand Fibonacci::calculate(FunctionCalculator *calculator, QList<RpnOperand
 	m_sourceInterval.leftBorder = actualArguments.at(1).value.value<Number>();
 	m_sourceInterval.rightBorder = actualArguments.at(2).value.value<Number>();
 	m_resultIntervalLength = actualArguments.at(3).value.value<Number>();
-	m_difference = actualArguments.at(4).value.value<Number>();
+	m_differenceConstant = actualArguments.at(4).value.value<Number>();
 	initializeIterationsNumber();
 
 	// Check values of variables for currect algorithm work
 	if (m_resultIntervalLength <= 0) {
 		THROW(EWrongArgument(QObject::tr("length of finish interval"), QObject::tr("more than 0")) )
 	}
-	if (m_difference <= 0) {
+	if (m_differenceConstant <= 0) {
 		THROW(EWrongArgument(QObject::tr("difference constant"), QObject::tr("more than 0")) )
 	}
 
@@ -73,45 +73,45 @@ Number Fibonacci::fibonacciNumber(int position)
 
 Number Fibonacci::findMinimum()
 {
-	Interval newInterval;
+	Interval currentInterval;
 
-	newInterval.leftBorder = m_sourceInterval.leftBorder +
+	currentInterval.leftBorder = m_sourceInterval.leftBorder +
 		(fibonacciNumber(m_iterationsNumber - 2) / fibonacciNumber(m_iterationsNumber)) *
 		(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder);
 
-	newInterval.rightBorder = m_sourceInterval.leftBorder +
+	currentInterval.rightBorder = m_sourceInterval.leftBorder +
 		(fibonacciNumber(m_iterationsNumber - 1) / fibonacciNumber(m_iterationsNumber)) *
 		(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder);
 
 	for (int iteration = 0; iteration <= m_iterationsNumber - 3; iteration++) {
-		if (countFunction(newInterval.leftBorder) <= countFunction(newInterval.rightBorder)) {
-			m_sourceInterval.rightBorder = newInterval.rightBorder;
-			newInterval.rightBorder = newInterval.leftBorder;
+		if (countFunction(currentInterval.leftBorder) <= countFunction(currentInterval.rightBorder)) {
+			m_sourceInterval.rightBorder = currentInterval.rightBorder;
+			currentInterval.rightBorder = currentInterval.leftBorder;
 
-			newInterval.leftBorder = m_sourceInterval.leftBorder +
+			currentInterval.leftBorder = m_sourceInterval.leftBorder +
 				(fibonacciNumber(m_iterationsNumber - iteration - 3) /
 					fibonacciNumber(m_iterationsNumber - iteration - 1)) *
 				(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder);
 		}
 
 		else {
-			m_sourceInterval.leftBorder = newInterval.leftBorder;
-			newInterval.leftBorder = newInterval.rightBorder;
+			m_sourceInterval.leftBorder = currentInterval.leftBorder;
+			currentInterval.leftBorder = currentInterval.rightBorder;
 
-			newInterval.rightBorder = m_sourceInterval.leftBorder +
+			currentInterval.rightBorder = m_sourceInterval.leftBorder +
 				(fibonacciNumber(m_iterationsNumber - iteration - 2) /
 					fibonacciNumber(m_iterationsNumber - iteration - 1)) *
 				(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder);
 		}
 	}
 
-	newInterval.rightBorder = newInterval.leftBorder + m_difference;
+	currentInterval.rightBorder = currentInterval.leftBorder + m_differenceConstant;
 
-	if (countFunction(newInterval.leftBorder) <= countFunction(newInterval.rightBorder)) {
-		m_sourceInterval.rightBorder = newInterval.rightBorder;
+	if (countFunction(currentInterval.leftBorder) <= countFunction(currentInterval.rightBorder)) {
+		m_sourceInterval.rightBorder = currentInterval.rightBorder;
 	}
 	else {
-		m_sourceInterval.leftBorder = newInterval.leftBorder;
+		m_sourceInterval.leftBorder = currentInterval.leftBorder;
 	}
 
 	return (m_sourceInterval.rightBorder + m_sourceInterval.leftBorder) / 2;

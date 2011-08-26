@@ -18,9 +18,9 @@ private:
 	QString m_functionName;
 	QList<Number> m_sourcePoint;
 	Number m_stopValue;
-	QList<Number> m_steps;
-	Number m_accelerationStep;
-	Number m_decreaseStep;
+	QList<Number> m_stepSizes;
+	Number m_accelerationCoefficient;
+	Number m_decreaseCoefficient;
 
 	QList<Number> findMinimum();
 	QList<Number> increaseDirection(QList<Number> point, int direction);

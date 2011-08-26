@@ -13,13 +13,13 @@ RpnOperand Dichotomy::calculate(FunctionCalculator *calculator, QList<RpnOperand
 	m_sourceInterval.leftBorder = actualArguments.at(1).value.value<Number>();
 	m_sourceInterval.rightBorder = actualArguments.at(2).value.value<Number>();
 	m_accuracy = actualArguments.at(3).value.value<Number>();
-	m_space = actualArguments.at(4).value.value<Number>();
+	m_swing = actualArguments.at(4).value.value<Number>();
 
 	// Check values of variables for currect algorithm work
 	if (m_accuracy <= 0) {
 		THROW(EWrongArgument(QObject::tr("accuracy"), QObject::tr("more than 0")) )
 	}
-	if (m_space <= 0) {
+	if (m_swing <= 0) {
 		THROW(EWrongArgument(QObject::tr("configuration small number"), QObject::tr("more than 0")) )
 	}
 
@@ -46,17 +46,17 @@ QList<RpnArgument> Dichotomy::requiredArguments()
 Number Dichotomy::findMinimum()
 {
 	forever {
-		Interval newInterval;
-		newInterval.leftBorder = (m_sourceInterval.leftBorder +
-			m_sourceInterval.rightBorder - m_space) / 2;
-		newInterval.rightBorder = (m_sourceInterval.leftBorder +
-			m_sourceInterval.rightBorder + m_space) / 2;
+		Interval currentInterval;
+		currentInterval.leftBorder = (m_sourceInterval.leftBorder +
+			m_sourceInterval.rightBorder - m_swing) / 2;
+		currentInterval.rightBorder = (m_sourceInterval.leftBorder +
+			m_sourceInterval.rightBorder + m_swing) / 2;
 
-		if (countFunction(newInterval.leftBorder) <= countFunction(newInterval.rightBorder)) {
-			m_sourceInterval.rightBorder = newInterval.rightBorder;
+		if (countFunction(currentInterval.leftBorder) <= countFunction(currentInterval.rightBorder)) {
+			m_sourceInterval.rightBorder = currentInterval.rightBorder;
 		}
 		else {
-			m_sourceInterval.leftBorder = newInterval.leftBorder;
+			m_sourceInterval.leftBorder = currentInterval.leftBorder;
 		}
 
 		if (qAbs(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) <= m_accuracy) {

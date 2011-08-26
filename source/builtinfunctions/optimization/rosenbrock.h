@@ -19,15 +19,15 @@ private:
 	QString m_functionName;
 	QList<Number> m_sourcePoint;
 	Number m_stopValue;
-	Number m_accelerationStep;
-	Number m_decreaseStep;
-	QList<Number> m_steps;
-	Number m_wrongStepsNumber;
+	Number m_accelerationCoefficient;
+	Number m_decreaseCoefficient;
+	QList<Number> m_stepSizes;
+	Number m_maximumWrongStepsCount;
 	QList<QList<Number> > m_directions;
 
 	QList<Number> findMinimum();
 	QList<Number> increaseDirection(QList<Number> point, int direction);
-	void getNewDirections(QList<Number> stepSizes);
+	void initializeNewDirections(QList<Number> stepSizes);
 	QList<Number> getStepLengths(QList<Number> currentPoint, QList<Number> previousPoint);
 	Number countFunction(QList<Number> arguments);
 	QList<Number> solveEquationSystem(QList<QList<Number> > coefficients);

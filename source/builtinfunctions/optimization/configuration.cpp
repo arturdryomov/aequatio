@@ -12,9 +12,9 @@ RpnOperand Configuration::calculate(FunctionCalculator *calculator, QList<RpnOpe
 	m_functionName = actualArguments.at(0).value.value<QString>();
 	m_sourcePoint = RpnVector::toOneDimensional(actualArguments.at(1).value.value<RpnVector>());
 	m_stopValue = actualArguments.at(2).value.value<Number>();
-	m_steps = RpnVector::toOneDimensional(actualArguments.at(3).value.value<RpnVector>());
-	m_accelerationStep = actualArguments.at(4).value.value<Number>();
-	m_decreaseStep = actualArguments.at(5).value.value<Number>();
+	m_stepSizes = RpnVector::toOneDimensional(actualArguments.at(3).value.value<RpnVector>());
+	m_accelerationCoefficient = actualArguments.at(4).value.value<Number>();
+	m_decreaseCoefficient = actualArguments.at(5).value.value<Number>();
 
 	// Check values of variables for currect algorithm work
 	if (m_calculator->functionArguments(m_functionName).size() != m_sourcePoint.size()) {
@@ -23,13 +23,13 @@ RpnOperand Configuration::calculate(FunctionCalculator *calculator, QList<RpnOpe
 	if (m_stopValue <= 0) {
 		THROW(EWrongArgument(QObject::tr("stop value"), QObject::tr("more than 0")) )
 	}
-	if (m_calculator->functionArguments(m_functionName).size() != m_steps.size()) {
+	if (m_calculator->functionArguments(m_functionName).size() != m_stepSizes.size()) {
 		THROW(EWrongParametersCount(QObject::tr("Coordinate steps"), m_calculator->functionArguments(m_functionName).size()));
 	}
-	if (m_accelerationStep <= 0) {
+	if (m_accelerationCoefficient <= 0) {
 		THROW(EWrongArgument(QObject::tr("acceleration coefficient"), QObject::tr("more than 0")) )
 	}
-	if (m_decreaseStep <= 1) {
+	if (m_decreaseCoefficient <= 1) {
 		THROW(EWrongArgument(QObject::tr("decrease step coefficient"), QObject::tr("more than 1")) )
 	}
 
@@ -72,15 +72,15 @@ QList<Number> Configuration::findMinimum()
 			QList<Number> oldSourcePoint = m_sourcePoint;
 			m_sourcePoint = currentPoint;
 			for (int i = 0; i < currentPoint.size(); i++) {
-				currentPoint[i] = m_sourcePoint[i] + m_accelerationStep * (m_sourcePoint[i] - oldSourcePoint[i]);
+				currentPoint[i] = m_sourcePoint[i] + m_accelerationCoefficient * (m_sourcePoint[i] - oldSourcePoint[i]);
 			}
 		}
 		else {
 			bool isFinish = true;
-			for (int i = 0; i < m_steps.size(); i++) {
-				if (m_steps[i] > m_stopValue) {
+			for (int i = 0; i < m_stepSizes.size(); i++) {
+				if (m_stepSizes[i] > m_stopValue) {
 					isFinish = false;
-					m_steps[i] = m_steps[i] / m_decreaseStep;
+					m_stepSizes[i] = m_stepSizes[i] / m_decreaseCoefficient;
 				}
 			}
 
@@ -98,7 +98,7 @@ QList<Number> Configuration::findMinimum()
 QList<Number> Configuration::increaseDirection(QList<Number> point, int direction)
 {
 	QList<Number> result = point;
-	result[direction] += m_steps[direction];
+	result[direction] += m_stepSizes[direction];
 
 	return result;
 }
@@ -106,7 +106,7 @@ QList<Number> Configuration::increaseDirection(QList<Number> point, int directio
 QList<Number> Configuration::decreaseDirection(QList<Number> point, int direction)
 {
 	QList<Number> result = point;
-	result[direction] -= m_steps[direction];
+	result[direction] -= m_stepSizes[direction];
 
 	return result;
 }

@@ -10,10 +10,10 @@ RpnOperand QuadraticInterpolation::calculate(FunctionCalculator *calculator, QLi
 	// Initialize algorithm variables
 	m_calculator = calculator;
 	m_functionName = actualArguments.at(0).value.value<QString>();
-	m_startPoint = actualArguments.at(1).value.value<Number>();
+	m_sourcePoint = actualArguments.at(1).value.value<Number>();
 	m_stepSize = actualArguments.at(2).value.value<Number>();
-	m_firstAccuracy = actualArguments.at(3).value.value<Number>();
-	m_secondAccuracy = actualArguments.at(4).value.value<Number>();
+	m_firstAccuracyCoefficient = actualArguments.at(3).value.value<Number>();
+	m_secondAccuracyCoefficient = actualArguments.at(4).value.value<Number>();
 
 	// Check values of variables for currect algorithm work
 	if (m_stepSize <= 0) {
@@ -48,30 +48,30 @@ Number QuadraticInterpolation::findMinimum()
 		Number secondPoint, thirdPoint;
 
 		if (needInitializePoints) {
-			secondPoint = m_startPoint + m_stepSize;
+			secondPoint = m_sourcePoint + m_stepSize;
 
-			if (countFunction(m_startPoint) > countFunction(secondPoint)) {
-				thirdPoint = m_startPoint + 2 * m_stepSize;
+			if (countFunction(m_sourcePoint) > countFunction(secondPoint)) {
+				thirdPoint = m_sourcePoint + 2 * m_stepSize;
 			}
 			else {
-				thirdPoint = m_startPoint - m_stepSize;
+				thirdPoint = m_sourcePoint - m_stepSize;
 			}
 		}
 
-		Number minimumPoint = minimumPointValue(m_startPoint, secondPoint, thirdPoint);
+		Number minimumPoint = getMinimumPoint(m_sourcePoint, secondPoint, thirdPoint);
 
 		Number numerator =
-			(qPow(secondPoint, 2) - qPow(thirdPoint, 2)) * countFunction(m_startPoint) +
-			(qPow(thirdPoint, 2) - qPow(m_startPoint, 2)) * countFunction(secondPoint) +
-			(qPow(m_startPoint, 2) - qPow(secondPoint, 2)) * countFunction(thirdPoint);
+			(qPow(secondPoint, 2) - qPow(thirdPoint, 2)) * countFunction(m_sourcePoint) +
+			(qPow(thirdPoint, 2) - qPow(m_sourcePoint, 2)) * countFunction(secondPoint) +
+			(qPow(m_sourcePoint, 2) - qPow(secondPoint, 2)) * countFunction(thirdPoint);
 
 		Number denominator =
-			((secondPoint - thirdPoint) * countFunction(m_startPoint)) +
-			((thirdPoint - m_startPoint) * countFunction(secondPoint)) +
-			((m_startPoint - secondPoint) * countFunction(thirdPoint));
+			((secondPoint - thirdPoint) * countFunction(m_sourcePoint)) +
+			((thirdPoint - m_sourcePoint) * countFunction(secondPoint)) +
+			((m_sourcePoint - secondPoint) * countFunction(thirdPoint));
 
 		if (denominator == 0) {
-			m_startPoint = minimumPoint;
+			m_sourcePoint = minimumPoint;
 
 			needInitializePoints = true;
 			continue;
@@ -80,13 +80,13 @@ Number QuadraticInterpolation::findMinimum()
 		Number quadraticPoint = (0.5 * numerator) / denominator;
 
 		if ( (qAbs((countFunction(minimumPoint) - countFunction(quadraticPoint)) / countFunction(quadraticPoint))
-			< m_firstAccuracy) && (qAbs((minimumPoint - quadraticPoint) / quadraticPoint) < m_secondAccuracy) ) {
+			< m_firstAccuracyCoefficient) && (qAbs((minimumPoint - quadraticPoint) / quadraticPoint) < m_secondAccuracyCoefficient) ) {
 			// Exit condition
 			return quadraticPoint;
 		}
-		else if ((quadraticPoint > m_startPoint) && (quadraticPoint < thirdPoint)) {
+		else if ((quadraticPoint > m_sourcePoint) && (quadraticPoint < thirdPoint)) {
 			QList<Number> points;
-			points << m_startPoint << secondPoint << thirdPoint;
+			points << m_sourcePoint << secondPoint << thirdPoint;
 			qSort(points);
 
 			if (minimumPoint > quadraticPoint) {
@@ -97,20 +97,20 @@ Number QuadraticInterpolation::findMinimum()
 			}
 
 			points.removeOne(secondPoint);
-			m_startPoint = points[0];
+			m_sourcePoint = points[0];
 			thirdPoint = points[1];
 
 			needInitializePoints = false;
 		}
 		else {
-			m_startPoint = quadraticPoint;
+			m_sourcePoint = quadraticPoint;
 
 			needInitializePoints = true;
 		}
 	}
 }
 
-Number QuadraticInterpolation::minimumPointValue(Number first, Number second, Number third)
+Number QuadraticInterpolation::getMinimumPoint(Number first, Number second, Number third)
 {
 	Number minimumNumber = first;
 	if (countFunction(minimumNumber) > countFunction(second)) {

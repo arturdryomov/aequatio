@@ -22,7 +22,7 @@ private:
 	Interval m_sourceInterval;
 	FunctionCalculator* m_calculator;
 	QString m_functionName;
-	Number m_space;
+	Number m_swing;
 	Number m_accuracy;
 
 	Number findMinimum();

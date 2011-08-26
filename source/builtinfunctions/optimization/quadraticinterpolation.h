@@ -16,13 +16,13 @@ public:
 private:
 	FunctionCalculator* m_calculator;
 	QString m_functionName;
-	Number m_startPoint;
+	Number m_sourcePoint;
 	Number m_stepSize;
-	Number m_firstAccuracy;
-	Number m_secondAccuracy;
+	Number m_firstAccuracyCoefficient;
+	Number m_secondAccuracyCoefficient;
 
 	Number findMinimum();
-	Number minimumPointValue(Number first, Number second, Number third);
+	Number getMinimumPoint(Number first, Number second, Number third);
 	Number countFunction(Number argument);
 };
 

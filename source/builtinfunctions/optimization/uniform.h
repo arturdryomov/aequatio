@@ -22,7 +22,7 @@ private:
 	Interval m_sourceInterval;
 	FunctionCalculator* m_calculator;
 	QString m_functionName;
-	Number m_iterationNumber;
+	Number m_iterationsCount;
 
 	Number findMinimum();
 	Number countFunction(Number argument);

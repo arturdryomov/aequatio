@@ -13,14 +13,14 @@ RpnOperand ReturningRandom::calculate(FunctionCalculator *calculator, QList<RpnO
 	m_calculator = calculator;
 	m_functionName = actualArguments.at(0).value.value<QString>();
 	m_sourcePoint = RpnVector::toOneDimensional(actualArguments.at(1).value.value<RpnVector>());
-	m_decrease = actualArguments.at(2).value.value<Number>();
+	m_decreaseCoefficient = actualArguments.at(2).value.value<Number>();
 	m_wrongStepsCount = actualArguments.at(3).value.value<Number>();
-	m_iterationsCount = actualArguments.at(4).value.value<Number>();
+	m_maximumIterationsCount = actualArguments.at(4).value.value<Number>();
 	m_minimumStepSize = actualArguments.at(5).value.value<Number>();
 	m_stepSize = 1;
 
 	// Check values of variables for currect algorithm work
-	if ((m_decrease <= 0) || (m_decrease >= 1)) {
+	if ((m_decreaseCoefficient <= 0) || (m_decreaseCoefficient >= 1)) {
 		THROW(EWrongArgument(QObject::tr("decrease coefficient"), QObject::tr("more than 0 and less than 1")) )
 	}
 	if (m_calculator->functionArguments(m_functionName).size() != m_sourcePoint.size()) {
@@ -70,7 +70,7 @@ QList<Number> ReturningRandom::findMinimum()
 		if (countFunction(currentPoint) < countFunction(m_sourcePoint)) {
 			m_sourcePoint = currentPoint;
 
-			if (iterationCount < m_iterationsCount) {
+			if (iterationCount < m_maximumIterationsCount) {
 				failCount = 1;
 				continue;
 			}
@@ -88,7 +88,7 @@ QList<Number> ReturningRandom::findMinimum()
 			return m_sourcePoint;
 		}
 		else {
-			m_stepSize *= m_decrease;
+			m_stepSize *= m_decreaseCoefficient;
 			failCount = 1;
 		}
 	}

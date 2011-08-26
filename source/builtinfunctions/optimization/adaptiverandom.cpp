@@ -13,10 +13,10 @@ RpnOperand AdaptiveRandom::calculate(FunctionCalculator *calculator, QList<RpnOp
 	m_calculator = calculator;
 	m_functionName = actualArguments.at(0).value.value<QString>();
 	m_sourcePoint = RpnVector::toOneDimensional(actualArguments.at(1).value.value<RpnVector>());
-	m_acceleration = actualArguments.at(2).value.value<Number>();
-	m_decrease = actualArguments.at(3).value.value<Number>();
+	m_accelerationCoefficient = actualArguments.at(2).value.value<Number>();
+	m_decreaseCoefficient = actualArguments.at(3).value.value<Number>();
 	m_wrongStepsCount = actualArguments.at(4).value.value<Number>();
-	m_iterationsCount = actualArguments.at(5).value.value<Number>();
+	m_maximumIterationsCount = actualArguments.at(5).value.value<Number>();
 	m_minimumStepSize = actualArguments.at(6).value.value<Number>();
 	m_stepSize = 1;
 
@@ -24,10 +24,10 @@ RpnOperand AdaptiveRandom::calculate(FunctionCalculator *calculator, QList<RpnOp
 	if (m_calculator->functionArguments(m_functionName).size() != m_sourcePoint.size()) {
 		THROW(EWrongParametersCount(QObject::tr("Source point"), m_calculator->functionArguments(m_functionName).size()));
 	}
-	if (m_acceleration <= 1) {
+	if (m_accelerationCoefficient <= 1) {
 		THROW(EWrongArgument(QObject::tr("acceleration coefficient"), QObject::tr("more than 1")) )
 	}
-	if ((m_decrease <= 0) || (m_decrease >= 1)) {
+	if ((m_decreaseCoefficient <= 0) || (m_decreaseCoefficient >= 1)) {
 		THROW(EWrongArgument(QObject::tr("decrease coefficient"), QObject::tr("more than 0 and less than 1")) )
 	}
 
@@ -77,16 +77,16 @@ QList<Number> AdaptiveRandom::findMinimum()
 				m_sourcePoint,
 				MathUtils::multiplyVectorByNumber(
 					MathUtils::subtractVectorFromVector(currentPoint, m_sourcePoint),
-					m_acceleration
+					m_accelerationCoefficient
 				)
 			);
 
 			if (countFunction(newPoint) < countFunction(m_sourcePoint)) {
 				m_sourcePoint = newPoint;
-				m_stepSize *= m_acceleration;
+				m_stepSize *= m_accelerationCoefficient;
 				iterationCount++;
 
-				if (iterationCount < m_iterationsCount) {
+				if (iterationCount < m_maximumIterationsCount) {
 					failCount = 1;
 					continue;
 				}
@@ -105,7 +105,7 @@ QList<Number> AdaptiveRandom::findMinimum()
 			return m_sourcePoint;
 		}
 		else {
-			m_stepSize *= m_decrease;
+			m_stepSize *= m_decreaseCoefficient;
 			failCount = 1;
 		}
 	}

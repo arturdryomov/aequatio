@@ -12,14 +12,13 @@ RpnOperand Rosenbrock::calculate(FunctionCalculator *calculator, QList<RpnOperan
 	m_functionName = actualArguments.at(0).value.value<QString>();
 	m_sourcePoint = RpnVector::toOneDimensional(actualArguments.at(1).value.value<RpnVector>());
 	m_stopValue = actualArguments.at(2).value.value<Number>();
-	m_accelerationStep = actualArguments.at(3).value.value<Number>();
-	m_decreaseStep = actualArguments.at(4).value.value<Number>();
-	m_steps = RpnVector::toOneDimensional(actualArguments.at(5).value.value<RpnVector>());
-	m_wrongStepsNumber = actualArguments.at(6).value.value<Number>();
+	m_accelerationCoefficient = actualArguments.at(3).value.value<Number>();
+	m_decreaseCoefficient = actualArguments.at(4).value.value<Number>();
+	m_stepSizes = RpnVector::toOneDimensional(actualArguments.at(5).value.value<RpnVector>());
+	m_maximumWrongStepsCount = actualArguments.at(6).value.value<Number>();
 
 	// Set start directions
 	m_directions.clear();
-	// Fill directions
 	for (int i = 0; i < m_sourcePoint.size(); i++) {
 		m_directions << QList<Number>();
 		for (int k = 0; k < m_sourcePoint.size(); k++) {
@@ -39,13 +38,13 @@ RpnOperand Rosenbrock::calculate(FunctionCalculator *calculator, QList<RpnOperan
 	if (m_stopValue <= 0) {
 		THROW(EWrongArgument(QObject::tr("stop value"), QObject::tr("more than 0")) )
 	}
-	if (m_accelerationStep <= 1) {
+	if (m_accelerationCoefficient <= 1) {
 		THROW(EWrongArgument(QObject::tr("acceleration coefficient"), QObject::tr("more than 1")) )
 	}
-	if ((m_decreaseStep <= -1) || (m_decreaseStep >= 0)) {
+	if ((m_decreaseCoefficient <= -1) || (m_decreaseCoefficient >= 0)) {
 		THROW(EWrongArgument(QObject::tr("decrease coefficient"), QObject::tr("more than -1 and less than 0")) )
 	}
-	if (m_calculator->functionArguments(m_functionName).size() != m_steps.size()) {
+	if (m_calculator->functionArguments(m_functionName).size() != m_stepSizes.size()) {
 		THROW(EWrongParametersCount(QObject::tr("Coordinate steps"), m_calculator->functionArguments(m_functionName).size()));
 	}
 
@@ -74,20 +73,20 @@ QList<RpnArgument> Rosenbrock::requiredArguments()
 QList<Number> Rosenbrock::findMinimum()
 {
 	QList<Number> firstCurrentPoint = m_sourcePoint;
-	QList<Number> sourceSteps = m_steps;
+	QList<Number> sourceSteps = m_stepSizes;
 	QList<Number> currentPoint = firstCurrentPoint;
 
 	forever {
 		forever {
-			int failStepsCount = 0;
+			int wrongStepsCount = 0;
 			for (int i = 0; i < currentPoint.size(); i++) {
 				if (countFunction(increaseDirection(currentPoint, i)) < countFunction(currentPoint)) {
 					currentPoint = increaseDirection(currentPoint, i);
-					m_steps[i] = m_steps[i] * m_accelerationStep;
+					m_stepSizes[i] = m_stepSizes[i] * m_accelerationCoefficient;
 				}
 				else {
-					m_steps[i] = m_steps[i] * m_decreaseStep;
-					failStepsCount++;
+					m_stepSizes[i] = m_stepSizes[i] * m_decreaseCoefficient;
+					wrongStepsCount++;
 				}
 			}
 
@@ -97,10 +96,10 @@ QList<Number> Rosenbrock::findMinimum()
 					break;
 				}
 				else if (countFunction(currentPoint) == countFunction(m_sourcePoint)) {
-					if (failStepsCount <= m_wrongStepsNumber) {
+					if (wrongStepsCount <= m_maximumWrongStepsCount) {
 						bool isFinish = true;
-						for (int i = 0; i < m_steps.size(); i++) {
-							if (qAbs(m_steps[i]) > m_stopValue) {
+						for (int i = 0; i < m_stepSizes.size(); i++) {
+							if (qAbs(m_stepSizes[i]) > m_stopValue) {
 								isFinish = false;
 							}
 						}
@@ -125,21 +124,22 @@ QList<Number> Rosenbrock::findMinimum()
 			}
 		}
 
-		Number modulus = MathUtils::vectorNorm(MathUtils::subtractVectorFromVector(currentPoint, m_sourcePoint));
-		if (modulus <= m_stopValue) {
+		if (MathUtils::vectorNorm(MathUtils::subtractVectorFromVector(currentPoint, m_sourcePoint))
+				<= m_stopValue) {
+
 			// Main loop exit condition
 			return currentPoint;
 		}
 		else {
-			getNewDirections(getStepLengths(currentPoint, m_sourcePoint));
-			m_steps = sourceSteps;
+			initializeNewDirections(getStepLengths(currentPoint, m_sourcePoint));
+			m_stepSizes = sourceSteps;
 			m_sourcePoint = currentPoint;
 			firstCurrentPoint = currentPoint;
 		}
 	}
 }
 
-void Rosenbrock::getNewDirections(QList<Number> stepSizes)
+void Rosenbrock::initializeNewDirections(QList<Number> stepSizes)
 {
 	// Two steps of getting new directions by Gram algorithm
 
@@ -152,7 +152,8 @@ void Rosenbrock::getNewDirections(QList<Number> stepSizes)
 			QList<Number> element;
 			for (int j = i; j < stepSizes.size(); j++) {
 				if (element != QList<Number>()) {
-					element = MathUtils::addVectorToVector(element, MathUtils::multiplyVectorByNumber(m_directions[j], stepSizes[j]));
+					element = MathUtils::addVectorToVector(element,
+						MathUtils::multiplyVectorByNumber(m_directions[j], stepSizes[j]));
 				}
 				else {
 					element = MathUtils::multiplyVectorByNumber(m_directions[j], stepSizes[j]);
@@ -172,7 +173,8 @@ void Rosenbrock::getNewDirections(QList<Number> stepSizes)
 		else {
 			QList<Number> subtractin;
 			for (int j = 0; j < i; j++) {
-				subtractin = MathUtils::multiplyVectorByNumber(gramStepTwo[j], MathUtils::multiplyVectorByVectorScalar(gramStepOne[i], gramStepTwo[j]));
+				subtractin = MathUtils::multiplyVectorByNumber(gramStepTwo[j],
+					MathUtils::multiplyVectorByVectorScalar(gramStepOne[i], gramStepTwo[j]));
 				if (j != 0) {
 					subtractin = MathUtils::addVectorToVector(subtractin, gramStepTwo[j]);
 				}
@@ -218,7 +220,7 @@ QList<Number> Rosenbrock::increaseDirection(QList<Number> point, int direction)
 	QList<Number> result = point;
 
 	for (int i = 0; i < point.size(); i++) {
-		result[i] += m_directions[direction][i] * m_steps[direction];
+		result[i] += m_directions[direction][i] * m_stepSizes[direction];
 	}
 
 	return result;

@@ -43,24 +43,24 @@ Number Bisection::findMinimum()
 	Number middlePoint = (m_sourceInterval.leftBorder + m_sourceInterval.rightBorder) / 2;
 
 	forever {
-		Interval newInterval = {
+		Interval currentInterval = {
 			m_sourceInterval.leftBorder +
 				qAbs(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) / 4,
 			m_sourceInterval.rightBorder -
 				qAbs(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) / 4
 		};
 
-		if (countFunction(newInterval.leftBorder) < countFunction(middlePoint)) {
+		if (countFunction(currentInterval.leftBorder) < countFunction(middlePoint)) {
 			m_sourceInterval.rightBorder = middlePoint;
-			middlePoint = newInterval.leftBorder;
+			middlePoint = currentInterval.leftBorder;
 		}
-		else if (countFunction(newInterval.rightBorder) < countFunction(middlePoint)) {
+		else if (countFunction(currentInterval.rightBorder) < countFunction(middlePoint)) {
 				m_sourceInterval.leftBorder = middlePoint;
-				middlePoint = newInterval.rightBorder;
+				middlePoint = currentInterval.rightBorder;
 		}
 		else {
-			m_sourceInterval.leftBorder = newInterval.leftBorder;
-			m_sourceInterval.rightBorder = newInterval.rightBorder;
+			m_sourceInterval.leftBorder = currentInterval.leftBorder;
+			m_sourceInterval.rightBorder = currentInterval.rightBorder;
 		}
 
 		if (qAbs(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) <= m_accuracy) {

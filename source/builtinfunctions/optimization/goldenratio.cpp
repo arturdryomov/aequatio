@@ -42,28 +42,25 @@ QList<RpnArgument> GoldenRatio::requiredArguments()
 
 Number GoldenRatio::findMinimum()
 {
-	Interval newInterval;
-	newInterval.leftBorder = m_sourceInterval.leftBorder +
+	Interval currentInterval;
+	currentInterval.leftBorder = m_sourceInterval.leftBorder +
 		m_ratio * (m_sourceInterval.rightBorder - m_sourceInterval.leftBorder);
-	newInterval.rightBorder = m_sourceInterval.leftBorder +
-		m_sourceInterval.rightBorder - newInterval.leftBorder;
+	currentInterval.rightBorder = m_sourceInterval.leftBorder +
+		m_sourceInterval.rightBorder - currentInterval.leftBorder;
 	Number delta = 0;
 
 	do {
-		Number leftFunctionValue = countFunction(newInterval.leftBorder);
-		Number rightFunctionValue = countFunction(newInterval.rightBorder);
-
-		if (leftFunctionValue <= rightFunctionValue) {
-			m_sourceInterval.rightBorder = newInterval.rightBorder;
-			newInterval.rightBorder = newInterval.leftBorder;
-			newInterval.leftBorder = m_sourceInterval.leftBorder +
-				m_sourceInterval.rightBorder - newInterval.leftBorder;
+		if (countFunction(currentInterval.leftBorder) <= countFunction(currentInterval.rightBorder)) {
+			m_sourceInterval.rightBorder = currentInterval.rightBorder;
+			currentInterval.rightBorder = currentInterval.leftBorder;
+			currentInterval.leftBorder = m_sourceInterval.leftBorder +
+				m_sourceInterval.rightBorder - currentInterval.leftBorder;
 		}
 		else {
-			m_sourceInterval.leftBorder = newInterval.leftBorder;
-			newInterval.leftBorder = newInterval.rightBorder;
-			newInterval.rightBorder = m_sourceInterval.leftBorder +
-				m_sourceInterval.rightBorder - newInterval.rightBorder;
+			m_sourceInterval.leftBorder = currentInterval.leftBorder;
+			currentInterval.leftBorder = currentInterval.rightBorder;
+			currentInterval.rightBorder = m_sourceInterval.leftBorder +
+				m_sourceInterval.rightBorder - currentInterval.rightBorder;
 		}
 
 		delta = fabs(m_sourceInterval.leftBorder - m_sourceInterval.rightBorder);

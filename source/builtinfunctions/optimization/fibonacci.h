@@ -23,7 +23,7 @@ private:
 	FunctionCalculator* m_calculator;
 	QString m_functionName;
 	Number m_resultIntervalLength;
-	Number m_difference;
+	Number m_differenceConstant;
 	Number m_iterationsNumber;
 
 	Number findMinimum();
