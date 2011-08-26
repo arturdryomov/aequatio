@@ -87,7 +87,7 @@ QList<Number> NelderMead::findMinimum(const QList<QList<Number> > &initialSimple
 
 		if (function(reflected) <= function(simplex[best])) {
 
-			QList<Number> stretched = MathUtils::addVectorToVector(
+			QList<Number> expanded = MathUtils::addVectorToVector(
 				center,
 				MathUtils::multiplyVectorByNumber(
 					MathUtils::subtractVectorFromVector(
@@ -95,8 +95,8 @@ QList<Number> NelderMead::findMinimum(const QList<QList<Number> > &initialSimple
 					gamma)
 			);
 
-			if (function(stretched) < function(simplex[best])) {
-				simplex[worst] = stretched;
+			if (function(expanded) < function(simplex[best])) {
+				simplex[worst] = expanded;
 			}
 			else {
 				simplex[worst] = reflected;
@@ -106,7 +106,7 @@ QList<Number> NelderMead::findMinimum(const QList<QList<Number> > &initialSimple
 		// second-worst < reflected <= worst
 
 		else if (MathUtils::isBetween(function(reflected), function(simplex[secondWorst]), function(simplex[worst]), true)) {
-			QList<Number> squashed = MathUtils::addVectorToVector(
+			QList<Number> contracted = MathUtils::addVectorToVector(
 				center,
 				MathUtils::multiplyVectorByNumber(
 					MathUtils::subtractVectorFromVector(
@@ -114,7 +114,7 @@ QList<Number> NelderMead::findMinimum(const QList<QList<Number> > &initialSimple
 					beta)
 			);
 
-			simplex[worst] = squashed;
+			simplex[worst] = contracted;
 		}
 
 		// best < reflected <= worst
