@@ -289,7 +289,44 @@
 						<p>&larr; best_trial(f, [8, 9], 0.618, 3, 10, 0.8)</p>
 						<p>&rarr; best_trial(f, [8, 9], 0.618, 3, 10, 0.8) = [4.93294, 6.62684]</p>
 					</div>
+					
+				<a name="nelder-mead"><h3>Nelder—Mead</h3></a>
+				
+					nelder_mead(
+						<i>f</i>,
+						[
+							[<i>x<sub>11</sub></i>, <i>x<sub>12</sub></i>, &hellip;, <i>x<sub>1n</sub></i>], 
+							[<i>x<sub>21</sub></i>, <i>x<sub>22</sub></i>, &hellip;, <i>x<sub>2n</sub></i>], 
+							&hellip;
+							[<i>x<sub>(n+1)1</sub></i>, <i>x<sub>(n+1)2</sub></i>, &hellip;, <i>x<sub>(n+1)n</sub></i>]
+						],
+						<i>&alpha;</i>,
+						<i>&beta;</i>,
+						<i>&gamma;</i>,
+						<i>&epsilon;</i>		
+					)
+					
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li>[[<i>x<sub>11</sub></i>, <i>x<sub>12</sub></i>, &hellip;, <i>x<sub>1n</sub></i>], &hellip; ] — initial simplex,
+							a number of coordinates is a number of function arguments plus one;</li>
+						<li><i>&alpha;</i> — reflection coefficient, <i>&alpha; = 1</i>  recommended; </li>
+						<li><i>&beta;</i> — contraction coefficient, <i>0.4 &lt; &beta; &lt; 0.6</i> recommended;</li>
+						<li><i>&gamma;</i> — expansion coefficient, <i>2.8 &lt; &gamma; &lt; 3</i> recommended;</li>
+						<li><i>&epsilon;</i> — stop value, should be <i>&epsilon; &gt; 0</i>.</li>
+					</ul>
+					
+					<p>Example<p>
 
+					<div class="code">
+						<p>&larr; func f(x, y) = 4 * ( (x - 5) ^ 2 ) + (y - 6) ^ 2</p>
+						<p>&rarr; Function declared: f(x, y) = 4 × (x − 5) ^ 2 + (y − 6) ^ 2</p>
+						<p>&larr; nelder_mead(f, [[0, 1], [1, 1], [1, 2]], 1, 0.5, 3, 0.00001)</p>
+						<p>&rarr; nelder_mead(f, [[0, 1], [1, 1], [1, 2]], 1, 0.5, 3, 1e−05) = [4.99902, 5.99854]</p>
+					</div>
+					
+					
+					
   </body>
 
 </html>
