@@ -1,11 +1,11 @@
-#include "configuration.h"
+#include "hookejeeves.h"
 
 namespace
 {
-	Configuration instance;
+	HookeJeeves instance;
 }
 
-RpnOperand Configuration::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+RpnOperand HookeJeeves::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
 	// Initialize algorithm variables
 	m_calculator = calculator;
@@ -39,7 +39,7 @@ RpnOperand Configuration::calculate(FunctionCalculator *calculator, QList<RpnOpe
 	return result;
 }
 
-QList<RpnArgument> Configuration::requiredArguments()
+QList<RpnArgument> HookeJeeves::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
@@ -54,7 +54,7 @@ QList<RpnArgument> Configuration::requiredArguments()
 	return arguments;
 }
 
-QList<Number> Configuration::findMinimum()
+QList<Number> HookeJeeves::findMinimum()
 {
 	QList<Number> currentPoint = m_sourcePoint;
 
@@ -95,7 +95,7 @@ QList<Number> Configuration::findMinimum()
 	}
 }
 
-QList<Number> Configuration::increaseDirection(QList<Number> point, int direction)
+QList<Number> HookeJeeves::increaseDirection(QList<Number> point, int direction)
 {
 	QList<Number> result = point;
 	result[direction] += m_stepSizes[direction];
@@ -103,7 +103,7 @@ QList<Number> Configuration::increaseDirection(QList<Number> point, int directio
 	return result;
 }
 
-QList<Number> Configuration::decreaseDirection(QList<Number> point, int direction)
+QList<Number> HookeJeeves::decreaseDirection(QList<Number> point, int direction)
 {
 	QList<Number> result = point;
 	result[direction] -= m_stepSizes[direction];
@@ -111,7 +111,7 @@ QList<Number> Configuration::decreaseDirection(QList<Number> point, int directio
 	return result;
 }
 
-Number Configuration::countFunction(QList<Number> arguments)
+Number HookeJeeves::countFunction(QList<Number> arguments)
 {
 	QList<RpnOperand> functionArguments;
 

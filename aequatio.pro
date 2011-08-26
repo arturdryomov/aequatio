@@ -49,13 +49,13 @@ SOURCES += \
 	source/builtinfunctions/cramer.cpp \
 	source/builtinfunctions/gauss.cpp \
 	source/builtinfunctions/basicfunctions.cpp \
-	source/builtinfunctions/optimization/uniform.cpp \
+	source/builtinfunctions/optimization/enumerative.cpp \
 	source/builtinfunctions/optimization/bisection.cpp \
 	source/builtinfunctions/optimization/dichotomy.cpp \
-	source/builtinfunctions/optimization/goldenratio.cpp \
+	source/builtinfunctions/optimization/goldensection.cpp \
 	source/builtinfunctions/optimization/fibonacci.cpp \
-	source/builtinfunctions/optimization/quadraticinterpolation.cpp \
-	source/builtinfunctions/optimization/configuration.cpp \
+	source/builtinfunctions/optimization/powell.cpp \
+	source/builtinfunctions/optimization/hookejeeves.cpp \
 	source/builtinfunctions/optimization/rosenbrock.cpp \
 	source/builtinfunctions/optimization/adaptiverandom.cpp \
 	source/builtinfunctions/optimization/returningrandom.cpp \
@@ -83,13 +83,13 @@ HEADERS  += \
 	source/builtinfunctions/gauss.h \
 	source/builtinfunctions/builtinfunction.h \
 	source/builtinfunctions/basicfunctions.h \
-	source/builtinfunctions/optimization/uniform.h \
+	source/builtinfunctions/optimization/enumerative.h \
 	source/builtinfunctions/optimization/bisection.h \
 	source/builtinfunctions/optimization/dichotomy.h \
-	source/builtinfunctions/optimization/goldenratio.h \
+	source/builtinfunctions/optimization/goldensection.h \
 	source/builtinfunctions/optimization/fibonacci.h \
-	source/builtinfunctions/optimization/quadraticinterpolation.h \
-	source/builtinfunctions/optimization/configuration.h \
+	source/builtinfunctions/optimization/powell.h \
+	source/builtinfunctions/optimization/hookejeeves.h \
 	source/builtinfunctions/optimization/rosenbrock.h \
 	source/builtinfunctions/optimization/adaptiverandom.h \
 	source/builtinfunctions/optimization/returningrandom.h \

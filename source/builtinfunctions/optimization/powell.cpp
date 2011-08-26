@@ -1,11 +1,11 @@
-#include "quadraticinterpolation.h"
+#include "powell.h"
 
 namespace
 {
-	QuadraticInterpolation instance;
+	Powell instance;
 }
 
-RpnOperand QuadraticInterpolation::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+RpnOperand Powell::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
 	// Initialize algorithm variables
 	m_calculator = calculator;
@@ -26,7 +26,7 @@ RpnOperand QuadraticInterpolation::calculate(FunctionCalculator *calculator, QLi
 	return result;
 }
 
-QList<RpnArgument> QuadraticInterpolation::requiredArguments()
+QList<RpnArgument> Powell::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
@@ -40,7 +40,7 @@ QList<RpnArgument> QuadraticInterpolation::requiredArguments()
 	return arguments;
 }
 
-Number QuadraticInterpolation::findMinimum()
+Number Powell::findMinimum()
 {
 	bool needInitializePoints = true;
 
@@ -110,7 +110,7 @@ Number QuadraticInterpolation::findMinimum()
 	}
 }
 
-Number QuadraticInterpolation::getMinimumPoint(Number first, Number second, Number third)
+Number Powell::getMinimumPoint(Number first, Number second, Number third)
 {
 	Number minimumNumber = first;
 	if (countFunction(minimumNumber) > countFunction(second)) {
@@ -123,7 +123,7 @@ Number QuadraticInterpolation::getMinimumPoint(Number first, Number second, Numb
 	return minimumNumber;
 }
 
-Number QuadraticInterpolation::countFunction(Number argument)
+Number Powell::countFunction(Number argument)
 {
 	QList<RpnOperand> functionArguments;
 	RpnOperand functionArgument(RpnOperandNumber, argument);

@@ -1,13 +1,13 @@
-#ifndef UNIFORM_H
-#define UNIFORM_H
+#ifndef GOLDENSECTION_H
+#define GOLDENSECTION_H
 
 #include "../builtinfunction.h"
 
-// Class for finding minimum of function with Unirorm method
-class Uniform : public BuiltInFunction
+// Class for finding minimum of function with Golden Section method
+class GoldenSection : public BuiltInFunction
 {
 public:
-	Uniform() : BuiltInFunction("uniform")
+	GoldenSection() : BuiltInFunction("golden_section")
 	{
 	}
 
@@ -22,10 +22,11 @@ private:
 	Interval m_sourceInterval;
 	FunctionCalculator* m_calculator;
 	QString m_functionName;
-	Number m_iterationsCount;
+	Number m_ratio;
+	Number m_accuracy;
 
 	Number findMinimum();
 	Number countFunction(Number argument);
 };
 
-#endif // UNIFORM_H
+#endif // GOLDENSECTION_H

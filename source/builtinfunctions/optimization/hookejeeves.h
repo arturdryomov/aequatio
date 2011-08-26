@@ -1,13 +1,13 @@
-#ifndef CONFIGURATION_H
-#define CONFIGURATION_H
+#ifndef HOOKEJEEVES_H
+#define HOOKEJEEVES_H
 
 #include "../builtinfunction.h"
 
-// Class for finding minimum of function with Configuration method
-class Configuration : public BuiltInFunction
+// Class for finding minimum of function with Hooke-Jeeves method
+class HookeJeeves : public BuiltInFunction
 {
 public:
-	Configuration() : BuiltInFunction("configuration")
+	HookeJeeves() : BuiltInFunction("hooke_jeeves")
 	{
 	}
 
@@ -28,4 +28,4 @@ private:
 	Number countFunction(QList<Number> arguments);
 };
 
-#endif // CONFIGURATION_H
+#endif // HOOKEJEEVES_H

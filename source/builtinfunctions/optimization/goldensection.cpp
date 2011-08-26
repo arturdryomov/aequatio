@@ -1,11 +1,11 @@
-#include "goldenratio.h"
+#include "goldensection.h"
 
 namespace
 {
-	GoldenRatio instance;
+	GoldenSection instance;
 }
 
-RpnOperand GoldenRatio::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+RpnOperand GoldenSection::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
 	// Initialize algorithm variables
 	m_calculator = calculator;
@@ -27,7 +27,7 @@ RpnOperand GoldenRatio::calculate(FunctionCalculator *calculator, QList<RpnOpera
 	return result;
 }
 
-QList<RpnArgument> GoldenRatio::requiredArguments()
+QList<RpnArgument> GoldenSection::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
@@ -40,7 +40,7 @@ QList<RpnArgument> GoldenRatio::requiredArguments()
 	return arguments;
 }
 
-Number GoldenRatio::findMinimum()
+Number GoldenSection::findMinimum()
 {
 	Interval currentInterval;
 	currentInterval.leftBorder = m_sourceInterval.leftBorder +
@@ -69,7 +69,7 @@ Number GoldenRatio::findMinimum()
 	return (m_sourceInterval.leftBorder + m_sourceInterval.rightBorder) / 2;
 }
 
-Number GoldenRatio::countFunction(Number argument)
+Number GoldenSection::countFunction(Number argument)
 {
 	QList<RpnOperand> functionArguments;
 	RpnOperand functionArgument(RpnOperandNumber, argument);

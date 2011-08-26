@@ -18,9 +18,9 @@
 
 				<p>These methods operate only one variable functions.</p>
 
-				<a name="uniform"><h3>Uniform</h3></a>
+				<a name="enumerative"><h3>Enumerative</h3></a>
 
-					<p>uniform(<i>f</i>, <i>a</i>, <i>b</i>, <i>N</i>)</p>
+					<p>enumerative(<i>f</i>, <i>a</i>, <i>b</i>, <i>N</i>)</p>
 					<ul>
 						<li><i>f</i> — function name;</li>
 						<li><i>a</i>, <i>b</i> — search interval;</li>
@@ -32,8 +32,8 @@
 					<div class="code">
 						<p>&larr; func f(x) = 2 * (x ^ 2) - 12 * x</p>
 						<p>&rarr; Function declared: f(x) = 2 × x ^ 2 − 12 × x</p>
-						<p>&larr; uniform(f, 0, 10, 9)</p>
-						<p>&rarr; uniform(f, 0, 10, 9) = 3</p>
+						<p>&larr; enumerative(f, 0, 10, 9)</p>
+						<p>&rarr; enumerative(f, 0, 10, 9) = 3</p>
 					</div>
 
 				<a name="bisection"><h3>Bisection</h3></a>
@@ -73,9 +73,9 @@
 						<p>&rarr; dichotomy(f, 0, 10, 1, 0.2) = 2.85625</p>
 					</div>
 
-				<a name="golden-ratio"><h3>Golden Ratio</h3></a>
+				<a name="golden-section"><h3>Golden Section</h3></a>
 
-					<p>golden_ratio(<i>f</i>, <i>a</i>, <i>b</i>, <i>l</i>)</p>
+					<p>golden_section(<i>f</i>, <i>a</i>, <i>b</i>, <i>l</i>)</p>
 					<ul>
 						<li><i>f</i> — function name;</li>
 						<li><i>a</i>, <i>b</i> — search interval;</li>
@@ -87,8 +87,8 @@
 					<div class="code">
 						<p>&larr; func f(x) = 2 * (x ^ 2) - 12 * x</p>
 						<p>&rarr; Function declared: f(x) = 2 × x ^ 2 − 12 × x</p>
-						<p>&larr; golden_ratio(f, 0, 10, 1)</p>
-						<p>&rarr; golden_ratio(f, 0, 10, 1) = 2.81153</p>
+						<p>&larr; golden_section(f, 0, 10, 1)</p>
+						<p>&rarr; golden_section(f, 0, 10, 1) = 2.81153</p>
 					</div>
 
 				<a name="fibonacci"><h3>Fibonacci</h3></a>
@@ -110,9 +110,9 @@
 						<p>&rarr; fibonacci(f, 0, 10, 1, 0.01) = 2.69731</p>
 					</div>
 
-				<a name="quad-interpolation"><h3>Quadratic Interpolation</h3></a>
+				<a name="powell"><h3>Powell</h3></a>
 
-					quadratic_interpolation
+					powell
 					(<i>f</i>, <i>x</i>, <i>&Delta;x</i>,
 					<i>&epsilon;<sub>1</sub></i>,
 					<i>&epsilon;<sub>2</sub></i>)
@@ -131,15 +131,15 @@
 					<div class="code">
 						<p>&larr; func f(x) = 2 * (x ^ 2) + 16 / x</p>
 						<p>&rarr; Function declared: f(x) = 2 × x ^ 2 + 16 ÷ x</p>
-						<p>&larr; quadratic_interpolation(f, 1, 1, 0.003, 0.03)</p>
-						<p>&rarr; quadratic_interpolation(f, 1, 1, 0.003, 0.03) = 1.61214</p>
+						<p>&larr; powell(f, 1, 1, 0.003, 0.03)</p>
+						<p>&rarr; powell(f, 1, 1, 0.003, 0.03) = 1.61214</p>
 					</div>
 
 			<h2>Common minimization</h2>
 
-				<a name="configuration"><h3>Configuration</h3></a>
+				<a name="hooke-jeeves"><h3>Hooke-Jeeves</h3></a>
 
-					configuration(
+					hooke-jeeves(
 						<i>f</i>, 
 						[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;],
 						<i>&epsilon;</i>,
@@ -163,8 +163,8 @@
 					<div class="code">
 						<p>&larr; func f(x, y) = 4 * ( (x - 5) ^ 2 ) + (y - 6) ^ 2</p>
 						<p>&rarr; Function declared: f(x, y) = 4 × (x − 5) ^ 2 + (y − 6) ^ 2</p>
-						<p>&larr; configuration(f, [8, 9], 0.3, [1, 2], 1, 2)</p>
-						<p>&rarr; configuration(f, [8, 9], 0.3, [1, 2], 1, 2) = [5, 6]</p>
+						<p>&larr; hooke_jeeves(f, [8, 9], 0.3, [1, 2], 1, 2)</p>
+						<p>&rarr; hooke_jeeves(f, [8, 9], 0.3, [1, 2], 1, 2) = [5, 6]</p>
 					</div>
 
 				<a name="rosenbrock"><h3>Rosenbrock</h3></a>

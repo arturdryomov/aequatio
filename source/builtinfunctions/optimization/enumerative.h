@@ -1,13 +1,13 @@
-#ifndef GOLDENRATIO_H
-#define GOLDENRATIO_H
+#ifndef ENUMERATIVE_H
+#define ENUMERATIVE_H
 
 #include "../builtinfunction.h"
 
-// Class for finding minimum of function with Golden Ratio method
-class GoldenRatio : public BuiltInFunction
+// Class for finding minimum of function with Enumerative method
+class Enumerative : public BuiltInFunction
 {
 public:
-	GoldenRatio() : BuiltInFunction("golden_ratio")
+	Enumerative() : BuiltInFunction("enumerative")
 	{
 	}
 
@@ -22,11 +22,10 @@ private:
 	Interval m_sourceInterval;
 	FunctionCalculator* m_calculator;
 	QString m_functionName;
-	Number m_ratio;
-	Number m_accuracy;
+	Number m_iterationsCount;
 
 	Number findMinimum();
 	Number countFunction(Number argument);
 };
 
-#endif // GOLDENRATIO_H
+#endif // ENUMERATIVE_H

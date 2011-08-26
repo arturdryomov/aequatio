@@ -1,11 +1,11 @@
-#include "uniform.h"
+#include "enumerative.h"
 
 namespace
 {
-	Uniform instance;
+	Enumerative instance;
 }
 
-RpnOperand Uniform::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+RpnOperand Enumerative::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
 	// Initialize algorithm variables
 	m_calculator = calculator;
@@ -20,7 +20,7 @@ RpnOperand Uniform::calculate(FunctionCalculator *calculator, QList<RpnOperand> 
 	return result;
 }
 
-QList<RpnArgument> Uniform::requiredArguments()
+QList<RpnArgument> Enumerative::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
@@ -33,7 +33,7 @@ QList<RpnArgument> Uniform::requiredArguments()
 	return arguments;
 }
 
-Number Uniform::findMinimum()
+Number Enumerative::findMinimum()
 {
 	Number minimumPoint = m_sourceInterval.leftBorder +
 		(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) /
@@ -54,7 +54,7 @@ Number Uniform::findMinimum()
 	return minimumPoint;
 }
 
-Number Uniform::countFunction(Number argument)
+Number Enumerative::countFunction(Number argument)
 {
 	QList<RpnOperand> functionArguments;
 	RpnOperand functionArgument(RpnOperandNumber, argument);

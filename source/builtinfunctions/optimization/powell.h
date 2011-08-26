@@ -1,13 +1,13 @@
-#ifndef QUADRATIC_INTERPOLATION_H
-#define QUADRATIC_INTERPOLATION_H
+#ifndef POWELL_H
+#define POWELL_H
 
 #include "../builtinfunction.h"
 
-// Class for finding minimum of function with Quadratic Interpolation method
-class QuadraticInterpolation : public BuiltInFunction
+// Class for finding minimum of function with Powell method
+class Powell : public BuiltInFunction
 {
 public:
-	QuadraticInterpolation() : BuiltInFunction("quadratic_interpolation")
+	Powell() : BuiltInFunction("powell")
 	{
 	}
 
@@ -26,4 +26,4 @@ private:
 	Number countFunction(Number argument);
 };
 
-#endif // QUADRATIC_INTERPOLATION_H
+#endif // POWELL_H
