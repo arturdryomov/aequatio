@@ -10,10 +10,10 @@ QList<RpnArgument> NelderMead::requiredArguments()
 	arguments
 		<< RpnArgument(RpnOperandFunctionName) // function
 		<< RpnArgument(RpnOperandVector) // initial simplex
-		<< RpnArgument(RpnOperandNumber)	// alpha
-		<< RpnArgument(RpnOperandNumber)	// beta
-		<< RpnArgument(RpnOperandNumber) // gamma
-		<< RpnArgument(RpnOperandNumber); // epsilon
+		<< RpnArgument(RpnOperandNumber)	// reflection coefficient
+		<< RpnArgument(RpnOperandNumber)	// compression coefficient
+		<< RpnArgument(RpnOperandNumber) // strain coefficient
+		<< RpnArgument(RpnOperandNumber); // stop value
 
 	return arguments;
 }
@@ -34,23 +34,24 @@ RpnOperand NelderMead::calculate(BuiltInFunction::FunctionCalculator *calculator
 		);
 	}
 
-	Number alpha = actualArguments[2].value.value<Number>();
-	Number beta = actualArguments[3].value.value<Number>();
-	Number gamma = actualArguments[4].value.value<Number>();
-	Number epsilon = actualArguments[5].value.value<Number>();
+	Number reflectionCoefficient = actualArguments[2].value.value<Number>();
+	Number compressionCoefficient = actualArguments[3].value.value<Number>();
+	Number strainCoefficient = actualArguments[4].value.value<Number>();
+	Number stopValue = actualArguments[5].value.value<Number>();
 
-	if (epsilon <= 0) {
+	if (stopValue <= 0) {
 		THROW(EWrongArgument("epsilon", "greater than zero"));
 	}
 
-	RpnVector result = RpnVector::fromOneDimensional(findMinimum(initialSimplex, alpha, beta, gamma, epsilon));
+	RpnVector result = RpnVector::fromOneDimensional(findMinimum(initialSimplex, reflectionCoefficient,
+		compressionCoefficient, strainCoefficient, stopValue));
 
 	return RpnOperand(RpnOperandVector, QVariant::fromValue(result));
 }
 
 
-QList<Number> NelderMead::findMinimum(const QList<QList<Number> > &initialSimplex, Number alpha,
-	Number beta, Number gamma, Number epsilon)
+QList<Number> NelderMead::findMinimum(const QList<QList<Number> > &initialSimplex, Number reflectionCoefficient,
+	Number compressionCoefficient, Number strainCoefficient, Number stopValue)
 {
 	QList<QList<Number> > simplex = initialSimplex;
 	forever {
@@ -70,7 +71,7 @@ QList<Number> NelderMead::findMinimum(const QList<QList<Number> > &initialSimple
 		QList<Number> center = findCenter(simplex, worst);
 
 		// check for exit
-		if (found(simplex, center, epsilon)) {
+		if (found(simplex, center, stopValue)) {
 			return simplex[best];
 		}
 
@@ -81,7 +82,7 @@ QList<Number> NelderMead::findMinimum(const QList<QList<Number> > &initialSimple
 			MathUtils::multiplyVectorByNumber(
 				MathUtils::subtractVectorFromVector(
 					center, simplex[worst]),
-				alpha));
+				reflectionCoefficient));
 
 		// reflected <= best
 
@@ -92,7 +93,7 @@ QList<Number> NelderMead::findMinimum(const QList<QList<Number> > &initialSimple
 				MathUtils::multiplyVectorByNumber(
 					MathUtils::subtractVectorFromVector(
 						reflected, center),
-					gamma)
+					strainCoefficient)
 			);
 
 			if (function(expanded) < function(simplex[best])) {
@@ -111,7 +112,7 @@ QList<Number> NelderMead::findMinimum(const QList<QList<Number> > &initialSimple
 				MathUtils::multiplyVectorByNumber(
 					MathUtils::subtractVectorFromVector(
 						simplex[worst], center),
-					beta)
+					compressionCoefficient)
 			);
 
 			simplex[worst] = contracted;
