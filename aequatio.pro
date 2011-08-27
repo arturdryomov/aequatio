@@ -60,7 +60,8 @@ SOURCES += \
 	source/builtinfunctions/optimization/adaptiverandom.cpp \
 	source/builtinfunctions/optimization/returningrandom.cpp \
 	source/builtinfunctions/optimization/besttrial.cpp \
-	source/builtinfunctions/optimization/neldermead.cpp
+	source/builtinfunctions/optimization/neldermead.cpp \
+	source/builtinfunctions/optimization/conjugategradient.cpp
 
 HEADERS  += \
 	source/mainwindow.h \
@@ -94,7 +95,8 @@ HEADERS  += \
 	source/builtinfunctions/optimization/adaptiverandom.h \
 	source/builtinfunctions/optimization/returningrandom.h \
 	source/builtinfunctions/optimization/besttrial.h \
-	source/builtinfunctions/optimization/neldermead.h
+	source/builtinfunctions/optimization/neldermead.h \
+	source/builtinfunctions/optimization/conjugategradient.h
 
 FORMS	+= \
 	source/mainwindow.ui \
