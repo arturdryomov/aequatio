@@ -150,10 +150,10 @@
 					<ul>
 						<li><i>f</i> — function name;</li>
 						<li>[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;] — start point,
-							number of coordinates in number of function arguments;</li>
+							a number of coordinates is a number of function arguments;</li>
 						<li><i>&epsilon; > 0</i> — stop value;</li>
 						<li>[<i>&Delta;<sub>1</sub></i>, <i>&Delta;<sub>2</sub></i>, &hellip;] —
-							steps on directions, number of directions is number of function arguments;</li>
+							steps on directions, a number of directions is a number of function arguments;</li>
 						<li><i>&lambda; > 0</i> — acceleration coefficient;</li>
 						<li><i>&alpha; > 1</i> — decrease step coefficient.</li>
 					</ul>
@@ -181,12 +181,12 @@
 					<ul>
 						<li><i>f</i> — function name;</li>
 						<li>[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;] — start point,
-							number of coordinates in number of function arguments;</li>
+							a number of coordinates is a number of function arguments;</li>
 						<li><i>&epsilon; > 0</i> — stop value;</li>
 						<li><i>&alpha; > 1</i> — acceleration coefficient;</li>
 						<li><i>-1  &lt; &beta; &lt; 0</i> — decrease coefficient;</li>
 						<li>[<i>&Delta;<sub>1</sub></i>, <i>&Delta;<sub>2</sub></i>, &hellip;] —
-							steps on directions, number of directions is number of function arguments;</li>
+							steps on directions, a number of directions is a number of function arguments;</li>
 						<li><i>N</i> — maximum number of fail steps.</li>
 					</ul>
 
@@ -215,7 +215,7 @@
 					<ul>
 						<li><i>f</i> — function name;</li>
 						<li>[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;] — start point,
-							number of coordinates in number of function arguments;</li>
+							a number of coordinates is a number of function arguments;</li>
 						<li><i>&alpha; > 1</i> — acceleration coefficient;</li>
 						<li><i>0  &lt; &beta; &lt; 1</i> — decrease coefficient;</li>
 						<li><i>M</i> — number of fail tests;</li>
@@ -245,7 +245,7 @@
 					<ul>
 						<li><i>f</i> — function name;</li>
 						<li>[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;] — start point,
-							number of coordinates in number of function arguments;</li>
+							a number of coordinates is a number of function arguments;</li>
 						<li><i>0  &lt; &beta; &lt; 1</i> — decrease coefficient;</li>
 						<li><i>M</i> — number of fail tests;</li>
 						<li><i>N</i> — maximum number of iterations;</li>
@@ -274,7 +274,7 @@
 					<ul>
 						<li><i>f</i> — function name;</li>
 						<li>[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;] — start point,
-							number of coordinates in number of function arguments;</li>
+							a number of coordinates is a number of function arguments;</li>
 						<li><i>0  &lt; &beta; &lt; 1</i> — decrease coefficient;</li>
 						<li><i>M</i> — number of tests;</li>
 						<li><i>N</i> — maximum number of iterations;</li>
@@ -325,8 +325,31 @@
 						<p>&rarr; nelder_mead(f, [[0, 1], [1, 1], [1, 2]], 1, 0.5, 3, 1e−05) = [4.99902, 5.99854]</p>
 					</div>
 					
+
 					
+				<a name="conjugate-gradient"><h3>Conjugate Gradient</h3></a>
+				
+					conjugate_gradient(
+						<i>f</i>,
+						[<i>x<sub>1</sub></i>, <i>x<sub>1</sub></i>, &hellip;, <i>x<sub>n</sub></i>],
+						<i>&epsilon;</i>		
+					)
 					
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li>[<i>x<sub>1</sub></i>, <i>x<sub>1</sub></i>, &hellip;, <i>x<sub>n</sub></i>] — starting point,
+							a number of coordinates is a number of function arguments;</li>
+						<li><i>&epsilon;</i> — accuracy, should be <i>&epsilon; &gt; 0</i>.</li>
+					</ul>
+					
+					<p>Example<p>
+
+					<div class="code">
+						<p>&larr; func f(x, y) = 4 * ( (x - 5) ^ 2 ) + (y - 6) ^ 2</p>
+						<p>&rarr; Function declared: f(x, y) = 4 × (x − 5) ^ 2 + (y − 6) ^ 2</p>
+						<p>&larr; conjugate_gradient(f, [0, 1], 0.00001)</p>
+						<p>&rarr;  conjugate_gradient(f, [0, 1], 1e−05) = [4.99994, 6.00001]</p>
+					</div>
   </body>
 
 </html>
