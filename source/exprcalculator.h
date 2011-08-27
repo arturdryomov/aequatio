@@ -96,7 +96,7 @@ private:
 	RpnOperand calculateBuiltInFunction(const QString &functionName, const QList<RpnOperand> &actualArguments);
 
 	FunctionDescription functionDescription(const QString &functionName);
-	// Checks, whether functionName is called from code or from other functions that are called
+	// Checks, whether functionName is either called from code or from other functions that are called
 	// from code.
 	bool isFunctionUsed(const QString &functionName, const RpnCodeThread &code);
 };
