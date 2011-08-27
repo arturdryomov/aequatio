@@ -12,8 +12,8 @@ public:
 	QList<RpnArgument> requiredArguments();
 	RpnOperand calculate(FunctionCalculator* calculator, QList<RpnOperand> actualArguments);
 private:
-	QList<Number> findMinimum(const QList<QList<Number> > &initialSimplex, Number alpha, Number beta,
-	Number gamma, Number epsilon);
+	QList<Number> findMinimum(const QList<QList<Number> > &initialSimplex, Number reflectionCoefficient, Number contractionCoefficient,
+	Number expansionCoefficient, Number accuracy);
 	QString m_functionName;
 	FunctionCalculator* m_calculator;
 	Number function(const QList<Number> &arguments);
@@ -21,7 +21,7 @@ private:
 	int indexOfMaximal(const QList<Number> &values);
 	int indexOfSecondMaximal(const QList<Number> &values);
 	QList<Number> findCenter(const QList<QList<Number> > &simplex, int worstIndex);
-	bool found(const QList<QList<Number> > &simplex, const QList<Number> &center, Number epsilon);
+	bool found(const QList<QList<Number> > &simplex, const QList<Number> &center, Number accuracy);
 	bool isVectorCorrect(const QList<QList<Number> > vector);
 };
 

@@ -51,7 +51,7 @@ RpnOperand NelderMead::calculate(BuiltInFunction::FunctionCalculator *calculator
 
 
 QList<Number> NelderMead::findMinimum(const QList<QList<Number> > &initialSimplex, Number reflectionCoefficient,
-	Number compressionCoefficient, Number strainCoefficient, Number stopValue)
+	Number contractionCoefficient, Number expansionCoefficient, Number accuracy)
 {
 	QList<QList<Number> > simplex = initialSimplex;
 	forever {
@@ -71,7 +71,7 @@ QList<Number> NelderMead::findMinimum(const QList<QList<Number> > &initialSimple
 		QList<Number> center = findCenter(simplex, worst);
 
 		// check for exit
-		if (found(simplex, center, stopValue)) {
+		if (found(simplex, center, accuracy)) {
 			return simplex[best];
 		}
 
@@ -93,7 +93,7 @@ QList<Number> NelderMead::findMinimum(const QList<QList<Number> > &initialSimple
 				MathUtils::multiplyVectorByNumber(
 					MathUtils::subtractVectorFromVector(
 						reflected, center),
-					strainCoefficient)
+					expansionCoefficient)
 			);
 
 			if (function(expanded) < function(simplex[best])) {
@@ -112,7 +112,7 @@ QList<Number> NelderMead::findMinimum(const QList<QList<Number> > &initialSimple
 				MathUtils::multiplyVectorByNumber(
 					MathUtils::subtractVectorFromVector(
 						simplex[worst], center),
-					compressionCoefficient)
+					contractionCoefficient)
 			);
 
 			simplex[worst] = contracted;
@@ -228,7 +228,7 @@ QList<Number> NelderMead::findCenter(const QList<QList<Number> > &simplex, int w
 	return center;
 }
 
-bool NelderMead::found(const QList<QList<Number> > &simplex, const QList<Number> &center, Number epsilon)
+bool NelderMead::found(const QList<QList<Number> > &simplex, const QList<Number> &center, Number accuracy)
 {
 	Number sigma = 0;
 
@@ -239,7 +239,7 @@ bool NelderMead::found(const QList<QList<Number> > &simplex, const QList<Number>
 	sigma /= simplex.count();
 	sigma = qPow(sigma, 0.5);
 
-	bool result = sigma <= epsilon;
+	bool result = sigma <= accuracy;
 
 	return result;
 }
