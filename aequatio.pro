@@ -46,8 +46,6 @@ SOURCES += \
 	source/logwindow.cpp \
 	source/rpncode.cpp \
 	source/builtinfunctions/mathutils.cpp \
-	source/builtinfunctions/cramer.cpp \
-	source/builtinfunctions/gauss.cpp \
 	source/builtinfunctions/basicfunctions.cpp \
 	source/builtinfunctions/optimization/enumerative.cpp \
 	source/builtinfunctions/optimization/bisection.cpp \
@@ -61,7 +59,9 @@ SOURCES += \
 	source/builtinfunctions/optimization/returningrandom.cpp \
 	source/builtinfunctions/optimization/besttrial.cpp \
 	source/builtinfunctions/optimization/neldermead.cpp \
-	source/builtinfunctions/optimization/conjugategradient.cpp
+	source/builtinfunctions/optimization/conjugategradient.cpp \
+	source/builtinfunctions/equationsolving/gauss.cpp \
+	source/builtinfunctions/equationsolving/cramer.cpp
 
 HEADERS  += \
 	source/mainwindow.h \
@@ -80,8 +80,6 @@ HEADERS  += \
 	source/logwindow.h \
 	source/rpncode.h \
 	source/builtinfunctions/mathutils.h \
-	source/builtinfunctions/cramer.h \
-	source/builtinfunctions/gauss.h \
 	source/builtinfunctions/builtinfunction.h \
 	source/builtinfunctions/basicfunctions.h \
 	source/builtinfunctions/optimization/enumerative.h \
@@ -96,7 +94,9 @@ HEADERS  += \
 	source/builtinfunctions/optimization/returningrandom.h \
 	source/builtinfunctions/optimization/besttrial.h \
 	source/builtinfunctions/optimization/neldermead.h \
-	source/builtinfunctions/optimization/conjugategradient.h
+	source/builtinfunctions/optimization/conjugategradient.h \
+	source/builtinfunctions/equationsolving/gauss.h \
+	source/builtinfunctions/equationsolving/cramer.h
 
 FORMS	+= \
 	source/mainwindow.ui \

@@ -1,7 +1,7 @@
 #ifndef CRAMER_H
 #define CRAMER_H
 
-#include "builtinfunction.h"
+#include "../builtinfunction.h"
 
 class Cramer : public BuiltInFunction
 {

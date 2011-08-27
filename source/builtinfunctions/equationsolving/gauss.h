@@ -1,7 +1,7 @@
 #ifndef GAUSS_H
 #define GAUSS_H
 
-#include "builtinfunction.h"
+#include "../builtinfunction.h"
 
 class Gauss : public BuiltInFunction
 {
