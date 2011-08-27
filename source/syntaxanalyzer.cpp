@@ -486,6 +486,10 @@ RpnCodeThread SyntaxAnalyzer::actualArgument(const RpnArgument &correspondingFor
 			}
 			QString argumentFunctionName = m_lexicalAnalyzer->lexeme().value;
 
+			if (!m_exprCalculator->isFunction(argumentFunctionName)) {
+				THROW(EUndeclaredUsed(argumentFunctionName, EUndeclaredUsed::Function));
+			}
+
 			// check argument count if number of arguments is fixed
 			if (m_exprCalculator->functionArguments(argumentFunctionName).first().info != QVariant()) {
 				if (m_exprCalculator->functionArguments(argumentFunctionName).count()
