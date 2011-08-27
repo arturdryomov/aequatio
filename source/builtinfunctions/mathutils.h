@@ -3,6 +3,8 @@
 
 #include "builtinfunction.h"
 
+namespace BuiltInFunctions {
+
 // Common class for operations working in algorithms
 class MathUtils
 {
@@ -25,5 +27,7 @@ public:
 	static QList<Number> generateRandomNumbers(int count, Number lowerLimit, Number higherLimit);
 	static Number getRandomNumber(Number higherLimit);
 };
+
+} // namespace
 
 #endif // MATHUTILS_H

@@ -1,5 +1,8 @@
 #include "neldermead.h"
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 namespace {
 	NelderMead instance;
 }
@@ -259,3 +262,6 @@ bool NelderMead::isVectorCorrect(const QList<QList<Number> > vector)
 
 	return true;
 }
+
+} // namespace
+} // namespace

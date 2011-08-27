@@ -1,5 +1,8 @@
 #include "gauss.h"
 
+namespace BuiltInFunctions {
+namespace EquationSolving {
+
 namespace {
 	Gauss instance;
 }
@@ -129,7 +132,5 @@ bool Gauss::areCoefficientsCorrect(const QList<QList<Number> > &coefficients)
 	return true;
 }
 
-QString ENoSolution::message()
-{
-	return tr("The linear system with these coefficients has no solution.");
-}
+} // namespace
+} // namespace

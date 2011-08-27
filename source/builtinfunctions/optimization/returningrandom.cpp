@@ -2,6 +2,9 @@
 
 #include <ctime>
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 namespace
 {
 	ReturningRandom instance;
@@ -106,3 +109,6 @@ Number ReturningRandom::countFunction(QList<Number> arguments)
 	RpnOperand result = m_calculator->calculate(m_functionName, functionArguments);
 	return result.value.value<Number>();
 }
+
+} // namespace
+} // namespace

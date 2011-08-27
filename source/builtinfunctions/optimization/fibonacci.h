@@ -3,6 +3,9 @@
 
 #include "../builtinfunction.h"
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 // Class for finding minimum of function with Fibonacci method
 class Fibonacci : public BuiltInFunction
 {
@@ -31,5 +34,8 @@ private:
 	Number fibonacciNumber(int position);
 	Number countFunction(Number argument);
 };
+
+} // namespace
+} // namespace
 
 #endif // FIBONACCI_H

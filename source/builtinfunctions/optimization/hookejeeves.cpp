@@ -1,5 +1,8 @@
 #include "hookejeeves.h"
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 namespace
 {
 	HookeJeeves instance;
@@ -123,3 +126,6 @@ Number HookeJeeves::countFunction(QList<Number> arguments)
 	RpnOperand result = m_calculator->calculate(m_functionName, functionArguments);
 	return result.value.value<Number>();
 }
+
+} // namespace
+} // namespace

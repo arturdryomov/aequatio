@@ -1,5 +1,8 @@
 #include "goldensection.h"
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 namespace
 {
 	GoldenSection instance;
@@ -78,3 +81,6 @@ Number GoldenSection::countFunction(Number argument)
 	RpnOperand result = m_calculator->calculate(m_functionName, functionArguments);
 	return result.value.value<Number>();
 }
+
+} // namespace
+} // namespace

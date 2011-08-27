@@ -1,5 +1,8 @@
 #include "bisection.h"
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 namespace
 {
 	Bisection instance;
@@ -79,3 +82,6 @@ Number Bisection::countFunction(Number argument)
 	RpnOperand result = m_calculator->calculate(m_functionName, functionArguments);
 	return result.value.value<Number>();
 }
+
+} // namespace
+} // namespace

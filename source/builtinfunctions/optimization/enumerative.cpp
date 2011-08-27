@@ -1,5 +1,8 @@
 #include "enumerative.h"
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 namespace
 {
 	Enumerative instance;
@@ -63,3 +66,6 @@ Number Enumerative::countFunction(Number argument)
 	RpnOperand result = m_calculator->calculate(m_functionName, functionArguments);
 	return result.value.value<Number>();
 }
+
+} // namespace
+} // namespace

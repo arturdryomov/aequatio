@@ -1,6 +1,8 @@
 #include "mathutils.h"
 #include <limits>
 
+namespace BuiltInFunctions {
+
 QList<Number> MathUtils::multiplyVectorByNumber(QList<Number> vector, Number number)
 {
 	QList<Number> result;
@@ -164,3 +166,5 @@ Number MathUtils::getRandomNumber(Number higherLimit)
 
 	return result;
 }
+
+} // namespace

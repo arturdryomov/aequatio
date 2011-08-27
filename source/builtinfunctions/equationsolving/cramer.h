@@ -3,6 +3,9 @@
 
 #include "../builtinfunction.h"
 
+namespace BuiltInFunctions {
+namespace EquationSolving {
+
 class Cramer : public BuiltInFunction
 {
 public:
@@ -14,15 +17,12 @@ public:
 	QList<RpnArgument> requiredArguments();
 private:
 	QList<QList<Number> > m_matrixCoefficients;
-
 	QList<Number> findSolution();
+
+	class ENoSolution : public ECalculating {};
 };
 
-
-class ENoSolution : public ECalculating
-{
-public:
-	QString message();
-};
+} // namespace
+} // namespace
 
 #endif // CRAMER_H

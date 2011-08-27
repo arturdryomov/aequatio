@@ -3,6 +3,9 @@
 
 #include "../builtinfunction.h"
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 // Class for finding minimum of function with Adaptive Random method
 class AdaptiveRandom : public BuiltInFunction
 {
@@ -27,5 +30,8 @@ private:
 	QList<Number> findMinimum();
 	Number countFunction(QList<Number> arguments);
 };
+
+} // namespace
+} // namespace
 
 #endif // ADAPTIVE_RANDOM_H

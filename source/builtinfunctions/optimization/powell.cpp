@@ -1,5 +1,8 @@
 #include "powell.h"
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 namespace
 {
 	Powell instance;
@@ -132,3 +135,6 @@ Number Powell::countFunction(Number argument)
 	RpnOperand result = m_calculator->calculate(m_functionName, functionArguments);
 	return result.value.value<Number>();
 }
+
+} // namespace
+} // namespace

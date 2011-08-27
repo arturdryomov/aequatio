@@ -1,5 +1,8 @@
 #include "rosenbrock.h"
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 namespace
 {
 	Rosenbrock instance;
@@ -238,3 +241,6 @@ Number Rosenbrock::countFunction(QList<Number> arguments)
 	RpnOperand result = m_calculator->calculate(m_functionName, functionArguments);
 	return result.value.value<Number>();
 }
+
+} // namespace
+} // namespace

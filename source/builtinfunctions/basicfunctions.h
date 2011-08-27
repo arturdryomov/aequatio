@@ -3,6 +3,9 @@
 
 #include "builtinfunction.h"
 
+namespace BuiltInFunctions {
+namespace BasicFunctions{
+
 class Plus : public BuiltInFunction
 {
 public:
@@ -133,5 +136,8 @@ public:
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
 	QList<RpnArgument> requiredArguments();
 };
+
+} // namespace
+} // namespace
 
 #endif // BASICFUNCTIONS_H

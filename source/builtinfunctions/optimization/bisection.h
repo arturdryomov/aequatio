@@ -3,6 +3,9 @@
 
 #include "../builtinfunction.h"
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 // Class for finding minimum of function with Bisection method
 class Bisection : public BuiltInFunction
 {
@@ -27,5 +30,8 @@ private:
 	Number findMinimum();
 	Number countFunction(Number argument);
 };
+
+} // namespace
+} // namespace
 
 #endif // BISECTION_H

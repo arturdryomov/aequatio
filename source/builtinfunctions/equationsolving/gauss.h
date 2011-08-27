@@ -3,6 +3,9 @@
 
 #include "../builtinfunction.h"
 
+namespace BuiltInFunctions {
+namespace EquationSolving {
+
 class Gauss : public BuiltInFunction
 {
 public:
@@ -17,12 +20,10 @@ private:
 	void swapColumns(QList<QList<Number> > &matrix, int index1, int index2);
 	QList<Number> sizedVector(int size);
 	bool areCoefficientsCorrect(const QList<QList<Number> > &coefficients);
+	class ENoSolution : public ECalculating {};
 };
 
-class ENoSolution : public ECalculating
-{
-public:
-	QString message();
-};
+} // namespace
+} // namespace
 
 #endif // GAUSS_H

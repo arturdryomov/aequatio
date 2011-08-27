@@ -1,5 +1,8 @@
 #include "fibonacci.h"
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 namespace
 {
 	Fibonacci instance;
@@ -126,3 +129,6 @@ Number Fibonacci::countFunction(Number argument)
 	RpnOperand result = m_calculator->calculate(m_functionName, functionArguments);
 	return result.value.value<Number>();
 }
+
+} // namespace
+} // namespace

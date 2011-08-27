@@ -3,6 +3,9 @@
 
 #include "../builtinfunction.h"
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 // Nelder-Mead method, “метод деформируемого многогранника” in Russian terminology.
 
 class NelderMead : public BuiltInFunction
@@ -24,5 +27,8 @@ private:
 	bool found(const QList<QList<Number> > &simplex, const QList<Number> &center, Number accuracy);
 	bool isVectorCorrect(const QList<QList<Number> > vector);
 };
+
+} // namespace
+} // namespace
 
 #endif // NELDERMEAD_H

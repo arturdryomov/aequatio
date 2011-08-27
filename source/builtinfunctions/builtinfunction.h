@@ -8,6 +8,8 @@
 #define _USE_MATH_DEFINES
 #include <qmath.h>
 
+namespace BuiltInFunctions {
+
 // Template and interface class for calculation sub-classes
 class BuiltInFunction
 {
@@ -38,5 +40,7 @@ public:
 	// Arguments for calling function
 	virtual QList<RpnArgument> requiredArguments() = 0;
 };
+
+} // namespace
 
 #endif // BUILTINFUNCTION_H

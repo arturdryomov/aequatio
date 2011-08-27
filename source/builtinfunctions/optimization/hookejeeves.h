@@ -3,6 +3,9 @@
 
 #include "../builtinfunction.h"
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 // Class for finding minimum of function with Hooke-Jeeves method
 class HookeJeeves : public BuiltInFunction
 {
@@ -27,5 +30,8 @@ private:
 	QList<Number> decreaseDirection(QList<Number> point, int direction);
 	Number countFunction(QList<Number> arguments);
 };
+
+} // namespace
+} // namespace
 
 #endif // HOOKEJEEVES_H

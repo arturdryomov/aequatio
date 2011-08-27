@@ -3,6 +3,9 @@
 
 #include "../builtinfunction.h"
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 // Class for finding minimum of function with Rosenbrock method
 // TODO: Check it, second primer from book is not working fine, questions about 3(1) step
 class Rosenbrock : public BuiltInFunction
@@ -32,5 +35,8 @@ private:
 	Number countFunction(QList<Number> arguments);
 	QList<Number> solveEquationSystem(QList<QList<Number> > coefficients);
 };
+
+} // namespace
+} // namespace
 
 #endif // ROSENBROCK_H

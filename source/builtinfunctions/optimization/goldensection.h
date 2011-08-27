@@ -3,6 +3,9 @@
 
 #include "../builtinfunction.h"
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 // Class for finding minimum of function with Golden Section method
 class GoldenSection : public BuiltInFunction
 {
@@ -28,5 +31,8 @@ private:
 	Number findMinimum();
 	Number countFunction(Number argument);
 };
+
+} // namespace
+} // namespace
 
 #endif // GOLDENSECTION_H

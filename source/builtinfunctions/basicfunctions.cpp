@@ -1,5 +1,8 @@
 #include "basicfunctions.h"
 
+namespace BuiltInFunctions {
+namespace BasicFunctions{
+
 namespace
 {
 	Plus instancePlus;
@@ -273,3 +276,6 @@ QList<RpnArgument> Sqrt::requiredArguments()
 
 	return arguments;
 }
+
+} // namespace
+} // namespace

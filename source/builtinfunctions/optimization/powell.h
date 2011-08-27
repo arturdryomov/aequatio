@@ -3,6 +3,9 @@
 
 #include "../builtinfunction.h"
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 // Class for finding minimum of function with Powell method
 class Powell : public BuiltInFunction
 {
@@ -25,5 +28,8 @@ private:
 	Number getMinimumPoint(Number first, Number second, Number third);
 	Number countFunction(Number argument);
 };
+
+} // namespace
+} // namespace
 
 #endif // POWELL_H

@@ -1,5 +1,8 @@
 #include "conjugategradient.h"
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 namespace {
 	ConjugateGradient instance;
 }
@@ -203,3 +206,6 @@ Number ConjugateGradient::function(const QList<Number> arguments)
 	RpnOperand result = m_calculator->calculate(m_functionName, functionArguments);
 	return result.value.value<Number>();
 }
+
+} // namespace
+} // namespace

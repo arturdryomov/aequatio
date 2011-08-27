@@ -3,6 +3,9 @@
 
 #include "../builtinfunction.h"
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 class ConjugateGradient : public BuiltInFunction
 {
 public:
@@ -22,5 +25,8 @@ private:
 	Number m_accuracy;
 	QList<Number> m_initialPoint;
 };
+
+} // namespace
+} // namespace
 
 #endif // CONJUGATEGRADIENT_H

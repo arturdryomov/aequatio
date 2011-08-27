@@ -3,6 +3,9 @@
 
 #include "../builtinfunction.h"
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 // Class for finding minimum of function with Returning Random method
 class ReturningRandom : public BuiltInFunction
 {
@@ -26,5 +29,8 @@ private:
 	QList<Number> findMinimum();
 	Number countFunction(QList<Number> arguments);
 };
+
+} // namespace
+} // namespace
 
 #endif // RETURNING_RANDOM_H

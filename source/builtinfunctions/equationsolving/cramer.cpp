@@ -1,5 +1,8 @@
 #include "cramer.h"
 
+namespace BuiltInFunctions {
+namespace EquationSolving {
+
 namespace
 {
 	Cramer instance;
@@ -73,3 +76,6 @@ QList<Number> Cramer::findSolution()
 
 	return result;
 }
+
+} // namespace
+} // namespace

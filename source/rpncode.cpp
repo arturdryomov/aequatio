@@ -4,7 +4,8 @@
 
 QString numberToString(const Number number)
 {
-	if (MathUtils::isNaN(number)) {
+	// MathUtils should possibly be move to root from builtinfunctions
+	if (BuiltInFunctions::MathUtils::isNaN(number)) {
 		return ("Ø"); // empty set
 	}
 

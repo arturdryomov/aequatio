@@ -3,6 +3,9 @@
 
 #include "../builtinfunction.h"
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 // Class for finding minimum of function with Best Trial method
 class BestTrial : public BuiltInFunction
 {
@@ -27,5 +30,8 @@ private:
 	QList<Number> getSpecialMinimum(QList<QList<Number> > points);
 	Number countFunction(QList<Number> arguments);
 };
+
+} // namespace
+} // namespace
 
 #endif // BEST_TRIAL_H

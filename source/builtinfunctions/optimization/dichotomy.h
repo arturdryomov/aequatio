@@ -3,6 +3,9 @@
 
 #include "../builtinfunction.h"
 
+namespace BuiltInFunctions {
+namespace Optimization {
+
 // Class for finding minimum of function with Dichotomy method
 class Dichotomy : public BuiltInFunction
 {
@@ -28,5 +31,8 @@ private:
 	Number findMinimum();
 	Number countFunction(Number argument);
 };
+
+} // namespace
+} // namespace
 
 #endif // DICHOTOMY_H
