@@ -15,10 +15,11 @@ public:
 	QList<RpnArgument> requiredArguments();
 	RpnOperand calculate(FunctionCalculator* calculator, QList<RpnOperand> actualArguments);
 private:
+	FunctionCalculator* m_calculator;
+	QString m_functionName;
+
 	QList<Number> findMinimum(const QList<QList<Number> > &initialSimplex, Number reflectionCoefficient, Number contractionCoefficient,
 	Number expansionCoefficient, Number accuracy);
-	QString m_functionName;
-	FunctionCalculator* m_calculator;
 	Number function(const QList<Number> &arguments);
 	int indexOfMinimal(const QList<Number> &values);
 	int indexOfMaximal(const QList<Number> &values);

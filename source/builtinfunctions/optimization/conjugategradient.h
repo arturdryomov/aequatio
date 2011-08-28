@@ -13,6 +13,11 @@ public:
 	RpnOperand calculate(FunctionCalculator* calculator, QList<RpnOperand> actualArguments);
 	QList<RpnArgument> requiredArguments();
 private:
+	FunctionCalculator *m_calculator;
+	QString m_functionName;
+	Number m_accuracy;
+	QList<Number> m_initialPoint;
+
 	QList<Number> findMinimum();
 	QList<Number> searchWithDirections(const QList<QList<Number> > directions,
 		const QList<Number> &initialPoint, QList<Number> &finishingPoint, bool &found);
@@ -20,10 +25,6 @@ private:
 	QList<QList<Number> > initialDirections(int dimensionsCount);
 	bool isDirectionsLinearlyIndependend(const QList<QList<Number> > &directions);
 	Number function(const QList<Number> arguments);
-	FunctionCalculator *m_calculator;
-	QString m_functionName;
-	Number m_accuracy;
-	QList<Number> m_initialPoint;
 };
 
 } // namespace

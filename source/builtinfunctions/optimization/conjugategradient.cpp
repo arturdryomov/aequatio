@@ -3,7 +3,8 @@
 namespace BuiltInFunctions {
 namespace Optimization {
 
-namespace {
+namespace
+{
 	ConjugateGradient instance;
 }
 
@@ -17,6 +18,7 @@ RpnOperand ConjugateGradient::calculate(FunctionCalculator* calculator, QList<Rp
 	// initial point
 	m_initialPoint = RpnVector::toOneDimensional(actualArguments[1].value.value<RpnVector>());
 	int expectedArgumentsCount = m_calculator->functionArguments(m_functionName).count();
+
 	if (m_initialPoint.count() != expectedArgumentsCount) {
 		THROW(EWrongArgument("initial point", QObject::tr("1-dimensional vector with %n argument(s)",
 			0, expectedArgumentsCount)));

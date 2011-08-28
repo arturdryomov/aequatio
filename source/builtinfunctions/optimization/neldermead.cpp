@@ -3,24 +3,10 @@
 namespace BuiltInFunctions {
 namespace Optimization {
 
-namespace {
+namespace
+{
 	NelderMead instance;
 }
-
-QList<RpnArgument> NelderMead::requiredArguments()
-{
-	QList<RpnArgument> arguments;
-	arguments
-		<< RpnArgument(RpnOperandFunctionName) // function
-		<< RpnArgument(RpnOperandVector) // initial simplex
-		<< RpnArgument(RpnOperandNumber)	// reflection coefficient
-		<< RpnArgument(RpnOperandNumber)	// compression coefficient
-		<< RpnArgument(RpnOperandNumber) // strain coefficient
-		<< RpnArgument(RpnOperandNumber); // stop value
-
-	return arguments;
-}
-
 
 RpnOperand NelderMead::calculate(BuiltInFunction::FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
@@ -52,6 +38,19 @@ RpnOperand NelderMead::calculate(BuiltInFunction::FunctionCalculator *calculator
 	return RpnOperand(RpnOperandVector, QVariant::fromValue(result));
 }
 
+QList<RpnArgument> NelderMead::requiredArguments()
+{
+	QList<RpnArgument> arguments;
+	arguments
+		<< RpnArgument(RpnOperandFunctionName) // function
+		<< RpnArgument(RpnOperandVector) // initial simplex
+		<< RpnArgument(RpnOperandNumber)	// reflection coefficient
+		<< RpnArgument(RpnOperandNumber)	// compression coefficient
+		<< RpnArgument(RpnOperandNumber) // strain coefficient
+		<< RpnArgument(RpnOperandNumber); // stop value
+
+	return arguments;
+}
 
 QList<Number> NelderMead::findMinimum(const QList<QList<Number> > &initialSimplex, Number reflectionCoefficient,
 	Number contractionCoefficient, Number expansionCoefficient, Number accuracy)
