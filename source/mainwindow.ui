@@ -102,8 +102,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>21</height>
+     <width>600</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuView">
@@ -134,10 +134,10 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>&amp;Show Functions and Constants</string>
+    <string>Sho&amp;w Functions and Constants</string>
    </property>
    <property name="shortcut">
-    <string>F2</string>
+    <string>Ctrl+W</string>
    </property>
   </action>
   <action name="actionHelp">
