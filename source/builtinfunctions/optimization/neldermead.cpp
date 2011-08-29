@@ -42,7 +42,8 @@ QList<RpnArgument> NelderMead::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
-		<< RpnArgument(RpnOperandFunctionName) // function
+		// -1 shows that number of arguments is not fixed
+		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant::fromValue(-1)) // function
 		<< RpnArgument(RpnOperandVector) // initial simplex
 		<< RpnArgument(RpnOperandNumber)	// reflection coefficient
 		<< RpnArgument(RpnOperandNumber)	// compression coefficient

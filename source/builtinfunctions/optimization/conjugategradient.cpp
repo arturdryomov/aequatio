@@ -35,7 +35,8 @@ QList<RpnArgument> ConjugateGradient::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
-		<< RpnArgument(RpnOperandFunctionName) // function
+		// -1 shows that number of arguments is not fixed
+		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant::fromValue(-1)) // function
 		<< RpnArgument(RpnOperandVector) // initial point
 		<< RpnArgument(RpnOperandNumber); // stop value
 

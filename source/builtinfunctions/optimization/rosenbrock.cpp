@@ -61,8 +61,8 @@ QList<RpnArgument> Rosenbrock::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments
-		// QVariant() shows that number of arguments is not fixed
-		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant())
+		// -1 shows that number of arguments is not fixed
+		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant::fromValue(-1))
 		<< RpnArgument(RpnOperandVector)
 		<< RpnArgument(RpnOperandNumber)
 		<< RpnArgument(RpnOperandNumber)
