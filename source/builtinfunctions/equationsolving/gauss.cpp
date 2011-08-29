@@ -104,8 +104,9 @@ QList<Number> Gauss::findSolution(QList<QList<Number> > coefficients)
 
 void Gauss::swapColumns(QList<QList<Number> > &matrix, int index1, int index2)
 {
-	foreach (QList<Number> row, matrix) {
-		row.swap(index1, index2);
+	QMutableListIterator<QList<Number> > i(matrix);
+	while (i.hasNext()) {
+		i.next().swap(index1, index2);
 	}
 }
 
