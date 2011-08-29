@@ -114,10 +114,10 @@ public:
 };
 
 
-class Abs : public BuiltInFunction
+class Arcsine : public BuiltInFunction
 {
 public:
-	Abs() : BuiltInFunction("abs")
+	Arcsine() : BuiltInFunction("asin")
 	{
 	}
 
@@ -126,10 +126,70 @@ public:
 };
 
 
-class Sqrt : public BuiltInFunction
+class Arccosine : public BuiltInFunction
 {
 public:
-	Sqrt() : BuiltInFunction("sqrt")
+	Arccosine() : BuiltInFunction("acos")
+	{
+	}
+
+	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnArgument> requiredArguments();
+};
+
+
+class Arctangent : public BuiltInFunction
+{
+public:
+	Arctangent() : BuiltInFunction("atan")
+	{
+	}
+
+	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnArgument> requiredArguments();
+};
+
+
+class AbsoluteValue : public BuiltInFunction
+{
+public:
+	AbsoluteValue() : BuiltInFunction("abs")
+	{
+	}
+
+	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnArgument> requiredArguments();
+};
+
+
+class SquareRoot : public BuiltInFunction
+{
+public:
+	SquareRoot() : BuiltInFunction("sqrt")
+	{
+	}
+
+	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnArgument> requiredArguments();
+};
+
+
+class NaturalLogarithm : public BuiltInFunction
+{
+public:
+	NaturalLogarithm() : BuiltInFunction("ln")
+	{
+	}
+
+	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnArgument> requiredArguments();
+};
+
+
+class ExponentialFunction : public BuiltInFunction
+{
+public:
+	ExponentialFunction() : BuiltInFunction("exp")
 	{
 	}
 

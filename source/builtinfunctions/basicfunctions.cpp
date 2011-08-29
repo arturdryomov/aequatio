@@ -155,7 +155,7 @@ QList<RpnArgument> UnaryMinus::requiredArguments()
 
 namespace
 {
-	Sine instanceCalcSine;
+	Sine instanceSine;
 }
 
 RpnOperand Sine::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
@@ -180,7 +180,7 @@ QList<RpnArgument> Sine::requiredArguments()
 
 namespace
 {
-	Cosine instanceCalcCosine;
+	Cosine instanceCosine;
 }
 
 RpnOperand Cosine::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
@@ -205,7 +205,7 @@ QList<RpnArgument> Cosine::requiredArguments()
 
 namespace
 {
-	Tangent instanceCalcTangent;
+	Tangent instanceTangent;
 }
 
 RpnOperand Tangent::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
@@ -230,21 +230,21 @@ QList<RpnArgument> Tangent::requiredArguments()
 
 namespace
 {
-	Abs instanceAbs;
+	Arcsine instanceArcsine;
 }
 
-RpnOperand Abs::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+RpnOperand Arcsine::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
 	Q_UNUSED(calculator);
 
 	RpnOperand result;
 	result.type = RpnOperandNumber;
-	result.value = qAbs(actualArguments.at(0).value.value<Number>());
+	result.value = qAsin(actualArguments.at(0).value.value<Number>());
 
 	return result;
 }
 
-QList<RpnArgument> Abs::requiredArguments()
+QList<RpnArgument> Arcsine::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments << RpnArgument(RpnOperandNumber);
@@ -255,10 +255,85 @@ QList<RpnArgument> Abs::requiredArguments()
 
 namespace
 {
-	Sqrt instanceSqrt;
+	Arccosine instanceArccosine;
 }
 
-RpnOperand Sqrt::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+RpnOperand Arccosine::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+{
+	Q_UNUSED(calculator);
+
+	RpnOperand result;
+	result.type = RpnOperandNumber;
+	result.value = qAcos(actualArguments.at(0).value.value<Number>());
+
+	return result;
+}
+
+QList<RpnArgument> Arccosine::requiredArguments()
+{
+	QList<RpnArgument> arguments;
+	arguments << RpnArgument(RpnOperandNumber);
+
+	return arguments;
+}
+
+
+namespace
+{
+	Arctangent instanceArctangent;
+}
+
+RpnOperand Arctangent::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+{
+	Q_UNUSED(calculator);
+
+	RpnOperand result;
+	result.type = RpnOperandNumber;
+	result.value = qAtan(actualArguments.at(0).value.value<Number>());
+
+	return result;
+}
+
+QList<RpnArgument> Arctangent::requiredArguments()
+{
+	QList<RpnArgument> arguments;
+	arguments << RpnArgument(RpnOperandNumber);
+
+	return arguments;
+}
+
+
+namespace
+{
+	AbsoluteValue instanceAbsoluteValue;
+}
+
+RpnOperand AbsoluteValue::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+{
+	Q_UNUSED(calculator);
+
+	RpnOperand result;
+	result.type = RpnOperandNumber;
+	result.value = qAbs(actualArguments.at(0).value.value<Number>());
+
+	return result;
+}
+
+QList<RpnArgument> AbsoluteValue::requiredArguments()
+{
+	QList<RpnArgument> arguments;
+	arguments << RpnArgument(RpnOperandNumber);
+
+	return arguments;
+}
+
+
+namespace
+{
+	SquareRoot instanceSquareRoot;
+}
+
+RpnOperand SquareRoot::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
 	Q_UNUSED(calculator);
 
@@ -269,7 +344,57 @@ RpnOperand Sqrt::calculate(FunctionCalculator *calculator, QList<RpnOperand> act
 	return result;
 }
 
-QList<RpnArgument> Sqrt::requiredArguments()
+QList<RpnArgument> SquareRoot::requiredArguments()
+{
+	QList<RpnArgument> arguments;
+	arguments << RpnArgument(RpnOperandNumber);
+
+	return arguments;
+}
+
+
+namespace
+{
+	NaturalLogarithm instanceNaturalLogarithm;
+}
+
+RpnOperand NaturalLogarithm::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+{
+	Q_UNUSED(calculator);
+
+	RpnOperand result;
+	result.type = RpnOperandNumber;
+	result.value = qLn(actualArguments.at(0).value.value<Number>());
+
+	return result;
+}
+
+QList<RpnArgument> NaturalLogarithm::requiredArguments()
+{
+	QList<RpnArgument> arguments;
+	arguments << RpnArgument(RpnOperandNumber);
+
+	return arguments;
+}
+
+
+namespace
+{
+	ExponentialFunction instanceExponentialFunction;
+}
+
+RpnOperand ExponentialFunction::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+{
+	Q_UNUSED(calculator);
+
+	RpnOperand result;
+	result.type = RpnOperandNumber;
+	result.value = qExp(actualArguments.at(0).value.value<Number>());
+
+	return result;
+}
+
+QList<RpnArgument> ExponentialFunction::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments << RpnArgument(RpnOperandNumber);
