@@ -7,10 +7,10 @@ namespace BuiltInFunctions {
 namespace Optimization {
 
 // Class for finding minimum of function with Best Trial method
-class BestTrial : public BuiltInFunction
+class BestTrial : public Function
 {
 public:
-	BestTrial() : BuiltInFunction("best_trial")
+	BestTrial() : Function("best_trial")
 	{
 	}
 

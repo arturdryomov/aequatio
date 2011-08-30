@@ -6,10 +6,10 @@
 namespace BuiltInFunctions {
 namespace Optimization {
 
-class ConjugateGradient : public BuiltInFunction
+class ConjugateGradient : public Function
 {
 public:
-	ConjugateGradient() : BuiltInFunction("conjugate_gradient") {}
+	ConjugateGradient() : Function("conjugate_gradient") {}
 	RpnOperand calculate(FunctionCalculator* calculator, QList<RpnOperand> actualArguments);
 	QList<RpnArgument> requiredArguments();
 private:

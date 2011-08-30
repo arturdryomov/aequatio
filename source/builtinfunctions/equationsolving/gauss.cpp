@@ -7,7 +7,7 @@ namespace {
 	Gauss instance;
 }
 
-RpnOperand Gauss::calculate(BuiltInFunction::FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+RpnOperand Gauss::calculate(Function::FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
 	Q_UNUSED(calculator);
 

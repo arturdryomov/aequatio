@@ -57,7 +57,7 @@ private:
 	QHash<QString, Number> m_builtInConstants;
 
 	friend class FunctionCalculator;
-	class FunctionCalculator : public BuiltInFunctions::BuiltInFunction::FunctionCalculator
+	class FunctionCalculator : public BuiltInFunctions::Function::FunctionCalculator
 	{
 	public:
 		FunctionCalculator(ExprCalculator *exprCalculator) : m_exprCalculator(exprCalculator) {}

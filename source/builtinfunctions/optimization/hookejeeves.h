@@ -7,10 +7,10 @@ namespace BuiltInFunctions {
 namespace Optimization {
 
 // Class for finding minimum of function with Hooke-Jeeves method
-class HookeJeeves : public BuiltInFunction
+class HookeJeeves : public Function
 {
 public:
-	HookeJeeves() : BuiltInFunction("hooke_jeeves")
+	HookeJeeves() : Function("hooke_jeeves")
 	{
 	}
 

@@ -8,10 +8,10 @@ namespace Optimization {
 
 // Class for finding minimum of function with Rosenbrock method
 // TODO: Check it, second primer from book is not working fine, questions about 3(1) step
-class Rosenbrock : public BuiltInFunction
+class Rosenbrock : public Function
 {
 public:
-	Rosenbrock() : BuiltInFunction("rosenbrock")
+	Rosenbrock() : Function("rosenbrock")
 	{
 	}
 

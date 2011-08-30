@@ -8,7 +8,7 @@ namespace
 	NelderMead instance;
 }
 
-RpnOperand NelderMead::calculate(BuiltInFunction::FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+RpnOperand NelderMead::calculate(Function::FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
 	m_calculator = calculator;
 

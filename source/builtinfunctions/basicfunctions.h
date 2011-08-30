@@ -6,10 +6,10 @@
 namespace BuiltInFunctions {
 namespace BasicFunctions{
 
-class Plus : public BuiltInFunction
+class Plus : public Function
 {
 public:
-	Plus() : BuiltInFunction(RpnFunctionPlus)
+	Plus() : Function(RpnFunctionPlus)
 	{
 	}
 
@@ -18,10 +18,10 @@ public:
 };
 
 
-class Minus : public BuiltInFunction
+class Minus : public Function
 {
 public:
-	Minus() : BuiltInFunction(RpnFunctionMinus)
+	Minus() : Function(RpnFunctionMinus)
 	{
 	}
 
@@ -30,10 +30,10 @@ public:
 };
 
 
-class Multiply : public BuiltInFunction
+class Multiply : public Function
 {
 public:
-	Multiply() : BuiltInFunction(RpnFunctionMultiply)
+	Multiply() : Function(RpnFunctionMultiply)
 	{
 	}
 
@@ -42,10 +42,10 @@ public:
 };
 
 
-class Divide : public BuiltInFunction
+class Divide : public Function
 {
 public:
-	Divide() : BuiltInFunction(RpnFunctionDivide)
+	Divide() : Function(RpnFunctionDivide)
 	{
 	}
 
@@ -54,10 +54,10 @@ public:
 };
 
 
-class Power : public BuiltInFunction
+class Power : public Function
 {
 public:
-	Power() : BuiltInFunction(RpnFunctionPower)
+	Power() : Function(RpnFunctionPower)
 	{
 	}
 
@@ -66,10 +66,10 @@ public:
 };
 
 
-class UnaryMinus : public BuiltInFunction
+class UnaryMinus : public Function
 {
 public:
-	UnaryMinus() : BuiltInFunction(RpnFunctionUnaryMinus)
+	UnaryMinus() : Function(RpnFunctionUnaryMinus)
 	{
 	}
 
@@ -78,10 +78,10 @@ public:
 };
 
 
-class Sine : public BuiltInFunction
+class Sine : public Function
 {
 public:
-	Sine() : BuiltInFunction("sin")
+	Sine() : Function("sin")
 	{
 	}
 
@@ -90,10 +90,10 @@ public:
 };
 
 
-class Cosine : public BuiltInFunction
+class Cosine : public Function
 {
 public:
-	Cosine() : BuiltInFunction("cos")
+	Cosine() : Function("cos")
 	{
 	}
 
@@ -102,10 +102,10 @@ public:
 };
 
 
-class Tangent : public BuiltInFunction
+class Tangent : public Function
 {
 public:
-	Tangent() : BuiltInFunction("tan")
+	Tangent() : Function("tan")
 	{
 	}
 
@@ -114,10 +114,10 @@ public:
 };
 
 
-class Arcsine : public BuiltInFunction
+class Arcsine : public Function
 {
 public:
-	Arcsine() : BuiltInFunction("asin")
+	Arcsine() : Function("asin")
 	{
 	}
 
@@ -126,10 +126,10 @@ public:
 };
 
 
-class Arccosine : public BuiltInFunction
+class Arccosine : public Function
 {
 public:
-	Arccosine() : BuiltInFunction("acos")
+	Arccosine() : Function("acos")
 	{
 	}
 
@@ -138,10 +138,10 @@ public:
 };
 
 
-class Arctangent : public BuiltInFunction
+class Arctangent : public Function
 {
 public:
-	Arctangent() : BuiltInFunction("atan")
+	Arctangent() : Function("atan")
 	{
 	}
 
@@ -150,10 +150,10 @@ public:
 };
 
 
-class AbsoluteValue : public BuiltInFunction
+class AbsoluteValue : public Function
 {
 public:
-	AbsoluteValue() : BuiltInFunction("abs")
+	AbsoluteValue() : Function("abs")
 	{
 	}
 
@@ -162,10 +162,10 @@ public:
 };
 
 
-class SquareRoot : public BuiltInFunction
+class SquareRoot : public Function
 {
 public:
-	SquareRoot() : BuiltInFunction("sqrt")
+	SquareRoot() : Function("sqrt")
 	{
 	}
 
@@ -174,10 +174,10 @@ public:
 };
 
 
-class NaturalLogarithm : public BuiltInFunction
+class NaturalLogarithm : public Function
 {
 public:
-	NaturalLogarithm() : BuiltInFunction("ln")
+	NaturalLogarithm() : Function("ln")
 	{
 	}
 
@@ -186,10 +186,10 @@ public:
 };
 
 
-class ExponentialFunction : public BuiltInFunction
+class ExponentialFunction : public Function
 {
 public:
-	ExponentialFunction() : BuiltInFunction("exp")
+	ExponentialFunction() : Function("exp")
 	{
 	}
 

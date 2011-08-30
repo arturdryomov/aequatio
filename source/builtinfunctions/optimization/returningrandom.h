@@ -7,10 +7,10 @@ namespace BuiltInFunctions {
 namespace Optimization {
 
 // Class for finding minimum of function with Returning Random method
-class ReturningRandom : public BuiltInFunction
+class ReturningRandom : public Function
 {
 public:
-	ReturningRandom() : BuiltInFunction("returning_random")
+	ReturningRandom() : Function("returning_random")
 	{
 	}
 

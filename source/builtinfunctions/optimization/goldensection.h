@@ -7,10 +7,10 @@ namespace BuiltInFunctions {
 namespace Optimization {
 
 // Class for finding minimum of function with Golden Section method
-class GoldenSection : public BuiltInFunction
+class GoldenSection : public Function
 {
 public:
-	GoldenSection() : BuiltInFunction("golden_section")
+	GoldenSection() : Function("golden_section")
 	{
 	}
 

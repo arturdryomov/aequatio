@@ -7,10 +7,10 @@ namespace BuiltInFunctions {
 namespace Optimization {
 
 // Class for finding minimum of function with Fibonacci method
-class Fibonacci : public BuiltInFunction
+class Fibonacci : public Function
 {
 public:
-	Fibonacci() : BuiltInFunction("fibonacci")
+	Fibonacci() : Function("fibonacci")
 	{
 	}
 

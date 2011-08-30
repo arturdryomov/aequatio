@@ -7,10 +7,10 @@ namespace BuiltInFunctions {
 namespace Optimization {
 
 // Class for finding minimum of function with Powell method
-class Powell : public BuiltInFunction
+class Powell : public Function
 {
 public:
-	Powell() : BuiltInFunction("powell")
+	Powell() : Function("powell")
 	{
 	}
 

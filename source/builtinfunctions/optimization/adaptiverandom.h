@@ -7,10 +7,10 @@ namespace BuiltInFunctions {
 namespace Optimization {
 
 // Class for finding minimum of function with Adaptive Random method
-class AdaptiveRandom : public BuiltInFunction
+class AdaptiveRandom : public Function
 {
 public:
-	AdaptiveRandom() : BuiltInFunction("adaptive_random")
+	AdaptiveRandom() : Function("adaptive_random")
 	{
 	}
 

@@ -6,10 +6,10 @@
 namespace BuiltInFunctions {
 namespace EquationSolving {
 
-class Gauss : public BuiltInFunction
+class Gauss : public Function
 {
 public:
-	Gauss() : BuiltInFunction("gauss")
+	Gauss() : Function("gauss")
 	{
 	}
 

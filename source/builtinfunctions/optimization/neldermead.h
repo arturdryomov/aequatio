@@ -8,10 +8,10 @@ namespace Optimization {
 
 // Nelder-Mead method, “метод деформируемого многогранника” in Russian terminology.
 
-class NelderMead : public BuiltInFunction
+class NelderMead : public Function
 {
 public:
-	NelderMead() : BuiltInFunction("nelder_mead") {}
+	NelderMead() : Function("nelder_mead") {}
 	QList<RpnArgument> requiredArguments();
 	RpnOperand calculate(FunctionCalculator* calculator, QList<RpnOperand> actualArguments);
 private:

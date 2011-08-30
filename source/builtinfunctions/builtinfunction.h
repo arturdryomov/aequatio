@@ -11,7 +11,7 @@
 namespace BuiltInFunctions {
 
 // Template and interface class for calculation sub-classes
-class BuiltInFunction
+class Function
 {
 public:
 	// Class for separate calculation mechanism
@@ -23,15 +23,15 @@ public:
 	};
 
 	// Common constructor for registration of sub-classes
-	BuiltInFunction(QString functionName)
+	Function(QString functionName)
 	{
 		functions().insert(functionName, this);
 	}
 
 	// Hash of existing functions
-	static QHash<QString, BuiltInFunction*> &functions()
+	static QHash<QString, Function*> &functions()
 	{
-		static QHash<QString, BuiltInFunction*> functionsHash;
+		static QHash<QString, Function*> functionsHash;
 		return functionsHash;
 	}
 

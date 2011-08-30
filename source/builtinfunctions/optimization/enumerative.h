@@ -7,10 +7,10 @@ namespace BuiltInFunctions {
 namespace Optimization {
 
 // Class for finding minimum of function with Enumerative method
-class Enumerative : public BuiltInFunction
+class Enumerative : public Function
 {
 public:
-	Enumerative() : BuiltInFunction("enumerative")
+	Enumerative() : Function("enumerative")
 	{
 	}
 

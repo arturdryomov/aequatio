@@ -7,10 +7,10 @@ namespace BuiltInFunctions {
 namespace Optimization {
 
 // Class for finding minimum of function with Bisection method
-class Bisection : public BuiltInFunction
+class Bisection : public Function
 {
 public:
-	Bisection() : BuiltInFunction("bisection")
+	Bisection() : Function("bisection")
 	{
 	}
 

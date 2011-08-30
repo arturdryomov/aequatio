@@ -6,10 +6,10 @@
 namespace BuiltInFunctions {
 namespace EquationSolving {
 
-class Cramer : public BuiltInFunction
+class Cramer : public Function
 {
 public:
-	Cramer() : BuiltInFunction("cramer")
+	Cramer() : Function("cramer")
 	{
 	}
 

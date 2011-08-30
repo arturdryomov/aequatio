@@ -7,10 +7,10 @@ namespace BuiltInFunctions {
 namespace Optimization {
 
 // Class for finding minimum of function with Dichotomy method
-class Dichotomy : public BuiltInFunction
+class Dichotomy : public Function
 {
 public:
-	Dichotomy() : BuiltInFunction("dichotomy")
+	Dichotomy() : Function("dichotomy")
 	{
 	}
 
