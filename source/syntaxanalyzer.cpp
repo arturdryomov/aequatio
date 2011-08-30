@@ -491,7 +491,7 @@ RpnCodeThread SyntaxAnalyzer::actualArgument(const RpnArgument &correspondingFor
 			}
 
 			// check argument count if number of arguments is fixed
-			if (correspondingFormalArgument.info.value<int>() != -1) {
+			if (correspondingFormalArgument.info.value<int>() != ArbitraryArgumentsCount) {
 				if (m_exprCalculator->functionArguments(argumentFunctionName).count()
 					!= correspondingFormalArgument.info.value<int>()) {
 					THROW(EIncorrectFunctionArgument(argumentFunctionName));

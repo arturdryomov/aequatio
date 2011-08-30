@@ -100,6 +100,8 @@ struct RpnArgument {
 	QVariant info;
 };
 
+const int ArbitraryArgumentsCount = -1;
+
 struct RpnFunction {
 	QList<RpnArgument> arguments;
 	RpnCodeThread codeThread;
