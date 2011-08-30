@@ -498,6 +498,13 @@ RpnCodeThread SyntaxAnalyzer::actualArgument(const RpnArgument &correspondingFor
 				}
 			}
 
+			// ensure all argumentFunctionName arguments are of Number type
+			foreach (const RpnArgument &argument, m_exprCalculator->functionArguments(argumentFunctionName)) {
+				if (argument.type != RpnOperandNumber) {
+					THROW(EIncorrectFunctionArgument(argumentFunctionName));
+				}
+			}
+
 			RpnOperand rpnOperand(RpnOperandFunctionName, argumentFunctionName);
 			m_lexicalAnalyzer->nextLexeme();
 			return RpnCodeThread() << RpnElement(RpnElementOperand, QVariant::fromValue(rpnOperand));
