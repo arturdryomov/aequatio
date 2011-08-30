@@ -20,6 +20,7 @@ signals:
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
+	void clearInputArea();
 public slots:
 	void displayErrorInfo(const QString &info);
 	void hideErrorInfo();
@@ -32,7 +33,8 @@ protected:
 private slots:
 	void aboutTriggered();
 private:
-	Ui::MainWindow *ui;	
+	Ui::MainWindow *ui;
+	void setSplitterSizes();
 };
 
 #endif // MAINWINDOW_H

@@ -16,29 +16,297 @@
 
       <p>These are built-in functions you can <a href="functions.html#using">use</a>.
 
-      <table>
-        <tr>
-          <th>Name</th>
-          <th>Meaning</th>
-        </tr>
-        <tr>
-          <td><i>number</i> ^ <i>degree</i></td>
-          <td>Involutes <i>number</i> in <i>degree</i></td>
-        </tr>
-        <tr class="alt">
-          <td>sin(<i>number</i>)</td>
-          <td>Returns sine of <i>number</i></td>
-        </tr>
-        <tr>
-          <td>cos(<i>number</i>)</td>
-          <td>Returns cosine of <i>number</i></td>
-        </tr>
-        <tr class="alt">
-          <td>tan(<i>number</i>)</td>
-          <td>Returns tangent of <i>number</i></td>
-        </tr>
-      </table>
+			<h2>Common</h2>
+
+				<table>
+					<tr>
+						<th>Name</th>
+						<th>Meaning</th>
+					</tr>
+					<tr>
+						<td><i>number</i> ^ <i>degree</i></td>
+						<td>Involutes <i>number</i> in <i>degree</i></td>
+					</tr>
+					<tr class="alt">
+						<td>sin(<i>number</i>)</td>
+						<td>Returns sine of <i>number</i></td>
+					</tr>
+					<tr>
+						<td>cos(<i>number</i>)</td>
+						<td>Returns cosine of <i>number</i></td>
+					</tr>
+					<tr class="alt">
+						<td>tan(<i>number</i>)</td>
+						<td>Returns tangent of <i>number</i></td>
+					</tr>
+					<tr>
+						<td>asin(<i>number</i>)</td>
+						<td>Returns arcsine of <i>number</i></td>
+					</tr>
+					<tr class="alt">
+						<td>acos(<i>number</i>)</td>
+						<td>Returns arccosine of <i>number</i></td>
+					</tr>
+					<tr>
+						<td>atan(<i>number</i>)</td>
+						<td>Returns arctangent of <i>number</i></td>
+					</tr>
+					<tr class="alt">
+						<td>abs(<i>number</i>)</td>
+						<td>Returns modulus of <i>number</i></td>
+					</tr>
+					<tr>
+						<td>sqrt(<i>number</i>)</td>
+						<td>Returns square root of <i>number</i></td>
+					</tr>
+					<tr class="alt">
+						<td>ln(<i>number</i>)</td>
+						<td>Returns natural logarithm of <i>number</i></td>
+					</tr>
+					<tr>
+						<td>exp(<i>number</i>)</td>
+						<td>Returns exponential function of <i>number</i></td>
+					</tr>
+				</table>
+
+			<h2>Equations Solving</h2>
+				
+				<table>
+					<tr>
+						<th>Name</th>
+						<th>Meaning</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="equations-solving.html#cramer">
+								cramer([
+									[<i>a<sub>11</sub></i>, <i>a<sub>12</sub></i>, &hellip;, <i>a<sub>1n</sub></i>, <i>b<sub>1</sub></i>], 
+									[<i>a<sub>21</sub></i>, <i>a<sub>22</sub></i>, &hellip;, <i>a<sub>2n</sub></i>, <i>b<sub>2</sub></i>], 
+									&hellip;,
+									[<i>a<sub>n1</sub></i>, <i>a<sub>n2</sub></i>, &hellip;, <i>a<sub>nn</sub></i>, <i>b<sub>n</sub></i>]
+								])
+							</a>
+						</td>
+						<td>
+							Solves system of linear equations with Cramer method.
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="equations-solving.html#gauss">
+								gauss([
+									[<i>a<sub>11</sub></i>, <i>a<sub>12</sub></i>, &hellip;, <i>a<sub>1n</sub></i>, <i>b<sub>1</sub></i>], 
+									[<i>a<sub>21</sub></i>, <i>a<sub>22</sub></i>, &hellip;, <i>a<sub>2n</sub></i>, <i>b<sub>2</sub></i>], 
+									&hellip;,
+									[<i>a<sub>n1</sub></i>, <i>a<sub>n2</sub></i>, &hellip;, <i>a<sub>nn</sub></i>, <i>b<sub>n</sub></i>]
+								]
+								)
+							</a>
+						</td>
+						<td>
+							Solves system of linear equations with Gauss method.
+						</td>
+					</tr>
+				</table>
+
+			<h2>Minimization</h2>
+
+				<table>
+					<tr>
+						<th>Name</th>
+						<th>Meaning</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="minimum-zero.html#enumerative">
+								enumerative(
+									<i>f</i>, 
+									<i>a</i>, 
+									<i>b</i>, 
+									<i>N</i>
+								)
+							</a>
+						</td>
+						<td>Enumerative method</td>
+					</tr>
+					<tr class="alt">
+						<td>
+							<a href="minimum-zero.html#bisection">
+								bisection(
+									<i>f</i>, 
+									<i>a</i>, 
+									<i>b</i>, 
+									<i>l</i>
+								)
+							</a>
+						</td>
+						<td>Bisection method</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="minimum-zero.html#dichotomy">
+								dichotomy(
+									<i>f</i>, 
+									<i>a</i>, 
+									<i>b</i>, 
+									<i>&epsilon;</i>, 
+									<i>l</i>
+								)
+							</a>
+						</td>
+						<td>Dichotomy method</td>
+					</tr>
+					<tr class="alt">
+						<td>
+							<a href="minimum-zero.html#golden-section">
+								golden_section(
+									<i>f</i>, 
+									<i>a</i>, 
+									<i>b</i>, 
+									<i>l</i>
+								)
+							</a>
+						</td>
+						<td>Golden Section method</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="minimum-zero.html#fibonacci">
+								fibonacci(
+									<i>f</i>, 
+									<i>a</i>, 
+									<i>b</i>, 
+									<i>l</i>, 
+									<i>&epsilon;</i>
+								)
+							</a>
+						</td>
+						<td>Fibonacci method</td>
+					</tr>
+					<tr class="alt">
+						<td>
+							<a href="minimum-zero.html#powell">
+								powell
+								 (<i>f</i>, <i>x</i>, <i>&Delta;x</i>,
+									<i>&epsilon;<sub>1</sub></i>,
+									<i>&epsilon;<sub>2</sub></i>)
+							</a>
+						</td>
+						<td>Powell method</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="minimum-zero.html#hooke-jeeves">
+								hooke_jeeves(
+									<i>f</i>, 
+									[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;],
+									<i>&epsilon;</i>,
+									[<i>&Delta;<sub>1</sub></i>, <i>&Delta;<sub>2</sub></i>, &hellip;],
+									<i>&lambda;</i>,
+									<i>&alpha;</i>,
+								)
+							</a>
+						</td>
+						<td>Hooke-Jeeves method</td>
+					</tr>
+					<tr class="alt">
+						<td>
+							<a href="minimum-zero.html#rosenbrock">
+								rosenbrock(
+									<i>f</i>, 
+									[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;],
+									<i>&epsilon;</i>,
+									<i>&alpha;</i>,
+									<i>&beta;</i>,
+									[<i>&Delta;<sub>1</sub></i>, <i>&Delta;<sub>2</sub></i>, &hellip;],
+									<i>N</i>
+								)
+							</a>
+						</td>
+						<td>Rosenbrock method</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="minimum-zero.html#adaptive-random">
+								adaptive_random(
+									<i>f</i>, 
+									[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;],
+									<i>&alpha;</i>,
+									<i>&beta;</i>,
+									<i>M</i>,
+									<i>N</i>,
+									<i>R</i>
+								)
+							</a>
+						</td>
+						<td>Adaptive Random method</td>
+					</tr>
+					<tr class="alt">
+						<td>
+							<a href="minimum-zero.html#returning-random">
+								returning_random(
+									<i>f</i>, 
+									[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;],
+									<i>&beta;</i>,
+									<i>M</i>,
+									<i>N</i>,
+									<i>R</i>
+								)
+							</a>
+						</td>
+						<td>Returning Random method</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="minimum-zero.html#best-trial">
+								best_trial(
+									<i>f</i>, 
+									[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;],
+									<i>&beta;</i>,
+									<i>M</i>,
+									<i>N</i>,
+									<i>R</i>
+								)
+							</a>
+						</td>
+						<td>Best Trial method</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="minimum-zero.html#nelder-mead">
+							nelder_mead(
+								<i>f</i>,
+								[
+									[<i>x<sub>11</sub></i>, <i>x<sub>12</sub></i>, &hellip;, <i>x<sub>1n</sub></i>], 
+									[<i>x<sub>21</sub></i>, <i>x<sub>22</sub></i>, &hellip;, <i>x<sub>2n</sub></i>], 
+									&hellip;
+									[<i>x<sub>(n+1)1</sub></i>, <i>x<sub>(n+1)2</sub></i>, &hellip;, <i>x<sub>(n+1)n</sub></i>]
+								],
+								<i>&alpha;</i>,
+								<i>&beta;</i>,
+								<i>&gamma;</i>,
+								<i>&epsilon;</i>		
+							)
+							</a>
+						</td>
+						<td>Nelder—Mead method</td>
+					</tr>	
+					<tr>
+						<td>
+							<a href="minimum-zero.html#conjugate-gradient">
+							conjugate_gradient(
+								<i>f</i>,
+								[<i>x<sub>1</sub></i>, <i>x<sub>1</sub></i>, &hellip;, <i>x<sub>n</sub></i>],
+								<i>&epsilon;</i>		
+							)
+							</a>
+						</td>
+						<td>Conjugate Gradient method</td>
+					</tr>						
+				</table>
 
   </body>
 
 </html>
+
+

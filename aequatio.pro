@@ -1,13 +1,13 @@
-QT	+= core gui
+QT += core gui
 
 TARGET = aequatio
 TEMPLATE = app
 CONFIG += help
 
 DEFINES += "VERSION_MAJOR=0"
-DEFINES += "VERSION_MINOR=1"
+DEFINES += "VERSION_MINOR=2"
 DEFINES += "VERSION_BUILD=0"
-DEFINES += "VERSION_REVISION=9000"
+DEFINES += "VERSION_REVISION=2100"
 
 # VERSION_REVISION has following meaning:
 #   1xxx - dev build
@@ -17,7 +17,6 @@ DEFINES += "VERSION_REVISION=9000"
 #   5axx - RC a
 #   9xxx - release
 #   6xxx-8xxx - reserved
-
 
 mac {
 	ICON = resource/icons/mac/aequatio.icns
@@ -44,8 +43,25 @@ SOURCES += \
 	source/aboutwindow.cpp \
 	source/helpwindow.cpp \
 	source/helpbrowser.cpp \
-	source/logwindow.cpp
-
+	source/logwindow.cpp \
+	source/rpncode.cpp \
+	source/builtinfunctions/mathutils.cpp \
+	source/builtinfunctions/basicfunctions.cpp \
+	source/builtinfunctions/optimization/enumerative.cpp \
+	source/builtinfunctions/optimization/bisection.cpp \
+	source/builtinfunctions/optimization/dichotomy.cpp \
+	source/builtinfunctions/optimization/goldensection.cpp \
+	source/builtinfunctions/optimization/fibonacci.cpp \
+	source/builtinfunctions/optimization/powell.cpp \
+	source/builtinfunctions/optimization/hookejeeves.cpp \
+	source/builtinfunctions/optimization/rosenbrock.cpp \
+	source/builtinfunctions/optimization/adaptiverandom.cpp \
+	source/builtinfunctions/optimization/returningrandom.cpp \
+	source/builtinfunctions/optimization/besttrial.cpp \
+	source/builtinfunctions/optimization/neldermead.cpp \
+	source/builtinfunctions/optimization/conjugategradient.cpp \
+	source/builtinfunctions/equationsolving/gauss.cpp \
+	source/builtinfunctions/equationsolving/cramer.cpp
 
 HEADERS  += \
 	source/mainwindow.h \
@@ -61,7 +77,26 @@ HEADERS  += \
 	source/aboutwindow.h \
 	source/helpwindow.h \
 	source/helpbrowser.h \
-	source/logwindow.h
+	source/logwindow.h \
+	source/rpncode.h \
+	source/builtinfunctions/mathutils.h \
+	source/builtinfunctions/builtinfunction.h \
+	source/builtinfunctions/basicfunctions.h \
+	source/builtinfunctions/optimization/enumerative.h \
+	source/builtinfunctions/optimization/bisection.h \
+	source/builtinfunctions/optimization/dichotomy.h \
+	source/builtinfunctions/optimization/goldensection.h \
+	source/builtinfunctions/optimization/fibonacci.h \
+	source/builtinfunctions/optimization/powell.h \
+	source/builtinfunctions/optimization/hookejeeves.h \
+	source/builtinfunctions/optimization/rosenbrock.h \
+	source/builtinfunctions/optimization/adaptiverandom.h \
+	source/builtinfunctions/optimization/returningrandom.h \
+	source/builtinfunctions/optimization/besttrial.h \
+	source/builtinfunctions/optimization/neldermead.h \
+	source/builtinfunctions/optimization/conjugategradient.h \
+	source/builtinfunctions/equationsolving/gauss.h \
+	source/builtinfunctions/equationsolving/cramer.h
 
 FORMS	+= \
 	source/mainwindow.ui \

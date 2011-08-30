@@ -15,6 +15,8 @@ enum LexemeType {
 	LexemeDivide,
 	LexemeOpeningBracket,
 	LexemeClosingBracket,
+	LexemeOpeningSquareBracket,
+	LexemeClosingSquareBracket,
 	LexemePower,
 	LexemeEqual,
 	LexemeComma,

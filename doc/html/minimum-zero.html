@@ -1,0 +1,354 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+    <title>Aequatio Help</title>
+
+    <link rel="stylesheet" type="text/css" href="css/master.css" />
+  </head>
+
+  <body>
+
+		<a name="title"><h1>Finding Minimum: Zero Order</h1></a>
+
+			<h2>One-dimensional minimization</h2>
+
+				<p>These methods operate only one variable functions.</p>
+
+				<a name="enumerative"><h3>Enumerative</h3></a>
+
+					<p>enumerative(<i>f</i>, <i>a</i>, <i>b</i>, <i>N</i>)</p>
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li><i>a</i>, <i>b</i> — search interval;</li>
+						<li><i>N</i> — number of iterations.</li>
+					</ul>
+
+					<p>Example<p>
+
+					<div class="code">
+						<p>&larr; func f(x) = 2 * (x ^ 2) - 12 * x</p>
+						<p>&rarr; Function declared: f(x) = 2 × x ^ 2 − 12 × x</p>
+						<p>&larr; enumerative(f, 0, 10, 9)</p>
+						<p>&rarr; enumerative(f, 0, 10, 9) = 3</p>
+					</div>
+
+				<a name="bisection"><h3>Bisection</h3></a>
+
+					<p>bisection(<i>f</i>, <i>a</i>, <i>b</i>, <i>l</i>)</p>
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li><i>a</i>, <i>b</i> — search interval;</li>
+						<li><i>l > 0</i> — accuracy.</li>
+					</ul>
+
+					<p>Example<p>
+
+					<div class="code">
+						<p>&larr; func f(x) = 2 * (x ^ 2) - 12 * x</p>
+						<p>&rarr; Function declared: f(x) = 2 × x ^ 2 − 12 × x</p>
+						<p>&larr; bisection(f, 0, 10, 1)</p>
+						<p>&rarr; bisection(f, 0, 10, 1) = 3.125</p>
+					</div>
+
+				<a name="dichotomy"><h3>Dichotomy</h3></a>
+
+					<p>dichotomy(<i>f</i>, <i>a</i>, <i>b</i>, <i>l</i>, <i>&epsilon;</i>)</p>
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li><i>a</i>, <i>b</i> — search interval;</li>
+						<li><i>l > 0</i> — accuracy;</li>
+						<li><i>&epsilon; > 0</i> — small number.</li>
+					</ul>
+
+					<p>Example<p>
+
+					<div class="code">
+						<p>&larr; func f(x) = 2 * (x ^ 2) - 12 * x</p>
+						<p>&rarr; Function declared: f(x) = 2 × x ^ 2 − 12 × x</p>
+						<p>&larr; dichotomy(f, 0, 10, 1, 0.2)</p>
+						<p>&rarr; dichotomy(f, 0, 10, 1, 0.2) = 2.85625</p>
+					</div>
+
+				<a name="golden-section"><h3>Golden Section</h3></a>
+
+					<p>golden_section(<i>f</i>, <i>a</i>, <i>b</i>, <i>l</i>)</p>
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li><i>a</i>, <i>b</i> — search interval;</li>
+						<li><i>l > 0</i> — accuracy.</li>
+					</ul>
+
+					<p>Example<p>
+
+					<div class="code">
+						<p>&larr; func f(x) = 2 * (x ^ 2) - 12 * x</p>
+						<p>&rarr; Function declared: f(x) = 2 × x ^ 2 − 12 × x</p>
+						<p>&larr; golden_section(f, 0, 10, 1)</p>
+						<p>&rarr; golden_section(f, 0, 10, 1) = 2.81153</p>
+					</div>
+
+				<a name="fibonacci"><h3>Fibonacci</h3></a>
+
+					<p>fibonacci(<i>f</i>, <i>a</i>, <i>b</i>, <i>l</i>, <i>&epsilon;</i>)</p>
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li><i>a</i>, <i>b</i> — search interval;</li>
+						<li><i>l > 0</i> — length of finish interval;</li>
+						<li><i>&epsilon; > 0</i> — difference constant.</li>
+					</ul>
+
+					<p>Example<p>
+
+					<div class="code">
+						<p>&larr; func f(x) = 2 * (x ^ 2) - 12 * x</p>
+						<p>&rarr; Function declared: f(x) = 2 × x ^ 2 − 12 × x</p>
+						<p>&larr; fibonacci(f, 0, 10, 1, 0.01)</p>
+						<p>&rarr; fibonacci(f, 0, 10, 1, 0.01) = 2.69731</p>
+					</div>
+
+				<a name="powell"><h3>Powell</h3></a>
+
+					powell
+					(<i>f</i>, <i>x</i>, <i>&Delta;x</i>,
+					<i>&epsilon;<sub>1</sub></i>,
+					<i>&epsilon;<sub>2</sub></i>)
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li><i>x</i> — start point;</li>
+						<li><i>&Delta;x > 0</i> — step size; </li>
+						<li>
+						<i>&epsilon;<sub>1</sub></i>, <i>&epsilon;<sub>2</sub></i> — small numbers,
+						which set accuracy.</i>
+						</li>
+					</ul>
+
+					<p>Example<p>
+
+					<div class="code">
+						<p>&larr; func f(x) = 2 * (x ^ 2) + 16 / x</p>
+						<p>&rarr; Function declared: f(x) = 2 × x ^ 2 + 16 ÷ x</p>
+						<p>&larr; powell(f, 1, 1, 0.003, 0.03)</p>
+						<p>&rarr; powell(f, 1, 1, 0.003, 0.03) = 1.61214</p>
+					</div>
+
+			<h2>Common minimization</h2>
+
+				<a name="hooke-jeeves"><h3>Hooke-Jeeves</h3></a>
+
+					hooke-jeeves(
+						<i>f</i>, 
+						[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;],
+						<i>&epsilon;</i>,
+						[<i>&Delta;<sub>1</sub></i>, <i>&Delta;<sub>2</sub></i>, &hellip;],
+						<i>&lambda;</i>,
+						<i>&alpha;</i>,
+					)
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li>[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;] — start point,
+							a number of coordinates is a number of function arguments;</li>
+						<li><i>&epsilon; > 0</i> — stop value;</li>
+						<li>[<i>&Delta;<sub>1</sub></i>, <i>&Delta;<sub>2</sub></i>, &hellip;] —
+							steps on directions, a number of directions is a number of function arguments;</li>
+						<li><i>&lambda; > 0</i> — acceleration coefficient;</li>
+						<li><i>&alpha; > 1</i> — decrease step coefficient.</li>
+					</ul>
+
+					<p>Example<p>
+
+					<div class="code">
+						<p>&larr; func f(x, y) = 4 * ( (x - 5) ^ 2 ) + (y - 6) ^ 2</p>
+						<p>&rarr; Function declared: f(x, y) = 4 × (x − 5) ^ 2 + (y − 6) ^ 2</p>
+						<p>&larr; hooke_jeeves(f, [8, 9], 0.3, [1, 2], 1, 2)</p>
+						<p>&rarr; hooke_jeeves(f, [8, 9], 0.3, [1, 2], 1, 2) = [5, 6]</p>
+					</div>
+
+				<a name="rosenbrock"><h3>Rosenbrock</h3></a>
+
+					rosenbrock(
+						<i>f</i>, 
+						[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;],
+						<i>&epsilon;</i>,
+						<i>&alpha;</i>,
+						<i>&beta;</i>,
+						[<i>&Delta;<sub>1</sub></i>, <i>&Delta;<sub>2</sub></i>, &hellip;],
+						<i>N</i>
+					)
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li>[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;] — start point,
+							a number of coordinates is a number of function arguments;</li>
+						<li><i>&epsilon; > 0</i> — stop value;</li>
+						<li><i>&alpha; > 1</i> — acceleration coefficient;</li>
+						<li><i>-1  &lt; &beta; &lt; 0</i> — decrease coefficient;</li>
+						<li>[<i>&Delta;<sub>1</sub></i>, <i>&Delta;<sub>2</sub></i>, &hellip;] —
+							steps on directions, a number of directions is a number of function arguments;</li>
+						<li><i>N</i> — maximum number of fail steps.</li>
+					</ul>
+
+					<p>Example<p>
+
+					<div class="code">
+						<p>&larr; func f(x, y) = 4 * ( (x - 5) ^ 2 ) + (y - 6) ^ 2</p>
+						<p>&rarr; Function declared: f(x, y) = 4 × (x − 5) ^ 2 + (y − 6) ^ 2</p>
+						<p>&larr; rosenbrock(f, [8, 9], 0.6, 2, -0.5, [1, 2], 3)</p>
+						<p>&rarr; rosenbrock(f, [8, 9], 0.6, 2, −0.5, [1, 2], 3) = [4.87963, 6.3254]</p>
+					</div>
+
+				<a name="nelder-mead"><h3>Nelder—Mead</h3></a>
+				
+					nelder_mead(
+						<i>f</i>,
+						[
+							[<i>x<sub>11</sub></i>, <i>x<sub>12</sub></i>, &hellip;, <i>x<sub>1n</sub></i>], 
+							[<i>x<sub>21</sub></i>, <i>x<sub>22</sub></i>, &hellip;, <i>x<sub>2n</sub></i>], 
+							&hellip;
+							[<i>x<sub>(n+1)1</sub></i>, <i>x<sub>(n+1)2</sub></i>, &hellip;, <i>x<sub>(n+1)n</sub></i>]
+						],
+						<i>&alpha;</i>,
+						<i>&beta;</i>,
+						<i>&gamma;</i>,
+						<i>&epsilon;</i>		
+					)
+					
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li>[[<i>x<sub>11</sub></i>, <i>x<sub>12</sub></i>, &hellip;, <i>x<sub>1n</sub></i>], &hellip; ] — initial simplex,
+							a number of coordinates is a number of function arguments plus one;</li>
+						<li><i>&alpha;</i> — reflection coefficient, <i>&alpha; = 1</i>  recommended; </li>
+						<li><i>&beta;</i> — contraction coefficient, <i>0.4 &lt; &beta; &lt; 0.6</i> recommended;</li>
+						<li><i>&gamma;</i> — expansion coefficient, <i>2.8 &lt; &gamma; &lt; 3</i> recommended;</li>
+						<li><i>&epsilon;</i> — accuracy, should be <i>&epsilon; &gt; 0</i>.</li>
+					</ul>
+					
+					<p>Example<p>
+
+					<div class="code">
+						<p>&larr; func f(x, y) = 4 * ( (x - 5) ^ 2 ) + (y - 6) ^ 2</p>
+						<p>&rarr; Function declared: f(x, y) = 4 × (x − 5) ^ 2 + (y − 6) ^ 2</p>
+						<p>&larr; nelder_mead(f, [[0, 1], [1, 1], [1, 2]], 1, 0.5, 3, 0.00001)</p>
+						<p>&rarr; nelder_mead(f, [[0, 1], [1, 1], [1, 2]], 1, 0.5, 3, 1e−05) = [4.99902, 5.99854]</p>
+					</div>
+					
+				<a name="conjugate-gradient"><h3>Conjugate Gradient</h3></a>
+				
+					conjugate_gradient(
+						<i>f</i>,
+						[<i>x<sub>1</sub></i>, <i>x<sub>1</sub></i>, &hellip;, <i>x<sub>n</sub></i>],
+						<i>&epsilon;</i>		
+					)
+					
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li>[<i>x<sub>1</sub></i>, <i>x<sub>1</sub></i>, &hellip;, <i>x<sub>n</sub></i>] — starting point,
+							a number of coordinates is a number of function arguments;</li>
+						<li><i>&epsilon;</i> — accuracy, should be <i>&epsilon; &gt; 0</i>.</li>
+					</ul>
+					
+					<p>Example<p>
+
+					<div class="code">
+						<p>&larr; func f(x, y) = 4 * ( (x - 5) ^ 2 ) + (y - 6) ^ 2</p>
+						<p>&rarr; Function declared: f(x, y) = 4 × (x − 5) ^ 2 + (y − 6) ^ 2</p>
+						<p>&larr; conjugate_gradient(f, [0, 1], 0.00001)</p>
+						<p>&rarr;  conjugate_gradient(f, [0, 1], 1e−05) = [4.99994, 6.00001]</p>
+					</div>
+
+			<h2>Random minimization</h2>
+
+				<a name="adaptive-random"><h3>Adaptive Random</h3></a>
+
+					adaptive_random(
+						<i>f</i>, 
+						[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;],
+						<i>&alpha;</i>,
+						<i>&beta;</i>,
+						<i>M</i>,
+						<i>N</i>,
+						<i>R</i>
+					)
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li>[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;] — start point,
+							a number of coordinates is a number of function arguments;</li>
+						<li><i>&alpha; > 1</i> — acceleration coefficient;</li>
+						<li><i>0  &lt; &beta; &lt; 1</i> — decrease coefficient;</li>
+						<li><i>M</i> — number of fail tests;</li>
+						<li><i>N</i> — maximum number of iterations;</li>
+						<li><i>R</i> — minimum step size.</li>
+					</ul>
+
+					<p>Example<p>
+
+					<div class="code">
+						<p>&larr; func f(x, y) = 4 * ( (x - 5) ^ 2 ) + (y - 6) ^ 2</p>
+						<p>&rarr; Function declared: f(x, y) = 4 × (x − 5) ^ 2 + (y − 6) ^ 2</p>
+						<p>&larr; adaptive_random(f, [8, 9], 1.618, 0.618, 3, 10, 0.8)</p>
+						<p>&rarr; adaptive_random(f, [8, 9], 1.618, 0.618, 3, 10, 0.8) = [4.81129, 6.39804]</p>
+					</div>
+
+				<a name="returning-random"><h3>Returning Random</h3></a>
+
+					returning_random(
+						<i>f</i>, 
+						[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;],
+						<i>&beta;</i>,
+						<i>M</i>,
+						<i>N</i>,
+						<i>R</i>
+					)
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li>[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;] — start point,
+							a number of coordinates is a number of function arguments;</li>
+						<li><i>0  &lt; &beta; &lt; 1</i> — decrease coefficient;</li>
+						<li><i>M</i> — number of fail tests;</li>
+						<li><i>N</i> — maximum number of iterations;</li>
+						<li><i>R</i> — minimum step size.</li>
+					</ul>
+
+					<p>Example<p>
+
+					<div class="code">
+						<p>&larr; func f(x, y) = 4 * ( (x - 5) ^ 2 ) + (y - 6) ^ 2</p>
+						<p>&rarr; Function declared: f(x, y) = 4 × (x − 5) ^ 2 + (y − 6) ^ 2</p>
+						<p>&larr; returning_random(f, [8, 9], 0.618, 3, 10, 0.8)</p>
+						<p>&rarr; returning_random(f, [8, 9], 0.618, 3, 10, 0.8) = [4.8834, 5.96406]</p>
+					</div>
+
+				<a name="best-trial"><h3>Best Trial</h3></a>
+
+					best_trial(
+						<i>f</i>, 
+						[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;],
+						<i>&beta;</i>,
+						<i>M</i>,
+						<i>N</i>,
+						<i>R</i>
+					)
+					<ul>
+						<li><i>f</i> — function name;</li>
+						<li>[<i>x<sub>1</sub></i>, <i>x<sub>2</sub></i>, &hellip;] — start point,
+							a number of coordinates is a number of function arguments;</li>
+						<li><i>0  &lt; &beta; &lt; 1</i> — decrease coefficient;</li>
+						<li><i>M</i> — number of tests;</li>
+						<li><i>N</i> — maximum number of iterations;</li>
+						<li><i>R</i> — minimum step size.</li>
+					</ul>
+
+					<p>Example<p>
+
+					<div class="code">
+						<p>&larr; func f(x, y) = 4 * ( (x - 5) ^ 2 ) + (y - 6) ^ 2</p>
+						<p>&rarr; Function declared: f(x, y) = 4 × (x − 5) ^ 2 + (y − 6) ^ 2</p>
+						<p>&larr; best_trial(f, [8, 9], 0.618, 3, 10, 0.8)</p>
+						<p>&rarr; best_trial(f, [8, 9], 0.618, 3, 10, 0.8) = [4.93294, 6.62684]</p>
+					</div>
+					
+  </body>
+
+</html>

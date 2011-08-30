@@ -1,0 +1,37 @@
+#ifndef BISECTION_H
+#define BISECTION_H
+
+#include "../builtinfunction.h"
+
+namespace BuiltInFunctions {
+namespace Optimization {
+
+// Class for finding minimum of function with Bisection method
+class Bisection : public Function
+{
+public:
+	Bisection() : Function("bisection")
+	{
+	}
+
+	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnArgument> requiredArguments();
+private:
+	struct Interval {
+		Number leftBorder;
+		Number rightBorder;
+	};
+
+	FunctionCalculator* m_calculator;
+	QString m_functionName;
+	Number m_accuracy;
+	Interval m_sourceInterval;
+
+	Number findMinimum();
+	Number countFunction(Number argument);
+};
+
+} // namespace
+} // namespace
+
+#endif // BISECTION_H

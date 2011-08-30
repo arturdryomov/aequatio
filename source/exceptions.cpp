@@ -21,14 +21,12 @@ LogItem Exception::logItem()
 	return item;
 }
 
-QString Exception::tr(const QString &text, const QString &context)
+QString Exception::tr(const char *sourceText, const char *disambiguation, int n)
 {
-	return QApplication::translate(context.toUtf8(), text.toUtf8());
+	return QObject::tr(sourceText, disambiguation, n);
 }
 
 QString EInternal::message()
 {
-	return tr("Internal error occurred. Please, report this to developers.", "EInternal");
+	return tr("Internal error occurred. Please, report this to developers.");
 }
-
-
