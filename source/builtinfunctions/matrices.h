@@ -48,10 +48,10 @@ public:
 	QList<RpnArgument> requiredArguments();
 };
 
-class MatrixNormN : public Function
+class MatrixNormL : public Function
 {
 public:
-	MatrixNormN() : Function("matrix_norm_n")	{}
+	MatrixNormL() : Function("matrix_norm_l")	{}
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
 	QList<RpnArgument> requiredArguments();
 };
