@@ -3,7 +3,9 @@
 namespace BuiltInFunctions {
 namespace MatrixFunctions{
 
-namespace {
+
+namespace
+{
 	MatrixSum matrixSum;
 }
 
@@ -40,7 +42,9 @@ QList<RpnArgument> MatrixSum::requiredArguments()
 	return arguments;
 }
 
-namespace {
+
+namespace
+{
 	MatrixDiff matrixDiff;
 }
 
@@ -77,7 +81,9 @@ QList<RpnArgument> MatrixDiff::requiredArguments()
 	return arguments;
 }
 
-namespace {
+
+namespace
+{
 	MatrixTrace matrixTrace;
 }
 
@@ -105,7 +111,9 @@ QList<RpnArgument> MatrixTrace::requiredArguments()
 	return arguments;
 }
 
-namespace {
+
+namespace
+{
 	MatrixMultiply matrixMultiply;
 }
 
@@ -153,7 +161,9 @@ QList<RpnArgument> MatrixMultiply::requiredArguments()
 	return arguments;
 }
 
-namespace {
+
+namespace
+{
 	MatrixNormM matrixNormM;
 }
 
@@ -194,7 +204,9 @@ QList<RpnArgument> MatrixNormM::requiredArguments()
 	return arguments;
 }
 
-namespace {
+
+namespace
+{
 	MatrixNormL matrixNormL;
 }
 
@@ -235,7 +247,9 @@ QList<RpnArgument> MatrixNormL::requiredArguments()
 	return arguments;
 }
 
-namespace {
+
+namespace
+{
 	MatrixNormFrobenius matrixNormFrobenius;
 }
 
@@ -266,5 +280,5 @@ QList<RpnArgument> MatrixNormFrobenius::requiredArguments()
 	return arguments;
 }
 
-} // namespaces
-}
+} // namespace
+} // namespace

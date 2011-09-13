@@ -6,6 +6,7 @@
 namespace BuiltInFunctions {
 namespace MatrixFunctions{
 
+
 class MatrixSum : public Function
 {
 public:
@@ -14,6 +15,7 @@ public:
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
 	QList<RpnArgument> requiredArguments();
 };
+
 
 class MatrixDiff : public Function
 {
@@ -24,6 +26,7 @@ public:
 	QList<RpnArgument> requiredArguments();
 };
 
+
 class MatrixTrace : public Function
 {
 public:
@@ -31,6 +34,7 @@ public:
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
 	QList<RpnArgument> requiredArguments();
 };
+
 
 class MatrixMultiply : public Function
 {
@@ -40,6 +44,7 @@ public:
 	QList<RpnArgument> requiredArguments();
 };
 
+
 class MatrixNormM : public Function
 {
 public:
@@ -47,6 +52,7 @@ public:
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
 	QList<RpnArgument> requiredArguments();
 };
+
 
 class MatrixNormL : public Function
 {
@@ -56,6 +62,7 @@ public:
 	QList<RpnArgument> requiredArguments();
 };
 
+
 class MatrixNormFrobenius : public Function
 {
 public:
@@ -64,7 +71,8 @@ public:
 	QList<RpnArgument> requiredArguments();
 };
 
-}
-}
+
+} // namespace
+} // namespace
 
 #endif // MATRICES_H
