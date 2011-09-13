@@ -167,4 +167,24 @@ Number MathUtils::getRandomNumber(Number higherLimit)
 	return result;
 }
 
+void MathUtils::ensureSquareMatrix(const QList<QList<Number> > &matrix)
+{
+	int matrixSize = matrix.size();
+	foreach (const QList<Number> &row, matrix) {
+		if (row.size() != matrixSize) {
+			THROW(ENotSquareMatrix());
+		}
+	}
+}
+
+void MathUtils::ensureMatrix(const QList<QList<Number> > &matrix)
+{
+	int matrixSize = matrix.first().size();
+	foreach (const QList<Number> &row, matrix) {
+		if (row.size() != matrixSize) {
+			THROW(ENotMatrix());
+		}
+	}
+}
+
 } // namespace
