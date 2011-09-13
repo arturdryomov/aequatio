@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+    <title>Aequatio Help</title>
+
+    <link rel="stylesheet" type="text/css" href="css/master.css" />
+  </head>
+
+  <body>
+
+		<h1>Matrix Operations</h1>
+		
+			<a name="matrix_sum"><h2>Matrices Sum</h2></a>
+
+				<p>matrix_sum(<i>A</i>, <i>B</i>)</p>
+
+				<p>Adds matrix <i>A</i> to matrix <i>B</i>. Matrices should be of the same size.</p>
+
+				<p>Example</p>
+
+				<div class="code">
+					<p>&larr; matrix_sum([[6, −7, 10], [0, 3, −1], [0, 5, −7]], [[6, −11, 13], [4, −1, 3], [3, 4, −2]])</p>
+					<p>&rarr; matrix_sum([[6, −7, 10], [0, 3, −1], [0, 5, −7]], [[6, −11, 13], [4, −1, 3], [3, 4, −2]]) = [[12, −18, 23], [4, 2, 2], [3, 9, −9]]</p>
+				</div>
+
+
+			<a name="matrix_diff"><h2>Matrices Difference</h2></a>
+
+				<p>matrix_diff(<i>A</i>, <i>B</i>)</p>
+
+				<p>Subtracts matrix <i>B</i> from matrix <i>A</i>. Matrices should be of the same size.</p>
+
+				<p>Example</p>
+
+				<div class="code">
+					<p>&larr; matrix_diff([[6, −7, 10], [0, 3, −1], [0, 5, −7]], [[6, −11, 13], [4, −1, 3], [3, 4, −2]])</p>
+					<p>&rarr; matrix_diff([[6, −7, 10], [0, 3, −1], [0, 5, −7]], [[6, −11, 13], [4, −1, 3], [3, 4, −2]]) = [[0, 4, −3], [−4, 4, −4], [−3, 1, −5]]</p>
+				</div>
+
+			<a name="matrix_trace"><h2>Matrix Trace</h2></a>
+
+				<p>matrix_trace(<i>A</i>)</p>
+
+				<p>
+					Calculates the trace of matrix <i>A</i>. Trace is the sum of the elements
+					on the main diagonal of the matrix. <i>A</i> should be a square matrix.
+				</p>
+
+				<p>Example</p>
+
+				<div class="code">
+					<p>&larr; matrix_trace([[6, −7, 10], [0, 3, −1], [0, 5, −7]])</p>
+					<p>&rarr; matrix_trace([[6, −7, 10], [0, 3, −1], [0, 5, −7]]) = 2</p>
+				</div>
+
+			<a name="matrix_multiply"><h2>Matrices Multiplication</h2></a>
+
+				<p>matrix_multiply(<i>A</i>, <i>B</i>)</p>
+
+				<p>
+					Multiplies matrix <i>A</i> by matrix <i>B</i>. The number of
+					the columns of <i>A</i> should match the number of the rows of <i>B</i>.
+				</p>
+
+				<p>Example</p>
+
+				<div class="code">
+					<p>&larr; matrix_multiply([[6, −7, 10], [0, 3, −1]], [[6, −11], [4, −1], [3, 4]])</p>
+					<p>&rarr; matrix_multiply([[6, −7, 10], [0, 3, −1]], [[6, −11], [4, −1], [3, 4]]) = [[38, −19], [9, −7]]</p>
+				</div>
+
+			<a name="matrix_norm_frobenius"><h2>Matrix Frobenius Norm</h2></a>
+
+				<p>matrix_norm_frobenius(<i>A</i>)</p>
+
+				<p>
+					Calculates Frobenius norm of matrix <i>A</i>.
+					This norm is the square root of the sum of the squares of all the
+					elements of <i>A</i>.
+				</p>
+
+				<p>Example</p>
+
+				<div class="code">
+					<p>&larr; matrix_norm_frobenius([[6, −7, 10], [0, 3, −1], [0, 5, −7]])</p>
+					<p>&rarr; matrix_norm_frobenius([[6, −7, 10], [0, 3, −1], [0, 5, −7]]) = 16.4012</p>
+				</div>
+  </body>
+
+</html>
