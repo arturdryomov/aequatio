@@ -51,7 +51,7 @@ QString Document::prettyPrintedFunction(const QString &name) const
 	}
 
 	PrettyPrinter prettyPrinter;
-	return prettyPrinter.process(m_functions.value(name));
+	return prettyPrinter.process(m_functions.value(name), name);
 }
 
 QString Document::prettyPrintedConstant(const QString &name) const
