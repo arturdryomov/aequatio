@@ -1,7 +1,6 @@
 #include "prettyprinter.h"
 
-PrettyPrinter::PrettyPrinter(QObject *parent) :
-	QObject(parent)
+PrettyPrinter::PrettyPrinter()
 {
 }
 

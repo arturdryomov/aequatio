@@ -5,11 +5,10 @@
 
 #include <QObject>
 
-class PrettyPrinter : public QObject
+class PrettyPrinter
 {
-	Q_OBJECT
 public:
-	explicit PrettyPrinter(QObject *parent = 0);
+	PrettyPrinter();
 	QString process(const RpnCodeThread &codeThread);
 	QString process(const RpnFunction &function);
 };
