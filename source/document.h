@@ -9,6 +9,7 @@
 class Document : public QObject
 {
 	Q_OBJECT
+
 public:
 	explicit Document(QObject *parent = 0);
 
@@ -30,9 +31,16 @@ public:
 	// for instance), an EBuildInRedifinition or ERecursiveFunction exception will be raised.
 	void addConstant(const QString &name, const Number &value);
 	void addFunction(const QString &name, const RpnFunction &function);
+
 signals:
 	void constantsChanged();
 	void functionsChanged();
+
+private:
+	QMap<QString, RpnFunction> m_functions;
+	QMap<QString, Number> m_constants;
+
+	bool isFunctionUsed(const QString &name, const RpnCodeThread &codeThread) const;
 };
 
 #endif // DOCUMENT_H
