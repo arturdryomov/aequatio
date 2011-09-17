@@ -4,54 +4,54 @@ Document::Document(QObject *parent) : QObject(parent)
 {
 }
 
-bool Document::containsFunction(const QString &name)
+bool Document::containsFunction(const QString &name) const
 {
 	Q_UNUSED(name)
 	return false;
 }
 
-bool Document::containsConstant(const QString &name)
+bool Document::containsConstant(const QString &name) const
 {
 	Q_UNUSED(name)
 	return false;
 }
 
-QList<RpnArgument> Document::functionArguments(const QString &name)
+QList<RpnArgument> Document::functionArguments(const QString &name) const
 {
 	Q_UNUSED(name)
 	return QList<RpnArgument>();
 }
 
-RpnFunction Document::function(const QString &name)
+RpnFunction Document::function(const QString &name) const
 {
 	Q_UNUSED(name)
 	return RpnFunction();
 }
 
-Number Document::constant(const QString &name)
+Number Document::constant(const QString &name) const
 {
 	Q_UNUSED(name)
 	return Number();
 }
 
-QString Document::prettyPrintedFunction(const QString &name)
+QString Document::prettyPrintedFunction(const QString &name) const
 {
 	Q_UNUSED(name)
 	return QString();
 }
 
-QString Document::prettyPrintedConstant(const QString &name)
+QString Document::prettyPrintedConstant(const QString &name) const
 {
 	Q_UNUSED(name)
 	return QString();
 }
 
-QStringList Document::prettyPrintedFunctions()
+QStringList Document::prettyPrintedFunctions() const
 {
 	return QStringList();
 }
 
-QStringList Document::prettyPrintedConstants()
+QStringList Document::prettyPrintedConstants() const
 {
 	return QStringList();
 }

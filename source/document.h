@@ -12,19 +12,19 @@ class Document : public QObject
 public:
 	explicit Document(QObject *parent = 0);
 
-	bool containsFunction(const QString &name);
-	bool containsConstant(const QString &name);
+	bool containsFunction(const QString &name) const;
+	bool containsConstant(const QString &name) const;
 
 	// This methods assume that corresponding functions or constants are
 	// declared, otherwise an exception will be thrown.
-	QList<RpnArgument> functionArguments(const QString &name);
-	RpnFunction function(const QString &name);
-	Number constant(const QString &name);
-	QString prettyPrintedFunction(const QString &name);
-	QString prettyPrintedConstant(const QString &name);
+	QList<RpnArgument> functionArguments(const QString &name) const;
+	RpnFunction function(const QString &name) const;
+	Number constant(const QString &name) const;
+	QString prettyPrintedFunction(const QString &name) const;
+	QString prettyPrintedConstant(const QString &name) const;
 
-	QStringList prettyPrintedFunctions();
-	QStringList prettyPrintedConstants();
+	QStringList prettyPrintedFunctions() const;
+	QStringList prettyPrintedConstants() const;
 
 	// If the constant/function cannot be added (trying to overwrite something built-in,
 	// for instance), an EBuildInRedifinition or ERecursiveFunction exception will be raised.
