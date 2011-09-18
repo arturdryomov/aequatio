@@ -28,10 +28,6 @@ struct ExpressionDescription {
 // main function names
 const QString RpnFunctionMain = "@Main@";
 
-// built in constants
-const QString Pi = "pi";
-const QString E = "e";
-
 class ExprCalculator : public QObject
 {
 	Q_OBJECT
@@ -54,7 +50,6 @@ public:
 private:
 	QMap<QString, RpnFunction> m_userDefinedFunctions;
 	QMap<QString, Number> m_userDefinedConstants;
-	QHash<QString, Number> m_builtInConstants;
 
 	friend class FunctionCalculator;
 	class FunctionCalculator : public BuiltIn::Function::FunctionCalculator
@@ -88,7 +83,6 @@ private:
 	};
 
 	QString rpnCodeThreadToString(const RpnCodeThread &codeThread);
-	void initializeBuiltInConstants();
 
 	// defines whether functionName is built-in or user-defined and calculates it.
 	RpnOperand calculateFunction(const QString &functionName, const QList<RpnOperand> &actualArguments);

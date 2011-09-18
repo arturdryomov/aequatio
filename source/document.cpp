@@ -2,6 +2,7 @@
 #include "calculatingexceptions.h"
 #include "prettyprinter.h"
 #include "builtin/function.h"
+#include "builtin/constant.h"
 
 Document::Document(QObject *parent) : QObject(parent)
 {
@@ -93,7 +94,9 @@ QStringList Document::prettyPrintedConstants() const
 
 void Document::addConstant(const QString &name, const Number &value)
 {
-	// TODO: Check, whether a build-in constant called name exists.
+	if (BuiltIn::Constant::constants().contains(name)) {
+		THROW(EBuiltInRedifinition(name, EBuiltInRedifinition::Constant));
+	}
 
 	m_constants.insert(name, value);
 	emit constantsChanged();

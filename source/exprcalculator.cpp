@@ -1,17 +1,14 @@
 #include "exprcalculator.h"
 #include "calculatingexceptions.h"
+#include "builtin/constant.h"
 
 #include <QStack>
 #include <QStringList>
-
-#define _USE_MATH_DEFINES
-#include <qmath.h>
 
 ExprCalculator::ExprCalculator(QObject *parent) :
 	QObject(parent),
 	m_functionCalculator(new FunctionCalculator(this))
 {
-	initializeBuiltInConstants();
 }
 
 ExpressionDescription ExprCalculator::calculate(const RpnCodeThread &thread)
@@ -89,8 +86,9 @@ RpnOperand ExprCalculator::calculateUserDefinedFunction(const QString &functionN
 			// Find constant and push its value
 			case RpnElementConstant: {
 				RpnOperand operand(RpnOperandNumber);
-				if (m_builtInConstants.contains(element.value.toString())) {
-					operand.value = m_builtInConstants.value(element.value.toString());
+
+                if (BuiltIn::Constant::constants().contains(element.value.toString())) {
+                    operand.value = BuiltIn::Constant::constants().value(element.value.toString());
 				}
 				else if (m_userDefinedConstants.contains(element.value.toString())) {
 					operand.value = m_userDefinedConstants.value(element.value.toString());
@@ -278,7 +276,7 @@ QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
 
 ConstantDescription ExprCalculator::addConstant(const QString &name, const Number &value)
 {
-	if (m_builtInConstants.contains(name)) {
+    if (BuiltIn::Constant::constants().contains(name)) {
 		THROW(EBuiltInRedifinition(name, EBuiltInRedifinition::Constant));
 	}
 
@@ -313,7 +311,7 @@ bool ExprCalculator::isFunction(const QString &name)
 
 bool ExprCalculator::isConstant(const QString &name)
 {
-	return (m_userDefinedConstants.contains(name) || m_builtInConstants.contains(name));
+    return (m_userDefinedConstants.contains(name) || BuiltIn::Constant::constants().contains(name));
 }
 
 QList<RpnArgument> ExprCalculator::functionArguments(const QString &name)
@@ -358,12 +356,6 @@ QList<FunctionDescription> ExprCalculator::functionsList()
 	}
 
 	return functionsList;
-}
-
-void ExprCalculator::initializeBuiltInConstants()
-{
-	m_builtInConstants.insert(Pi, M_PI);
-	m_builtInConstants.insert(E, M_E);
 }
 
 bool ExprCalculator::isFunctionUsed(const QString &functionName, const RpnCodeThread &code)
