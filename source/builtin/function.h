@@ -28,20 +28,25 @@ public:
 		// make sure 2 same-named functions are not added to the list
 		Q_ASSERT(!functions().contains(functionName));
 
-		functions().insert(functionName, this);
+		functionsWritable().insert(functionName, this);
 	}
 
-	// Hash of existing functions
-	static QHash<QString, Function*> &functions()
+	static const QHash<QString, Function*> &functions()
 	{
-		static QHash<QString, Function*> functionsHash;
-		return functionsHash;
+		return functionsWritable();
 	}
 
 	// Calculating everything
 	virtual RpnOperand calculate(FunctionCalculator* calculator, QList<RpnOperand> actualArguments) = 0;
 	// Arguments for calling function
 	virtual QList<RpnArgument> requiredArguments() = 0;
+
+private:
+	static QHash<QString, Function*> &functionsWritable()
+	{
+		static QHash<QString, Function*> functionsHash;
+		return functionsHash;
+	}
 };
 
 } // namespace
