@@ -1,7 +1,7 @@
 #include "document.h"
 #include "calculatingexceptions.h"
 #include "prettyprinter.h"
-#include "builtinfunctions/builtinfunction.h"
+#include "builtin/function.h"
 
 Document::Document(QObject *parent) : QObject(parent)
 {
@@ -101,7 +101,7 @@ void Document::addConstant(const QString &name, const Number &value)
 
 void Document::addFunction(const QString &name, const RpnFunction &function)
 {
-	if (BuiltInFunctions::Function::functions().contains(name)) {
+	if (BuiltIn::Function::functions().contains(name)) {
 		THROW(EBuiltInRedifinition(name, EBuiltInRedifinition::Function));
 	}
 

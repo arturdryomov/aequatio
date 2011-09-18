@@ -1,0 +1,28 @@
+#ifndef CRAMER_H
+#define CRAMER_H
+
+#include "../function.h"
+
+namespace BuiltIn {
+namespace EquationSolving {
+
+class Cramer : public Function
+{
+public:
+	Cramer() : Function("cramer")
+	{
+	}
+
+	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnArgument> requiredArguments();
+private:
+	QList<QList<Number> > m_matrixCoefficients;
+	QList<Number> findSolution();
+
+	class ENoSolution : public ECalculating {};
+};
+
+} // namespace
+} // namespace
+
+#endif // CRAMER_H

@@ -1,11 +1,11 @@
 #include "rpncode.h"
 #include "calculatingexceptions.h"
-#include "builtinfunctions/mathutils.h"
+#include "builtin/mathutils.h"
 
 QString numberToString(const Number number)
 {
-	// MathUtils should possibly be move to root from builtinfunctions
-	if (BuiltInFunctions::MathUtils::isNaN(number)) {
+	// MathUtils should possibly be move to root from builtin
+	if (BuiltIn::MathUtils::isNaN(number)) {
 		return ("Ø"); // empty set
 	}
 

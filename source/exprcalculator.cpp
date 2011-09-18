@@ -26,9 +26,9 @@ ExpressionDescription ExprCalculator::calculate(const RpnCodeThread &thread)
 
 RpnOperand ExprCalculator::calculateFunction(const QString &functionName, const QList<RpnOperand> &actualArguments)
 {
-	if (BuiltInFunctions::Function::functions().contains(functionName)) {
+	if (BuiltIn::Function::functions().contains(functionName)) {
 		// check for argument types equivalence
-		QList<RpnArgument> requiredArguments = BuiltInFunctions::Function::functions().
+		QList<RpnArgument> requiredArguments = BuiltIn::Function::functions().
 			value(functionName)->requiredArguments();
 		for (int i = 0; i < requiredArguments.count(); ++i) {
 			if (actualArguments.at(i).type != requiredArguments.at(i).type) {
@@ -137,7 +137,7 @@ RpnOperand ExprCalculator::calculateUserDefinedFunction(const QString &functionN
 
 RpnOperand ExprCalculator::calculateBuiltInFunction(const QString &functionName, const QList<RpnOperand> &actualArguments)
 {
-	return BuiltInFunctions::Function::functions().value(functionName)->calculate(
+	return BuiltIn::Function::functions().value(functionName)->calculate(
 		m_functionCalculator, actualArguments);
 }
 
@@ -242,8 +242,8 @@ QString ExprCalculator::rpnCodeThreadToString(const RpnCodeThread &codeThread)
 				// built-in and user-defined functions
 				else {
 					int argumentsCount;
-					if (BuiltInFunctions::Function::functions().contains(functionName)) {
-						argumentsCount = BuiltInFunctions::Function::functions().
+					if (BuiltIn::Function::functions().contains(functionName)) {
+						argumentsCount = BuiltIn::Function::functions().
 							value(functionName)->requiredArguments().count();
 					}
 					else if (m_userDefinedFunctions.contains(functionName)) {
@@ -291,7 +291,7 @@ ConstantDescription ExprCalculator::addConstant(const QString &name, const Numbe
 
 FunctionDescription ExprCalculator::addFunction(const QString &name, const RpnFunction &function)
 {
-	if (BuiltInFunctions::Function::functions().contains(name)) {
+	if (BuiltIn::Function::functions().contains(name)) {
 		THROW(EBuiltInRedifinition(name, EBuiltInRedifinition::Function));
 	}
 
@@ -308,7 +308,7 @@ FunctionDescription ExprCalculator::addFunction(const QString &name, const RpnFu
 
 bool ExprCalculator::isFunction(const QString &name)
 {
-	return (m_userDefinedFunctions.contains(name) || BuiltInFunctions::Function::functions().contains(name));
+	return (m_userDefinedFunctions.contains(name) || BuiltIn::Function::functions().contains(name));
 }
 
 bool ExprCalculator::isConstant(const QString &name)
@@ -318,8 +318,8 @@ bool ExprCalculator::isConstant(const QString &name)
 
 QList<RpnArgument> ExprCalculator::functionArguments(const QString &name)
 {
-	if (BuiltInFunctions::Function::functions().contains(name)) {
-		return BuiltInFunctions::Function::functions().value(name)->requiredArguments();
+	if (BuiltIn::Function::functions().contains(name)) {
+		return BuiltIn::Function::functions().value(name)->requiredArguments();
 	}
 
 	else if (m_userDefinedFunctions.contains(name)) {

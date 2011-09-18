@@ -1,5 +1,5 @@
 #include "prettyprinter.h"
-#include "builtinfunctions/builtinfunction.h"
+#include "builtin/function.h"
 
 PrettyPrinter::PrettyPrinter()
 {
@@ -107,8 +107,8 @@ QString PrettyPrinter::process(const RpnCodeThread &codeThread)
 
 				else {
 					int argumentsCount;
-					if (BuiltInFunctions::Function::functions().contains(functionName)) {
-						argumentsCount = BuiltInFunctions::Function::functions()
+					if (BuiltIn::Function::functions().contains(functionName)) {
+						argumentsCount = BuiltIn::Function::functions()
 							.value(functionName)->requiredArguments().count();
 					}
 					else if (m_document->containsFunction(functionName)) {

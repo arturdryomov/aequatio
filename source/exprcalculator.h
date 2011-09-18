@@ -2,7 +2,7 @@
 #define EXPRCALCULATOR_H
 
 #include "rpncode.h"
-#include "builtinfunctions/builtinfunction.h"
+#include "builtin/function.h"
 
 #include <QHash>
 #include <QObject>
@@ -57,7 +57,7 @@ private:
 	QHash<QString, Number> m_builtInConstants;
 
 	friend class FunctionCalculator;
-	class FunctionCalculator : public BuiltInFunctions::Function::FunctionCalculator
+	class FunctionCalculator : public BuiltIn::Function::FunctionCalculator
 	{
 	public:
 		FunctionCalculator(ExprCalculator *exprCalculator) : m_exprCalculator(exprCalculator) {}

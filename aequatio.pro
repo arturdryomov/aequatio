@@ -45,23 +45,23 @@ SOURCES += \
 	source/helpbrowser.cpp \
 	source/logwindow.cpp \
 	source/rpncode.cpp \
-	source/builtinfunctions/mathutils.cpp \
-	source/builtinfunctions/basicfunctions.cpp \
-	source/builtinfunctions/optimization/enumerative.cpp \
-	source/builtinfunctions/optimization/bisection.cpp \
-	source/builtinfunctions/optimization/dichotomy.cpp \
-	source/builtinfunctions/optimization/goldensection.cpp \
-	source/builtinfunctions/optimization/fibonacci.cpp \
-	source/builtinfunctions/optimization/powell.cpp \
-	source/builtinfunctions/optimization/hookejeeves.cpp \
-	source/builtinfunctions/optimization/rosenbrock.cpp \
-	source/builtinfunctions/optimization/adaptiverandom.cpp \
-	source/builtinfunctions/optimization/returningrandom.cpp \
-	source/builtinfunctions/optimization/besttrial.cpp \
-	source/builtinfunctions/optimization/neldermead.cpp \
-	source/builtinfunctions/optimization/conjugategradient.cpp \
-	source/builtinfunctions/equationsolving/gauss.cpp \
-	source/builtinfunctions/equationsolving/cramer.cpp \
+	source/builtin/mathutils.cpp \
+	source/builtin/basicfunctions.cpp \
+	source/builtin/optimization/enumerative.cpp \
+	source/builtin/optimization/bisection.cpp \
+	source/builtin/optimization/dichotomy.cpp \
+	source/builtin/optimization/goldensection.cpp \
+	source/builtin/optimization/fibonacci.cpp \
+	source/builtin/optimization/powell.cpp \
+	source/builtin/optimization/hookejeeves.cpp \
+	source/builtin/optimization/rosenbrock.cpp \
+	source/builtin/optimization/adaptiverandom.cpp \
+	source/builtin/optimization/returningrandom.cpp \
+	source/builtin/optimization/besttrial.cpp \
+	source/builtin/optimization/neldermead.cpp \
+	source/builtin/optimization/conjugategradient.cpp \
+	source/builtin/equationsolving/gauss.cpp \
+	source/builtin/equationsolving/cramer.cpp \
 	source/document.cpp \
 	source/prettyprinter.cpp
 
@@ -81,24 +81,24 @@ HEADERS  += \
 	source/helpbrowser.h \
 	source/logwindow.h \
 	source/rpncode.h \
-	source/builtinfunctions/mathutils.h \
-	source/builtinfunctions/builtinfunction.h \
-	source/builtinfunctions/basicfunctions.h \
-	source/builtinfunctions/optimization/enumerative.h \
-	source/builtinfunctions/optimization/bisection.h \
-	source/builtinfunctions/optimization/dichotomy.h \
-	source/builtinfunctions/optimization/goldensection.h \
-	source/builtinfunctions/optimization/fibonacci.h \
-	source/builtinfunctions/optimization/powell.h \
-	source/builtinfunctions/optimization/hookejeeves.h \
-	source/builtinfunctions/optimization/rosenbrock.h \
-	source/builtinfunctions/optimization/adaptiverandom.h \
-	source/builtinfunctions/optimization/returningrandom.h \
-	source/builtinfunctions/optimization/besttrial.h \
-	source/builtinfunctions/optimization/neldermead.h \
-	source/builtinfunctions/optimization/conjugategradient.h \
-	source/builtinfunctions/equationsolving/gauss.h \
-	source/builtinfunctions/equationsolving/cramer.h \
+	source/builtin/mathutils.h \
+	source/builtin/function.h \
+	source/builtin/basicfunctions.h \
+	source/builtin/optimization/enumerative.h \
+	source/builtin/optimization/bisection.h \
+	source/builtin/optimization/dichotomy.h \
+	source/builtin/optimization/goldensection.h \
+	source/builtin/optimization/fibonacci.h \
+	source/builtin/optimization/powell.h \
+	source/builtin/optimization/hookejeeves.h \
+	source/builtin/optimization/rosenbrock.h \
+	source/builtin/optimization/adaptiverandom.h \
+	source/builtin/optimization/returningrandom.h \
+	source/builtin/optimization/besttrial.h \
+	source/builtin/optimization/neldermead.h \
+	source/builtin/optimization/conjugategradient.h \
+	source/builtin/equationsolving/gauss.h \
+	source/builtin/equationsolving/cramer.h \
 	source/document.h \
 	source/prettyprinter.h
 
@@ -123,7 +123,4 @@ RCC_DIR = $$DESTDIR/rcc
 UI_DIR = $$DESTDIR/ui
 
 include(doc/doc.pri)
-
-
-
 
