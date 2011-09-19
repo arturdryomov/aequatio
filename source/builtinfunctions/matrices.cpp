@@ -3,6 +3,31 @@
 namespace BuiltInFunctions {
 namespace MatrixFunctions{
 
+namespace
+{
+	MatrixDeterminant matrixDeterminant;
+}
+
+RpnOperand MatrixDeterminant::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+{
+	Q_UNUSED(calculator);
+
+	QList<QList<Number> > matrix = RpnVector::toTwoDimensional(actualArguments.first().value.value<RpnVector>());
+
+	// MathUtils will ensure that matrix is square
+	Number result = MathUtils::countDeterminant(matrix);
+
+	return RpnOperand(RpnOperandNumber, QVariant::fromValue(result));
+}
+
+QList<RpnArgument> MatrixDeterminant::requiredArguments()
+{
+	QList<RpnArgument> arguments;
+	arguments << RpnArgument(RpnOperandVector);
+
+	return arguments;
+}
+
 
 namespace
 {

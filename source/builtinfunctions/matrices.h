@@ -6,6 +6,14 @@
 namespace BuiltInFunctions {
 namespace MatrixFunctions{
 
+class MatrixDeterminant : public Function
+{
+public:
+	MatrixDeterminant() : Function("matrix_det") {}
+
+	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnArgument> requiredArguments();
+};
 
 class MatrixSum : public Function
 {

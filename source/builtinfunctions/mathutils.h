@@ -16,7 +16,7 @@ public:
 	static Number vectorNorm(QList<Number> vector);
 	static QList<Number> divideVectorByNumber(QList<Number> vector, Number divisor);
 
-	static Number countDeterminant(QVector<QVector<Number> > matrix);
+	static Number countDeterminant(QList<QList<Number> > matrix);
 	static void ensureSquareMatrix(const QList<QList<Number> > &matrix);
 	static void ensureMatrix(const QList<QList<Number> > &matrix);
 
@@ -28,6 +28,10 @@ public:
 
 	static QList<Number> generateRandomNumbers(int count, Number lowerLimit, Number higherLimit);
 	static Number getRandomNumber(Number higherLimit);
+
+
+private:
+	static void swapColumns(QList<QList<Number> > &matrix, int index1, int index2);
 };
 
 } // namespace
