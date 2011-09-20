@@ -204,7 +204,7 @@ RpnOperand MatrixNormM::calculate(FunctionCalculator *calculator, QList<RpnOpera
 	for (int i = 0; i < matrix.size(); i++) {
 		Number sum = 0.0;
 		foreach (Number element, matrix.at(i)) {
-			sum += element;
+			sum += qAbs(element);
 		}
 
 		// First line, remember it for comparsion
@@ -247,7 +247,7 @@ RpnOperand MatrixNormL::calculate(FunctionCalculator *calculator, QList<RpnOpera
 	for (int i = 0; i < matrix.first().size(); i++) {
 		Number sum = 0.0;
 		for (int j = 0; j < matrix.size(); j++) {
-			sum += matrix.at(j).at(i);
+			sum += qAbs(matrix.at(j).at(i));
 		}
 
 		// First column, remember it for comparsion
