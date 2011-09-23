@@ -8,16 +8,16 @@ namespace
 	Rosenbrock instance;
 }
 
-RpnOperand Rosenbrock::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+Rpn::Operand Rosenbrock::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	// Initialize algorithm variables
 	m_calculator = calculator;
 	m_functionName = actualArguments.at(0).value.value<QString>();
-	m_sourcePoint = RpnVector::toOneDimensional(actualArguments.at(1).value.value<RpnVector>());
+	m_sourcePoint = Rpn::Vector::toOneDimensional(actualArguments.at(1).value.value<Rpn::Vector>());
 	m_stopValue = actualArguments.at(2).value.value<Number>();
 	m_accelerationCoefficient = actualArguments.at(3).value.value<Number>();
 	m_decreaseCoefficient = actualArguments.at(4).value.value<Number>();
-	m_stepSizes = RpnVector::toOneDimensional(actualArguments.at(5).value.value<RpnVector>());
+	m_stepSizes = Rpn::Vector::toOneDimensional(actualArguments.at(5).value.value<Rpn::Vector>());
 	m_maximumWrongStepsCount = actualArguments.at(6).value.value<Number>();
 
 	// Set start directions
@@ -51,23 +51,23 @@ RpnOperand Rosenbrock::calculate(FunctionCalculator *calculator, QList<RpnOperan
 		THROW(EWrongParametersCount(QObject::tr("Coordinate steps"), m_calculator->functionArguments(m_functionName).size()));
 	}
 
-	RpnOperand result;
-	result.type = RpnOperandVector;
-	result.value = QVariant::fromValue(RpnVector::fromOneDimensional(findMinimum()));
+	Rpn::Operand result;
+	result.type = Rpn::OperandVector;
+	result.value = QVariant::fromValue(Rpn::Vector::fromOneDimensional(findMinimum()));
 	return result;
 }
 
-QList<RpnArgument> Rosenbrock::requiredArguments()
+QList<Rpn::Argument> Rosenbrock::requiredArguments()
 {
-	QList<RpnArgument> arguments;
+	QList<Rpn::Argument> arguments;
 	arguments
-		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant::fromValue(ArbitraryArgumentsCount))
-		<< RpnArgument(RpnOperandVector)
-		<< RpnArgument(RpnOperandNumber)
-		<< RpnArgument(RpnOperandNumber)
-		<< RpnArgument(RpnOperandNumber)
-		<< RpnArgument(RpnOperandVector)
-		<< RpnArgument(RpnOperandNumber);
+		<< Rpn::Argument(Rpn::OperandFunctionName, QString(), QVariant::fromValue(Rpn::ArbitraryArgumentsCount))
+		<< Rpn::Argument(Rpn::OperandVector)
+		<< Rpn::Argument(Rpn::OperandNumber)
+		<< Rpn::Argument(Rpn::OperandNumber)
+		<< Rpn::Argument(Rpn::OperandNumber)
+		<< Rpn::Argument(Rpn::OperandVector)
+		<< Rpn::Argument(Rpn::OperandNumber);
 
 	return arguments;
 }
@@ -209,12 +209,12 @@ QList<Number> Rosenbrock::getStepLengths(QList<Number> currentPoint, QList<Numbe
 
 QList<Number> Rosenbrock::solveEquationSystem(QList<QList<Number> > coefficients)
 {
-	QList<RpnOperand> arguments;
-	RpnOperand vectorArgument(RpnOperandVector, QVariant::fromValue(RpnVector::fromTwoDimensional(coefficients)));
+	QList<Rpn::Operand> arguments;
+	Rpn::Operand vectorArgument(Rpn::OperandVector, QVariant::fromValue(Rpn::Vector::fromTwoDimensional(coefficients)));
 	arguments << vectorArgument;
 
-	RpnOperand result = m_calculator->calculate("cramer", arguments);
-	return RpnVector::toOneDimensional(result.value.value<RpnVector>());
+	Rpn::Operand result = m_calculator->calculate("cramer", arguments);
+	return Rpn::Vector::toOneDimensional(result.value.value<Rpn::Vector>());
 }
 
 QList<Number> Rosenbrock::increaseDirection(QList<Number> point, int direction)
@@ -230,14 +230,14 @@ QList<Number> Rosenbrock::increaseDirection(QList<Number> point, int direction)
 
 Number Rosenbrock::countFunction(QList<Number> arguments)
 {
-	QList<RpnOperand> functionArguments;
+	QList<Rpn::Operand> functionArguments;
 
 	foreach (Number argument, arguments) {
-		RpnOperand functionArgument(RpnOperandNumber, argument);
+		Rpn::Operand functionArgument(Rpn::OperandNumber, argument);
 		functionArguments << functionArgument;
 	}
 
-	RpnOperand result = m_calculator->calculate(m_functionName, functionArguments);
+	Rpn::Operand result = m_calculator->calculate(m_functionName, functionArguments);
 	return result.value.value<Number>();
 }
 

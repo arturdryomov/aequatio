@@ -64,7 +64,8 @@ SOURCES += \
 	source/builtin/equationsolving/cramer.cpp \
 	source/document.cpp \
 	source/prettyprinter.cpp \
-	source/builtin/basicconstants.cpp
+	source/builtin/basicconstants.cpp \
+	source/number.cpp
 
 HEADERS  += \
 	source/mainwindow.h \
@@ -103,7 +104,8 @@ HEADERS  += \
 	source/document.h \
 	source/prettyprinter.h \
 	source/builtin/constant.h \
-	source/builtin/basicconstants.h
+	source/builtin/basicconstants.h \
+	source/number.h
 
 FORMS	+= \
 	source/mainwindow.ui \
@@ -126,6 +128,8 @@ RCC_DIR = $$DESTDIR/rcc
 UI_DIR = $$DESTDIR/ui
 
 include(doc/doc.pri)
+
+
 
 
 

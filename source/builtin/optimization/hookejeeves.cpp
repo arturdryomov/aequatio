@@ -8,14 +8,14 @@ namespace
 	HookeJeeves instance;
 }
 
-RpnOperand HookeJeeves::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+Rpn::Operand HookeJeeves::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	// Initialize algorithm variables
 	m_calculator = calculator;
 	m_functionName = actualArguments.at(0).value.value<QString>();
-	m_sourcePoint = RpnVector::toOneDimensional(actualArguments.at(1).value.value<RpnVector>());
+	m_sourcePoint = Rpn::Vector::toOneDimensional(actualArguments.at(1).value.value<Rpn::Vector>());
 	m_stopValue = actualArguments.at(2).value.value<Number>();
-	m_stepSizes = RpnVector::toOneDimensional(actualArguments.at(3).value.value<RpnVector>());
+	m_stepSizes = Rpn::Vector::toOneDimensional(actualArguments.at(3).value.value<Rpn::Vector>());
 	m_accelerationCoefficient = actualArguments.at(4).value.value<Number>();
 	m_decreaseCoefficient = actualArguments.at(5).value.value<Number>();
 
@@ -36,22 +36,22 @@ RpnOperand HookeJeeves::calculate(FunctionCalculator *calculator, QList<RpnOpera
 		THROW(EWrongArgument(QObject::tr("decrease step coefficient"), QObject::tr("more than 1")) )
 	}
 
-	RpnOperand result;
-	result.type = RpnOperandVector;
-	result.value = QVariant::fromValue(RpnVector::fromOneDimensional(findMinimum()));
+	Rpn::Operand result;
+	result.type = Rpn::OperandVector;
+	result.value = QVariant::fromValue(Rpn::Vector::fromOneDimensional(findMinimum()));
 	return result;
 }
 
-QList<RpnArgument> HookeJeeves::requiredArguments()
+QList<Rpn::Argument> HookeJeeves::requiredArguments()
 {
-	QList<RpnArgument> arguments;
+	QList<Rpn::Argument> arguments;
 	arguments
-		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant::fromValue(ArbitraryArgumentsCount))
-		<< RpnArgument(RpnOperandVector)
-		<< RpnArgument(RpnOperandNumber)
-		<< RpnArgument(RpnOperandVector)
-		<< RpnArgument(RpnOperandNumber)
-		<< RpnArgument(RpnOperandNumber);
+		<< Rpn::Argument(Rpn::OperandFunctionName, QString(), QVariant::fromValue(Rpn::ArbitraryArgumentsCount))
+		<< Rpn::Argument(Rpn::OperandVector)
+		<< Rpn::Argument(Rpn::OperandNumber)
+		<< Rpn::Argument(Rpn::OperandVector)
+		<< Rpn::Argument(Rpn::OperandNumber)
+		<< Rpn::Argument(Rpn::OperandNumber);
 
 	return arguments;
 }
@@ -115,14 +115,14 @@ QList<Number> HookeJeeves::decreaseDirection(QList<Number> point, int direction)
 
 Number HookeJeeves::countFunction(QList<Number> arguments)
 {
-	QList<RpnOperand> functionArguments;
+	QList<Rpn::Operand> functionArguments;
 
 	foreach (Number argument, arguments) {
-		RpnOperand functionArgument(RpnOperandNumber, argument);
+		Rpn::Operand functionArgument(Rpn::OperandNumber, argument);
 		functionArguments << functionArgument;
 	}
 
-	RpnOperand result = m_calculator->calculate(m_functionName, functionArguments);
+	Rpn::Operand result = m_calculator->calculate(m_functionName, functionArguments);
 	return result.value.value<Number>();
 }
 

@@ -12,8 +12,8 @@ class NelderMead : public Function
 {
 public:
 	NelderMead() : Function("nelder_mead") {}
-	QList<RpnArgument> requiredArguments();
-	RpnOperand calculate(FunctionCalculator* calculator, QList<RpnOperand> actualArguments);
+	QList<Rpn::Argument> requiredArguments();
+	Rpn::Operand calculate(FunctionCalculator* calculator, QList<Rpn::Operand> actualArguments);
 private:
 	FunctionCalculator* m_calculator;
 	QString m_functionName;

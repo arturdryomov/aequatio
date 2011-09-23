@@ -8,13 +8,13 @@ namespace
 	NelderMead instance;
 }
 
-RpnOperand NelderMead::calculate(Function::FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+Rpn::Operand NelderMead::calculate(Function::FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	m_calculator = calculator;
 
 	m_functionName = actualArguments[0].value.value<QString>();
 
-	QList<QList<Number> > initialSimplex = RpnVector::toTwoDimensional(actualArguments[1].value.value<RpnVector>());
+	QList<QList<Number> > initialSimplex = Rpn::Vector::toTwoDimensional(actualArguments[1].value.value<Rpn::Vector>());
 	if (!isVectorCorrect(initialSimplex)) {
 		int targetFunctionArgumentsCount = m_calculator->functionArguments(m_functionName).count();
 		THROW(EWrongArgument("initial simplex", QObject::tr("%1 × %2 size")
@@ -32,22 +32,22 @@ RpnOperand NelderMead::calculate(Function::FunctionCalculator *calculator, QList
 		THROW(EWrongArgument("epsilon", "greater than zero"));
 	}
 
-	RpnVector result = RpnVector::fromOneDimensional(findMinimum(initialSimplex, reflectionCoefficient,
+	Rpn::Vector result = Rpn::Vector::fromOneDimensional(findMinimum(initialSimplex, reflectionCoefficient,
 		compressionCoefficient, strainCoefficient, stopValue));
 
-	return RpnOperand(RpnOperandVector, QVariant::fromValue(result));
+	return Rpn::Operand(Rpn::OperandVector, QVariant::fromValue(result));
 }
 
-QList<RpnArgument> NelderMead::requiredArguments()
+QList<Rpn::Argument> NelderMead::requiredArguments()
 {
-	QList<RpnArgument> arguments;
+	QList<Rpn::Argument> arguments;
 	arguments
-		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant::fromValue(ArbitraryArgumentsCount)) // function
-		<< RpnArgument(RpnOperandVector) // initial simplex
-		<< RpnArgument(RpnOperandNumber)	// reflection coefficient
-		<< RpnArgument(RpnOperandNumber)	// compression coefficient
-		<< RpnArgument(RpnOperandNumber) // strain coefficient
-		<< RpnArgument(RpnOperandNumber); // stop value
+		<< Rpn::Argument(Rpn::OperandFunctionName, QString(), QVariant::fromValue(Rpn::ArbitraryArgumentsCount)) // function
+		<< Rpn::Argument(Rpn::OperandVector) // initial simplex
+		<< Rpn::Argument(Rpn::OperandNumber)	// reflection coefficient
+		<< Rpn::Argument(Rpn::OperandNumber)	// compression coefficient
+		<< Rpn::Argument(Rpn::OperandNumber) // strain coefficient
+		<< Rpn::Argument(Rpn::OperandNumber); // stop value
 
 	return arguments;
 }
@@ -144,12 +144,12 @@ QList<Number> NelderMead::findMinimum(const QList<QList<Number> > &initialSimple
 
 Number NelderMead::function(const QList<Number> &arguments)
 {
-	QList<RpnOperand> functionArguments;
+	QList<Rpn::Operand> functionArguments;
 	foreach (Number number, arguments) {
-		functionArguments << RpnOperand(RpnOperandNumber, number);
+		functionArguments << Rpn::Operand(Rpn::OperandNumber, number);
 	}
 
-	RpnOperand result = m_calculator->calculate(m_functionName, functionArguments);
+	Rpn::Operand result = m_calculator->calculate(m_functionName, functionArguments);
 	return result.value.value<Number>();
 }
 

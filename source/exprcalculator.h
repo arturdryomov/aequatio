@@ -22,11 +22,11 @@ struct FunctionDescription {
 
 struct ExpressionDescription {
 	QString expression;
-	RpnOperand result;
+    Rpn::Operand result;
 };
 
 // main function names
-const QString RpnFunctionMain = "@Main@";
+const QString FunctionMain = "@Main@";
 
 class ExprCalculator : public QObject
 {
@@ -37,18 +37,18 @@ signals:
 public:
 	explicit ExprCalculator(QObject *parent = 0);
 
-	ExpressionDescription calculate(const RpnCodeThread &thread);
+    ExpressionDescription calculate(const Rpn::CodeThread &thread);
 	ConstantDescription addConstant(const QString &name, const Number &value);
-	FunctionDescription addFunction(const QString &name, const RpnFunction &function);
+    FunctionDescription addFunction(const QString &name, const Rpn::Function &function);
 
 	bool isFunction(const QString &name);
 	bool isConstant(const QString &name);
-	QList<RpnArgument> functionArguments(const QString &name);
+    QList<Rpn::Argument> functionArguments(const QString &name);
 
 	QList<ConstantDescription> constantsList();
 	QList<FunctionDescription> functionsList();
 private:
-	QMap<QString, RpnFunction> m_userDefinedFunctions;
+    QMap<QString, Rpn::Function> m_userDefinedFunctions;
 	QMap<QString, Number> m_userDefinedConstants;
 
 	friend class FunctionCalculator;
@@ -56,15 +56,15 @@ private:
 	{
 	public:
 		FunctionCalculator(ExprCalculator *exprCalculator) : m_exprCalculator(exprCalculator) {}
-		RpnOperand calculate(QString functionName, QList<RpnOperand> actualArguments);
-		QList<RpnArgument> functionArguments(const QString &name);
+        Rpn::Operand calculate(QString functionName, QList<Rpn::Operand> actualArguments);
+        QList<Rpn::Argument> functionArguments(const QString &name);
 	private:
 		ExprCalculator *m_exprCalculator;
 	};
 
 	FunctionCalculator *m_functionCalculator;
 
-	// PartPriority and PartInfo are used in rpnCodeThreadToString() only.
+	// PartPriority and PartInfo are used in codeThreadToString() only.
 	enum PartPriority {PriorityPlusMinus, PriorityMultiplyDivide, PriorityPower,
 		PriorityHighest, PriorityFunction = PriorityHighest, PriorityNumber = PriorityHighest};
 	struct PartInfo {
@@ -82,17 +82,17 @@ private:
 		}
 	};
 
-	QString rpnCodeThreadToString(const RpnCodeThread &codeThread);
+    QString codeThreadToString(const Rpn::CodeThread &codeThread);
 
 	// defines whether functionName is built-in or user-defined and calculates it.
-	RpnOperand calculateFunction(const QString &functionName, const QList<RpnOperand> &actualArguments);
-	RpnOperand calculateUserDefinedFunction(const QString &functionName, const QList<RpnOperand> &actualArguments);
-	RpnOperand calculateBuiltInFunction(const QString &functionName, const QList<RpnOperand> &actualArguments);
+    Rpn::Operand calculateFunction(const QString &functionName, const QList<Rpn::Operand> &actualArguments);
+    Rpn::Operand calculateUserDefinedFunction(const QString &functionName, const QList<Rpn::Operand> &actualArguments);
+    Rpn::Operand calculateBuiltInFunction(const QString &functionName, const QList<Rpn::Operand> &actualArguments);
 
 	FunctionDescription functionDescription(const QString &functionName);
 	// Checks, whether functionName is either called from code or from other functions that are called
 	// from code.
-	bool isFunctionUsed(const QString &functionName, const RpnCodeThread &code);
+    bool isFunctionUsed(const QString &functionName, const Rpn::CodeThread &code);
 };
 
 Q_DECLARE_METATYPE(ConstantDescription)

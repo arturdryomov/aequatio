@@ -18,8 +18,8 @@ public:
 	class FunctionCalculator
 	{
 	public:
-		virtual RpnOperand calculate(QString functionName, QList<RpnOperand> actualArguments) = 0;
-		virtual QList<RpnArgument> functionArguments(const QString &name) = 0;
+        virtual Rpn::Operand calculate(QString functionName, QList<Rpn::Operand> actualArguments) = 0;
+        virtual QList<Rpn::Argument> functionArguments(const QString &name) = 0;
 	};
 
 	// Common constructor for registration of sub-classes
@@ -37,9 +37,9 @@ public:
 	}
 
 	// Calculating everything
-	virtual RpnOperand calculate(FunctionCalculator* calculator, QList<RpnOperand> actualArguments) = 0;
+    virtual Rpn::Operand calculate(FunctionCalculator* calculator, QList<Rpn::Operand> actualArguments) = 0;
 	// Arguments for calling function
-	virtual QList<RpnArgument> requiredArguments() = 0;
+    virtual QList<Rpn::Argument> requiredArguments() = 0;
 
 private:
 	static QHash<QString, Function*> &functionsWritable()

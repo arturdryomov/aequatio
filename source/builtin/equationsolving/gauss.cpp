@@ -7,28 +7,28 @@ namespace {
 	Gauss instance;
 }
 
-RpnOperand Gauss::calculate(Function::FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+Rpn::Operand Gauss::calculate(Function::FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	Q_UNUSED(calculator);
 
-	QList<QList<Number> > coefficients = RpnVector::toTwoDimensional(actualArguments[0].value.value<RpnVector>());
+	QList<QList<Number> > coefficients = Rpn::Vector::toTwoDimensional(actualArguments[0].value.value<Rpn::Vector>());
 	if (!areCoefficientsCorrect(coefficients)) {
 		THROW(EWrongArgument("matrix", "n × (n + 1) size"));
 	}
 
 	try {
 		QList<Number> result = findSolution(coefficients);
-		return RpnOperand(RpnOperandVector, QVariant::fromValue(RpnVector::fromOneDimensional(result)));
+		return Rpn::Operand(Rpn::OperandVector, QVariant::fromValue(Rpn::Vector::fromOneDimensional(result)));
 	} catch (ENoSolution &e) {
 		Q_UNUSED(e)
-		return RpnOperand(RpnOperandNumber, QVariant::fromValue(MathUtils::getNaN()));
+		return Rpn::Operand(Rpn::OperandNumber, QVariant::fromValue(MathUtils::getNaN()));
 	}
 }
 
-QList<RpnArgument> Gauss::requiredArguments()
+QList<Rpn::Argument> Gauss::requiredArguments()
 {
-	QList<RpnArgument> arguments;
-	arguments << RpnArgument(RpnOperandVector);
+	QList<Rpn::Argument> arguments;
+	arguments << Rpn::Argument(Rpn::OperandVector);
 
 	return arguments;
 }

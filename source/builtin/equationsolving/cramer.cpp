@@ -8,11 +8,11 @@ namespace
 	Cramer instance;
 }
 
-RpnOperand Cramer::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+Rpn::Operand Cramer::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	Q_UNUSED(calculator);
 
-	m_matrixCoefficients = RpnVector::toTwoDimensional(actualArguments[0].value.value<RpnVector>());
+	m_matrixCoefficients = Rpn::Vector::toTwoDimensional(actualArguments[0].value.value<Rpn::Vector>());
 	foreach (QList<Number> coefficientsEquation, m_matrixCoefficients) {
 		if (coefficientsEquation.size() != m_matrixCoefficients.first().size()) {
 			THROW(EWrongArgument(QObject::tr("coefficient vectors"), QObject::tr("one size")));
@@ -21,17 +21,17 @@ RpnOperand Cramer::calculate(FunctionCalculator *calculator, QList<RpnOperand> a
 
 	try {
 		QList<Number> result = findSolution();
-		return RpnOperand(RpnOperandVector, QVariant::fromValue(RpnVector::fromOneDimensional(result)));
+		return Rpn::Operand(Rpn::OperandVector, QVariant::fromValue(Rpn::Vector::fromOneDimensional(result)));
 	} catch (ENoSolution &e) {
 		Q_UNUSED(e)
-		return RpnOperand(RpnOperandNumber, QVariant::fromValue(MathUtils::getNaN()));
+		return Rpn::Operand(Rpn::OperandNumber, QVariant::fromValue(MathUtils::getNaN()));
 	}
 }
 
-QList<RpnArgument> Cramer::requiredArguments()
+QList<Rpn::Argument> Cramer::requiredArguments()
 {
-	QList<RpnArgument> arguments;
-	arguments << RpnArgument(RpnOperandVector);
+	QList<Rpn::Argument> arguments;
+	arguments << Rpn::Argument(Rpn::OperandVector);
 
 	return arguments;
 }

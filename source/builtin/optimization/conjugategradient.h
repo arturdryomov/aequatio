@@ -10,8 +10,8 @@ class ConjugateGradient : public Function
 {
 public:
 	ConjugateGradient() : Function("conjugate_gradient") {}
-	RpnOperand calculate(FunctionCalculator* calculator, QList<RpnOperand> actualArguments);
-	QList<RpnArgument> requiredArguments();
+	Rpn::Operand calculate(FunctionCalculator* calculator, QList<Rpn::Operand> actualArguments);
+	QList<Rpn::Argument> requiredArguments();
 private:
 	FunctionCalculator *m_calculator;
 	QString m_functionName;

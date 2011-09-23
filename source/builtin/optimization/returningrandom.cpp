@@ -10,12 +10,12 @@ namespace
 	ReturningRandom instance;
 }
 
-RpnOperand ReturningRandom::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+Rpn::Operand ReturningRandom::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	// Initialize algorithm variables
 	m_calculator = calculator;
 	m_functionName = actualArguments.at(0).value.value<QString>();
-	m_sourcePoint = RpnVector::toOneDimensional(actualArguments.at(1).value.value<RpnVector>());
+	m_sourcePoint = Rpn::Vector::toOneDimensional(actualArguments.at(1).value.value<Rpn::Vector>());
 	m_decreaseCoefficient = actualArguments.at(2).value.value<Number>();
 	m_wrongStepsCount = actualArguments.at(3).value.value<Number>();
 	m_maximumIterationsCount = actualArguments.at(4).value.value<Number>();
@@ -33,22 +33,22 @@ RpnOperand ReturningRandom::calculate(FunctionCalculator *calculator, QList<RpnO
 	// Initialize random, random number generator from MathUtils needs it
 	srand(time(NULL));
 
-	RpnOperand result;
-	result.type = RpnOperandVector;
-	result.value = QVariant::fromValue(RpnVector::fromOneDimensional(findMinimum()));
+	Rpn::Operand result;
+	result.type = Rpn::OperandVector;
+	result.value = QVariant::fromValue(Rpn::Vector::fromOneDimensional(findMinimum()));
 	return result;
 }
 
-QList<RpnArgument> ReturningRandom::requiredArguments()
+QList<Rpn::Argument> ReturningRandom::requiredArguments()
 {
-	QList<RpnArgument> arguments;
+	QList<Rpn::Argument> arguments;
 	arguments
-		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant::fromValue(ArbitraryArgumentsCount))
-		<< RpnArgument(RpnOperandVector)
-		<< RpnArgument(RpnOperandNumber)
-		<< RpnArgument(RpnOperandNumber)
-		<< RpnArgument(RpnOperandNumber)
-		<< RpnArgument(RpnOperandNumber);
+		<< Rpn::Argument(Rpn::OperandFunctionName, QString(), QVariant::fromValue(Rpn::ArbitraryArgumentsCount))
+		<< Rpn::Argument(Rpn::OperandVector)
+		<< Rpn::Argument(Rpn::OperandNumber)
+		<< Rpn::Argument(Rpn::OperandNumber)
+		<< Rpn::Argument(Rpn::OperandNumber)
+		<< Rpn::Argument(Rpn::OperandNumber);
 
 	return arguments;
 }
@@ -98,14 +98,14 @@ QList<Number> ReturningRandom::findMinimum()
 
 Number ReturningRandom::countFunction(QList<Number> arguments)
 {
-	QList<RpnOperand> functionArguments;
+	QList<Rpn::Operand> functionArguments;
 
 	foreach (Number argument, arguments) {
-		RpnOperand functionArgument(RpnOperandNumber, argument);
+		Rpn::Operand functionArgument(Rpn::OperandNumber, argument);
 		functionArguments << functionArgument;
 	}
 
-	RpnOperand result = m_calculator->calculate(m_functionName, functionArguments);
+	Rpn::Operand result = m_calculator->calculate(m_functionName, functionArguments);
 	return result.value.value<Number>();
 }
 

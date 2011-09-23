@@ -39,24 +39,24 @@ private:
 	ProcessingResult command();
 	ConstantDescription constDeclaration();
 	FunctionDescription functionDeclaration();
-	RpnCodeThread expression();
-	RpnCodeThread vector();
-	RpnVector extractVector();
-	RpnCodeThread function();
-	RpnCodeThread factor();
-	RpnCodeThread powerBase();
-	RpnElement multOperation();
-	RpnCodeThread summand();	
-	RpnElement summOperation();
+    Rpn::CodeThread expression();
+    Rpn::CodeThread vector();
+    Rpn::Vector extractVector();
+    Rpn::CodeThread function();
+    Rpn::CodeThread factor();
+    Rpn::CodeThread powerBase();
+    Rpn::Element multOperation();
+    Rpn::CodeThread summand();
+    Rpn::Element summOperation();
 	Number number();
-	RpnElement constant();	
-	RpnArgument formalArgument();
-	RpnCodeThread actualArgument(const RpnArgument &correspondingFormalArgument);
+    Rpn::Element constant();
+    Rpn::Argument formalArgument();
+    Rpn::CodeThread actualArgument(const Rpn::Argument &correspondingFormalArgument);
 	void ensureNoMoreLexemes();
 	
 	LexicalAnalyzer *m_lexicalAnalyzer;
 	ExprCalculator *m_exprCalculator;
-	QList<RpnArgument> m_workingArguments;
+    QList<Rpn::Argument> m_workingArguments;
 };
 
 class CheckLexeme

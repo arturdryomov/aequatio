@@ -18,8 +18,8 @@ public:
 
 	// This methods assume that corresponding functions or constants are
 	// declared, otherwise an exception will be thrown.
-	QList<RpnArgument> functionArguments(const QString &name) const;
-	RpnFunction function(const QString &name) const;
+	QList<Rpn::Argument> functionArguments(const QString &name) const;
+	Rpn::Function function(const QString &name) const;
 	Number constant(const QString &name) const;
 	QString prettyPrintedFunction(const QString &name) const;
 	QString prettyPrintedConstant(const QString &name) const;
@@ -30,17 +30,17 @@ public:
 	// If the constant/function cannot be added (trying to overwrite something built-in,
 	// for instance), an EBuildInRedifinition or ERecursiveFunction exception will be raised.
 	void addConstant(const QString &name, const Number &value);
-	void addFunction(const QString &name, const RpnFunction &function);
+	void addFunction(const QString &name, const Rpn::Function &function);
 
 signals:
 	void constantsChanged();
 	void functionsChanged();
 
 private:
-	QMap<QString, RpnFunction> m_functions;
+	QMap<QString, Rpn::Function> m_functions;
 	QMap<QString, Number> m_constants;
 
-	bool isFunctionUsed(const QString &name, const RpnCodeThread &codeThread) const;
+	bool isFunctionUsed(const QString &name, const Rpn::CodeThread &codeThread) const;
 };
 
 #endif // DOCUMENT_H

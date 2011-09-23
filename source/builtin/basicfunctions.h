@@ -9,72 +9,72 @@ namespace BasicFunctions{
 class Plus : public Function
 {
 public:
-	Plus() : Function(RpnFunctionPlus)
+	Plus() : Function(Rpn::FunctionPlus)
 	{
 	}
 
-	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
-	QList<RpnArgument> requiredArguments();
+    Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
+	QList<Rpn::Argument> requiredArguments();
 };
 
 
 class Minus : public Function
 {
 public:
-	Minus() : Function(RpnFunctionMinus)
+	Minus() : Function(Rpn::FunctionMinus)
 	{
 	}
 
-	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
-	QList<RpnArgument> requiredArguments();
+    Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
+	QList<Rpn::Argument> requiredArguments();
 };
 
 
 class Multiply : public Function
 {
 public:
-	Multiply() : Function(RpnFunctionMultiply)
+	Multiply() : Function(Rpn::FunctionMultiply)
 	{
 	}
 
-	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
-	QList<RpnArgument> requiredArguments();
+    Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
+	QList<Rpn::Argument> requiredArguments();
 };
 
 
 class Divide : public Function
 {
 public:
-	Divide() : Function(RpnFunctionDivide)
+	Divide() : Function(Rpn::FunctionDivide)
 	{
 	}
 
-	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
-	QList<RpnArgument> requiredArguments();
+    Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
+	QList<Rpn::Argument> requiredArguments();
 };
 
 
 class Power : public Function
 {
 public:
-	Power() : Function(RpnFunctionPower)
+	Power() : Function(Rpn::FunctionPower)
 	{
 	}
 
-	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
-	QList<RpnArgument> requiredArguments();
+    Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
+	QList<Rpn::Argument> requiredArguments();
 };
 
 
 class UnaryMinus : public Function
 {
 public:
-	UnaryMinus() : Function(RpnFunctionUnaryMinus)
+	UnaryMinus() : Function(Rpn::FunctionUnaryMinus)
 	{
 	}
 
-	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
-	QList<RpnArgument> requiredArguments();
+    Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
+	QList<Rpn::Argument> requiredArguments();
 };
 
 
@@ -85,8 +85,8 @@ public:
 	{
 	}
 
-	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
-	QList<RpnArgument> requiredArguments();
+    Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
+	QList<Rpn::Argument> requiredArguments();
 };
 
 
@@ -97,8 +97,8 @@ public:
 	{
 	}
 
-	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
-	QList<RpnArgument> requiredArguments();
+    Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
+	QList<Rpn::Argument> requiredArguments();
 };
 
 
@@ -109,8 +109,8 @@ public:
 	{
 	}
 
-	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
-	QList<RpnArgument> requiredArguments();
+    Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
+	QList<Rpn::Argument> requiredArguments();
 };
 
 
@@ -121,8 +121,8 @@ public:
 	{
 	}
 
-	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
-	QList<RpnArgument> requiredArguments();
+    Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
+	QList<Rpn::Argument> requiredArguments();
 };
 
 
@@ -133,8 +133,8 @@ public:
 	{
 	}
 
-	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
-	QList<RpnArgument> requiredArguments();
+    Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
+	QList<Rpn::Argument> requiredArguments();
 };
 
 
@@ -145,8 +145,8 @@ public:
 	{
 	}
 
-	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
-	QList<RpnArgument> requiredArguments();
+    Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
+	QList<Rpn::Argument> requiredArguments();
 };
 
 
@@ -157,8 +157,8 @@ public:
 	{
 	}
 
-	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
-	QList<RpnArgument> requiredArguments();
+    Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
+	QList<Rpn::Argument> requiredArguments();
 };
 
 
@@ -169,8 +169,8 @@ public:
 	{
 	}
 
-	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
-	QList<RpnArgument> requiredArguments();
+    Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
+	QList<Rpn::Argument> requiredArguments();
 };
 
 
@@ -181,8 +181,8 @@ public:
 	{
 	}
 
-	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
-	QList<RpnArgument> requiredArguments();
+    Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
+	QList<Rpn::Argument> requiredArguments();
 };
 
 
@@ -193,8 +193,8 @@ public:
 	{
 	}
 
-	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
-	QList<RpnArgument> requiredArguments();
+    Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
+	QList<Rpn::Argument> requiredArguments();
 };
 
 } // namespace

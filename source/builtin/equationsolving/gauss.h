@@ -13,8 +13,8 @@ public:
 	{
 	}
 
-	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
-	QList<RpnArgument> requiredArguments();
+	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
+	QList<Rpn::Argument> requiredArguments();
 private:
 	QList<Number> findSolution(QList<QList<Number> > coefficients);
 	void swapColumns(QList<QList<Number> > &matrix, int index1, int index2);

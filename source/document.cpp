@@ -18,7 +18,7 @@ bool Document::containsConstant(const QString &name) const
 	return m_constants.contains(name);
 }
 
-QList<RpnArgument> Document::functionArguments(const QString &name) const
+QList<Rpn::Argument> Document::functionArguments(const QString &name) const
 {
 	if (!m_functions.contains(name)) {
 		THROW(EIncorrectRpnCode());
@@ -27,7 +27,7 @@ QList<RpnArgument> Document::functionArguments(const QString &name) const
 	return m_functions.value(name).arguments;
 }
 
-RpnFunction Document::function(const QString &name) const
+Rpn::Function Document::function(const QString &name) const
 {
 	if (!m_functions.contains(name)) {
 		THROW(EIncorrectRpnCode());
@@ -70,7 +70,7 @@ QStringList Document::prettyPrintedFunctions() const
 {
 	QStringList functions;
 
-	QMapIterator<QString, RpnFunction> i(m_functions);
+	QMapIterator<QString, Rpn::Function> i(m_functions);
 	while (i.hasNext()) {
 		i.next();
 		functions << prettyPrintedFunction(i.key());
@@ -102,7 +102,7 @@ void Document::addConstant(const QString &name, const Number &value)
 	emit constantsChanged();
 }
 
-void Document::addFunction(const QString &name, const RpnFunction &function)
+void Document::addFunction(const QString &name, const Rpn::Function &function)
 {
 	if (BuiltIn::Function::functions().contains(name)) {
 		THROW(EBuiltInRedifinition(name, EBuiltInRedifinition::Function));
@@ -116,10 +116,10 @@ void Document::addFunction(const QString &name, const RpnFunction &function)
 	emit functionsChanged();
 }
 
-bool Document::isFunctionUsed(const QString &name, const RpnCodeThread &codeThread) const
+bool Document::isFunctionUsed(const QString &name, const Rpn::CodeThread &codeThread) const
 {
-	foreach (RpnElement element, codeThread) {
-		if (element.type != RpnElementFunctionCall) continue;
+	foreach (Rpn::Element element, codeThread) {
+		if (element.type != Rpn::ElementFunctionCall) continue;
 
 		QString calledFunctionName = element.value.value<QString>();
 		if (!m_functions.contains(calledFunctionName)) continue;
@@ -130,7 +130,7 @@ bool Document::isFunctionUsed(const QString &name, const RpnCodeThread &codeThre
 		}
 
 		// check recursively
-		RpnCodeThread calledFunctionCode = m_functions.value(calledFunctionName).codeThread;
+		Rpn::CodeThread calledFunctionCode = m_functions.value(calledFunctionName).codeThread;
 		if (isFunctionUsed(name, calledFunctionCode)) {
 			return true;
 		}

@@ -2,116 +2,106 @@
 #define RPNCODE_H
 
 #include "exceptions.h"
+#include "number.h"
 
 #include <QVariant>
 
-// basic arithmetic funciton names
-const QString RpnFunctionPlus = "@Plus@";
-const QString RpnFunctionMinus = "@Minus@";
-const QString RpnFunctionMultiply = "@Multiply@";
-const QString RpnFunctionDivide = "@Divide@";
-const QString RpnFunctionPower = "@Power@";
-const QString RpnFunctionUnaryMinus = "@UnaryMinus@";
-
-typedef qreal Number;
-
-class EConversionToNumber : public EInternal
-{
-public:
-	EConversionToNumber(const QString &numberRepresentation);
-	QString message();
-	QString m_numberRepresentation;
-};
-
-// This is to unify Number to string and string to Number converting.
-QString numberToString(const Number number);
-Number stringToNumber(const QString &str);
-
 // RPN stands for ‘Reverse Polish notation’
+namespace Rpn {
 
-enum RpnOperandType {
-	RpnOperandNumber,
-	RpnOperandVector,
-	RpnOperandFunctionName
+// basic arithmetic funciton names
+const QString FunctionPlus = "@Plus@";
+const QString FunctionMinus = "@Minus@";
+const QString FunctionMultiply = "@Multiply@";
+const QString FunctionDivide = "@Divide@";
+const QString FunctionPower = "@Power@";
+const QString FunctionUnaryMinus = "@UnaryMinus@";
+
+enum OperandType {
+	OperandNumber,
+	OperandVector,
+	OperandFunctionName
 };
 
-struct RpnVector {
-	RpnVector(int dimensions_ = 1, const QList<QVariant> &values_ = QList<QVariant>());
+struct Vector {
+	Vector(int dimensions_ = 1, const QList<QVariant> &values_ = QList<QVariant>());
 	int dimensions;
 	QList<QVariant> values; // QVariant is a Number or another QList<QVariant>,
 	                        // depending on dimensions.
 	QString toString();
-	static QList<Number> toOneDimensional(RpnVector vector);
-	static RpnVector fromOneDimensional(QList<Number> list);
-	static QList<QList<Number> > toTwoDimensional(RpnVector vector);
-	static RpnVector fromTwoDimensional(QList<QList<Number> >);
+	static QList<Number> toOneDimensional(Vector vector);
+	static Vector fromOneDimensional(QList<Number> list);
+	static QList<QList<Number> > toTwoDimensional(Vector vector);
+	static Vector fromTwoDimensional(QList<QList<Number> >);
 };
 
-struct RpnOperand
+struct Operand
 {
-	RpnOperand(RpnOperandType type_ = RpnOperandNumber, const QVariant &value_ = QVariant());
+	Operand(OperandType type_ = Rpn::OperandNumber, const QVariant &value_ = QVariant());
 	QString toString();
-	bool operator ==(const RpnOperand &another);
+	bool operator ==(const Rpn::Operand &another);
 
-	RpnOperandType type;
-	/* type == RpnOperandNumber -- value is a number, type Number,
-	   RpnOperandVector -- value is RpnVector,
-	   RpnOperandFunctionName -- value is a function name (QString) */
+	OperandType type;
+	/* type == Rpn::OperandNumber -- value is a number, type Number,
+		OperandVector -- value is Vector,
+		OperandFunctionName -- value is a function name (QString) */
 	QVariant value;
 };
 
-enum RpnElementType {
-	RpnElementOperand,
-	RpnElementConstant,
-	RpnElementFunctionCall,
-	RpnElementArgument
+enum ElementType {
+	ElementOperand,
+	ElementConstant,
+	ElementFunctionCall,
+	ElementArgument
 };
 
-struct RpnElement {
-	RpnElement(RpnElementType type_ = RpnElementOperand, const QVariant &value_ = QVariant());
-	bool operator ==(const RpnElement &another);
+struct Element {
+	Element(ElementType type_ = ElementOperand, const QVariant &value_ = QVariant());
+	bool operator ==(const Element &another);
 
-	RpnElementType type;
-	/* type == RpnElementOperand -- value is of type RpnOperand
-	  RpnElementConstant -- value is constant name, QString
-	  RpnElementFunctionCall -- value is function name, QString
-	  RpnElementArgument -- value is argument name, QString
+	ElementType type;
+	/* type == Rpn::ElementRpn::Operand -- value is of type Operand
+	  Rpn::ElementConstant -- value is constant name, QString
+	  Rpn::ElementFunctionCall -- value is function name, QString
+	  Rpn::ElementArgument -- value is argument name, QString
   */
 	QVariant value;
 };
 
 // без изменений
-typedef QList<RpnElement> RpnCodeThread;
+typedef QList<Element> CodeThread;
 
-// this is not for RpnElement with type == RpnElementArgument,
-// this is for RpnFunction
-struct RpnArgument {
-	RpnArgument(RpnOperandType type_ = RpnOperandNumber, const QString &name_ = QString(),
+// this is not for Rpn::Element with type == Rpn::ElementArgument,
+// this is for Rpn::Function
+struct Argument {
+	Argument(OperandType type_ = Rpn::OperandNumber, const QString &name_ = QString(),
 		const QVariant &info_ = QVariant());
-	bool operator ==(const RpnArgument &another);
+	bool operator ==(const Argument &another);
 
-	RpnOperandType type;
+	OperandType type;
 	QString name;
 	// This is a storage for additional information that depends on type.
-	// type == RpnOperandNumber -- nothing.
-	// RpnOperandVector -- nothing.
-	// RpnOperandFunctionName -- number of function arguments, assuming that all this arguments
-	//	are of RpnOperandNumber type.
+	// type == Rpn::OperandNumber -- nothing.
+	// OperandVector -- nothing.
+	// OperandFunctionName -- number of function arguments, assuming that all this arguments
+	//	are of OperandNumber type.
 	QVariant info;
 };
 
 const int ArbitraryArgumentsCount = -1;
 
-struct RpnFunction {
-	QList<RpnArgument> arguments;
-	RpnCodeThread codeThread;
+struct Function {
+	QList<Rpn::Argument> arguments;
+	CodeThread codeThread;
 };
 
+} // namespace Rpn
+
 Q_DECLARE_METATYPE(Number)
-Q_DECLARE_METATYPE(RpnElementType)
-Q_DECLARE_METATYPE(RpnOperandType)
-Q_DECLARE_METATYPE(RpnVector)
-Q_DECLARE_METATYPE(RpnOperand)
-Q_DECLARE_METATYPE(RpnArgument)
+Q_DECLARE_METATYPE(Rpn::ElementType)
+Q_DECLARE_METATYPE(Rpn::OperandType)
+Q_DECLARE_METATYPE(Rpn::Vector)
+Q_DECLARE_METATYPE(Rpn::Operand)
+Q_DECLARE_METATYPE(Rpn::Argument)
 
 #endif // RPNCODE_H

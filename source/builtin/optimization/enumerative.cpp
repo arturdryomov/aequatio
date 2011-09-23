@@ -8,7 +8,7 @@ namespace
 	Enumerative instance;
 }
 
-RpnOperand Enumerative::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+Rpn::Operand Enumerative::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	// Initialize algorithm variables
 	m_calculator = calculator;
@@ -17,21 +17,21 @@ RpnOperand Enumerative::calculate(FunctionCalculator *calculator, QList<RpnOpera
 	m_sourceInterval.rightBorder = actualArguments.at(2).value.value<Number>();
 	m_iterationsCount = actualArguments.at(3).value.value<Number>();
 
-	RpnOperand result;
-	result.type = RpnOperandNumber;
+	Rpn::Operand result;
+	result.type = Rpn::OperandNumber;
 	result.value = QVariant::fromValue(findMinimum());
 	return result;
 }
 
-QList<RpnArgument> Enumerative::requiredArguments()
+QList<Rpn::Argument> Enumerative::requiredArguments()
 {
-	QList<RpnArgument> arguments;
+	QList<Rpn::Argument> arguments;
 	arguments
 		// 1 is argument count in function that is passed as and argument
-		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant::fromValue(1))
-		<< RpnArgument(RpnOperandNumber)
-		<< RpnArgument(RpnOperandNumber)
-		<< RpnArgument(RpnOperandNumber);
+		<< Rpn::Argument(Rpn::OperandFunctionName, QString(), QVariant::fromValue(1))
+		<< Rpn::Argument(Rpn::OperandNumber)
+		<< Rpn::Argument(Rpn::OperandNumber)
+		<< Rpn::Argument(Rpn::OperandNumber);
 
 	return arguments;
 }
@@ -59,11 +59,11 @@ Number Enumerative::findMinimum()
 
 Number Enumerative::countFunction(Number argument)
 {
-	QList<RpnOperand> functionArguments;
-	RpnOperand functionArgument(RpnOperandNumber, argument);
+	QList<Rpn::Operand> functionArguments;
+	Rpn::Operand functionArgument(Rpn::OperandNumber, argument);
 	functionArguments << functionArgument;
 
-	RpnOperand result = m_calculator->calculate(m_functionName, functionArguments);
+	Rpn::Operand result = m_calculator->calculate(m_functionName, functionArguments);
 	return result.value.value<Number>();
 }
 

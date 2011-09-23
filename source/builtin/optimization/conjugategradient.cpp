@@ -8,7 +8,7 @@ namespace
 	ConjugateGradient instance;
 }
 
-RpnOperand ConjugateGradient::calculate(FunctionCalculator* calculator, QList<RpnOperand> actualArguments)
+Rpn::Operand ConjugateGradient::calculate(FunctionCalculator* calculator, QList<Rpn::Operand> actualArguments)
 {
 	m_calculator = calculator;
 
@@ -16,7 +16,7 @@ RpnOperand ConjugateGradient::calculate(FunctionCalculator* calculator, QList<Rp
 	m_functionName = actualArguments[0].value.value<QString>();
 
 	// initial point
-	m_initialPoint = RpnVector::toOneDimensional(actualArguments[1].value.value<RpnVector>());
+	m_initialPoint = Rpn::Vector::toOneDimensional(actualArguments[1].value.value<Rpn::Vector>());
 	int expectedArgumentsCount = m_calculator->functionArguments(m_functionName).count();
 
 	if (m_initialPoint.count() != expectedArgumentsCount) {
@@ -27,17 +27,17 @@ RpnOperand ConjugateGradient::calculate(FunctionCalculator* calculator, QList<Rp
 	// stop value
 	m_accuracy = actualArguments[2].value.value<Number>();
 
-	RpnVector result = RpnVector::fromOneDimensional(findMinimum());
-	return RpnOperand(RpnOperandVector, QVariant::fromValue(result));
+	Rpn::Vector result = Rpn::Vector::fromOneDimensional(findMinimum());
+	return Rpn::Operand(Rpn::OperandVector, QVariant::fromValue(result));
 }
 
-QList<RpnArgument> ConjugateGradient::requiredArguments()
+QList<Rpn::Argument> ConjugateGradient::requiredArguments()
 {
-	QList<RpnArgument> arguments;
+	QList<Rpn::Argument> arguments;
 	arguments
-		<< RpnArgument(RpnOperandFunctionName, QString(), QVariant::fromValue(ArbitraryArgumentsCount)) // function
-		<< RpnArgument(RpnOperandVector) // initial point
-		<< RpnArgument(RpnOperandNumber); // stop value
+		<< Rpn::Argument(Rpn::OperandFunctionName, QString(), QVariant::fromValue(Rpn::ArbitraryArgumentsCount)) // function
+		<< Rpn::Argument(Rpn::OperandVector) // initial point
+		<< Rpn::Argument(Rpn::OperandNumber); // stop value
 
 	return arguments;
 }
@@ -200,12 +200,12 @@ bool ConjugateGradient::isDirectionsLinearlyIndependend(const QList<QList<Number
 
 Number ConjugateGradient::function(const QList<Number> arguments)
 {
-	QList<RpnOperand> functionArguments;
+	QList<Rpn::Operand> functionArguments;
 	foreach (Number number, arguments) {
-		functionArguments << RpnOperand(RpnOperandNumber, number);
+		functionArguments << Rpn::Operand(Rpn::OperandNumber, number);
 	}
 
-	RpnOperand result = m_calculator->calculate(m_functionName, functionArguments);
+	Rpn::Operand result = m_calculator->calculate(m_functionName, functionArguments);
 	return result.value.value<Number>();
 }
 

@@ -12,8 +12,8 @@ class PrettyPrinter
 public:
 	PrettyPrinter();
 	void setDocument(const Document *document);
-	QString process(const RpnCodeThread &codeThread);
-	QString process(const RpnFunction &function, const QString &functionName);
+	QString process(const Rpn::CodeThread &codeThread);
+	QString process(const Rpn::Function &function, const QString &functionName);
 
 private:
 	const Document *m_document;

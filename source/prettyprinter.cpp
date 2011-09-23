@@ -16,7 +16,7 @@ void PrettyPrinter::setDocument(const Document *document)
 }
 
 
-QString PrettyPrinter::process(const RpnCodeThread &codeThread)
+QString PrettyPrinter::process(const Rpn::CodeThread &codeThread)
 {
 	// This code is quite alike with ExprCalculator::calculateFunction argorithm,
 	// but we store parts of final string expression in the stack.
@@ -25,33 +25,33 @@ QString PrettyPrinter::process(const RpnCodeThread &codeThread)
 
 	QStack<PartInfo> codeParts;
 
-	foreach(RpnElement element, codeThread) {
+	foreach(Rpn::Element element, codeThread) {
 
 		PartInfo part;
 		switch (element.type) {
 
-			case RpnElementOperand:
-				part.text = element.value.value<RpnOperand>().toString();
+			case Rpn::ElementOperand:
+				part.text = element.value.value<Rpn::Operand>().toString();
 				part.priority = PriorityHighest;
 				break;
 
-			case RpnElementConstant:
+			case Rpn::ElementConstant:
 				part.text = element.value.value<QString>();
 				part.priority = PriorityHighest;
 				break;
 
-			case RpnElementArgument: {
+			case Rpn::ElementArgument: {
 				part.text = element.value.value<QString>();
 				part.priority = PriorityHighest;
 				break;
 			}
 
-			case RpnElementFunctionCall: {
+			case Rpn::ElementFunctionCall: {
 				QString functionName = element.value.value<QString>();
 
 				// basic arithmetical operations
 
-				if (functionName == RpnFunctionPlus) {
+				if (functionName == Rpn::FunctionPlus) {
 					part.priority = PriorityPlusMinus;
 					PartInfo right = codeParts.pop();
 					right.bracesIfGreater(part.priority);
@@ -60,7 +60,7 @@ QString PrettyPrinter::process(const RpnCodeThread &codeThread)
 					part.text = QString("%1 + %2").arg(left.text, right.text);
 				}
 
-				else if (functionName == RpnFunctionMinus) {
+				else if (functionName == Rpn::FunctionMinus) {
 					part.priority = PriorityPlusMinus;
 					PartInfo right = codeParts.pop();
 					right.bracesIfGreaterOrEqual(part.priority);
@@ -69,7 +69,7 @@ QString PrettyPrinter::process(const RpnCodeThread &codeThread)
 					part.text = QString("%1 − %2").arg(left.text, right.text);
 				}
 
-				else if (functionName == RpnFunctionMultiply) {
+				else if (functionName == Rpn::FunctionMultiply) {
 					part.priority = PriorityMultiplyDivide;
 					PartInfo right = codeParts.pop();
 					right.bracesIfGreater(part.priority);
@@ -78,7 +78,7 @@ QString PrettyPrinter::process(const RpnCodeThread &codeThread)
 					part.text = QString("%1 × %2").arg(left.text, right.text);
 				}
 
-				else if (functionName == RpnFunctionDivide) {
+				else if (functionName == Rpn::FunctionDivide) {
 					part.priority = PriorityMultiplyDivide;
 					PartInfo right = codeParts.pop();
 					right.bracesIfGreaterOrEqual(part.priority);
@@ -87,7 +87,7 @@ QString PrettyPrinter::process(const RpnCodeThread &codeThread)
 					part.text = QString("%1 ÷ %2").arg(left.text, right.text);
 				}
 
-				else if (functionName == RpnFunctionPower) {
+				else if (functionName == Rpn::FunctionPower) {
 					part.priority = PriorityPower;
 					PartInfo right = codeParts.pop();
 					right.bracesIfGreater(part.priority);
@@ -96,7 +96,7 @@ QString PrettyPrinter::process(const RpnCodeThread &codeThread)
 					part.text = QString("%1 ^ %2").arg(left.text, right.text);
 				}
 
-				else if (functionName == RpnFunctionUnaryMinus) {
+				else if (functionName == Rpn::FunctionUnaryMinus) {
 					part.priority = PriorityPlusMinus;
 					PartInfo argument = codeParts.pop();
 					argument.bracesIfGreaterOrEqual(part.priority);
@@ -141,11 +141,11 @@ QString PrettyPrinter::process(const RpnCodeThread &codeThread)
 	return codeParts.pop().text;
 }
 
-QString PrettyPrinter::process(const RpnFunction &function, const QString &functionName)
+QString PrettyPrinter::process(const Rpn::Function &function, const QString &functionName)
 {
 	QStringList arguments;
 
-	foreach (const RpnArgument &argument, function.arguments) {
+	foreach (const Rpn::Argument &argument, function.arguments) {
 		arguments << argument.name;
 	}
 
