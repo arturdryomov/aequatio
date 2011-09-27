@@ -62,7 +62,8 @@ SOURCES += \
 	source/builtinfunctions/optimization/conjugategradient.cpp \
 	source/builtinfunctions/equationsolving/gauss.cpp \
 	source/builtinfunctions/equationsolving/cramer.cpp \
-	source/builtinfunctions/matrices.cpp
+	source/builtinfunctions/matrices.cpp \
+	source/builtinfunctions/equationsolving/ludecomposition.cpp
 
 HEADERS  += \
 	source/mainwindow.h \
@@ -98,7 +99,8 @@ HEADERS  += \
 	source/builtinfunctions/optimization/conjugategradient.h \
 	source/builtinfunctions/equationsolving/gauss.h \
 	source/builtinfunctions/equationsolving/cramer.h \
-	source/builtinfunctions/matrices.h
+	source/builtinfunctions/matrices.h \
+	source/builtinfunctions/equationsolving/ludecomposition.h
 
 FORMS	+= \
 	source/mainwindow.ui \
@@ -121,5 +123,7 @@ RCC_DIR = $$DESTDIR/rcc
 UI_DIR = $$DESTDIR/ui
 
 include(doc/doc.pri)
+
+
 
 

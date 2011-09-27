@@ -45,6 +45,8 @@ struct RpnVector {
 	static RpnVector fromOneDimensional(QList<Number> list);
 	static QList<QList<Number> > toTwoDimensional(RpnVector vector);
 	static RpnVector fromTwoDimensional(QList<QList<Number> >);
+	static QList<QList<QList<Number> > > toThreeDimensional(RpnVector vector);
+	static RpnVector fromThreeDimensional(QList<QList<QList<Number> > > list);
 };
 
 struct RpnOperand
