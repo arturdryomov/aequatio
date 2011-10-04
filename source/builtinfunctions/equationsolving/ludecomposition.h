@@ -16,8 +16,7 @@ public:
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
 	QList<RpnArgument> requiredArguments();
 private:
-	QList<QList<QList<Number> > > decompose(const QList<QList<Number> > &matrix);
-	QList<QList<Number> > emptyMatrix(int size);
+	QList<QList<Number> > decompose(QList<QList<Number> > matrix);
 };
 
 } // namespace
