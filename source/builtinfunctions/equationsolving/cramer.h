@@ -9,7 +9,7 @@ namespace EquationSolving {
 class Cramer : public Function
 {
 public:
-	Cramer() : Function("cramer")
+	Cramer() : Function("sle_cramer")
 	{
 	}
 

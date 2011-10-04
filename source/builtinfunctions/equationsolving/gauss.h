@@ -9,7 +9,7 @@ namespace EquationSolving {
 class Gauss : public Function
 {
 public:
-	Gauss() : Function("gauss")
+	Gauss() : Function("sle_gauss")
 	{
 	}
 
