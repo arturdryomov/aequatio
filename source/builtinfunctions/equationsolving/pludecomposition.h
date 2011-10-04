@@ -1,15 +1,15 @@
-#ifndef LUP_DECOMPOSITION_H
-#define LUP_DECOMPOSITION_H
+#ifndef PLU_DECOMPOSITION_H
+#define PLU_DECOMPOSITION_H
 
 #include "../builtinfunction.h"
 
 namespace BuiltInFunctions {
 namespace EquationSolving {
 
-class LupDecompozition : public Function
+class PluDecompozition : public Function
 {
 public:
-	LupDecompozition() : Function("lup")
+	PluDecompozition() : Function("plu")
 	{
 	}
 
@@ -25,4 +25,4 @@ private:
 } // namespace
 } // namespace
 
-#endif // LUP_DECOMPOSITION_H
+#endif // PLU_DECOMPOSITION_H

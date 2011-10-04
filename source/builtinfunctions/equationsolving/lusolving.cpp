@@ -17,8 +17,6 @@ RpnOperand LuSolving::calculate(Function::FunctionCalculator *calculator, QList<
 	return RpnOperand(RpnOperandVector, QVariant::fromValue(RpnVector::fromOneDimensional(result)));
 }
 
-
-
 QList<RpnArgument> LuSolving::requiredArguments()
 {
 	QList<RpnArgument> arguments;
@@ -27,43 +25,40 @@ QList<RpnArgument> LuSolving::requiredArguments()
 	return arguments;
 }
 
-
 QList<Number> LuSolving::findSolution(QList<QList<Number> > coefficients)
 {
 	QList<QList<Number> > workingMatrix = extractWorkingMatrix(coefficients);
 	QList<Number> freeCoefficients = extractFreeCoefficients(coefficients);
 
-	QList<QList<Number> > lowerTriangleMatrix = decompose(workingMatrix).at(0);
-	QList<QList<Number> > upperTriangleMatrix = decompose(workingMatrix).at(1);
+	QList<QList<Number> > LuMatrix = decompose(workingMatrix).first();
+	QList<QList<Number> > shiftMatrix = decompose(workingMatrix).last();
 
-
-	QList<Number> substitutionResult = emptyVector(workingMatrix.size());
-
-	substitutionResult.first() = freeCoefficients.first() / lowerTriangleMatrix.first().first();
-	for (int i = 0; i < workingMatrix.size(); i++) {
+	// Forward substitution
+	QList<Number> forwardSubstitutionResult = emptyVector(freeCoefficients.size());
+	for (int i = 0; i < LuMatrix.size(); i++) {
+		// Find sum
 		Number sum = 0;
 		for (int j = 0; j < i; j++) {
-			sum += lowerTriangleMatrix.at(i).at(j) * substitutionResult.at(j);
+			sum += LuMatrix.at(i).at(j) * forwardSubstitutionResult.at(j);
 		}
 
-		substitutionResult[i] = (1 / lowerTriangleMatrix.at(i).at(i)) *
-			(freeCoefficients.at(i) - sum);
+		forwardSubstitutionResult[i] =
+			MathUtils::multiplyVectorByVectorScalar(freeCoefficients, shiftMatrix.at(i)) - sum;
 	}
 
-	QList<Number> result = emptyVector(workingMatrix.size());
-
-	result.last() = substitutionResult.last() / upperTriangleMatrix.last().last();
-	for (int i = workingMatrix.size() - 1; i >= 0; i--) {
+	// Back substitution
+	QList<Number> backSubstitutionResult = emptyVector(freeCoefficients.size());
+	for (int i = LuMatrix.size() - 1; i >= 0; i--) {
+		// Find sum
 		Number sum = 0;
-		for (int j = i + 1; j < workingMatrix.size(); j++) {
-			sum += upperTriangleMatrix.at(i).at(j) * result.at(j);
+		for (int j = i + 1; j < LuMatrix.size(); j++) {
+			sum += LuMatrix.at(i).at(j) * backSubstitutionResult.at(j);
 		}
 
-		result[i] = (1 / upperTriangleMatrix.at(i).at(i)) *
-			(substitutionResult.at(i) - sum);
+		backSubstitutionResult[i] = (forwardSubstitutionResult.at(i) - sum) / LuMatrix.at(i).at(i);
 	}
 
-	return result;
+	return backSubstitutionResult;
 }
 
 QList<QList<Number> > LuSolving::extractWorkingMatrix(QList<QList<Number> > coefficients)
@@ -95,7 +90,8 @@ QList<QList<QList<Number> > > LuSolving::decompose(QList<QList<Number> > matrix)
 	RpnOperand argument = RpnOperand(RpnOperandVector, QVariant::fromValue(RpnVector::fromTwoDimensional(matrix)));
 	functionArguments << argument;
 
-	RpnOperand result = m_calculator->calculate("lu", functionArguments);
+	// Use PLU decomposition
+	RpnOperand result = m_calculator->calculate("plu", functionArguments);
 	return RpnVector::toThreeDimensional(result.value.value<RpnVector>());
 }
 

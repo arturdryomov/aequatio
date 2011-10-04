@@ -1,13 +1,13 @@
-#include "lupdecomposition.h"
+#include "pludecomposition.h"
 
 namespace BuiltInFunctions {
 namespace EquationSolving {
 
 namespace {
-	LupDecompozition instance;
+	PluDecompozition instance;
 }
 
-RpnOperand LupDecompozition::calculate(Function::FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+RpnOperand PluDecompozition::calculate(Function::FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
 {
 	Q_UNUSED(calculator);
 
@@ -30,7 +30,7 @@ RpnOperand LupDecompozition::calculate(Function::FunctionCalculator *calculator,
 	}
 }
 
-QList<RpnArgument> LupDecompozition::requiredArguments()
+QList<RpnArgument> PluDecompozition::requiredArguments()
 {
 	QList<RpnArgument> arguments;
 	arguments << RpnArgument(RpnOperandVector);
@@ -38,7 +38,7 @@ QList<RpnArgument> LupDecompozition::requiredArguments()
 	return arguments;
 }
 
-QList<QList<QList<Number> > > LupDecompozition::decompose(QList<QList<Number> > matrix)
+QList<QList<QList<Number> > > PluDecompozition::decompose(QList<QList<Number> > matrix)
 {
 	QList<QList<Number> > shiftMatrix = emptyMatrix(matrix.size());
 
@@ -85,7 +85,7 @@ QList<QList<QList<Number> > > LupDecompozition::decompose(QList<QList<Number> > 
 	return result;
 }
 
-QList<QList<Number> > LupDecompozition::emptyMatrix(int size)
+QList<QList<Number> > PluDecompozition::emptyMatrix(int size)
 {
 	QList<QList<Number> > result;
 
