@@ -80,6 +80,14 @@ public:
 };
 
 
+class MatrixTranspose : public Function
+{
+public:
+	MatrixTranspose() : Function("matrix_transpose") {}
+	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnArgument> requiredArguments();
+};
+
 } // namespace
 } // namespace
 

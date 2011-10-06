@@ -305,5 +305,37 @@ QList<RpnArgument> MatrixNormFrobenius::requiredArguments()
 	return arguments;
 }
 
+namespace
+{
+	MatrixTranspose matrixTranspose;
+}
+
+RpnOperand MatrixTranspose::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+{
+	Q_UNUSED(calculator);
+
+	QList<QList<Number> > matrix = RpnVector::toTwoDimensional(actualArguments.at(0).value.value<RpnVector>());
+	MathUtils::ensureMatrix(matrix);
+
+	for (int i = 0; i < matrix.size(); i++) {
+		for (int j = i + 1; j < matrix.at(i).size(); j++) {
+			Number buffer = matrix.at(i).at(j);
+			matrix[i][j] = matrix.at(j).at(i);
+			matrix[j][i] = buffer;
+		}
+	}
+
+	RpnVector result = RpnVector::fromTwoDimensional(matrix);
+	return RpnOperand(RpnOperandVector, QVariant::fromValue(result));
+}
+
+QList<RpnArgument> MatrixTranspose::requiredArguments()
+{
+	QList<RpnArgument> arguments;
+	arguments << RpnArgument(RpnOperandVector);
+
+	return arguments;
+}
+
 } // namespace
 } // namespace
