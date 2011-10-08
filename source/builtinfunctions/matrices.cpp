@@ -337,5 +337,148 @@ QList<RpnArgument> MatrixTranspose::requiredArguments()
 	return arguments;
 }
 
+namespace
+{
+	MatrixInverse matrixInverse;
+}
+
+RpnOperand MatrixInverse::calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments)
+{
+	Q_UNUSED(calculator);
+
+	QList<QList<Number> > initial = RpnVector::toTwoDimensional(actualArguments.at(0).value.value<RpnVector>());
+	MathUtils::ensureSquareMatrix(initial);
+
+	try {
+		QList<QList<Number> > result = inverse(initial);
+		return RpnOperand(RpnOperandVector, QVariant::fromValue(RpnVector::fromTwoDimensional(result)));
+	}
+	catch (ENoSolution &e) {
+		Q_UNUSED(e)
+		return RpnOperand(RpnOperandNumber, QVariant::fromValue(MathUtils::getNaN()));
+	}
+
+}
+
+QList<QList<Number> > MatrixInverse::inverse(QList<QList<Number> > &initial)
+{
+	// we use Gauss–Jordan elimination method (http://en.wikipedia.org/wiki/Gauss%E2%80%93Jordan_elimination)
+
+	QList<QList<Number> > inversed = unitaryMatrix(initial.size());
+	int size = initial.size();
+
+	// Save initial order of columns.
+	QList<int> orderOfColumns;
+	for (int i = 0; i < size; ++i) {
+		orderOfColumns << i;
+	}
+
+	// Direct pass
+
+	for (int i = 0; i < size; ++i) {
+
+		int mainElementIndex = i;
+		Number mainElement = initial[i][i];
+
+		// find main element of the current row
+		for (int j = i + 1; j < size; ++j) {
+			if (qAbs(mainElement) < qAbs(initial[i][j])) {
+				mainElementIndex = j;
+				mainElement = initial[i][j];
+			}
+		}
+
+		if (MathUtils::isNull(mainElement)) {
+			THROW(ENoSolution());
+		}
+
+		// swap columns
+		if (mainElementIndex != i) {
+			swapColumns(initial, i, mainElementIndex);
+			orderOfColumns.swap(i, mainElementIndex);
+		}
+
+		// divide the row by the main element
+		initial[i] = MathUtils::divideVectorByNumber(initial[i], mainElement);
+		inversed[i] = MathUtils::divideVectorByNumber(inversed[i], mainElement);
+
+		// subtract current row (multiplied before) from rows below.
+		for (int j = i + 1; j < size; ++j) {
+			QList<Number> multipliedRow = MathUtils::multiplyVectorByNumber(initial[i], initial[j][i]);
+			QList<Number> multipliedRowInversed = MathUtils::multiplyVectorByNumber(inversed[i], initial[j][i]);
+
+			// initial
+			initial[j] = MathUtils::subtractVectorFromVector(initial[j], multipliedRow);
+
+			// inverse
+			inversed[j] = MathUtils::subtractVectorFromVector(inversed[j], multipliedRowInversed);
+		}
+	}
+
+	// Reverse pass
+
+	for (int i = size - 1; i >= 0; --i) {
+		for (int j = i - 1; j >= 0; --j) {
+
+			// subtract current row (multiplied before) from rows above.
+
+			QList<Number> multipliedRow = MathUtils::multiplyVectorByNumber(initial[i], initial[j][i]);
+			QList<Number> multipliedRowInversed =MathUtils::multiplyVectorByNumber(inversed[i], initial[j][i]);
+
+			// initial
+			initial[j] = MathUtils::subtractVectorFromVector(initial[j], multipliedRow);
+
+			// inverse
+			inversed[j] = MathUtils::subtractVectorFromVector(inversed[j], multipliedRowInversed);
+		}
+	}
+
+	// we need to restore the order of inversed matrix's rows -- use orderOfColumns for this
+	QList<QList<Number> > result = inversed;
+	for (int i = 0; i < size; ++i) {
+		result[orderOfColumns[i]] = inversed[i];
+	}
+
+	return result;
+}
+
+QList<RpnArgument> MatrixInverse::requiredArguments()
+{
+	QList<RpnArgument> arguments;
+	arguments << RpnArgument(RpnOperandVector);
+
+	return arguments;
+}
+
+void MatrixInverse::swapColumns(QList<QList<Number> > &matrix, int index1, int index2)
+{
+	QMutableListIterator<QList<Number> > i(matrix);
+	while (i.hasNext()) {
+		i.next().swap(index1, index2);
+	}
+}
+
+QList<QList <Number> > MatrixInverse::unitaryMatrix(int size)
+{
+	QList<QList <Number> > result;
+
+	for (int i = 0; i < size; ++i) {
+
+		QList<Number> row;
+		for (int j = 0; j < size; ++j) {
+			if (i == j) {
+				row << 1.0;
+			}
+			else {
+				row << 0.0;
+			}
+		}
+
+		result << row;
+	}
+
+	return result;
+}
+
 } // namespace
 } // namespace

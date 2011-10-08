@@ -19,7 +19,8 @@ RpnOperand Gauss::calculate(Function::FunctionCalculator *calculator, QList<RpnO
 	try {
 		QList<Number> result = findSolution(coefficients);
 		return RpnOperand(RpnOperandVector, QVariant::fromValue(RpnVector::fromOneDimensional(result)));
-	} catch (ENoSolution &e) {
+	}
+	catch (ENoSolution &e) {
 		Q_UNUSED(e)
 		return RpnOperand(RpnOperandNumber, QVariant::fromValue(MathUtils::getNaN()));
 	}

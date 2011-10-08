@@ -88,6 +88,19 @@ public:
 	QList<RpnArgument> requiredArguments();
 };
 
+class MatrixInverse : public Function
+{
+public:
+	MatrixInverse() : Function("matrix_inverse") {}
+	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
+	QList<RpnArgument> requiredArguments();
+private:
+	QList<QList<Number> > inverse(QList<QList<Number> > &initial);
+	void swapColumns(QList<QList<Number> > &matrix, int index1, int index2);
+	QList<QList <Number> > unitaryMatrix(int size);
+	class ENoSolution : public ECalculating {};
+};
+
 } // namespace
 } // namespace
 
