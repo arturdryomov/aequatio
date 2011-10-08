@@ -2,15 +2,15 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
-    <title>Aequatio Help</title>
+		<title>Aequatio Help</title>
 
-    <link rel="stylesheet" type="text/css" href="css/master.css" />
-  </head>
+		<link rel="stylesheet" type="text/css" href="css/master.css" />
+	</head>
 
-  <body>
+	<body>
 
 		<h1>Matrix Operations</h1>
 
@@ -134,6 +134,25 @@
 					<p>&larr; matrix_norm_frobenius([[6, −7, 10], [0, 3, −1], [0, 5, −7]])</p>
 					<p>&rarr; matrix_norm_frobenius([[6, −7, 10], [0, 3, −1], [0, 5, −7]]) = 16.4012</p>
 				</div>
-  </body>
+
+			<a name="matrix_inverse"><h2>Matrix Inversion</h2></a>
+
+				<p>matrix_inverse(<i>A</i>)</p>
+
+				<p>
+					Calculates the <i>inverse</i> of matrix <i>A</i>, denoted by&nbsp;<i>A<sup>-1</sup></i>.
+					That means that <i>A</i>&nbsp;×&nbsp;<i>A<sup>-1</sup></i> =
+					<i>A<sup>-1</sup></i>&nbsp;×&nbsp;<i>A</i> = <i>E</i>,
+					where <i>E</i> is a&nbsp;unitary or identity matrix.
+				</p>
+
+				<p>Example</p>
+
+				<div class="code">
+					<p>&larr; matrix_inverse([[3, 5, 7], [9, 11, 13], [17, 19, 23]])</p>
+					<p>&rarr; matrix_inverse([[3, 5, 7], [9, 11, 13], [17, 19, 23]]) = [[−0.25, −0.75, 0.5], [−0.583333, 2.08333, −1], [0.666667, −1.16667, 0.5]]</p>
+				</div>
+
+	</body>
 
 </html>
