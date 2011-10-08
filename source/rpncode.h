@@ -60,15 +60,14 @@ struct Element {
 	bool operator ==(const Element &another);
 
 	ElementType type;
-	/* type == Rpn::ElementRpn::Operand -- value is of type Operand
-	  Rpn::ElementConstant -- value is constant name, QString
-	  Rpn::ElementFunctionCall -- value is function name, QString
-	  Rpn::ElementArgument -- value is argument name, QString
+	/* type == ElementOperand -- value is of type Operand
+	  ElementConstant -- value is constant name, QString
+	  ElementFunctionCall -- value is function name, QString
+	  ElementArgument -- value is argument name, QString
   */
 	QVariant value;
 };
 
-// без изменений
 typedef QList<Element> CodeThread;
 
 // this is not for Rpn::Element with type == Rpn::ElementArgument,

@@ -65,7 +65,8 @@ SOURCES += \
 	source/document.cpp \
 	source/prettyprinter.cpp \
 	source/builtin/basicconstants.cpp \
-	source/number.cpp
+	source/number.cpp \
+	source/codegenerator.cpp
 
 HEADERS  += \
 	source/mainwindow.h \
@@ -105,7 +106,8 @@ HEADERS  += \
 	source/prettyprinter.h \
 	source/builtin/constant.h \
 	source/builtin/basicconstants.h \
-	source/number.h
+	source/number.h \
+	source/codegenerator.h
 
 FORMS	+= \
 	source/mainwindow.ui \
@@ -128,9 +130,3 @@ RCC_DIR = $$DESTDIR/rcc
 UI_DIR = $$DESTDIR/ui
 
 include(doc/doc.pri)
-
-
-
-
-
-
