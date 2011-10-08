@@ -9,7 +9,7 @@ namespace EquationSolving {
 class PluDecompozition : public Function
 {
 public:
-	PluDecompozition() : Function("plu")
+	PluDecompozition() : Function("matrix_plu")
 	{
 	}
 
