@@ -64,7 +64,8 @@ SOURCES += \
 	source/builtinfunctions/equationsolving/cramer.cpp \
 	source/builtinfunctions/matrices.cpp \
 	source/builtinfunctions/equationsolving/lusolving.cpp \
-	source/builtinfunctions/equationsolving/pludecomposition.cpp
+	source/builtinfunctions/equationsolving/pludecomposition.cpp \
+	source/builtinfunctions/equationsolving/gaussseidel.cpp
 
 HEADERS  += \
 	source/mainwindow.h \
@@ -102,7 +103,8 @@ HEADERS  += \
 	source/builtinfunctions/equationsolving/cramer.h \
 	source/builtinfunctions/matrices.h \
 	source/builtinfunctions/equationsolving/lusolving.h \
-	source/builtinfunctions/equationsolving/pludecomposition.h
+	source/builtinfunctions/equationsolving/pludecomposition.h \
+	source/builtinfunctions/equationsolving/gaussseidel.h
 
 FORMS	+= \
 	source/mainwindow.ui \
@@ -125,5 +127,3 @@ RCC_DIR = $$DESTDIR/rcc
 UI_DIR = $$DESTDIR/ui
 
 include(doc/doc.pri)
-
-
