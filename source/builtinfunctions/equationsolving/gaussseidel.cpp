@@ -19,8 +19,13 @@ RpnOperand GaussSeidel::calculate(Function::FunctionCalculator *calculator, QLis
 	}
 	Number precision = actualArguments[1].value.value<Number>();
 
-	QList<Number> result = findSolution(coefficients, precision);
-	return RpnOperand(RpnOperandVector, QVariant::fromValue(RpnVector::fromOneDimensional(result)));
+	try {
+		QList<Number> result = findSolution(coefficients, precision);
+		return RpnOperand(RpnOperandVector, QVariant::fromValue(RpnVector::fromOneDimensional(result)));
+	} catch (ENoSolution &e) {
+		Q_UNUSED(e)
+		return RpnOperand(RpnOperandNumber, QVariant::fromValue(MathUtils::getNaN()));
+	}
 }
 
 QList<RpnArgument> GaussSeidel::requiredArguments()
@@ -37,6 +42,11 @@ QList<Number> GaussSeidel::findSolution(QList<QList<Number> > coefficients, Numb
 {
 	QList<QList<Number> > workingMatrix = extractWorkingMatrix(coefficients);
 	QList<Number> freeCoefficients = extractFreeCoefficients(coefficients);
+
+	// TODO: Check solution condition
+	if (!hasSolution(workingMatrix)) {
+		THROW(ENoSolution());
+	}
 
 	QList<Number> solution = emptyVector(workingMatrix.size());
 	QList<Number> previousSolution = emptyVector(workingMatrix.size());
@@ -109,6 +119,24 @@ QList<Number> GaussSeidel::emptyVector(int size)
 	}
 
 	return result;
+}
+
+bool GaussSeidel::hasSolution(QList<QList<Number> > matrix)
+{
+	for (int i = 0; i < matrix.size(); i++) {
+		Number sum = 0;
+		for (int j = 0; j < matrix.size(); j++) {
+			if (i != j) {
+				sum += qAbs(matrix.at(i).at(j));
+			}
+		}
+
+		if (sum < qAbs(matrix.at(i).at(i))) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 } // namespace
