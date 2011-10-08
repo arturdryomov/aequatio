@@ -144,15 +144,41 @@
 					That means that <i>A</i>&nbsp;×&nbsp;<i>A<sup>-1</sup></i> =
 					<i>A<sup>-1</sup></i>&nbsp;×&nbsp;<i>A</i> = <i>E</i>,
 					where <i>E</i> is a&nbsp;unitary or identity matrix.
-				</p>
-
-				<p>Example</p>
+        </p>
 
 				<div class="code">
 					<p>&larr; matrix_inverse([[3, 5, 7], [9, 11, 13], [17, 19, 23]])</p>
 					<p>&rarr; matrix_inverse([[3, 5, 7], [9, 11, 13], [17, 19, 23]]) = [[−0.25, −0.75, 0.5], [−0.583333, 2.08333, −1], [0.666667, −1.16667, 0.5]]</p>
 				</div>
 
-	</body>
+			<a name="matrix_transpose"><h2>Transpose Of A Matrix</h2></a>
+
+				<p>matrix_transpose(<i>A</i>)</p>
+
+				<p>
+					Performs transposing of matrix <i>A</i>.
+				</p>
+
+				<p>Example</p>
+					<p>&larr; matrix_transpose([[6, −7, 10], [0, 3, −1], [0, 5, −7]])</p>
+					<p>&rarr; matrix_transpose([[6, −7, 10], [0, 3, −1], [0, 5, −7]]) = [[6, 0, 0], [−7, 3, 5], [10, −1, −7]]</p>
+        </p>
+
+			<a name="matrix_plu"><h2>Matrix PLU decomposition</h2></a>
+
+				<p>matrix_plu(<i>A</i>)</p>
+
+				<p>
+					Performs LU decomposition with partial pivoting of matrix <i>A</i>.
+				</p>
+
+				<p>Example</p>
+
+				<div class="code">
+					<p>&larr; matrix_plu([[6, −7, 10], [0, 3, −1], [0, 5, −7]])</p>
+					<p>&rarr; matrix_plu([[6, −7, 10], [0, 3, −1], [0, 5, −7]]) = [[[6, −7, 10], [0, 5, −7], [0, 0.6, 3.2]], [[1, 0, 0], [0, 0, 1], [0, 1, 0]]]</p>
+				</div>
+
+  </body>
 
 </html>

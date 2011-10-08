@@ -78,7 +78,7 @@
 					<tr>
 						<td>
 							<a href="equations-solving.html#cramer">
-								cramer([
+								sle_cramer([
 									[<i>a<sub>11</sub></i>, <i>a<sub>12</sub></i>, &hellip;, <i>a<sub>1n</sub></i>, <i>b<sub>1</sub></i>], 
 									[<i>a<sub>21</sub></i>, <i>a<sub>22</sub></i>, &hellip;, <i>a<sub>2n</sub></i>, <i>b<sub>2</sub></i>], 
 									&hellip;,
@@ -93,7 +93,7 @@
 					<tr class="alt">
 						<td>
 							<a href="equations-solving.html#gauss">
-								gauss([
+								sle_gauss([
 									[<i>a<sub>11</sub></i>, <i>a<sub>12</sub></i>, &hellip;, <i>a<sub>1n</sub></i>, <i>b<sub>1</sub></i>], 
 									[<i>a<sub>21</sub></i>, <i>a<sub>22</sub></i>, &hellip;, <i>a<sub>2n</sub></i>, <i>b<sub>2</sub></i>], 
 									&hellip;,
@@ -104,6 +104,21 @@
 						</td>
 						<td>
 							Solves system of linear equations with Gauss method.
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="equations-solving.html#lu">
+								sle_lu([
+									[<i>a<sub>11</sub></i>, <i>a<sub>12</sub></i>, &hellip;, <i>a<sub>1n</sub></i>, <i>b<sub>1</sub></i>], 
+									[<i>a<sub>21</sub></i>, <i>a<sub>22</sub></i>, &hellip;, <i>a<sub>2n</sub></i>, <i>b<sub>2</sub></i>], 
+									&hellip;,
+									[<i>a<sub>n1</sub></i>, <i>a<sub>n2</sub></i>, &hellip;, <i>a<sub>nn</sub></i>, <i>b<sub>n</sub></i>]
+								])
+							</a>
+						</td>
+						<td>
+							Solves system of linear equations with LU method.
 						</td>
 					</tr>
 				</table>
@@ -401,11 +416,28 @@
 							Calculates the inverse of matrix <i>A</i>.
 						</td>
 					</tr>
-
+					<tr class="alt">
+						<td>
+							<a href="matrices.html#matrix_transpose">
+								matrix_transpose(<i>A</i>)
+							</a>
+						</td>
+						<td>
+							Performs transposing of matrix <i>A</i>.
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="matrices.html#matrix_plu">
+								matrix_plu(<i>A</i>)
+							</a>
+						</td>
+						<td>
+              Performs LU decomposition with partial pivoting of matrix <i>A</i>.
+						</td>
+					</tr>
 				</table>
 				
   </body>
 
 </html>
-
-

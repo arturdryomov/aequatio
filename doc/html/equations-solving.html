@@ -16,7 +16,7 @@
 		
 			<a name="cramer"><h2>Cramer</h2></a>
 
-				<p>cramer([
+				<p>sle_cramer([
 						[<i>a<sub>11</sub></i>, <i>a<sub>12</sub></i>, &hellip;, <i>a<sub>1n</sub></i>, <i>b<sub>1</sub></i>], 
 						[<i>a<sub>21</sub></i>, <i>a<sub>22</sub></i>, &hellip;, <i>a<sub>2n</sub></i>, <i>b<sub>2</sub></i>], 
 						&hellip;,
@@ -42,8 +42,8 @@
 				<p>Example<p>
 
 				<div class="code">
-					<p>&larr; cramer([[1, 1, 2], [1, -1, 4]])</p>
-					<p>&rarr; cramer([[1, 1, 2], [1, −1, 4]]) = [3, −1]</p>
+					<p>&larr; sle_cramer([[1, 1, 2], [1, -1, 4]])</p>
+					<p>&rarr; sle_cramer([[1, 1, 2], [1, −1, 4]]) = [3, −1]</p>
 				</div>
 				
 				<p>This means, that <i>x</i> = 3, <i>y</i> = −1 is the solution of the following system:</p>
@@ -54,7 +54,7 @@
 			
 			<a name="gauss"><h2>Gauss</h2></a>
 
-				<p>gauss([
+				<p>sle_gauss([
 						[<i>a<sub>11</sub></i>, <i>a<sub>12</sub></i>, &hellip;, <i>a<sub>1n</sub></i>, <i>b<sub>1</sub></i>], 
 						[<i>a<sub>21</sub></i>, <i>a<sub>22</sub></i>, &hellip;, <i>a<sub>2n</sub></i>, <i>b<sub>2</sub></i>], 
 						&hellip;,
@@ -80,8 +80,8 @@
 				<p>Example<p>
 
 				<div class="code">
-					<p>&larr; gauss([[1, 1, 2], [1, -1, 4]])</p>
-					<p>&rarr; gauss([[1, 1, 2], [1, −1, 4]]) = [3, −1]</p>
+					<p>&larr; sle_gauss([[1, 1, 2], [1, -1, 4]])</p>
+					<p>&rarr; sle_gauss([[1, 1, 2], [1, −1, 4]]) = [3, −1]</p>
 				</div>
 				
 				<p>This means, that <i>x</i> = 3, <i>y</i> = −1 is the solution of the following system:</p>
@@ -90,6 +90,43 @@
 					<li><i>x</i> − <i>y</i> = 4.</li>
 				</ul>
 
+			<a name="lu"><h2>LU</h2></a>
+
+				<p>sle_lu([
+						[<i>a<sub>11</sub></i>, <i>a<sub>12</sub></i>, &hellip;, <i>a<sub>1n</sub></i>, <i>b<sub>1</sub></i>], 
+						[<i>a<sub>21</sub></i>, <i>a<sub>22</sub></i>, &hellip;, <i>a<sub>2n</sub></i>, <i>b<sub>2</sub></i>], 
+						&hellip;,
+						[<i>a<sub>n1</sub></i>, <i>a<sub>n2</sub></i>, &hellip;, <i>a<sub>nn</sub></i>, <i>b<sub>n</sub></i>]
+					]
+					)
+				</p>
+				
+				<p>Solves the following system of equations with LU method:</p>
+				<ul>
+					<li>
+						<i>a<sub>11</sub>·x<sub>1</sub></i> + <i>a<sub>12</sub>·x<sub>2</sub></i> + &hellip; + <i>a<sub>1n</sub>·x<sub>n</sub></i> = <i>b<sub>1</sub></i>;
+					</li>
+					<li>
+						<i>a<sub>21</sub>·x<sub>1</sub></i> + <i>a<sub>22</sub>·x<sub>2</sub></i> + &hellip; + <i>a<sub>2n</sub>·x<sub>n</sub></i> = <i>b<sub>2</sub></i>;
+					</li>
+					<li>&hellip;</li>
+					<li>
+						<i>a<sub>n1</sub>·x<sub>1</sub></i> + <i>a<sub>n2</sub>·x<sub>2</sub></i> + &hellip; + <i>a<sub>nn</sub>·x<sub>n</sub></i> = <i>b<sub>n</sub></i>.
+					</li>
+				</ul>
+				
+				<p>Example<p>
+
+				<div class="code">
+					<p>&larr; sle_lu([[1, 1, 2], [1, -1, 4]])</p>
+					<p>&rarr; sle_lu([[1, 1, 2], [1, −1, 4]]) = [3, −1]</p>
+				</div>
+				
+				<p>This means, that <i>x</i> = 3, <i>y</i> = −1 is the solution of the following system:</p>
+				<ul>
+					<li><i>x</i> + <i>y</i> = 2;</li>
+					<li><i>x</i> − <i>y</i> = 4.</li>
+				</ul>
   </body>
 
 </html>
