@@ -91,7 +91,7 @@ QList<QList<QList<Number> > > LuSolving::decompose(QList<QList<Number> > matrix)
 	functionArguments << argument;
 
 	// Use PLU decomposition
-	RpnOperand result = m_calculator->calculate("plu", functionArguments);
+	RpnOperand result = m_calculator->calculate("matrix_plu", functionArguments);
 	return RpnVector::toThreeDimensional(result.value.value<RpnVector>());
 }
 
