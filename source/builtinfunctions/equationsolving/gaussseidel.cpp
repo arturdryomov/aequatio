@@ -43,7 +43,6 @@ QList<Number> GaussSeidel::findSolution(QList<QList<Number> > coefficients, Numb
 	QList<QList<Number> > workingMatrix = extractWorkingMatrix(coefficients);
 	QList<Number> freeCoefficients = extractFreeCoefficients(coefficients);
 
-	// TODO: Check solution condition
 	if (!hasSolution(workingMatrix)) {
 		THROW(ENoSolution());
 	}
@@ -123,6 +122,8 @@ QList<Number> GaussSeidel::emptyVector(int size)
 
 bool GaussSeidel::hasSolution(QList<QList<Number> > matrix)
 {
+	// Check for diagonally dominant matrix
+
 	for (int i = 0; i < matrix.size(); i++) {
 		Number sum = 0;
 		for (int j = 0; j < matrix.size(); j++) {
@@ -131,7 +132,8 @@ bool GaussSeidel::hasSolution(QList<QList<Number> > matrix)
 			}
 		}
 
-		if (sum < qAbs(matrix.at(i).at(i))) {
+		// Use strict comparsion (non-strict cause infinite loop)
+		if (qAbs(matrix.at(i).at(i)) <= sum) {
 			return false;
 		}
 	}
