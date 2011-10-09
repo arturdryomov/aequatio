@@ -127,6 +127,44 @@
 					<li><i>x</i> + <i>y</i> = 2;</li>
 					<li><i>x</i> − <i>y</i> = 4.</li>
 				</ul>
+
+			<a name="gauss-seidel"><h2>Gauss-Seidel</h2></a>
+
+				<p>sle_gauss_seidel([
+						[<i>a<sub>11</sub></i>, <i>a<sub>12</sub></i>, &hellip;, <i>a<sub>1n</sub></i>, <i>b<sub>1</sub></i>], 
+						[<i>a<sub>21</sub></i>, <i>a<sub>22</sub></i>, &hellip;, <i>a<sub>2n</sub></i>, <i>b<sub>2</sub></i>], 
+						&hellip;,
+						[<i>a<sub>n1</sub></i>, <i>a<sub>n2</sub></i>, &hellip;, <i>a<sub>nn</sub></i>, <i>b<sub>n</sub></i>]
+					], <i>P</i>
+					)
+				</p>
+				
+				<p>Solves the following system of equations with Gauss-Seidel method with precision <i>P</i>:</p>
+				<ul>
+					<li>
+						<i>a<sub>11</sub>·x<sub>1</sub></i> + <i>a<sub>12</sub>·x<sub>2</sub></i> + &hellip; + <i>a<sub>1n</sub>·x<sub>n</sub></i> = <i>b<sub>1</sub></i>;
+					</li>
+					<li>
+						<i>a<sub>21</sub>·x<sub>1</sub></i> + <i>a<sub>22</sub>·x<sub>2</sub></i> + &hellip; + <i>a<sub>2n</sub>·x<sub>n</sub></i> = <i>b<sub>2</sub></i>;
+					</li>
+					<li>&hellip;</li>
+					<li>
+						<i>a<sub>n1</sub>·x<sub>1</sub></i> + <i>a<sub>n2</sub>·x<sub>2</sub></i> + &hellip; + <i>a<sub>nn</sub>·x<sub>n</sub></i> = <i>b<sub>n</sub></i>.
+					</li>
+				</ul>
+				
+				<p>Example<p>
+
+				<div class="code">
+					<p>&larr; sle_gauss_seidel([[16, 3, 11], [7, -11, 13]], 0.001)</p>
+					<p>&rarr; sle_gauss_seidel([[16, 3, 11], [7, -11, 13]], 0.001) = [0.812157, −0.664991]</p>
+				</div>
+				
+				<p>This means, that <i>x</i> = 3, <i>y</i> = −1 is the solution of the following system with precision 0.001:</p>
+				<ul>
+					<li>16<i>x</i> + 3<i>y</i> = 11;</li>
+					<li>7<i>x</i> − 11<i>y</i> = 13.</li>
+				</ul>
   </body>
 
 </html>
