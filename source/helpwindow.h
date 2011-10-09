@@ -32,6 +32,14 @@ private:
 	QHelpEngine *m_helpEngine;
 	QHelpContentWidget *m_helpContentWidget;
 	HelpBrowser *m_helpBrowser;
+
+	bool processKeyEvent(QKeyEvent *event);
+	bool processMouseEvent(QMouseEvent *event);
+	void showHelpForCurrentItem();
+
+private slots:
+	void activateFirstTopLevel();
+	void onHelpBrowserSourceChanged(const QUrl &src);
 };
 
 #endif // HELPWINDOW_H
