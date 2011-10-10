@@ -83,7 +83,7 @@ Number MathUtils::countDeterminant(QList<QList<Number> > matrix)
 		Number mainElement = matrix[i][i];
 
 		// find main element of the current row
-		for (int j = i + 1; j < matrix.count() - 1; ++j) {
+		for (int j = i + 1; j < matrix.count(); ++j) {
 			if (qAbs(mainElement) < qAbs(matrix[i][j])) {
 				mainElementIndex = j;
 				mainElement = matrix[i][j];
