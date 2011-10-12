@@ -124,7 +124,7 @@ Rpn::CodeThread CodeGenerator::generateFunction(const QString &name, const QList
 	return result;
 }
 
-Rpn::Vector CodeGenerator::generateVector(const QList<Number> elements)
+Rpn::Vector CodeGenerator::generateVector(const QList<Number> &elements)
 {
 	Q_ASSERT(elements.count() > 0);
 
@@ -136,7 +136,7 @@ Rpn::Vector CodeGenerator::generateVector(const QList<Number> elements)
 	return result;
 }
 
-Rpn::Vector generateVector(const QList<Rpn::Vector> elements)
+Rpn::Vector CodeGenerator::generateVector(const QList<Rpn::Vector> &elements)
 {
 	Q_ASSERT(elements.count() > 0);
 	Q_ASSERT(elements.first().values.count() > 0);
@@ -147,6 +147,15 @@ Rpn::Vector generateVector(const QList<Rpn::Vector> elements)
 	foreach (const Rpn::Vector &element, elements) {
 		result.values << QVariant::fromValue(element);
 	}
+
+	return result;
+}
+
+Rpn::CodeThread CodeGenerator::packVector(const Rpn::Vector &vector)
+{
+	Rpn::Operand operand(Rpn::OperandVector, QVariant::fromValue(vector));
+	Rpn::CodeThread result;
+	result << Rpn::Element(Rpn::ElementOperand, QVariant::fromValue(operand));
 
 	return result;
 }

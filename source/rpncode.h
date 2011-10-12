@@ -37,9 +37,9 @@ struct Vector {
 
 struct Operand
 {
-	Operand(OperandType type_ = Rpn::OperandNumber, const QVariant &value_ = QVariant());
+	Operand(OperandType type_ = OperandNumber, const QVariant &value_ = QVariant());
 	QString toString();
-	bool operator ==(const Rpn::Operand &another);
+	bool operator ==(const Operand &another);
 
 	OperandType type;
 	/* type == Rpn::OperandNumber -- value is a number, type Number,

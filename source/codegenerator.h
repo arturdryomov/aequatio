@@ -26,8 +26,9 @@ public:
 	Rpn::CodeThread generateNumber(Number number);
 	Rpn::CodeThread generateConstant(const QString &name);
 	Rpn::CodeThread generateFunction(const QString &name, const QList<Rpn::CodeThread> &actualArguments);
-	Rpn::Vector generateVector(const QList<Number> elements); // 1-dimensional
-	Rpn::Vector generateVector(const QList<Rpn::Vector> elements); // multi-dimensional
+	Rpn::Vector generateVector(const QList<Number> &elements); // 1-dimensional
+	Rpn::Vector generateVector(const QList<Rpn::Vector> &elements); // multi-dimensional
+	Rpn::CodeThread packVector(const Rpn::Vector &vector);
 private:
 	Document *m_document;
 
