@@ -70,3 +70,23 @@ QString EWrongVectorDimension::message()
 			.arg(m_expectedDimension)
 			.arg(m_actualDimension);
 }
+
+QString ENotSquareMatrix::message()
+{
+	return tr("Matrix must be square.");
+}
+
+QString ENotMatrix::message()
+{
+	return tr("Matrix expected.");
+}
+
+QString ENotSameSizeMatrices::message()
+{
+	return tr("Matrices should be of the same size.");
+}
+
+QString ENotCorrespondingMatricesSizes::message()
+{
+	return tr("Matrices should have corresponding sizes.");
+}

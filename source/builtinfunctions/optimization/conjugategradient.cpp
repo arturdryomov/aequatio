@@ -191,11 +191,7 @@ QList<Number> ConjugateGradient::searchWithDirections(const QList<QList<Number> 
 
 bool ConjugateGradient::isDirectionsLinearlyIndependend(const QList<QList<Number> > &directions)
 {
-	QVector<QVector<Number> > matrix;
-	for (int i = 1; i < directions.count(); ++i) {
-		matrix << directions[i].toVector();
-	}
-	return !MathUtils::isNull(MathUtils::countDeterminant(matrix));
+	return !MathUtils::isNull(MathUtils::countDeterminant(directions));
 }
 
 Number ConjugateGradient::function(const QList<Number> arguments)

@@ -61,7 +61,11 @@ SOURCES += \
 	source/builtinfunctions/optimization/neldermead.cpp \
 	source/builtinfunctions/optimization/conjugategradient.cpp \
 	source/builtinfunctions/equationsolving/gauss.cpp \
-	source/builtinfunctions/equationsolving/cramer.cpp
+	source/builtinfunctions/equationsolving/cramer.cpp \
+	source/builtinfunctions/matrices.cpp \
+	source/builtinfunctions/equationsolving/lusolving.cpp \
+	source/builtinfunctions/equationsolving/pludecomposition.cpp \
+	source/builtinfunctions/equationsolving/gaussseidel.cpp
 
 HEADERS  += \
 	source/mainwindow.h \
@@ -96,7 +100,11 @@ HEADERS  += \
 	source/builtinfunctions/optimization/neldermead.h \
 	source/builtinfunctions/optimization/conjugategradient.h \
 	source/builtinfunctions/equationsolving/gauss.h \
-	source/builtinfunctions/equationsolving/cramer.h
+	source/builtinfunctions/equationsolving/cramer.h \
+	source/builtinfunctions/matrices.h \
+	source/builtinfunctions/equationsolving/lusolving.h \
+	source/builtinfunctions/equationsolving/pludecomposition.h \
+	source/builtinfunctions/equationsolving/gaussseidel.h
 
 FORMS	+= \
 	source/mainwindow.ui \

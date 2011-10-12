@@ -129,6 +129,49 @@ RpnVector RpnVector::fromTwoDimensional(QList<QList<Number> > list)
 	return result;
 }
 
+QList<QList<QList<Number> > > RpnVector::toThreeDimensional(RpnVector vector)
+{
+	if (vector.dimensions != 3) {
+		THROW(EWrongVectorDimension(3, vector.dimensions));
+	}
+
+	QList<QList<QList<Number> > > result;
+	foreach (QVariant containterElement, vector.values) {
+		QList<QList<Number> > containerList;
+		QVariantList containerVariantList = containterElement.value<QVariantList>();
+		foreach (QVariant elementVector, containerVariantList) {
+			QVariantList variantList = elementVector.value<QVariantList>();
+			QList<Number> numberList;
+			foreach (QVariant elementNumber, variantList) {
+				numberList << elementNumber.value<Number>();
+			}
+			containerList << numberList;
+		}
+		result << containerList;
+	}
+
+	return result;
+}
+
+RpnVector RpnVector::fromThreeDimensional(QList<QList<QList<Number> > > list)
+{
+	RpnVector result(3);
+
+	foreach (QList<QList<Number> > containerElement, list) {
+		QVariantList containerList;
+		foreach (QList<Number> elementList, containerElement) {
+			QVariantList variantList;
+			foreach (Number number, elementList) {
+				variantList << QVariant::fromValue(number);
+			}
+			containerList << QVariant::fromValue(variantList);
+		}
+		result.values << QVariant::fromValue(containerList);
+	}
+
+	return result;
+}
+
 RpnOperand::RpnOperand(RpnOperandType type_, const QVariant &value_) :
 	type(type_), value(value_)
 {

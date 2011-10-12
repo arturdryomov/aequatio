@@ -40,11 +40,11 @@ QList<Number> Cramer::findSolution()
 {
 	QList<Number> result;
 
-	QVector<QVector<Number> > mainMatrix;
+	QList<QList<Number> > mainMatrix;
 	foreach (QList<Number> equationCoefficients, m_matrixCoefficients) {
 		// Remove result column
 		equationCoefficients.removeLast();
-		mainMatrix << QVector<Number>::fromList(equationCoefficients);
+		mainMatrix << equationCoefficients;
 	}
 	Number mainDeterminant = MathUtils::countDeterminant(mainMatrix);
 
@@ -54,10 +54,10 @@ QList<Number> Cramer::findSolution()
 	}
 
 	for (int i = 0; i < m_matrixCoefficients.size(); i++) {
-		QVector<QVector<Number> > variableMatrix;
+		QList<QList<Number> > variableMatrix;
 
 		foreach (QList<Number> equationCoefficients, m_matrixCoefficients) {
-			QVector<Number> coefficientsRow;
+			QList<Number> coefficientsRow;
 			for (int j = 0; j < equationCoefficients.size() - 1; j++) {
 				if (j == i) {
 					// Replace variable column with result column

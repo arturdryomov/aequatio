@@ -69,6 +69,30 @@ private:
 	int m_actualDimension;
 };
 
+class ENotSquareMatrix : public ECalculating
+{
+public:
+	QString message();
+};
+
+class ENotMatrix : public ECalculating
+{
+public:
+	QString message();
+};
+
+class ENotSameSizeMatrices : public ECalculating
+{
+public:
+	QString message();
+};
+
+class ENotCorrespondingMatricesSizes : public ECalculating
+{
+public:
+	QString message();
+};
+
 /* EInternal children */
 
 

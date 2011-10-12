@@ -1,23 +1,23 @@
-#ifndef CRAMER_H
-#define CRAMER_H
+#ifndef PLU_DECOMPOSITION_H
+#define PLU_DECOMPOSITION_H
 
 #include "../builtinfunction.h"
 
 namespace BuiltInFunctions {
 namespace EquationSolving {
 
-class Cramer : public Function
+class PluDecompozition : public Function
 {
 public:
-	Cramer() : Function("sle_cramer")
+	PluDecompozition() : Function("matrix_plu")
 	{
 	}
 
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
 	QList<RpnArgument> requiredArguments();
 private:
-	QList<QList<Number> > m_matrixCoefficients;
-	QList<Number> findSolution();
+	QList<QList<QList<Number> > > decompose(QList<QList<Number> > matrix);
+	QList<QList<Number> > emptyMatrix(int size);
 
 	class ENoSolution : public ECalculating {};
 };
@@ -25,4 +25,4 @@ private:
 } // namespace
 } // namespace
 
-#endif // CRAMER_H
+#endif // PLU_DECOMPOSITION_H

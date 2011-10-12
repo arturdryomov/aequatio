@@ -69,44 +69,53 @@ QList<Number> MathUtils::divideVectorByNumber(QList<Number> vector, Number divis
 	return result;
 }
 
-Number MathUtils::countDeterminant(QVector<QVector<Number> > matrix)
+Number MathUtils::countDeterminant(QList<QList<Number> > matrix)
 {
-	Number result = 0;
+	ensureSquareMatrix(matrix);
 
-	if (matrix.size() == 1) {
-		result = matrix.at(0).at(0);
-	}
-	else if (matrix.size() == 2) {
-		result = matrix.at(0).at(0) * matrix.at(1).at(1) -
-			matrix.at(0).at(1) * matrix.at(1).at(0);
-	}
-	else {
-		// Go threw first line
-		for (int i = 0; i < matrix.size(); i++) {
-			// Initialize minor matrix
-			QVector<QVector<Number> > minorMatrix;
-			minorMatrix.resize(matrix.size() - 1);
-			for (int j = 0; j < minorMatrix.size(); j++) {
-				minorMatrix[j].resize(matrix.size() - 1);
+	int numberOfSwaps = 0;
+
+	// Direct pass
+
+	for (int i = 0; i < matrix.count(); ++i) {
+
+		int mainElementIndex = i;
+		Number mainElement = matrix[i][i];
+
+		// find main element of the current row
+		for (int j = i + 1; j < matrix.count(); ++j) {
+			if (qAbs(mainElement) < qAbs(matrix[i][j])) {
+				mainElementIndex = j;
+				mainElement = matrix[i][j];
 			}
-
-			// Fill minor matrix
-			for (int j = 1; j < matrix.size(); j++) {
-				int k = 0;
-				for (int l = 0; l < matrix.size(); l++) {
-					// Don't copy the minor column
-					if (l != i) {
-						minorMatrix[j - 1][k] = matrix[j][l];
-						k++;
-					}
-				}
-			}
-
-			result +=
-				qPow(-1, 1 + i + 1) *
-				matrix[0][i] *
-				countDeterminant(minorMatrix);
 		}
+
+		if (MathUtils::isNull(mainElement)) {
+			return 0.0;
+		}
+
+		// swap columns
+		if (mainElementIndex != i) {
+			swapColumns(matrix, i, mainElementIndex);
+			++numberOfSwaps;
+		}
+
+		// subtract current row (multiplied before) from rows below.
+		for (int j = i + 1; j < matrix.count(); ++j) {
+			Number multiplyer = matrix[j][i] / matrix[i][i];
+			QList<Number> multipliedRow = MathUtils::multiplyVectorByNumber(matrix[i], multiplyer);
+			matrix[j] = MathUtils::subtractVectorFromVector(matrix[j], multipliedRow);
+		}
+	}
+
+	// Now we've got triangular matrix, multiply all elements of its main diagonal
+
+	Number result = 1.0;
+	for (int i = 0; i < matrix.count(); ++i) {
+		result *= matrix[i][i];
+	}
+	if (numberOfSwaps % 2 == 1) {
+		result *= -1.0;
 	}
 
 	return result;
@@ -165,6 +174,40 @@ Number MathUtils::getRandomNumber(Number higherLimit)
 	} while (result > higherLimit);
 
 	return result;
+}
+
+void MathUtils::ensureSquareMatrix(const QList<QList<Number> > &matrix)
+{
+	int matrixSize = matrix.size();
+	foreach (const QList<Number> &row, matrix) {
+		if (row.size() != matrixSize) {
+			THROW(ENotSquareMatrix());
+		}
+	}
+}
+
+void MathUtils::ensureMatrix(const QList<QList<Number> > &matrix)
+{
+	int matrixSize = matrix.first().size();
+	foreach (const QList<Number> &row, matrix) {
+		if (row.size() != matrixSize) {
+			THROW(ENotMatrix());
+		}
+	}
+}
+
+void MathUtils::swapColumns(QList<QList<Number> > &matrix, int index1, int index2)
+{
+	// Matrix 'matrix' must be really a matrix :), not just a list of list of numbers.
+
+	if ((index1 >= matrix.first().count()) || (index2 >= matrix.first().count())) {
+		THROW(EInternal());
+	}
+
+	QMutableListIterator<QList<Number> > i(matrix);
+	while (i.hasNext()) {
+		i.next().swap(index1, index2);
+	}
 }
 
 } // namespace
