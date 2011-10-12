@@ -42,6 +42,11 @@ QList<Rpn::Argument> ConjugateGradient::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType ConjugateGradient::returnValueType()
+{
+	return Rpn::OperandVector;
+}
+
 QList<Number> ConjugateGradient::findMinimum()
 {
 	int argumentsCount = m_calculator->functionArguments(m_functionName).count();

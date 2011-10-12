@@ -53,6 +53,11 @@ QList<Rpn::Argument> BestTrial::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType BestTrial::returnValueType()
+{
+	return Rpn::OperandVector;
+}
+
 QList<Number> BestTrial::findMinimum()
 {
 	int iterationCount = 0;

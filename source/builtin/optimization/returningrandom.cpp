@@ -53,6 +53,11 @@ QList<Rpn::Argument> ReturningRandom::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType ReturningRandom::returnValueType()
+{
+	return Rpn::OperandVector;
+}
+
 QList<Number> ReturningRandom::findMinimum()
 {
 	int failCount = 1;

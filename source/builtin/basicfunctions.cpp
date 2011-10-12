@@ -27,6 +27,11 @@ QList<Rpn::Argument> Plus::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType Plus::returnValueType()
+{
+	return Rpn::OperandNumber;
+}
+
 
 namespace
 {
@@ -52,6 +57,10 @@ QList<Rpn::Argument> Minus::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType Minus::returnValueType()
+{
+	return Rpn::OperandNumber;
+}
 
 namespace
 {
@@ -77,6 +86,10 @@ QList<Rpn::Argument> Multiply::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType Multiply::returnValueType()
+{
+	return Rpn::OperandNumber;
+}
 
 namespace
 {
@@ -102,6 +115,10 @@ QList<Rpn::Argument> Divide::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType Divide::returnValueType()
+{
+	return Rpn::OperandNumber;
+}
 
 namespace
 {
@@ -127,6 +144,10 @@ QList<Rpn::Argument> Power::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType Power::returnValueType()
+{
+	return Rpn::OperandNumber;
+}
 
 namespace
 {
@@ -152,6 +173,10 @@ QList<Rpn::Argument> UnaryMinus::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType UnaryMinus::returnValueType()
+{
+	return Rpn::OperandNumber;
+}
 
 namespace
 {
@@ -177,6 +202,10 @@ QList<Rpn::Argument> Sine::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType Sine::returnValueType()
+{
+	return Rpn::OperandNumber;
+}
 
 namespace
 {
@@ -202,6 +231,10 @@ QList<Rpn::Argument> Cosine::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType Cosine::returnValueType()
+{
+	return Rpn::OperandNumber;
+}
 
 namespace
 {
@@ -227,6 +260,10 @@ QList<Rpn::Argument> Tangent::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType Tangent::returnValueType()
+{
+	return Rpn::OperandNumber;
+}
 
 namespace
 {
@@ -252,6 +289,10 @@ QList<Rpn::Argument> Arcsine::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType Arcsine::returnValueType()
+{
+	return Rpn::OperandNumber;
+}
 
 namespace
 {
@@ -277,6 +318,10 @@ QList<Rpn::Argument> Arccosine::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType Arccosine::returnValueType()
+{
+	return Rpn::OperandNumber;
+}
 
 namespace
 {
@@ -302,6 +347,10 @@ QList<Rpn::Argument> Arctangent::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType Arctangent::returnValueType()
+{
+	return Rpn::OperandNumber;
+}
 
 namespace
 {
@@ -327,6 +376,10 @@ QList<Rpn::Argument> AbsoluteValue::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType AbsoluteValue::returnValueType()
+{
+	return Rpn::OperandNumber;
+}
 
 namespace
 {
@@ -352,6 +405,10 @@ QList<Rpn::Argument> SquareRoot::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType SquareRoot::returnValueType()
+{
+	return Rpn::OperandNumber;
+}
 
 namespace
 {
@@ -377,6 +434,10 @@ QList<Rpn::Argument> NaturalLogarithm::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType NaturalLogarithm::returnValueType()
+{
+	return Rpn::OperandNumber;
+}
 
 namespace
 {
@@ -400,6 +461,11 @@ QList<Rpn::Argument> ExponentialFunction::requiredArguments()
 	arguments << Rpn::Argument(Rpn::OperandNumber);
 
 	return arguments;
+}
+
+Rpn::OperandType ExponentialFunction::returnValueType()
+{
+	return Rpn::OperandNumber;
 }
 
 } // namespace

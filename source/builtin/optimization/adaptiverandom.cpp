@@ -58,6 +58,11 @@ QList<Rpn::Argument> AdaptiveRandom::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType AdaptiveRandom::returnValueType()
+{
+	return Rpn::OperandVector;
+}
+
 QList<Number> AdaptiveRandom::findMinimum()
 {
 	int failCount = 1;

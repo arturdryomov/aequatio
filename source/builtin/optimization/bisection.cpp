@@ -41,6 +41,11 @@ QList<Rpn::Argument> Bisection::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType Bisection::returnValueType()
+{
+	return Rpn::OperandNumber;
+}
+
 Number Bisection::findMinimum()
 {
 	Number middlePoint = (m_sourceInterval.leftBorder + m_sourceInterval.rightBorder) / 2;

@@ -46,6 +46,11 @@ QList<Rpn::Argument> Dichotomy::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType Dichotomy::returnValueType()
+{
+	return Rpn::OperandNumber;
+}
+
 Number Dichotomy::findMinimum()
 {
 	forever {

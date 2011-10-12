@@ -47,6 +47,11 @@ QList<Rpn::Argument> Fibonacci::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType Fibonacci::returnValueType()
+{
+	return Rpn::OperandNumber;
+}
+
 void Fibonacci::initializeIterationsNumber()
 {
 	m_iterationsNumber = 0;

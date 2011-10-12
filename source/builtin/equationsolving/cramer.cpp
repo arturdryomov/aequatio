@@ -36,6 +36,11 @@ QList<Rpn::Argument> Cramer::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType Cramer::returnValueType()
+{
+	return Rpn::OperandVector;
+}
+
 QList<Number> Cramer::findSolution()
 {
 	QList<Number> result;

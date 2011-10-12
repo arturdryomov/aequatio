@@ -52,6 +52,11 @@ QList<Rpn::Argument> NelderMead::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType NelderMead::returnValueType()
+{
+	return Rpn::OperandVector;
+}
+
 QList<Number> NelderMead::findMinimum(const QList<QList<Number> > &initialSimplex, Number reflectionCoefficient,
 	Number contractionCoefficient, Number expansionCoefficient, Number accuracy)
 {

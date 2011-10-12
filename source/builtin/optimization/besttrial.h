@@ -10,12 +10,11 @@ namespace Optimization {
 class BestTrial : public Function
 {
 public:
-	BestTrial() : Function("best_trial")
-	{
-	}
+	BestTrial() : Function("best_trial") {}
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
+	Rpn::OperandType returnValueType();
 private:
 	FunctionCalculator* m_calculator;
 	QString m_functionName;

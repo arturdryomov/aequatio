@@ -33,6 +33,11 @@ QList<Rpn::Argument> Gauss::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType Gauss::returnValueType()
+{
+	return Rpn::OperandVector;
+}
+
 QList<Number> Gauss::findSolution(QList<QList<Number> > coefficients)
 {
 	int variablesCount = coefficients.count();

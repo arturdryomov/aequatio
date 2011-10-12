@@ -10,12 +10,11 @@ namespace Optimization {
 class Fibonacci : public Function
 {
 public:
-	Fibonacci() : Function("fibonacci")
-	{
-	}
+	Fibonacci() : Function("fibonacci") {}
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
+	Rpn::OperandType returnValueType();
 private:
 	struct Interval {
 		Number leftBorder;

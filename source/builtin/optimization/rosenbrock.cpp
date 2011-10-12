@@ -72,6 +72,11 @@ QList<Rpn::Argument> Rosenbrock::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType Rosenbrock::returnValueType()
+{
+	return Rpn::OperandVector;
+}
+
 QList<Number> Rosenbrock::findMinimum()
 {
 	QList<Number> firstCurrentPoint = m_sourcePoint;

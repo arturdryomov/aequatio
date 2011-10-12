@@ -43,6 +43,11 @@ QList<Rpn::Argument> Powell::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType Powell::returnValueType()
+{
+	return Rpn::OperandNumber;
+}
+
 Number Powell::findMinimum()
 {
 	bool needInitializePoints = true;

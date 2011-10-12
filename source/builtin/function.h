@@ -41,10 +41,7 @@ public:
 	// Arguments for calling function
 	virtual QList<Rpn::Argument> requiredArguments() = 0;
 	// Type of function return value
-	virtual Rpn::OperandType returnValueType(){
-		return Rpn::OperandNumber;
-		// TODO: make this abstract
-	}
+	virtual Rpn::OperandType returnValueType() = 0;
 
 private:
 	static QHash<QString, Function*> &functionsWritable()

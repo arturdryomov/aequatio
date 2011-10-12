@@ -56,6 +56,11 @@ QList<Rpn::Argument> HookeJeeves::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType HookeJeeves::returnValueType()
+{
+	return Rpn::OperandVector;
+}
+
 QList<Number> HookeJeeves::findMinimum()
 {
 	QList<Number> currentPoint = m_sourcePoint;

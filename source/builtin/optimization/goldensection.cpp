@@ -43,6 +43,11 @@ QList<Rpn::Argument> GoldenSection::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType GoldenSection::returnValueType()
+{
+	return Rpn::OperandVector;
+}
+
 Number GoldenSection::findMinimum()
 {
 	Interval currentInterval;

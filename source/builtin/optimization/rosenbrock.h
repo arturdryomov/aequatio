@@ -11,12 +11,11 @@ namespace Optimization {
 class Rosenbrock : public Function
 {
 public:
-	Rosenbrock() : Function("rosenbrock")
-	{
-	}
+	Rosenbrock() : Function("rosenbrock") {}
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
+	Rpn::OperandType returnValueType();
 private:
 	FunctionCalculator* m_calculator;
 	QString m_functionName;

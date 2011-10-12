@@ -36,6 +36,11 @@ QList<Rpn::Argument> Enumerative::requiredArguments()
 	return arguments;
 }
 
+Rpn::OperandType Enumerative::returnValueType()
+{
+	return Rpn::OperandNumber;
+}
+
 Number Enumerative::findMinimum()
 {
 	Number minimumPoint = m_sourceInterval.leftBorder +
