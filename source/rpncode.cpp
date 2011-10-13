@@ -67,6 +67,7 @@ Vector Vector::fromOneDimensional(QList<Number> list)
 
 QList<QList<Number> > Vector::toTwoDimensional(Vector vector)
 {
+    Rpn::Vector a = vector.values.at(0).value<Rpn::Vector>();
 	if (vector.dimensions != 2) {
 		THROW(EWrongVectorDimension(2, vector.dimensions));
 	}

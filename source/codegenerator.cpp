@@ -92,9 +92,16 @@ Rpn::CodeThread CodeGenerator::generateConstant(const QString &name)
 		THROW(EUndeclaredUsed(name, EUndeclaredUsed::Constant));
 	}
 
+	Rpn::CodeThread result;	
+	result << Rpn::Element(Rpn::ElementConstant, name);;
+
+	return result;
+}
+
+Rpn::CodeThread CodeGenerator::generateFormalArgument(const QString &name)
+{
 	Rpn::CodeThread result;
-	Rpn::Element constantElement(Rpn::ElementConstant, name);
-	result << constantElement;
+	result << Rpn::Element(Rpn::ElementArgument, name);
 
 	return result;
 }
@@ -124,6 +131,14 @@ Rpn::CodeThread CodeGenerator::generateFunction(const QString &name, const QList
 	return result;
 }
 
+Rpn::CodeThread CodeGenerator::generateFunctonNameOperand(const QString &name)
+{
+	Rpn::Operand operand(Rpn::OperandFunctionName, QVariant::fromValue(name));
+	Rpn::CodeThread result;
+	result << Rpn::Element(Rpn::ElementOperand, QVariant::fromValue(operand));
+	return result;
+}
+
 Rpn::Vector CodeGenerator::generateVector(const QList<Number> &elements)
 {
 	Q_ASSERT(elements.count() > 0);
@@ -145,7 +160,7 @@ Rpn::Vector CodeGenerator::generateVector(const QList<Rpn::Vector> &elements)
 	Rpn::Vector result(innerDimensionsCount + 1);
 
 	foreach (const Rpn::Vector &element, elements) {
-		result.values << QVariant::fromValue(element);
+		result.values << QVariant::fromValue(element.values);
 	}
 
 	return result;
@@ -153,6 +168,7 @@ Rpn::Vector CodeGenerator::generateVector(const QList<Rpn::Vector> &elements)
 
 Rpn::CodeThread CodeGenerator::packVector(const Rpn::Vector &vector)
 {
+	Rpn::Vector a = vector.values.at(0).value<Rpn::Vector>();
 	Rpn::Operand operand(Rpn::OperandVector, QVariant::fromValue(vector));
 	Rpn::CodeThread result;
 	result << Rpn::Element(Rpn::ElementOperand, QVariant::fromValue(operand));
@@ -236,7 +252,7 @@ Rpn::OperandType CodeGenerator::codeThreadExpressionType(const Rpn::CodeThread &
 		THROW(EIncorrectRpnCode());
 	}
 
-	// operand or value -- the only element
+	// operand, constant or formal argument -- the only element
 	else if (thread.size() == 1) {
 
 		Rpn::Element element = thread.last();
@@ -248,6 +264,10 @@ Rpn::OperandType CodeGenerator::codeThreadExpressionType(const Rpn::CodeThread &
 
 			case Rpn::ElementConstant:
 				// constants can currently be only of the Number type
+				return Rpn::OperandNumber;
+
+			case Rpn::ElementArgument:
+				// user-defined functions currently take only Numbers as arguments,
 				return Rpn::OperandNumber;
 
 			default:

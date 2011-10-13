@@ -9,13 +9,16 @@
 // RPN stands for ‘Reverse Polish notation’
 namespace Rpn {
 
-// basic arithmetic funciton names
+// basic arithmetic function names
 const QString FunctionPlus = "@Plus@";
 const QString FunctionMinus = "@Minus@";
 const QString FunctionMultiply = "@Multiply@";
 const QString FunctionDivide = "@Divide@";
 const QString FunctionPower = "@Power@";
 const QString FunctionUnaryMinus = "@UnaryMinus@";
+
+// main function name
+const QString FunctionMain = "@Main@";
 
 enum OperandType {
 	OperandNumber,

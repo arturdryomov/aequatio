@@ -55,41 +55,8 @@ int Controller::runApplication(int argc, char *argv[])
 void Controller::commandEntered(const QString &command)
 {
 	try {
-		ProcessingResult result = m_syntaxAnalyzer->process(command);
-
-		QString notificationText;
-
-		switch (result.type) {
-
-			case ResultExpressionCalculated: {
-				ExpressionDescription expression = result.data.value<ExpressionDescription>();
-				notificationText = QString("%1 = %2")
-					.arg(expression.expression)
-					.arg(expression.result.toString());
-				break;
-			}
-
-			case ResultConstantDeclared: {
-				ConstantDescription constant = result.data.value<ConstantDescription>();
-				notificationText = tr("Constant declared: %1 = %2")
-					.arg(constant.name)
-					.arg(numberToString(constant.value));
-				break;
-			}
-
-			case ResultFunctionDeclared: {
-				FunctionDescription function = result.data.value<FunctionDescription>();
-				notificationText = tr("Function declared: %1(%2) = %3")
-					.arg(function.name)
-					.arg(QStringList(function.arguments).join(", "))
-					.arg(function.body);
-				break;
-			}
-			default:
-				THROW(EInternal());
-		}
-
-		m_mainWindow->resultReturned(notificationText);
+		QString result = m_syntaxAnalyzer->process(command, m_document);
+		m_mainWindow->resultReturned(result);
 	} 
 
 	catch (EInternal &e) {
@@ -111,33 +78,31 @@ void Controller::commandEntered(const QString &command)
 
 void Controller::constantsAndFunctionsUpdated()
 {
-	QList<ConstantDescription> constants = m_syntaxAnalyzer->constantsList();
-	QList<FunctionDescription> functions = m_syntaxAnalyzer->functionsList();
-
+	// prepare constants text
 	QString constantsText;
-	foreach (ConstantDescription constant, constants) {
-		constantsText += ListElementTemplate.arg(QString("%1 = %2")
-				.arg(constant.name)
-				.arg(numberToString(constant.value))
-			);
-	}
-	if (constantsText.isEmpty()) {
+	QStringList constants = m_document->prettyPrintedConstants();
+	if (constants.isEmpty()) {
 		constantsText = ListElementTemplate.arg(tr("<i>&lt;nothing&gt;</i>"));
 	}
-
-	QString functionsText;
-	foreach (FunctionDescription function, functions) {
-		functionsText += ListElementTemplate.arg(
-				QString("%1(%2) = %3")
-				.arg(function.name)
-				.arg(QStringList(function.arguments).join(", "))
-				.arg(function.body)
-			);
+	else {
+		foreach (const QString &constantText, constants) {
+			constantsText += ListElementTemplate.arg(constantText);
+		}
 	}
-	if (functionsText.isEmpty()) {
+
+	// prepare functions text
+	QString functionsText;
+	QStringList functions = m_document->prettyPrintedFunctions();
+	if (functions.isEmpty()) {
 		functionsText = ListElementTemplate.arg(tr("<i>&lt;nothing&gt;</i>"));
 	}
+	else {
+		foreach (const QString &functionText, functions) {
+			functionsText += ListElementTemplate.arg(functionText);
+		}
+	}
 
+	// prepare full text and update sidebar
 	QString fullText = ListHeaderTemplate.arg(tr("Constants")) + constantsText
 		+ ListHeaderTemplate.arg(tr("Functions")) + functionsText;
 
@@ -204,11 +169,12 @@ Controller::Controller(QObject *parent) :
 	m_mainWindow(0),
 	m_helpWindow(0),
 	m_logWindow(0),
+	m_document(new Document(this)),
 	m_syntaxAnalyzer(new SyntaxAnalyzer(this))
 
-{
-	connect(m_syntaxAnalyzer, SIGNAL(constantsListChanged()), SLOT(constantsAndFunctionsUpdated()));
-	connect(m_syntaxAnalyzer, SIGNAL(functionsListChanged()), SLOT(constantsAndFunctionsUpdated()));
+{	
+	connect(m_document, SIGNAL(constantsChanged()), SLOT(constantsAndFunctionsUpdated()));
+	connect(m_document, SIGNAL(functionsChanged()), SLOT(constantsAndFunctionsUpdated()));
 }
 
 Controller::~Controller()

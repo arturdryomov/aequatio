@@ -25,7 +25,9 @@ public:
 	Rpn::CodeThread generateUnaryMinus(Rpn::CodeThread operand);
 	Rpn::CodeThread generateNumber(Number number);
 	Rpn::CodeThread generateConstant(const QString &name);
+	Rpn::CodeThread generateFormalArgument(const QString &name);
 	Rpn::CodeThread generateFunction(const QString &name, const QList<Rpn::CodeThread> &actualArguments);
+	Rpn::CodeThread generateFunctonNameOperand(const QString &name);
 	Rpn::Vector generateVector(const QList<Number> &elements); // 1-dimensional
 	Rpn::Vector generateVector(const QList<Rpn::Vector> &elements); // multi-dimensional
 	Rpn::CodeThread packVector(const Rpn::Vector &vector);

@@ -1,7 +1,7 @@
 #include "prettyprinter.h"
 #include "builtin/function.h"
 
-PrettyPrinter::PrettyPrinter()
+PrettyPrinter::PrettyPrinter() : m_document(0)
 {
 }
 
@@ -18,6 +18,8 @@ void PrettyPrinter::setDocument(const Document *document)
 
 QString PrettyPrinter::process(const Rpn::CodeThread &codeThread)
 {
+	Q_ASSERT(m_document != 0);
+
 	// This code is quite alike with ExprCalculator::calculateFunction argorithm,
 	// but we store parts of final string expression in the stack.
 	// We also need to store the priority level of the last (meaning it is

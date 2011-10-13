@@ -1,79 +1,81 @@
 #include "syntaxanalyzer.h"
 #include "lexicalanalyzer.h"
 #include "parsingexceptions.h"
+#include "prettyprinter.h"
+#include "builtin/constant.h"
 
 #include <QMetaType>
 
 SyntaxAnalyzer::SyntaxAnalyzer(QObject *parent) :
 	QObject(parent),
+	m_document(0),
+	m_codeGenerator(0),
 	m_lexicalAnalyzer(new LexicalAnalyzer(this)),
-	m_exprCalculator(new ExprCalculator(this))
+	m_exprCalculator(0)
 {
-	connect(m_exprCalculator, SIGNAL(constantsListChanged()), SIGNAL(constantsListChanged()));
-	connect(m_exprCalculator, SIGNAL(functionsListChanged()), SIGNAL(functionsListChanged()));
 }
 
 SyntaxAnalyzer::~SyntaxAnalyzer()
 {
 }
 
-ProcessingResult SyntaxAnalyzer::process(const QString &input)
+QString SyntaxAnalyzer::process(const QString &input, Document *document)
 {
+	m_document = document;
+	m_codeGenerator = new CodeGenerator(document);
+	m_exprCalculator = new ExprCalculator(this);
+	m_exprCalculator->setDocument(document);
+
 	// perform lexical analyzis
 	m_lexicalAnalyzer->parse(input);
 	if (m_lexicalAnalyzer->lexeme().type == LexemeEol) {
 		THROW(EEmptyInput());
 	}
 
-	// Process the command: const declaration, const function or expression
-	return command();
-}
+	// Process the command
+	QString result = command();
 
-QList<ConstantDescription> SyntaxAnalyzer::constantsList()
-{
-	return m_exprCalculator->constantsList();
-}
+	delete m_exprCalculator;
+	m_exprCalculator = 0;
+	delete m_codeGenerator;
+	m_codeGenerator = 0;
 
-QList<FunctionDescription> SyntaxAnalyzer::functionsList()
-{
-	return m_exprCalculator->functionsList();
+	return result;
 }
 
 // Command = ConstDeclaration | Expression | FuncDeclaration
-ProcessingResult SyntaxAnalyzer::command()
+QString SyntaxAnalyzer::command()
 {
-	ProcessingResult result;
+	QString result;
 
 	// const declaration
 	if (m_lexicalAnalyzer->lexeme().type == LexemeConst) {
-		ConstantDescription constant = constDeclaration();
+		result = constDeclaration();
 		ensureNoMoreLexemes();
-		result.type = ResultConstantDeclared;
-		result.data.setValue(constant);
 	}
 
 	// func declaration
 	else if (m_lexicalAnalyzer->lexeme().type == LexemeFunc) {
-		FunctionDescription function = functionDeclaration();
+		result = functionDeclaration();
 		ensureNoMoreLexemes();
-		result.type = ResultFunctionDeclared;
-		result.data.setValue(function);
 	}
 
 	// expression
 	else {
 		Rpn::CodeThread codeThread = expression(); // convert expression to RPN
 		ensureNoMoreLexemes();
-		ExpressionDescription expression = m_exprCalculator->calculate(codeThread);
-		result.type = ResultExpressionCalculated;
-		result.data.setValue(expression);
+		Rpn::Operand expressionResult = m_exprCalculator->calculate(codeThread);
+
+		PrettyPrinter printer;
+		printer.setDocument(m_document);
+		result = QString("%1 = %2").arg(printer.process(codeThread)).arg(expressionResult.toString());
 	}
 
 	return result;
 }
 
 // ConstDeclaration = 'const' Identifier '=' Expression
-ConstantDescription SyntaxAnalyzer::constDeclaration()
+QString SyntaxAnalyzer::constDeclaration()
 {
 	// 'const'
 	if (m_lexicalAnalyzer->lexeme().type != LexemeConst) {
@@ -96,20 +98,16 @@ ConstantDescription SyntaxAnalyzer::constDeclaration()
 
 	// Expression
 	Rpn::CodeThread constThread = expression();
-	ExpressionDescription expression = m_exprCalculator->calculate(constThread);
-	// constant values can only be of Number type now
-	if (expression.result.type != Rpn::OperandNumber) {
-		THROW(EIncorrectConstantDeclaration());
-	}
 	m_lexicalAnalyzer->nextLexeme();
+	Rpn::Operand value = m_exprCalculator->calculate(constThread);
+	m_codeGenerator->addConstant(constName, value);
 
-	// add constant to list
-	return m_exprCalculator->addConstant(constName, expression.result.value.value<Number>());
+	return tr("Constant declared: %1").arg(m_document->prettyPrintedConstant(constName));
 }
 
 // FunctionDeclaration = 'func' Indenifier '(' FormalArgument
 //		{ ',' FormalArgument} ')' '=' Expression
-FunctionDescription SyntaxAnalyzer::functionDeclaration()
+QString SyntaxAnalyzer::functionDeclaration()
 {
 	/* Get function name */
 
@@ -151,26 +149,25 @@ FunctionDescription SyntaxAnalyzer::functionDeclaration()
 
 	
 	/* Parse the function body and save it */
-	
-	Rpn::Function function;
-	function.arguments = m_workingArguments;
-	function.codeThread = expression();
 
-	return m_exprCalculator->addFunction(functionName, function);
+	Rpn::CodeThread functionBody = expression();
+	// this adds function to m_document
+	m_codeGenerator->addFunction(functionName, m_workingArguments, functionBody);
+
+	return tr("Function declared: %1").arg(m_document->prettyPrintedFunction(functionName));
 }
 
 // Expression = Summand {SummOperator Summand}
 Rpn::CodeThread SyntaxAnalyzer::expression()
 {
-	Rpn::CodeThread result;
-
 	// first obligatory summand
-	result << summand();
+	Rpn::CodeThread result = summand();
 
 	// {SummOperator Summand} section
 	while (CheckLexeme::isSummOperation(m_lexicalAnalyzer->lexeme())) {
-		Rpn::Element operation = summOperation();
-		result << summand() << operation;
+		BinaryOperation operation = summOperation();
+		Rpn::CodeThread rightOperand = summand();
+		result = m_codeGenerator->generateBinaryOperation(operation, result, rightOperand);
 	}
 
 	return result;
@@ -179,10 +176,7 @@ Rpn::CodeThread SyntaxAnalyzer::expression()
 // Vector = '[' Expression, { ',' Expression } ']'
 Rpn::CodeThread SyntaxAnalyzer::vector()
 {
-	Rpn::Operand operand(Rpn::OperandVector, QVariant::fromValue(extractVector()));
-	Rpn::CodeThread result;
-	result << Rpn::Element(Rpn::ElementOperand, QVariant::fromValue(operand));
-	return result;
+	return m_codeGenerator->packVector(extractVector());
 }
 
 // extracts vector recursively
@@ -199,29 +193,28 @@ Rpn::Vector SyntaxAnalyzer::extractVector()
 	// Multi-dimensional vector. Recursive calls
 	if (m_lexicalAnalyzer->lexeme().type == LexemeOpeningSquareBracket) {
 		m_lexicalAnalyzer->previousLexeme();
-		Rpn::Vector element;
+		QList<Rpn::Vector> elements;
 		do {
 			m_lexicalAnalyzer->nextLexeme();
-			element = extractVector();
-			result.values << QVariant::fromValue(element.values);
+			elements << extractVector();
 		} while (m_lexicalAnalyzer->lexeme().type == LexemeComma);
-		result.dimensions = element.dimensions + 1;
-	}
+		result = m_codeGenerator->generateVector(elements);
+	}	
 
 	// One-dimensional vector
 	else {
 		m_lexicalAnalyzer->previousLexeme();
+		QList<Number> elements;
 		do {
 			m_lexicalAnalyzer->nextLexeme();
 			Rpn::CodeThread elementThread = expression();
-			ExpressionDescription expression = m_exprCalculator->calculate(elementThread);
-			if (expression.result.type != Rpn::OperandNumber) {
+			Rpn::Operand operand = m_exprCalculator->calculate(elementThread);
+			if (operand.type != Rpn::OperandNumber) {
 				THROW(EIncorrectVectorInitialization());
 			}
-
-			result.values << expression.result.value;
+			elements << operand.value.value<Number>();
 		} while (m_lexicalAnalyzer->lexeme().type == LexemeComma);
-		result.dimensions = 1;
+		result = m_codeGenerator->generateVector(elements);
 	}
 
 	if (m_lexicalAnalyzer->lexeme().type != LexemeClosingSquareBracket) {
@@ -235,52 +228,36 @@ Rpn::Vector SyntaxAnalyzer::extractVector()
 // Function = Identifier'(' ActualArgument{ ',' ActualArgument}')'
 Rpn::CodeThread SyntaxAnalyzer::function()
 {
-	Rpn::CodeThread result;
-	
-	// Get function name and ensure it exists
-
+	// function name
 	if (m_lexicalAnalyzer->lexeme().type != LexemeIdentifier) {
 		THROW(EInternal());
 	}	
-	QString functionName = m_lexicalAnalyzer->lexeme().value;
+	QString functionName = m_lexicalAnalyzer->lexeme().value;	
 
-	if (!m_exprCalculator->isFunction(functionName)) {
-		THROW(EUndeclaredUsed(functionName, EUndeclaredUsed::Function));
-	}
-	QList<Rpn::Argument> formalArguments = m_exprCalculator->functionArguments(functionName);
-
+	// opening bracket
 	m_lexicalAnalyzer->nextLexeme();	
-
 	if (m_lexicalAnalyzer->lexeme().type != LexemeOpeningBracket) {
 		THROW(ELexemeExpected(tr("Opening bracket after function name")));
 	}
-	
-	// Parse actual arguments and add them to thread.
-	// Ensure their count equals formal arguments count and check for argument types compability.
+	QList<Rpn::Argument> formalArguments = functionArguments(functionName);
 
+	// Parse actual arguments and add them to list of threads
 	int actualArgumentIndex = 0;
+	QList<Rpn::CodeThread> actualArguments;
 	do {
 		m_lexicalAnalyzer->nextLexeme();
-		if (actualArgumentIndex >= formalArguments.count()) {
-			THROW(EWrongArgumentsCount(functionName, formalArguments.count()));
-		}
-		result << actualArgument(formalArguments.at(actualArgumentIndex));
+		actualArguments << actualArgument(formalArguments.at(actualArgumentIndex));
 		++actualArgumentIndex;
 	} while (m_lexicalAnalyzer->lexeme().type == LexemeComma);
-	
-	if (actualArgumentIndex != formalArguments.count()) {
-		THROW(EWrongArgumentsCount(functionName, formalArguments.count()));
-	}
 
+	// closing bracket
 	if (m_lexicalAnalyzer->lexeme().type != LexemeClosingBracket) {
 		THROW(ELexemeExpected(tr("Closing bracket after arguments list")));
 	}	
 	m_lexicalAnalyzer->nextLexeme();
-	
-	// Add to thread a function call element
-	result << Rpn::Element(Rpn::ElementFunctionCall, functionName);
-	
-	return result;
+
+	// result
+	return m_codeGenerator->generateFunction(functionName, actualArguments);
 }
 
 // Factor = (UnaryOp Factor) | (PowerBase ['^' Factor])
@@ -293,8 +270,7 @@ Rpn::CodeThread SyntaxAnalyzer::factor()
 		LexemeType lexemeType = m_lexicalAnalyzer->lexeme().type;
 		m_lexicalAnalyzer->nextLexeme();
 		if (lexemeType == LexemeMinus) {
-			Rpn::Element unaryMinus(Rpn::ElementFunctionCall, QVariant::fromValue(Rpn::FunctionUnaryMinus));
-			result << factor() << unaryMinus;
+			result = m_codeGenerator->generateUnaryMinus(factor());
 		}
 
 		else if (lexemeType == LexemePlus) {
@@ -308,15 +284,12 @@ Rpn::CodeThread SyntaxAnalyzer::factor()
 
 	// PowerBase ['^' Factor]
 	else {
-		result << powerBase();
+		result = powerBase();
 
 		// ['^' Factor]
 		if (m_lexicalAnalyzer->lexeme().type == LexemePower) {
-			Rpn::Element power(Rpn::ElementFunctionCall, QVariant::fromValue(Rpn::FunctionPower));
 			m_lexicalAnalyzer->nextLexeme();
-			Rpn::CodeThread exponent = factor();
-
-			result << exponent << power;
+			result = m_codeGenerator->generateBinaryOperation(BinaryOperationPower, result, factor());
 		}
 	}
 
@@ -330,8 +303,7 @@ Rpn::CodeThread SyntaxAnalyzer::powerBase()
 
 	// Number
 	if (m_lexicalAnalyzer->lexeme().type == LexemeNumber) {
-		Rpn::Operand operand(Rpn::OperandNumber, number());
-		result << Rpn::Element(Rpn::ElementOperand, QVariant::fromValue(operand));
+		result = m_codeGenerator->generateNumber(number());
 	}
 
 	// Constant | Function
@@ -340,12 +312,12 @@ Rpn::CodeThread SyntaxAnalyzer::powerBase()
 		m_lexicalAnalyzer->nextLexeme();
 		if (m_lexicalAnalyzer->lexeme().type != LexemeOpeningBracket) {
 			m_lexicalAnalyzer->previousLexeme();
-			result << constant();
+			result = constant();
 		}
 		// Function
 		else {
 			m_lexicalAnalyzer->previousLexeme();
-			result << function();
+			result = function();
 		}		
 	}
 
@@ -369,15 +341,15 @@ Rpn::CodeThread SyntaxAnalyzer::powerBase()
 }
 
 // MultOperation = '*' | '/'
-Rpn::Element SyntaxAnalyzer::multOperation()
+BinaryOperation SyntaxAnalyzer::multOperation()
 {
-	Rpn::Element result(Rpn::ElementFunctionCall);
+	BinaryOperation result;
 
 	if (m_lexicalAnalyzer->lexeme().type == LexemeMultiply) {
-		result.value.setValue(Rpn::FunctionMultiply);
+		result = BinaryOperationMultiply;
 	}
 	else if(m_lexicalAnalyzer->lexeme().type == LexemeDivide) {
-		result.value.setValue(Rpn::FunctionDivide);
+		result = BinaryOperationDivide;
 	}
 	else {
 		THROW(EInternal());
@@ -390,30 +362,29 @@ Rpn::Element SyntaxAnalyzer::multOperation()
 // Summand = Factor {MultOperator Factor}
 Rpn::CodeThread SyntaxAnalyzer::summand()
 {
-	Rpn::CodeThread result;
-
 	// first obligatory factor
-	result << factor();
+	Rpn::CodeThread result = factor();
 
 	// {MultOperation Factor} section
 	while (CheckLexeme::isMultOperation(m_lexicalAnalyzer->lexeme())) {
-		Rpn::Element operation = multOperation();
-		result << factor() << operation;
+		BinaryOperation operation = multOperation();
+		Rpn::CodeThread rightOperand = factor();
+		result = m_codeGenerator->generateBinaryOperation(operation, result, rightOperand);
 	}
 
 	return result;
 }
 
 // SummOperation = '+' | '-'
-Rpn::Element SyntaxAnalyzer::summOperation()
+BinaryOperation SyntaxAnalyzer::summOperation()
 {
-	Rpn::Element result(Rpn::ElementFunctionCall);
+	BinaryOperation result;
 
 	if (m_lexicalAnalyzer->lexeme().type == LexemePlus) {
-		result.value.setValue(Rpn::FunctionPlus);
+		result = BinaryOperationPlus;
 	}
 	else if(m_lexicalAnalyzer->lexeme().type == LexemeMinus) {
-		result.value.setValue(Rpn::FunctionMinus);
+		result = BinaryOperationMinus;
 	}
 	else {
 		THROW(EInternal());
@@ -431,20 +402,19 @@ Number SyntaxAnalyzer::number()
 }
 
 // Constant = Identifier (formal arguments are processed here as well)
-Rpn::Element SyntaxAnalyzer::constant()
+Rpn::CodeThread SyntaxAnalyzer::constant()
 {
 	QString constName = m_lexicalAnalyzer->lexeme().value;
 	m_lexicalAnalyzer->nextLexeme();
 
 	// it is a formal argument
-	Rpn::Argument possibleArgument(Rpn::OperandNumber, constName, QVariant());
-	if (m_workingArguments.contains(possibleArgument)) {
-		return Rpn::Element(Rpn::ElementArgument, constName);
+	if (m_workingArguments.contains(constName)) {
+		return m_codeGenerator->generateFormalArgument(constName);
 	}
 	
 	// it is a constant
-	else if (m_exprCalculator->isConstant(constName)) {
-		return Rpn::Element(Rpn::ElementConstant, constName);
+	else if ((m_document->containsConstant(constName) || BuiltIn::Constant::constants().contains(constName))) {
+		return m_codeGenerator->generateConstant(constName);
 	}
 	
 	else {
@@ -452,22 +422,20 @@ Rpn::Element SyntaxAnalyzer::constant()
 	}
 }
 
-// FormalArgument = Identifier
-Rpn::Argument SyntaxAnalyzer::formalArgument()
+// FormalArgument = Identifier //NOTE: this is formal argument description, not using
+QString SyntaxAnalyzer::formalArgument()
 {
 	if (m_lexicalAnalyzer->lexeme().type != LexemeIdentifier) {
 		THROW(ELexemeExpected(tr("Argument name")));
 	}
 	
 	QString argumentName = m_lexicalAnalyzer->lexeme().value;
-	// user-defined functions are now can take only Numbers as arguments
-	Rpn::Argument argument(Rpn::OperandNumber, argumentName);
-	if (m_workingArguments.contains(argument)) {
+	if (m_workingArguments.contains(argumentName)) {
 		THROW(EFormalArgumentReused(argumentName));
 	}
 	m_lexicalAnalyzer->nextLexeme();
 
-	return argument;
+	return argumentName;
 }
 
 Rpn::CodeThread SyntaxAnalyzer::actualArgument(const Rpn::Argument &correspondingFormalArgument)
@@ -485,29 +453,9 @@ Rpn::CodeThread SyntaxAnalyzer::actualArgument(const Rpn::Argument &correspondin
 				THROW(ELexemeExpected(tr("Function name")));
 			}
 			QString argumentFunctionName = m_lexicalAnalyzer->lexeme().value;
-
-			if (!m_exprCalculator->isFunction(argumentFunctionName)) {
-				THROW(EUndeclaredUsed(argumentFunctionName, EUndeclaredUsed::Function));
-			}
-
-			// check argument count if number of arguments is fixed
-			if (correspondingFormalArgument.info.value<int>() != Rpn::ArbitraryArgumentsCount) {
-				if (m_exprCalculator->functionArguments(argumentFunctionName).count()
-					!= correspondingFormalArgument.info.value<int>()) {
-					THROW(EIncorrectFunctionArgument(argumentFunctionName));
-				}
-			}
-
-			// ensure all argumentFunctionName arguments are of Number type
-			foreach (const Rpn::Argument &argument, m_exprCalculator->functionArguments(argumentFunctionName)) {
-				if (argument.type != Rpn::OperandNumber) {
-					THROW(EIncorrectFunctionArgument(argumentFunctionName));
-				}
-			}
-
-			Rpn::Operand operand(Rpn::OperandFunctionName, argumentFunctionName);
 			m_lexicalAnalyzer->nextLexeme();
-			return Rpn::CodeThread() << Rpn::Element(Rpn::ElementOperand, QVariant::fromValue(operand));
+
+			return m_codeGenerator->generateFunctonNameOperand(argumentFunctionName);
 		}
 
 		default:
@@ -519,6 +467,20 @@ void SyntaxAnalyzer::ensureNoMoreLexemes()
 {
 	if (m_lexicalAnalyzer->lexeme().type != LexemeEol) {
 		THROW(EParsing());
+	}
+}
+
+QList<Rpn::Argument> SyntaxAnalyzer::functionArguments(const QString &functionName)
+{
+	if (BuiltIn::Function::functions().contains(functionName)) {
+		return BuiltIn::Function::functions().value(functionName)->requiredArguments();
+	}
+
+	else if (m_document->containsFunction(functionName)) {
+		return m_document->function(functionName).arguments;
+	}
+	else {
+		THROW(EIncorrectRpnCode());
 	}
 }
 

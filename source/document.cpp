@@ -52,6 +52,7 @@ QString Document::prettyPrintedFunction(const QString &name) const
 	}
 
 	PrettyPrinter prettyPrinter;
+    prettyPrinter.setDocument(this);
 	return prettyPrinter.process(m_functions.value(name), name);
 }
 
@@ -73,7 +74,9 @@ QStringList Document::prettyPrintedFunctions() const
 	QMapIterator<QString, Rpn::Function> i(m_functions);
 	while (i.hasNext()) {
 		i.next();
-		functions << prettyPrintedFunction(i.key());
+        if (i.key() != Rpn::FunctionMain) {
+            functions <<  prettyPrintedFunction(i.key());
+        }
 	}
 
 	return functions;
@@ -86,7 +89,7 @@ QStringList Document::prettyPrintedConstants() const
 	QMapIterator<QString, Number> i(m_constants);
 	while (i.hasNext()) {
 		i.next();
-		constants << prettyPrintedFunction(i.key());
+		constants << prettyPrintedConstant(i.key());
 	}
 
 	return constants;

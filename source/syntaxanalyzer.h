@@ -3,6 +3,8 @@
 
 #include "lexicalanalyzer.h"
 #include "exprcalculator.h"
+#include "document.h"
+#include "codegenerator.h"
 
 #include <QObject>
 #include <QString>
@@ -25,38 +27,37 @@ struct ProcessingResult {
 class SyntaxAnalyzer : public QObject
 {
 	Q_OBJECT
-signals:
-	void constantsListChanged();
-	void functionsListChanged();
+
 public:
 	explicit SyntaxAnalyzer(QObject *parent = 0);
 	~SyntaxAnalyzer();
 
-	ProcessingResult process(const QString &input);
-	QList<ConstantDescription> constantsList();
-	QList<FunctionDescription> functionsList();
+	QString process(const QString &input, Document *document);
 private:
-	ProcessingResult command();
-	ConstantDescription constDeclaration();
-	FunctionDescription functionDeclaration();
-    Rpn::CodeThread expression();
-    Rpn::CodeThread vector();
-    Rpn::Vector extractVector();
-    Rpn::CodeThread function();
-    Rpn::CodeThread factor();
-    Rpn::CodeThread powerBase();
-    Rpn::Element multOperation();
-    Rpn::CodeThread summand();
-    Rpn::Element summOperation();
+	QString command();
+	QString constDeclaration();
+	QString functionDeclaration();
+	Rpn::CodeThread expression();
+	Rpn::CodeThread vector();
+	Rpn::Vector extractVector();
+	Rpn::CodeThread function();
+	Rpn::CodeThread factor();
+	Rpn::CodeThread powerBase();
+	BinaryOperation multOperation();
+	Rpn::CodeThread summand();
+	BinaryOperation summOperation();
 	Number number();
-    Rpn::Element constant();
-    Rpn::Argument formalArgument();
-    Rpn::CodeThread actualArgument(const Rpn::Argument &correspondingFormalArgument);
+	Rpn::CodeThread constant();
+	QString formalArgument();
+	Rpn::CodeThread actualArgument(const Rpn::Argument &correspondingFormalArgument);
 	void ensureNoMoreLexemes();
+	QList<Rpn::Argument> functionArguments(const QString &functionName);
 	
+	CodeGenerator *m_codeGenerator;
 	LexicalAnalyzer *m_lexicalAnalyzer;
 	ExprCalculator *m_exprCalculator;
-    QList<Rpn::Argument> m_workingArguments;
+	QList<QString> m_workingArguments;
+	Document *m_document;
 };
 
 class CheckLexeme
