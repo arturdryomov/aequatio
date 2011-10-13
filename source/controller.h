@@ -4,7 +4,7 @@
 #include "mainwindow.h"
 #include "helpwindow.h"
 #include "logwindow.h"
-#include "syntaxanalyzer.h"
+#include "parser.h"
 #include "document.h"
 
 #include <QObject>
@@ -35,7 +35,7 @@ private:
 	HelpWindow *m_helpWindow;
 	LogWindow *m_logWindow;
 	QHelpEngine *m_helpEngine;
-	SyntaxAnalyzer *m_syntaxAnalyzer;
+	Parser *m_parser;
 	Document *m_document;
 
 	explicit Controller(QObject *parent = 0);

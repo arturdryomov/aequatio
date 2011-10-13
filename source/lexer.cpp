@@ -1,21 +1,21 @@
-#include "lexicalanalyzer.h"
+#include "lexer.h"
 #include "parsingexceptions.h"
 
-LexicalAnalyzer::LexicalAnalyzer(QObject *parent) :
+Lexer::Lexer(QObject *parent) :
 	QObject(parent),
 	m_lexemeListIterator(0)
 {
 	initializeReservedWords();
 }
 
-LexicalAnalyzer::~LexicalAnalyzer()
+Lexer::~Lexer()
 {
 	if (m_lexemeListIterator != 0) {
 		delete m_lexemeListIterator;
 	}
 }
 
-Lexeme LexicalAnalyzer::lexeme()
+Lexeme Lexer::lexeme()
 {
 	if (m_lexemeListIterator->hasNext()) {
 		return m_lexemeListIterator->peekNext();
@@ -25,21 +25,21 @@ Lexeme LexicalAnalyzer::lexeme()
 	}
 }
 
-void LexicalAnalyzer::nextLexeme()
+void Lexer::nextLexeme()
 {
 	if (m_lexemeListIterator->hasNext()) {
 		m_lexemeListIterator->next();
 	}		
 }
 
-void LexicalAnalyzer::previousLexeme()
+void Lexer::previousLexeme()
 {
 	if (m_lexemeListIterator->hasPrevious()) {
 		m_lexemeListIterator->previous();
 	}	
 }
 
-void LexicalAnalyzer::parse(const QString &input)
+void Lexer::parse(const QString &input)
 {
 	m_lexemeList.clear();
 	m_input = input.trimmed();
@@ -72,13 +72,13 @@ void LexicalAnalyzer::parse(const QString &input)
 	m_lexemeListIterator = new QListIterator<Lexeme>(m_lexemeList);
 }
 
-void LexicalAnalyzer::initializeReservedWords()
+void Lexer::initializeReservedWords()
 {
 	m_reservedWords.insert("const", LexemeConst);
 	m_reservedWords.insert("func", LexemeFunc);
 }
 
-void LexicalAnalyzer::extractLexeme()
+void Lexer::extractLexeme()
 {
 	QChar current = m_input.at(m_position);
 
@@ -108,7 +108,7 @@ void LexicalAnalyzer::extractLexeme()
 	}
 }
 
-void LexicalAnalyzer::extractIdentifier()
+void Lexer::extractIdentifier()
 {
 	int inputLength = m_input.size() - 1;
 	int startPosition = m_position;
@@ -133,7 +133,7 @@ void LexicalAnalyzer::extractIdentifier()
 	}
 }
 
-void LexicalAnalyzer::extractNumber()
+void Lexer::extractNumber()
 {
 	int inputLength = m_input.size() - 1;
 	int startPosition = m_position;
@@ -176,7 +176,7 @@ void LexicalAnalyzer::extractNumber()
 	}
 }
 
-void LexicalAnalyzer::extractOperation()
+void Lexer::extractOperation()
 {
 	QChar operation = m_input.at(m_position);
 	LexemeType lexemeType;
@@ -203,7 +203,7 @@ void LexicalAnalyzer::extractOperation()
 	m_position++;
 }
 
-void LexicalAnalyzer::extractBracket()
+void Lexer::extractBracket()
 {
 	QString bracket = m_input.mid(m_position, 1);
 	LexemeType lexemeType;
@@ -227,7 +227,7 @@ void LexicalAnalyzer::extractBracket()
 	m_position++;
 }
 
-void LexicalAnalyzer::extractPower()
+void Lexer::extractPower()
 {
 	QChar operation = m_input.at(m_position);
 	LexemeType lexemeType;
@@ -242,7 +242,7 @@ void LexicalAnalyzer::extractPower()
 	m_position++;
 }
 
-void LexicalAnalyzer::extractEqual()
+void Lexer::extractEqual()
 {
 	QChar operation = m_input.at(m_position);
 	LexemeType lexemeType;
@@ -257,7 +257,7 @@ void LexicalAnalyzer::extractEqual()
 	m_position++;
 }
 
-void LexicalAnalyzer::extractComma()
+void Lexer::extractComma()
 {
 	QChar operation = m_input.at(m_position);
 	LexemeType lexemeType;
@@ -272,7 +272,7 @@ void LexicalAnalyzer::extractComma()
 	m_position++;	
 }
 
-void LexicalAnalyzer::pushLexeme(LexemeType lexemeType, QString lexemeData)
+void Lexer::pushLexeme(LexemeType lexemeType, QString lexemeData)
 {
 	Lexeme lexeme;
 	lexeme.type = lexemeType;
@@ -280,7 +280,7 @@ void LexicalAnalyzer::pushLexeme(LexemeType lexemeType, QString lexemeData)
 	m_lexemeList.append(lexeme);
 }
 
-void LexicalAnalyzer::skipWhitespace()
+void Lexer::skipWhitespace()
 {
 	while (m_position < m_input.size()) {
 		if (CheckChar::isSpace(m_input.at(m_position))) {
@@ -292,7 +292,7 @@ void LexicalAnalyzer::skipWhitespace()
 	}
 }
 
-Lexeme LexicalAnalyzer::endLexeme()
+Lexeme Lexer::endLexeme()
 {
 	Lexeme result = {LexemeEol, QString()};
 	return result;

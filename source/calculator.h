@@ -1,5 +1,5 @@
-#ifndef EXPRCALCULATOR_H
-#define EXPRCALCULATOR_H
+#ifndef CALCULATOR_H
+#define CALCULATOR_H
 
 #include "rpncode.h"
 #include "document.h"
@@ -10,12 +10,12 @@
 #include <QMetaType>
 #include <QList>
 
-class ExprCalculator : public QObject
+class Calculator : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit ExprCalculator(QObject *parent = 0);
+	explicit Calculator(QObject *parent = 0);
 	void setDocument(Document *document);
 	Rpn::Operand calculate(const Rpn::CodeThread &thread);
 private:
@@ -24,11 +24,11 @@ private:
 	class FunctionCalculator : public BuiltIn::Function::FunctionCalculator
 	{
 	public:
-		FunctionCalculator(ExprCalculator *exprCalculator) : m_exprCalculator(exprCalculator) {}
+		FunctionCalculator(Calculator *calculator) : m_calculator(calculator) {}
 		Rpn::Operand calculate(QString functionName, QList<Rpn::Operand> actualArguments);
 		QList<Rpn::Argument> functionArguments(const QString &name);
 	private:
-		ExprCalculator *m_exprCalculator;
+		Calculator *m_calculator;
 	};
 
 	FunctionCalculator *m_functionCalculator;
@@ -40,4 +40,4 @@ private:
 	Rpn::Operand calculateBuiltInFunction(const QString &functionName, const QList<Rpn::Operand> &actualArguments);
 };
 
-#endif // EXPRCALCULATOR_H
+#endif // CALCULATOR_H

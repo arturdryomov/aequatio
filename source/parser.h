@@ -1,8 +1,8 @@
-#ifndef SYNTAXANALYZER_H
-#define SYNTAXANALYZER_H
+#ifndef PARSER_H
+#define PARSER_H
 
-#include "lexicalanalyzer.h"
-#include "exprcalculator.h"
+#include "lexer.h"
+#include "calculator.h"
 #include "document.h"
 #include "codegenerator.h"
 
@@ -10,13 +10,13 @@
 #include <QString>
 #include <QVector>
 
-class SyntaxAnalyzer : public QObject
+class Parser : public QObject
 {
 	Q_OBJECT
 
 public:
-	explicit SyntaxAnalyzer(QObject *parent = 0);
-	~SyntaxAnalyzer();
+	explicit Parser(QObject *parent = 0);
+	~Parser();
 
 	QString process(const QString &input, Document *document);
 private:
@@ -40,8 +40,8 @@ private:
 	QList<Rpn::Argument> functionArguments(const QString &functionName);
 	
 	CodeGenerator *m_codeGenerator;
-	LexicalAnalyzer *m_lexicalAnalyzer;
-	ExprCalculator *m_exprCalculator;
+	Lexer *m_lexer;
+	Calculator *m_calculator;
 	QList<QString> m_workingArguments;
 	Document *m_document;
 };
@@ -54,4 +54,4 @@ public:
 	static bool isUnaryOperation(Lexeme lexeme);
 };
 
-#endif // SYNTAXANALYZER_H
+#endif // PARSER_H

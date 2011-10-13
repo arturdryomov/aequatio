@@ -1,23 +1,23 @@
-#include "exprcalculator.h"
+#include "calculator.h"
 #include "calculatingexceptions.h"
 #include "builtin/constant.h"
 
 #include <QStack>
 #include <QStringList>
 
-ExprCalculator::ExprCalculator(QObject *parent) :
+Calculator::Calculator(QObject *parent) :
 QObject(parent),
 m_document(0),
 m_functionCalculator(new FunctionCalculator(this))
 {
 }
 
-void ExprCalculator::setDocument(Document *document)
+void Calculator::setDocument(Document *document)
 {
 	m_document = document;
 }
 
-Rpn::Operand ExprCalculator::calculate(const Rpn::CodeThread &thread)
+Rpn::Operand Calculator::calculate(const Rpn::CodeThread &thread)
 {
 	Q_ASSERT(m_document != 0);
 
@@ -26,7 +26,7 @@ Rpn::Operand ExprCalculator::calculate(const Rpn::CodeThread &thread)
 	return calculateUserDefinedFunction(Rpn::FunctionMain, QList<Rpn::Operand>());
 }
 
-Rpn::Operand ExprCalculator::calculateFunction(const QString &functionName, const QList<Rpn::Operand> &actualArguments)
+Rpn::Operand Calculator::calculateFunction(const QString &functionName, const QList<Rpn::Operand> &actualArguments)
 {
 	if (BuiltIn::Function::functions().contains(functionName)) {
 		// check for argument types equivalence
@@ -53,7 +53,7 @@ Rpn::Operand ExprCalculator::calculateFunction(const QString &functionName, cons
 	}
 }
 
-Rpn::Operand ExprCalculator::calculateUserDefinedFunction(const QString &functionName, const QList<Rpn::Operand> &actualArguments)
+Rpn::Operand Calculator::calculateUserDefinedFunction(const QString &functionName, const QList<Rpn::Operand> &actualArguments)
 {
 	QStack<Rpn::Operand> calculationStack;
 
@@ -134,23 +134,23 @@ Rpn::Operand ExprCalculator::calculateUserDefinedFunction(const QString &functio
 	return result;
 }
 
-Rpn::Operand ExprCalculator::calculateBuiltInFunction(const QString &functionName, const QList<Rpn::Operand> &actualArguments)
+Rpn::Operand Calculator::calculateBuiltInFunction(const QString &functionName, const QList<Rpn::Operand> &actualArguments)
 {
 	return BuiltIn::Function::functions().value(functionName)->calculate(
 	m_functionCalculator, actualArguments);
 }
 
-bool ExprCalculator::isFunction(const QString &name)
+bool Calculator::isFunction(const QString &name)
 {
 	return (m_document->containsFunction(name) || BuiltIn::Function::functions().contains(name));
 }
 
-bool ExprCalculator::isConstant(const QString &name)
+bool Calculator::isConstant(const QString &name)
 {
 	return (m_document->containsConstant(name) || BuiltIn::Constant::constants().contains(name));
 }
 
-QList<Rpn::Argument> ExprCalculator::functionArguments(const QString &name)
+QList<Rpn::Argument> Calculator::functionArguments(const QString &name)
 {
 	if (BuiltIn::Function::functions().contains(name)) {
 		return BuiltIn::Function::functions().value(name)->requiredArguments();
@@ -164,12 +164,12 @@ QList<Rpn::Argument> ExprCalculator::functionArguments(const QString &name)
 	}
 }
 
-Rpn::Operand ExprCalculator::FunctionCalculator::calculate(QString functionName, QList<Rpn::Operand> actualArguments)
+Rpn::Operand Calculator::FunctionCalculator::calculate(QString functionName, QList<Rpn::Operand> actualArguments)
 {
-	return m_exprCalculator->calculateFunction(functionName, actualArguments);
+	return m_calculator->calculateFunction(functionName, actualArguments);
 }
 
-QList<Rpn::Argument> ExprCalculator::FunctionCalculator::functionArguments(const QString &name)
+QList<Rpn::Argument> Calculator::FunctionCalculator::functionArguments(const QString &name)
 {
-	return m_exprCalculator->functionArguments(name);
+	return m_calculator->functionArguments(name);
 }

@@ -20,7 +20,7 @@ QString PrettyPrinter::process(const Rpn::CodeThread &codeThread)
 {
 	Q_ASSERT(m_document != 0);
 
-	// This code is quite alike with ExprCalculator::calculateFunction argorithm,
+	// This code is quite alike with Calculator::calculateFunction argorithm,
 	// but we store parts of final string expression in the stack.
 	// We also need to store the priority level of the last (meaning it is
 	// applied after all other) part in order to determine when the braces are needed.

@@ -1,40 +1,40 @@
-#include "syntaxanalyzer.h"
-#include "lexicalanalyzer.h"
+#include "parser.h"
+#include "lexer.h"
 #include "parsingexceptions.h"
 #include "prettyprinter.h"
 #include "builtin/constant.h"
 
-SyntaxAnalyzer::SyntaxAnalyzer(QObject *parent) :
+Parser::Parser(QObject *parent) :
 	QObject(parent),
 	m_document(0),
 	m_codeGenerator(0),
-	m_lexicalAnalyzer(new LexicalAnalyzer(this)),
-	m_exprCalculator(0)
+	m_lexer(new Lexer(this)),
+	m_calculator(0)
 {
 }
 
-SyntaxAnalyzer::~SyntaxAnalyzer()
+Parser::~Parser()
 {
 }
 
-QString SyntaxAnalyzer::process(const QString &input, Document *document)
+QString Parser::process(const QString &input, Document *document)
 {
 	m_document = document;
 	m_codeGenerator = new CodeGenerator(document);
-	m_exprCalculator = new ExprCalculator(this);
-	m_exprCalculator->setDocument(document);
+	m_calculator = new Calculator(this);
+	m_calculator->setDocument(document);
 
 	// perform lexical analyzis
-	m_lexicalAnalyzer->parse(input);
-	if (m_lexicalAnalyzer->lexeme().type == LexemeEol) {
+	m_lexer->parse(input);
+	if (m_lexer->lexeme().type == LexemeEol) {
 		THROW(EEmptyInput());
 	}
 
 	// Process the command
 	QString result = command();
 
-	delete m_exprCalculator;
-	m_exprCalculator = 0;
+	delete m_calculator;
+	m_calculator = 0;
 	delete m_codeGenerator;
 	m_codeGenerator = 0;
 
@@ -42,18 +42,18 @@ QString SyntaxAnalyzer::process(const QString &input, Document *document)
 }
 
 // Command = ConstDeclaration | Expression | FuncDeclaration
-QString SyntaxAnalyzer::command()
+QString Parser::command()
 {
 	QString result;
 
 	// const declaration
-	if (m_lexicalAnalyzer->lexeme().type == LexemeConst) {
+	if (m_lexer->lexeme().type == LexemeConst) {
 		result = constDeclaration();
 		ensureNoMoreLexemes();
 	}
 
 	// func declaration
-	else if (m_lexicalAnalyzer->lexeme().type == LexemeFunc) {
+	else if (m_lexer->lexeme().type == LexemeFunc) {
 		result = functionDeclaration();
 		ensureNoMoreLexemes();
 	}
@@ -62,7 +62,7 @@ QString SyntaxAnalyzer::command()
 	else {
 		Rpn::CodeThread codeThread = expression(); // convert expression to RPN
 		ensureNoMoreLexemes();
-		Rpn::Operand expressionResult = m_exprCalculator->calculate(codeThread);
+		Rpn::Operand expressionResult = m_calculator->calculate(codeThread);
 
 		PrettyPrinter printer;
 		printer.setDocument(m_document);
@@ -73,31 +73,31 @@ QString SyntaxAnalyzer::command()
 }
 
 // ConstDeclaration = 'const' Identifier '=' Expression
-QString SyntaxAnalyzer::constDeclaration()
+QString Parser::constDeclaration()
 {
 	// 'const'
-	if (m_lexicalAnalyzer->lexeme().type != LexemeConst) {
+	if (m_lexer->lexeme().type != LexemeConst) {
 		THROW(EInternal());
 	}
-	m_lexicalAnalyzer->nextLexeme();
+	m_lexer->nextLexeme();
 
 	// Identifier
-	if (m_lexicalAnalyzer->lexeme().type != LexemeIdentifier) {
+	if (m_lexer->lexeme().type != LexemeIdentifier) {
 		THROW(ELexemeExpected(tr("Identifier after “const”")));
 	}
-	QString constName = m_lexicalAnalyzer->lexeme().value;
-	m_lexicalAnalyzer->nextLexeme();
+	QString constName = m_lexer->lexeme().value;
+	m_lexer->nextLexeme();
 
 	// '='
-	if (m_lexicalAnalyzer->lexeme().type != LexemeEqual) {
+	if (m_lexer->lexeme().type != LexemeEqual) {
 		THROW(ELexemeExpected(tr("Sign “=” after identifier")));
 	}
-	m_lexicalAnalyzer->nextLexeme();
+	m_lexer->nextLexeme();
 
 	// Expression
 	Rpn::CodeThread constThread = expression();
-	m_lexicalAnalyzer->nextLexeme();
-	Rpn::Operand value = m_exprCalculator->calculate(constThread);
+	m_lexer->nextLexeme();
+	Rpn::Operand value = m_calculator->calculate(constThread);
 	m_codeGenerator->addConstant(constName, value);
 
 	return tr("Constant declared: %1").arg(m_document->prettyPrintedConstant(constName));
@@ -105,45 +105,45 @@ QString SyntaxAnalyzer::constDeclaration()
 
 // FunctionDeclaration = 'func' Indenifier '(' FormalArgument
 //		{ ',' FormalArgument} ')' '=' Expression
-QString SyntaxAnalyzer::functionDeclaration()
+QString Parser::functionDeclaration()
 {
 	/* Get function name */
 
 	// 'func'
-	if (m_lexicalAnalyzer->lexeme().type != LexemeFunc) {
+	if (m_lexer->lexeme().type != LexemeFunc) {
 		THROW(EInternal());
 	}
-	m_lexicalAnalyzer->nextLexeme();
+	m_lexer->nextLexeme();
 
 	// identifier
-	if (m_lexicalAnalyzer->lexeme().type != LexemeIdentifier) {
+	if (m_lexer->lexeme().type != LexemeIdentifier) {
 		THROW(ELexemeExpected(tr("Identifier after “func”")));
 	}
-	QString functionName = m_lexicalAnalyzer->lexeme().value;
-	m_lexicalAnalyzer->nextLexeme();
+	QString functionName = m_lexer->lexeme().value;
+	m_lexer->nextLexeme();
 	
 
 	/* Get formal arguments and save them to list */
 	
-	if (m_lexicalAnalyzer->lexeme().type != LexemeOpeningBracket) {
+	if (m_lexer->lexeme().type != LexemeOpeningBracket) {
 		THROW(ELexemeExpected(tr("Opening bracket after function name")));
 	}
 
 	m_workingArguments.clear();
 	do {
-		m_lexicalAnalyzer->nextLexeme();
+		m_lexer->nextLexeme();
 		m_workingArguments.append(formalArgument());
-	} while (m_lexicalAnalyzer->lexeme().type == LexemeComma);
+	} while (m_lexer->lexeme().type == LexemeComma);
 	
-	if (m_lexicalAnalyzer->lexeme().type != LexemeClosingBracket) {
+	if (m_lexer->lexeme().type != LexemeClosingBracket) {
 		THROW(ELexemeExpected(tr("Closing bracket after formal arguments list")));
 	}
-	m_lexicalAnalyzer->nextLexeme();
+	m_lexer->nextLexeme();
 	
-	if (m_lexicalAnalyzer->lexeme().type != LexemeEqual) {
+	if (m_lexer->lexeme().type != LexemeEqual) {
 		THROW(ELexemeExpected(tr("Sign “=” after closing bracket")));
 	}
-	m_lexicalAnalyzer->nextLexeme();
+	m_lexer->nextLexeme();
 
 	
 	/* Parse the function body and save it */
@@ -156,11 +156,11 @@ QString SyntaxAnalyzer::functionDeclaration()
 }
 
 // Expression = (Summand {SummOperator Summand}) | Vector
-Rpn::CodeThread SyntaxAnalyzer::expression()
+Rpn::CodeThread Parser::expression()
 {
 	/* Vector */
-	if (m_lexicalAnalyzer->lexeme().type == LexemeOpeningSquareBracket) {
-		m_lexicalAnalyzer->previousLexeme();
+	if (m_lexer->lexeme().type == LexemeOpeningSquareBracket) {
+		m_lexer->previousLexeme();
 		return vector();
 	}
 
@@ -170,7 +170,7 @@ Rpn::CodeThread SyntaxAnalyzer::expression()
 	Rpn::CodeThread result = summand();
 
 	// {SummOperator Summand} section
-	while (CheckLexeme::isSummOperation(m_lexicalAnalyzer->lexeme())) {
+	while (CheckLexeme::isSummOperation(m_lexer->lexeme())) {
 		BinaryOperation operation = summOperation();
 		Rpn::CodeThread rightOperand = summand();
 		result = m_codeGenerator->generateBinaryOperation(operation, result, rightOperand);
@@ -180,69 +180,69 @@ Rpn::CodeThread SyntaxAnalyzer::expression()
 }
 
 // Vector = '[' Expression, { ',' Expression } ']'
-Rpn::CodeThread SyntaxAnalyzer::vector()
+Rpn::CodeThread Parser::vector()
 {
 	return m_codeGenerator->packVector(extractVector());
 }
 
 // extracts vector recursively
-Rpn::Vector SyntaxAnalyzer::extractVector()
+Rpn::Vector Parser::extractVector()
 {
-	if (m_lexicalAnalyzer->lexeme().type != LexemeOpeningSquareBracket) {
+	if (m_lexer->lexeme().type != LexemeOpeningSquareBracket) {
 		THROW(ELexemeExpected(tr("Opening bracket for vector initialization")));
 	}
 
-	m_lexicalAnalyzer->nextLexeme();
+	m_lexer->nextLexeme();
 
 	Rpn::Vector result;
 
 	// Multi-dimensional vector. Recursive calls
-	if (m_lexicalAnalyzer->lexeme().type == LexemeOpeningSquareBracket) {
-		m_lexicalAnalyzer->previousLexeme();
+	if (m_lexer->lexeme().type == LexemeOpeningSquareBracket) {
+		m_lexer->previousLexeme();
 		QList<Rpn::Vector> elements;
 		do {
-			m_lexicalAnalyzer->nextLexeme();
+			m_lexer->nextLexeme();
 			elements << extractVector();
-		} while (m_lexicalAnalyzer->lexeme().type == LexemeComma);
+		} while (m_lexer->lexeme().type == LexemeComma);
 		result = m_codeGenerator->generateVector(elements);
 	}	
 
 	// One-dimensional vector
 	else {
-		m_lexicalAnalyzer->previousLexeme();
+		m_lexer->previousLexeme();
 		QList<Number> elements;
 		do {
-			m_lexicalAnalyzer->nextLexeme();
+			m_lexer->nextLexeme();
 			Rpn::CodeThread elementThread = expression();
-			Rpn::Operand operand = m_exprCalculator->calculate(elementThread);
+			Rpn::Operand operand = m_calculator->calculate(elementThread);
 			if (operand.type != Rpn::OperandNumber) {
 				THROW(EIncorrectVectorInitialization());
 			}
 			elements << operand.value.value<Number>();
-		} while (m_lexicalAnalyzer->lexeme().type == LexemeComma);
+		} while (m_lexer->lexeme().type == LexemeComma);
 		result = m_codeGenerator->generateVector(elements);
 	}
 
-	if (m_lexicalAnalyzer->lexeme().type != LexemeClosingSquareBracket) {
+	if (m_lexer->lexeme().type != LexemeClosingSquareBracket) {
 		THROW(ELexemeExpected(tr("Closing bracket for vector initialization")));
 	}
-	m_lexicalAnalyzer->nextLexeme();
+	m_lexer->nextLexeme();
 
 	return result;
 }
 
 // Function = Name'(' ActualArgument{ ',' ActualArgument}')'
-Rpn::CodeThread SyntaxAnalyzer::function()
+Rpn::CodeThread Parser::function()
 {
 	// function name
-	if (m_lexicalAnalyzer->lexeme().type != LexemeIdentifier) {
+	if (m_lexer->lexeme().type != LexemeIdentifier) {
 		THROW(EInternal());
 	}	
-	QString functionName = m_lexicalAnalyzer->lexeme().value;	
+	QString functionName = m_lexer->lexeme().value;
 
 	// opening bracket
-	m_lexicalAnalyzer->nextLexeme();	
-	if (m_lexicalAnalyzer->lexeme().type != LexemeOpeningBracket) {
+	m_lexer->nextLexeme();
+	if (m_lexer->lexeme().type != LexemeOpeningBracket) {
 		THROW(ELexemeExpected(tr("Opening bracket after function name")));
 	}
 
@@ -250,29 +250,29 @@ Rpn::CodeThread SyntaxAnalyzer::function()
 	// Parse actual arguments and add them to list of threads
 	QList<Rpn::CodeThread> actualArguments;
 	do {
-		m_lexicalAnalyzer->nextLexeme();
+		m_lexer->nextLexeme();
 		actualArguments << expression();
-	} while (m_lexicalAnalyzer->lexeme().type == LexemeComma);
+	} while (m_lexer->lexeme().type == LexemeComma);
 
 	// closing bracket
-	if (m_lexicalAnalyzer->lexeme().type != LexemeClosingBracket) {
+	if (m_lexer->lexeme().type != LexemeClosingBracket) {
 		THROW(ELexemeExpected(tr("Closing bracket after arguments list")));
 	}	
-	m_lexicalAnalyzer->nextLexeme();
+	m_lexer->nextLexeme();
 
 	// result
 	return m_codeGenerator->generateFunction(functionName, actualArguments);
 }
 
 // Factor = (UnaryOp Factor) | (PowerBase ['^' Factor])
-Rpn::CodeThread SyntaxAnalyzer::factor()
+Rpn::CodeThread Parser::factor()
 {
 	Rpn::CodeThread result;
 
 	// UnaryOp Factor
-	if (CheckLexeme::isUnaryOperation(m_lexicalAnalyzer->lexeme())) {
-		LexemeType lexemeType = m_lexicalAnalyzer->lexeme().type;
-		m_lexicalAnalyzer->nextLexeme();
+	if (CheckLexeme::isUnaryOperation(m_lexer->lexeme())) {
+		LexemeType lexemeType = m_lexer->lexeme().type;
+		m_lexer->nextLexeme();
 		if (lexemeType == LexemeMinus) {
 			result = m_codeGenerator->generateUnaryMinus(factor());
 		}
@@ -291,8 +291,8 @@ Rpn::CodeThread SyntaxAnalyzer::factor()
 		result = powerBase();
 
 		// ['^' Factor]
-		if (m_lexicalAnalyzer->lexeme().type == LexemePower) {
-			m_lexicalAnalyzer->nextLexeme();
+		if (m_lexer->lexeme().type == LexemePower) {
+			m_lexer->nextLexeme();
 			result = m_codeGenerator->generateBinaryOperation(BinaryOperationPower, result, factor());
 		}
 	}
@@ -301,30 +301,30 @@ Rpn::CodeThread SyntaxAnalyzer::factor()
 }
 
 // PowerBase = Number | Identifier | '('Expression')'
-Rpn::CodeThread SyntaxAnalyzer::powerBase()
+Rpn::CodeThread Parser::powerBase()
 {
 	Rpn::CodeThread result;
 
 	// Number
-	if (m_lexicalAnalyzer->lexeme().type == LexemeNumber) {
+	if (m_lexer->lexeme().type == LexemeNumber) {
 		result = m_codeGenerator->generateNumber(number());
 	}
 
 	// Constant | Function
-	else if (m_lexicalAnalyzer->lexeme().type == LexemeIdentifier) {
+	else if (m_lexer->lexeme().type == LexemeIdentifier) {
 		result = identifier();
 	}
 
 	// '('Expression')'
-	else if (m_lexicalAnalyzer->lexeme().type == LexemeOpeningBracket) {
-		m_lexicalAnalyzer->nextLexeme();
+	else if (m_lexer->lexeme().type == LexemeOpeningBracket) {
+		m_lexer->nextLexeme();
 		result = expression();
 
-		if (m_lexicalAnalyzer->lexeme().type != LexemeClosingBracket) {
+		if (m_lexer->lexeme().type != LexemeClosingBracket) {
 			THROW(ELexemeExpected(tr("Closing bracket")));
 		}
 
-		m_lexicalAnalyzer->nextLexeme();
+		m_lexer->nextLexeme();
 	}
 
 	else {
@@ -335,32 +335,32 @@ Rpn::CodeThread SyntaxAnalyzer::powerBase()
 }
 
 // MultOperation = '*' | '/'
-BinaryOperation SyntaxAnalyzer::multOperation()
+BinaryOperation Parser::multOperation()
 {
 	BinaryOperation result;
 
-	if (m_lexicalAnalyzer->lexeme().type == LexemeMultiply) {
+	if (m_lexer->lexeme().type == LexemeMultiply) {
 		result = BinaryOperationMultiply;
 	}
-	else if(m_lexicalAnalyzer->lexeme().type == LexemeDivide) {
+	else if(m_lexer->lexeme().type == LexemeDivide) {
 		result = BinaryOperationDivide;
 	}
 	else {
 		THROW(EInternal());
 	}
 
-	m_lexicalAnalyzer->nextLexeme();
+	m_lexer->nextLexeme();
 	return result;
 }
 
 // Summand = Factor {MultOperator Factor}
-Rpn::CodeThread SyntaxAnalyzer::summand()
+Rpn::CodeThread Parser::summand()
 {
 	// first obligatory factor
 	Rpn::CodeThread result = factor();
 
 	// {MultOperation Factor} section
-	while (CheckLexeme::isMultOperation(m_lexicalAnalyzer->lexeme())) {
+	while (CheckLexeme::isMultOperation(m_lexer->lexeme())) {
 		BinaryOperation operation = multOperation();
 		Rpn::CodeThread rightOperand = factor();
 		result = m_codeGenerator->generateBinaryOperation(operation, result, rightOperand);
@@ -370,11 +370,11 @@ Rpn::CodeThread SyntaxAnalyzer::summand()
 }
 
 // Identifier = Constant | Formal argument | Function name | Function
-Rpn::CodeThread SyntaxAnalyzer::identifier()
+Rpn::CodeThread Parser::identifier()
 {
-	QString name = m_lexicalAnalyzer->lexeme().value;
-	m_lexicalAnalyzer->nextLexeme();
-	if (m_lexicalAnalyzer->lexeme().type != LexemeOpeningBracket) {
+	QString name = m_lexer->lexeme().value;
+	m_lexer->nextLexeme();
+	if (m_lexer->lexeme().type != LexemeOpeningBracket) {
 
 		// Constant | Formal argument | Function name
 
@@ -399,62 +399,62 @@ Rpn::CodeThread SyntaxAnalyzer::identifier()
 
 	// Function
 	else {
-		m_lexicalAnalyzer->previousLexeme();
+		m_lexer->previousLexeme();
 		return function();
 	}
 
 }
 
 // SummOperation = '+' | '-'
-BinaryOperation SyntaxAnalyzer::summOperation()
+BinaryOperation Parser::summOperation()
 {
 	BinaryOperation result;
 
-	if (m_lexicalAnalyzer->lexeme().type == LexemePlus) {
+	if (m_lexer->lexeme().type == LexemePlus) {
 		result = BinaryOperationPlus;
 	}
-	else if(m_lexicalAnalyzer->lexeme().type == LexemeMinus) {
+	else if(m_lexer->lexeme().type == LexemeMinus) {
 		result = BinaryOperationMinus;
 	}
 	else {
 		THROW(EInternal());
 	}
 
-	m_lexicalAnalyzer->nextLexeme();
+	m_lexer->nextLexeme();
 	return result;
 }
 
-Number SyntaxAnalyzer::number()
+Number Parser::number()
 {
-	Number result = stringToNumber(m_lexicalAnalyzer->lexeme().value);
-	m_lexicalAnalyzer->nextLexeme();
+	Number result = stringToNumber(m_lexer->lexeme().value);
+	m_lexer->nextLexeme();
 	return result;
 }
 
 // FormalArgument = Identifier //NOTE: this is formal argument description, not using
-QString SyntaxAnalyzer::formalArgument()
+QString Parser::formalArgument()
 {
-	if (m_lexicalAnalyzer->lexeme().type != LexemeIdentifier) {
+	if (m_lexer->lexeme().type != LexemeIdentifier) {
 		THROW(ELexemeExpected(tr("Argument name")));
 	}
 	
-	QString argumentName = m_lexicalAnalyzer->lexeme().value;
+	QString argumentName = m_lexer->lexeme().value;
 	if (m_workingArguments.contains(argumentName)) {
 		THROW(EFormalArgumentReused(argumentName));
 	}
-	m_lexicalAnalyzer->nextLexeme();
+	m_lexer->nextLexeme();
 
 	return argumentName;
 }
 
-void SyntaxAnalyzer::ensureNoMoreLexemes()
+void Parser::ensureNoMoreLexemes()
 {
-	if (m_lexicalAnalyzer->lexeme().type != LexemeEol) {
+	if (m_lexer->lexeme().type != LexemeEol) {
 		THROW(EParsing());
 	}
 }
 
-QList<Rpn::Argument> SyntaxAnalyzer::functionArguments(const QString &functionName)
+QList<Rpn::Argument> Parser::functionArguments(const QString &functionName)
 {
 	if (BuiltIn::Function::functions().contains(functionName)) {
 		return BuiltIn::Function::functions().value(functionName)->requiredArguments();

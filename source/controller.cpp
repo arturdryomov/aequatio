@@ -55,7 +55,7 @@ int Controller::runApplication(int argc, char *argv[])
 void Controller::commandEntered(const QString &command)
 {
 	try {
-		QString result = m_syntaxAnalyzer->process(command, m_document);
+		QString result = m_parser->process(command, m_document);
 		m_mainWindow->resultReturned(result);
 	} 
 
@@ -170,7 +170,7 @@ Controller::Controller(QObject *parent) :
 	m_helpWindow(0),
 	m_logWindow(0),
 	m_document(new Document(this)),
-	m_syntaxAnalyzer(new SyntaxAnalyzer(this))
+	m_parser(new Parser(this))
 
 {	
 	connect(m_document, SIGNAL(constantsChanged()), SLOT(constantsAndFunctionsUpdated()));

@@ -1,5 +1,5 @@
-#ifndef LEXICALANALYZER_H
-#define LEXICALANALYZER_H
+#ifndef LEXER_H
+#define LEXER_H
 
 #include <QObject>
 #include <QList>
@@ -31,12 +31,12 @@ struct Lexeme {
 	QString value;
 };
 
-class LexicalAnalyzer : public QObject
+class Lexer : public QObject
 {
 	Q_OBJECT
 public:
-	LexicalAnalyzer(QObject *parent = 0);
-	~LexicalAnalyzer();
+	Lexer(QObject *parent = 0);
+	~Lexer();
 
 	void parse(const QString &input);
 	Lexeme lexeme();
@@ -85,4 +85,4 @@ public:
 	static bool isDivide(QChar);
 };
 
-#endif // LEXICALANALYZER_H
+#endif // LEXER_H

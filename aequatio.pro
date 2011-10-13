@@ -29,22 +29,27 @@ win32 {
 }
 
 SOURCES += \
-	source/mainwindow.cpp \
 	source/main.cpp \
 	source/controller.cpp \
-	source/exprcalculator.cpp \
-	source/syntaxanalyzer.cpp \
+	source/document.cpp \
+	source/lexer.cpp \
+	source/parser.cpp \
+	source/prettyprinter.cpp \
+	source/codegenerator.cpp \
+	source/calculator.cpp \
+	source/rpncode.cpp \
+	source/number.cpp \
 	source/application.cpp \
-	source/lexicalanalyzer.cpp \
 	source/logger.cpp \
 	source/exceptions.cpp \
 	source/parsingexceptions.cpp \
 	source/calculatingexceptions.cpp \
+	source/mainwindow.cpp \
 	source/aboutwindow.cpp \
 	source/helpwindow.cpp \
 	source/helpbrowser.cpp \
 	source/logwindow.cpp \
-	source/rpncode.cpp \
+	source/builtin/basicconstants.cpp \
 	source/builtin/mathutils.cpp \
 	source/builtin/basicfunctions.cpp \
 	source/builtin/optimization/enumerative.cpp \
@@ -61,31 +66,32 @@ SOURCES += \
 	source/builtin/optimization/neldermead.cpp \
 	source/builtin/optimization/conjugategradient.cpp \
 	source/builtin/equationsolving/gauss.cpp \
-	source/builtin/equationsolving/cramer.cpp \
-	source/document.cpp \
-	source/prettyprinter.cpp \
-	source/builtin/basicconstants.cpp \
-	source/number.cpp \
-	source/codegenerator.cpp
+	source/builtin/equationsolving/cramer.cpp
 
-HEADERS  += \
-	source/mainwindow.h \
+HEADERS += \
 	source/controller.h \
-	source/syntaxanalyzer.h \
+	source/document.h \
+	source/lexer.h \
+	source/parser.h \
+	source/prettyprinter.h \
+	source/codegenerator.h \
+	source/calculator.h \
+	source/rpncode.h \
+	source/number.h \
 	source/application.h \
-	source/lexicalanalyzer.h \
 	source/logger.h \
-	source/exprcalculator.h \
 	source/exceptions.h \
 	source/parsingexceptions.h \
 	source/calculatingexceptions.h \
+	source/mainwindow.h \
 	source/aboutwindow.h \
 	source/helpwindow.h \
 	source/helpbrowser.h \
 	source/logwindow.h \
-	source/rpncode.h \
-	source/builtin/mathutils.h \
 	source/builtin/function.h \
+	source/builtin/constant.h \
+	source/builtin/basicconstants.h \
+	source/builtin/mathutils.h \
 	source/builtin/basicfunctions.h \
 	source/builtin/optimization/enumerative.h \
 	source/builtin/optimization/bisection.h \
@@ -101,13 +107,7 @@ HEADERS  += \
 	source/builtin/optimization/neldermead.h \
 	source/builtin/optimization/conjugategradient.h \
 	source/builtin/equationsolving/gauss.h \
-	source/builtin/equationsolving/cramer.h \
-	source/document.h \
-	source/prettyprinter.h \
-	source/builtin/constant.h \
-	source/builtin/basicconstants.h \
-	source/number.h \
-	source/codegenerator.h
+	source/builtin/equationsolving/cramer.h
 
 FORMS	+= \
 	source/mainwindow.ui \
