@@ -31,8 +31,8 @@ private:
 		Calculator *m_calculator;
 	};
 
-	FunctionCalculator *m_functionCalculator;
 	Document *m_document;
+	FunctionCalculator *m_functionCalculator;
 
 	// defines whether functionName is built-in or user-defined and calculates it.
 	Rpn::Operand calculateFunction(const QString &functionName, const QList<Rpn::Operand> &actualArguments);

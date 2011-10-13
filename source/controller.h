@@ -35,9 +35,9 @@ private:
 	HelpWindow *m_helpWindow;
 	LogWindow *m_logWindow;
 	QHelpEngine *m_helpEngine;
-	Parser *m_parser;
-	Document *m_document;
 
+	Document *m_document;
+	Parser *m_parser;
 	explicit Controller(QObject *parent = 0);
 	~Controller();
 	bool isHelpAvailable(QString helpFullPath);

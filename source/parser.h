@@ -39,11 +39,14 @@ private:
 	void ensureNoMoreLexemes();
 	QList<Rpn::Argument> functionArguments(const QString &functionName);
 	
+
+
+
+	QList<QString> m_workingArguments;
+	Document *m_document;
 	CodeGenerator *m_codeGenerator;
 	Lexer *m_lexer;
 	Calculator *m_calculator;
-	QList<QString> m_workingArguments;
-	Document *m_document;
 };
 
 class CheckLexeme
