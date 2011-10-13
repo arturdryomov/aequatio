@@ -210,9 +210,9 @@ void MathUtils::swapColumns(QList<QList<Number> > &matrix, int index1, int index
 	}
 }
 
-Number MathUtils::machineEpsilon(Number number)
+Number MathUtils::machineEpsilon()
 {
-	return qSqrt(2.2 * qPow(10, -16)) * number;
+	return std::numeric_limits<Number>::epsilon();
 }
 
 } // namespace

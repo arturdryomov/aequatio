@@ -9,9 +9,7 @@ namespace BasicFunctions {
 class Derivative : public Function
 {
 public:
-	Derivative() : Function("derivative")
-	{
-	}
+	Derivative() : Function("derivative") {}
 
 	RpnOperand calculate(FunctionCalculator *calculator, QList<RpnOperand> actualArguments);
 	QList<RpnArgument> requiredArguments();
@@ -21,6 +19,7 @@ private:
 
 	Number findSolution(Number point);
 	Number countFunction(Number argument);
+	Number smallNumber(Number x);
 };
 
 } // namespace

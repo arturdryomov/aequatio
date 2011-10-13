@@ -35,11 +35,11 @@ Number Derivative::findSolution(Number point)
 {
 	Number result = 0;
 
-	result -= countFunction(point + 2 * MathUtils::machineEpsilon(point));
-	result += 8 * countFunction(point + MathUtils::machineEpsilon(point));
-	result -= 8 * countFunction(point - MathUtils::machineEpsilon(point));
-	result += countFunction(point - 2 * MathUtils::machineEpsilon(point));
-	result /= 12 * MathUtils::machineEpsilon(point);
+	result -= countFunction(point + 2 * smallNumber(point));
+	result += 8 * countFunction(point + smallNumber(point));
+	result -= 8 * countFunction(point - smallNumber(point));
+	result += countFunction(point - 2 * smallNumber(point));
+	result /= 12 * smallNumber(point);
 
 	return result;
 }
@@ -52,6 +52,16 @@ Number Derivative::countFunction(Number argument)
 
 	RpnOperand result = m_calculator->calculate(m_functionName, functionArguments);
 	return result.value.value<Number>();
+}
+
+Number Derivative::smallNumber(Number x)
+{
+	if (!MathUtils::isNull(x)) {
+		return qSqrt(MathUtils::machineEpsilon()) * x;
+	}
+	else {
+		return MathUtils::machineEpsilon();
+	}
 }
 
 } // namespace
