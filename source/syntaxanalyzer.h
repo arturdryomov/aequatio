@@ -8,21 +8,7 @@
 
 #include <QObject>
 #include <QString>
-#include <QVariant>
 #include <QVector>
-#include <QHash>
-
-
-enum ProcessingResultType {
-	ResultExpressionCalculated,
-	ResultConstantDeclared,
-	ResultFunctionDeclared
-};
-
-struct ProcessingResult {
-	ProcessingResultType type;
-	QVariant data; // depends on type: Number, ConstantDescription or FunctionDescription respectively.
-};
 
 class SyntaxAnalyzer : public QObject
 {
@@ -43,13 +29,13 @@ private:
 	Rpn::CodeThread function();
 	Rpn::CodeThread factor();
 	Rpn::CodeThread powerBase();
-	BinaryOperation multOperation();
 	Rpn::CodeThread summand();
+	Rpn::CodeThread identifier();
+	BinaryOperation multOperation();	
 	BinaryOperation summOperation();
 	Number number();
-	Rpn::CodeThread constant();
+
 	QString formalArgument();
-	Rpn::CodeThread actualArgument(const Rpn::Argument &correspondingFormalArgument);
 	void ensureNoMoreLexemes();
 	QList<Rpn::Argument> functionArguments(const QString &functionName);
 	

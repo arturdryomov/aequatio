@@ -4,8 +4,6 @@
 #include "prettyprinter.h"
 #include "builtin/constant.h"
 
-#include <QMetaType>
-
 SyntaxAnalyzer::SyntaxAnalyzer(QObject *parent) :
 	QObject(parent),
 	m_document(0),
@@ -157,9 +155,17 @@ QString SyntaxAnalyzer::functionDeclaration()
 	return tr("Function declared: %1").arg(m_document->prettyPrintedFunction(functionName));
 }
 
-// Expression = Summand {SummOperator Summand}
+// Expression = (Summand {SummOperator Summand}) | Vector
 Rpn::CodeThread SyntaxAnalyzer::expression()
 {
+	/* Vector */
+	if (m_lexicalAnalyzer->lexeme().type == LexemeOpeningSquareBracket) {
+		m_lexicalAnalyzer->previousLexeme();
+		return vector();
+	}
+
+	/* (Summand {SummOperator Summand}) */
+
 	// first obligatory summand
 	Rpn::CodeThread result = summand();
 
@@ -225,7 +231,7 @@ Rpn::Vector SyntaxAnalyzer::extractVector()
 	return result;
 }
 
-// Function = Identifier'(' ActualArgument{ ',' ActualArgument}')'
+// Function = Name'(' ActualArgument{ ',' ActualArgument}')'
 Rpn::CodeThread SyntaxAnalyzer::function()
 {
 	// function name
@@ -239,15 +245,13 @@ Rpn::CodeThread SyntaxAnalyzer::function()
 	if (m_lexicalAnalyzer->lexeme().type != LexemeOpeningBracket) {
 		THROW(ELexemeExpected(tr("Opening bracket after function name")));
 	}
-	QList<Rpn::Argument> formalArguments = functionArguments(functionName);
+
 
 	// Parse actual arguments and add them to list of threads
-	int actualArgumentIndex = 0;
 	QList<Rpn::CodeThread> actualArguments;
 	do {
 		m_lexicalAnalyzer->nextLexeme();
-		actualArguments << actualArgument(formalArguments.at(actualArgumentIndex));
-		++actualArgumentIndex;
+		actualArguments << expression();
 	} while (m_lexicalAnalyzer->lexeme().type == LexemeComma);
 
 	// closing bracket
@@ -296,7 +300,7 @@ Rpn::CodeThread SyntaxAnalyzer::factor()
 	return result;
 }
 
-// PowerBase = Number | Constant | Function | '('Expression')'
+// PowerBase = Number | Identifier | '('Expression')'
 Rpn::CodeThread SyntaxAnalyzer::powerBase()
 {
 	Rpn::CodeThread result;
@@ -308,17 +312,7 @@ Rpn::CodeThread SyntaxAnalyzer::powerBase()
 
 	// Constant | Function
 	else if (m_lexicalAnalyzer->lexeme().type == LexemeIdentifier) {
-		// Constant
-		m_lexicalAnalyzer->nextLexeme();
-		if (m_lexicalAnalyzer->lexeme().type != LexemeOpeningBracket) {
-			m_lexicalAnalyzer->previousLexeme();
-			result = constant();
-		}
-		// Function
-		else {
-			m_lexicalAnalyzer->previousLexeme();
-			result = function();
-		}		
+		result = identifier();
 	}
 
 	// '('Expression')'
@@ -375,6 +369,42 @@ Rpn::CodeThread SyntaxAnalyzer::summand()
 	return result;
 }
 
+// Identifier = Constant | Formal argument | Function name | Function
+Rpn::CodeThread SyntaxAnalyzer::identifier()
+{
+	QString name = m_lexicalAnalyzer->lexeme().value;
+	m_lexicalAnalyzer->nextLexeme();
+	if (m_lexicalAnalyzer->lexeme().type != LexemeOpeningBracket) {
+
+		// Constant | Formal argument | Function name
+
+		// formal argument
+		if (m_workingArguments.contains(name)) {
+			return m_codeGenerator->generateFormalArgument(name);
+		}
+
+		// constant
+		if (m_document->containsConstant(name) || BuiltIn::Constant::constants().contains(name)) {
+			return m_codeGenerator->generateConstant(name);
+		}
+
+		// Function name
+		if (m_document->containsFunction(name) || BuiltIn::Function::functions().contains(name)) {
+			return m_codeGenerator->generateFunctonNameOperand(name);
+		}
+
+		THROW(EUndeclaredUsed(name, EUndeclaredUsed::Constant));
+
+	}
+
+	// Function
+	else {
+		m_lexicalAnalyzer->previousLexeme();
+		return function();
+	}
+
+}
+
 // SummOperation = '+' | '-'
 BinaryOperation SyntaxAnalyzer::summOperation()
 {
@@ -401,27 +431,6 @@ Number SyntaxAnalyzer::number()
 	return result;
 }
 
-// Constant = Identifier (formal arguments are processed here as well)
-Rpn::CodeThread SyntaxAnalyzer::constant()
-{
-	QString constName = m_lexicalAnalyzer->lexeme().value;
-	m_lexicalAnalyzer->nextLexeme();
-
-	// it is a formal argument
-	if (m_workingArguments.contains(constName)) {
-		return m_codeGenerator->generateFormalArgument(constName);
-	}
-	
-	// it is a constant
-	else if ((m_document->containsConstant(constName) || BuiltIn::Constant::constants().contains(constName))) {
-		return m_codeGenerator->generateConstant(constName);
-	}
-	
-	else {
-		THROW(EUndeclaredUsed(constName, EUndeclaredUsed::Constant));
-	}
-}
-
 // FormalArgument = Identifier //NOTE: this is formal argument description, not using
 QString SyntaxAnalyzer::formalArgument()
 {
@@ -436,31 +445,6 @@ QString SyntaxAnalyzer::formalArgument()
 	m_lexicalAnalyzer->nextLexeme();
 
 	return argumentName;
-}
-
-Rpn::CodeThread SyntaxAnalyzer::actualArgument(const Rpn::Argument &correspondingFormalArgument)
-{
-	switch (correspondingFormalArgument.type) {
-
-		case Rpn::OperandNumber:
-			return expression();
-
-		case Rpn::OperandVector:
-			return vector();
-
-		case Rpn::OperandFunctionName: {
-			if (m_lexicalAnalyzer->lexeme().type != LexemeIdentifier) {
-				THROW(ELexemeExpected(tr("Function name")));
-			}
-			QString argumentFunctionName = m_lexicalAnalyzer->lexeme().value;
-			m_lexicalAnalyzer->nextLexeme();
-
-			return m_codeGenerator->generateFunctonNameOperand(argumentFunctionName);
-		}
-
-		default:
-			THROW(EInternal());
-	}
 }
 
 void SyntaxAnalyzer::ensureNoMoreLexemes()
