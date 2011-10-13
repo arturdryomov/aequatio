@@ -12,6 +12,11 @@ Calculator::Calculator(QObject *parent) :
 {
 }
 
+Calculator::~Calculator()
+{
+	delete m_functionCalculator;
+}
+
 void Calculator::setDocument(Document *document)
 {
 	m_document = document;

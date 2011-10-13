@@ -16,6 +16,7 @@ class Calculator : public QObject
 
 public:
 	explicit Calculator(QObject *parent = 0);
+	~Calculator();
 
 	void setDocument(Document *document);
 	Rpn::Operand calculate(const Rpn::CodeThread &thread);
