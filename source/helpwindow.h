@@ -9,11 +9,11 @@
 const QString helpFilename = "help.qhc";
 
 #ifdef Q_WS_X11
-	const QString helpPath = "/../function.hshare/doc/aequatio/";
+	const QString helpPath = "/../share/doc/aequatio/";
 #endif
 
 #ifdef Q_WS_MAC
-	const QString helpPath = "/../function.hResources/doc/";
+	const QString helpPath = "/../Resources/doc/";
 #endif
 
 #ifdef Q_WS_WIN
