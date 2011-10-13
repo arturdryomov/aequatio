@@ -16,10 +16,11 @@ class Calculator : public QObject
 
 public:
 	explicit Calculator(QObject *parent = 0);
+
 	void setDocument(Document *document);
 	Rpn::Operand calculate(const Rpn::CodeThread &thread);
+
 private:
-	bool isFunction(const QString &name);	bool isConstant(const QString &name);	QList<Rpn::Argument> functionArguments(const QString &name);
 	friend class FunctionCalculator;
 	class FunctionCalculator : public BuiltIn::Function::FunctionCalculator
 	{
@@ -27,12 +28,17 @@ private:
 		FunctionCalculator(Calculator *calculator) : m_calculator(calculator) {}
 		Rpn::Operand calculate(QString functionName, QList<Rpn::Operand> actualArguments);
 		QList<Rpn::Argument> functionArguments(const QString &name);
+
 	private:
 		Calculator *m_calculator;
 	};
 
 	Document *m_document;
 	FunctionCalculator *m_functionCalculator;
+
+	bool isFunction(const QString &name);
+	bool isConstant(const QString &name);
+	QList<Rpn::Argument> functionArguments(const QString &name);
 
 	// defines whether functionName is built-in or user-defined and calculates it.
 	Rpn::Operand calculateFunction(const QString &functionName, const QList<Rpn::Operand> &actualArguments);

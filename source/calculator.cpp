@@ -6,9 +6,9 @@
 #include <QStringList>
 
 Calculator::Calculator(QObject *parent) :
-QObject(parent),
-m_document(0),
-m_functionCalculator(new FunctionCalculator(this))
+	QObject(parent),
+	m_document(0),
+	m_functionCalculator(new FunctionCalculator(this))
 {
 }
 
@@ -19,8 +19,10 @@ void Calculator::setDocument(Document *document)
 
 Rpn::Operand Calculator::calculate(const Rpn::CodeThread &thread)
 {
+	// TODO: Throw exception instead?
 	Q_ASSERT(m_document != 0);
 
+	// Construct Main function, that includes child thread
 	Rpn::Function function = {QList<Rpn::Argument>(), thread};
 	m_document->addFunction(Rpn::FunctionMain, function);
 	return calculateUserDefinedFunction(Rpn::FunctionMain, QList<Rpn::Operand>());
@@ -70,14 +72,14 @@ Rpn::Operand Calculator::calculateUserDefinedFunction(const QString &functionNam
 				break;
 			}
 
-				// Get actual value and push it to stack
+			// Get actual value and push it to stack
 			case Rpn::ElementArgument: {
 				// We will not check for argument types here at his time as currently user-defined functions
 				// can only take numbers as arguments.
 				QString argumentName = element.value.value<QString>();
 				Rpn::Function function = m_document->function(functionName);
 
-				for (int i = 0; i < function.arguments.count(); ++i) {
+				for (int i = 0; i < function.arguments.size(); ++i) {
 					// find ordinal number of the argument with name argumentName
 					// and substitute it with actual value from funtionArguments
 					if (argumentName == function.arguments.at(i).name) {
@@ -105,12 +107,12 @@ Rpn::Operand Calculator::calculateUserDefinedFunction(const QString &functionNam
 				break;
 			}
 
-				// Find function and call it
+			// Find function and call it
 			case Rpn::ElementFunctionCall: {
 				QString callingFunctionName = element.value.value<QString>();
 
 				QList<Rpn::Operand> actualArguments;
-				for (int i = 0; i < functionArguments(callingFunctionName).count(); ++i) {
+				for (int i = 0; i < functionArguments(callingFunctionName).size(); ++i) {
 					actualArguments.prepend(calculationStack.pop());
 				}
 
@@ -129,15 +131,14 @@ Rpn::Operand Calculator::calculateUserDefinedFunction(const QString &functionNam
 		THROW(EIncorrectRpnCode());
 	}
 
-    // Return the result -- it might be an operand of any type
+	// Return the result -- it might be an operand of any type
 	Rpn::Operand result = calculationStack.pop();
 	return result;
 }
 
 Rpn::Operand Calculator::calculateBuiltInFunction(const QString &functionName, const QList<Rpn::Operand> &actualArguments)
 {
-	return BuiltIn::Function::functions().value(functionName)->calculate(
-	m_functionCalculator, actualArguments);
+	return BuiltIn::Function::functions().value(functionName)->calculate(m_functionCalculator, actualArguments);
 }
 
 bool Calculator::isFunction(const QString &name)

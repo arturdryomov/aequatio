@@ -182,12 +182,12 @@ bool CodeGenerator::isFunctionSignatureSuitable(const QString &functionName, int
 	const QList<Rpn::Argument> &functionArguments = functionFormalArguments(functionName);
 
 	if (argumentsCount != Rpn::ArbitraryArgumentsCount) {
-		if (functionArguments.count() != argumentsCount) {
+		if (functionArguments.size() != argumentsCount) {
 			return false;
 		}
 	}
 
-	for (int i = 0; i < functionArguments.count(); ++i) {
+	for (int i = 0; i < functionArguments.size(); ++i) {
 		if (functionArguments.at(i).type != Rpn::OperandNumber) {
 			return false;
 		}
