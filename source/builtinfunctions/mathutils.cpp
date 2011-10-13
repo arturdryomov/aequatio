@@ -210,4 +210,9 @@ void MathUtils::swapColumns(QList<QList<Number> > &matrix, int index1, int index
 	}
 }
 
+Number MathUtils::machineEpsilon(Number number)
+{
+	return qSqrt(2.2 * qPow(10, -16)) * number;
+}
+
 } // namespace

@@ -29,6 +29,7 @@ public:
 	static QList<Number> generateRandomNumbers(int count, Number lowerLimit, Number higherLimit);
 	static Number getRandomNumber(Number higherLimit);
 
+	static Number machineEpsilon(Number number);
 
 private:
 	static void swapColumns(QList<QList<Number> > &matrix, int index1, int index2);
