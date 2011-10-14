@@ -7,11 +7,10 @@ namespace BuiltIn {
 namespace Optimization {
 
 // Class for finding minimum of function with Rosenbrock method
-// TODO: Check it, second primer from book is not working fine, questions about 3(1) step
 class Rosenbrock : public Function
 {
 public:
-	Rosenbrock() : Function("rosenbrock") {}
+	Rosenbrock();
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();

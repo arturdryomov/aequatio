@@ -36,7 +36,7 @@ Rpn::Operand Calculator::calculate(const Rpn::CodeThread &thread)
 Rpn::Operand Calculator::calculateFunction(const QString &functionName, const QList<Rpn::Operand> &actualArguments)
 {
 	if (BuiltIn::Function::functions().contains(functionName)) {
-		// check for argument types equivalence
+		// Check for argument types equivalence
 		QList<Rpn::Argument> requiredArguments = BuiltIn::Function::functions().
 		value(functionName)->requiredArguments();
 		for (int i = 0; i < requiredArguments.size(); ++i) {
@@ -45,13 +45,12 @@ Rpn::Operand Calculator::calculateFunction(const QString &functionName, const QL
 			}
 		}
 
-		// calculate
+		// Calculate
 		return calculateBuiltInFunction(functionName, actualArguments);
 	}
 
 	else if (m_document->containsFunction(functionName)) {
-		// no type checks here at the moment as user-defined functions can take only
-		// numbers as arguments.
+		// No type checks here at the moment as user-defined functions can take only numbers as arguments
 		return calculateUserDefinedFunction(functionName, actualArguments);
 	}
 
@@ -80,12 +79,12 @@ Rpn::Operand Calculator::calculateUserDefinedFunction(const QString &functionNam
 			// Get actual value and push it to stack
 			case Rpn::ElementArgument: {
 				// We will not check for argument types here at his time as currently user-defined functions
-				// can only take numbers as arguments.
+				// can only take numbers as arguments
 				QString argumentName = element.value.value<QString>();
 				Rpn::Function function = m_document->function(functionName);
 
 				for (int i = 0; i < function.arguments.size(); ++i) {
-					// find ordinal number of the argument with name argumentName
+					// Find ordinal number of the argument with name argumentName
 					// and substitute it with actual value from funtionArguments
 					if (argumentName == function.arguments.at(i).name) {
 						calculationStack.push(actualArguments[i]);

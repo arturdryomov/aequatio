@@ -8,6 +8,11 @@ namespace
 	NelderMead instance;
 }
 
+NelderMead::NelderMead() :
+	Function("nelder_mead")
+{
+}
+
 Rpn::Operand NelderMead::calculate(Function::FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	m_calculator = calculator;
@@ -44,8 +49,8 @@ QList<Rpn::Argument> NelderMead::requiredArguments()
 	arguments
 		<< Rpn::Argument(Rpn::OperandFunctionName, QString(), QVariant::fromValue(Rpn::ArbitraryArgumentsCount)) // function
 		<< Rpn::Argument(Rpn::OperandVector) // initial simplex
-		<< Rpn::Argument(Rpn::OperandNumber)	// reflection coefficient
-		<< Rpn::Argument(Rpn::OperandNumber)	// compression coefficient
+		<< Rpn::Argument(Rpn::OperandNumber) // reflection coefficient
+		<< Rpn::Argument(Rpn::OperandNumber) // compression coefficient
 		<< Rpn::Argument(Rpn::OperandNumber) // strain coefficient
 		<< Rpn::Argument(Rpn::OperandNumber); // stop value
 
@@ -63,7 +68,7 @@ QList<Number> NelderMead::findMinimum(const QList<QList<Number> > &initialSimple
 	QList<QList<Number> > simplex = initialSimplex;
 	forever {
 
-		// find best, worst and second worst values
+		// Find best, worst and second worst values
 
 		QList<Number> functions;
 		foreach (const QList<Number> point, simplex) {
@@ -74,15 +79,15 @@ QList<Number> NelderMead::findMinimum(const QList<QList<Number> > &initialSimple
 		int worst = indexOfMaximal(functions);
 		int secondWorst = indexOfSecondMaximal(functions);
 
-		// find center value
+		// Find center value
 		QList<Number> center = findCenter(simplex, worst);
 
-		// check for exit
+		// Check for exit
 		if (found(simplex, center, accuracy)) {
 			return simplex[best];
 		}
 
-		// get reflected value
+		// Get reflected value
 
 		QList<Number> reflected = MathUtils::addVectorToVector(
 			center,

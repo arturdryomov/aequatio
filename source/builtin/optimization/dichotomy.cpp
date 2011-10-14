@@ -8,6 +8,11 @@ namespace
 	Dichotomy instance;
 }
 
+Dichotomy::Dichotomy() :
+	Function("dichotomy")
+{
+}
+
 Rpn::Operand Dichotomy::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	// Initialize algorithm variables

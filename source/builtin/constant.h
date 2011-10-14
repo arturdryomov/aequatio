@@ -26,7 +26,7 @@ protected:
 	// in constructor.
 	void addConstant(const QString &name, Number value)
 	{
-		// make sure 2 same-named constants are not added to the list
+		// Make sure 2 same-named constants are not added to the list
 		Q_ASSERT(!constants().contains(name));
 
 		constantsWritable().insert(name, value);

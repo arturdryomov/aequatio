@@ -9,7 +9,7 @@ namespace BasicFunctions{
 class Plus : public Function
 {
 public:
-	Plus() : Function(Rpn::FunctionPlus) {}
+	Plus();
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
@@ -20,7 +20,7 @@ public:
 class Minus : public Function
 {
 public:
-	Minus() : Function(Rpn::FunctionMinus) {}
+	Minus();
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
@@ -31,7 +31,7 @@ public:
 class Multiply : public Function
 {
 public:
-	Multiply() : Function(Rpn::FunctionMultiply) {}
+	Multiply();
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
@@ -42,7 +42,7 @@ public:
 class Divide : public Function
 {
 public:
-	Divide() : Function(Rpn::FunctionDivide) {}
+	Divide();
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
@@ -53,7 +53,7 @@ public:
 class Power : public Function
 {
 public:
-	Power() : Function(Rpn::FunctionPower)	{}
+	Power();
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
@@ -64,7 +64,7 @@ public:
 class UnaryMinus : public Function
 {
 public:
-	UnaryMinus() : Function(Rpn::FunctionUnaryMinus) {}
+	UnaryMinus();
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
@@ -75,7 +75,7 @@ public:
 class Sine : public Function
 {
 public:
-	Sine() : Function("sin") {}
+	Sine();
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
@@ -86,7 +86,7 @@ public:
 class Cosine : public Function
 {
 public:
-	Cosine() : Function("cos")	{}
+	Cosine();
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
@@ -97,7 +97,7 @@ public:
 class Tangent : public Function
 {
 public:
-	Tangent() : Function("tan") {}
+	Tangent();
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
@@ -108,7 +108,7 @@ public:
 class Arcsine : public Function
 {
 public:
-	Arcsine() : Function("asin") {}
+	Arcsine();
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
@@ -119,7 +119,7 @@ public:
 class Arccosine : public Function
 {
 public:
-	Arccosine() : Function("acos") {}
+	Arccosine();
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
@@ -130,7 +130,7 @@ public:
 class Arctangent : public Function
 {
 public:
-	Arctangent() : Function("atan") {}
+	Arctangent();
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
@@ -141,7 +141,7 @@ public:
 class AbsoluteValue : public Function
 {
 public:
-	AbsoluteValue() : Function("abs") {}
+	AbsoluteValue();
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
@@ -152,7 +152,7 @@ public:
 class SquareRoot : public Function
 {
 public:
-	SquareRoot() : Function("sqrt") {}
+	SquareRoot();
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
@@ -163,7 +163,7 @@ public:
 class NaturalLogarithm : public Function
 {
 public:
-	NaturalLogarithm() : Function("ln") {}
+	NaturalLogarithm();
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
@@ -174,7 +174,7 @@ public:
 class ExponentialFunction : public Function
 {
 public:
-	ExponentialFunction() : Function("exp") {}
+	ExponentialFunction();
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();

@@ -10,6 +10,11 @@ namespace
 	ReturningRandom instance;
 }
 
+ReturningRandom::ReturningRandom() :
+	Function("returning_random")
+{
+}
+
 Rpn::Operand ReturningRandom::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	// Initialize algorithm variables

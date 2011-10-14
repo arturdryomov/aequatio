@@ -8,6 +8,11 @@ namespace
 	Rosenbrock instance;
 }
 
+Rosenbrock::Rosenbrock() :
+	Function("rosenbrock")
+{
+}
+
 Rpn::Operand Rosenbrock::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	// Initialize algorithm variables

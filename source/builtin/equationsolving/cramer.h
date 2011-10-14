@@ -9,16 +9,17 @@ namespace EquationSolving {
 class Cramer : public Function
 {
 public:
-	Cramer() : Function("cramer")	{}
+	Cramer();
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
 	Rpn::OperandType returnValueType();
+
 private:
+	class ENoSolution : public ECalculating {};
+
 	QList<QList<Number> > m_matrixCoefficients;
 	QList<Number> findSolution();
-
-	class ENoSolution : public ECalculating {};
 };
 
 } // namespace

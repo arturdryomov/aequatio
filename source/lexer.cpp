@@ -60,12 +60,12 @@ void Lexer::parse(const QString &input)
 		extractLexeme();
 	}
 	
-	// ensure there are lexemes
+	// Ensure there are lexemes
 	if (m_lexemeList.isEmpty()) {
 		THROW(EInternal());
 	}	
 	
-	// create new constant iterator for lexemes
+	// Create new constant iterator for lexemes
 	if (m_lexemeListIterator != 0) {
 		delete m_lexemeListIterator;
 	}

@@ -8,6 +8,11 @@ namespace
 	GoldenSection instance;
 }
 
+GoldenSection::GoldenSection() :
+	Function("golden_section")
+{
+}
+
 Rpn::Operand GoldenSection::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	// Initialize algorithm variables

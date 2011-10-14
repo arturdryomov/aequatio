@@ -36,7 +36,7 @@ int Controller::runApplication(int argc, char *argv[])
 		.arg(VERSION_BUILD)
 		.arg(versionRevisionFromNumber(VERSION_REVISION)));
 	
-	// set codecs to unicode
+	// Set codecs to unicode
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf8"));
 	QTextCodec::setCodecForTr(QTextCodec::codecForName("utf8"));	
 	
@@ -78,7 +78,7 @@ void Controller::commandEntered(const QString &command)
 
 void Controller::constantsAndFunctionsUpdated()
 {
-	// prepare constants text
+	// Prepare constants text
 	QString constantsText;
 	QStringList constants = m_document->prettyPrintedConstants();
 	if (constants.isEmpty()) {
@@ -90,7 +90,7 @@ void Controller::constantsAndFunctionsUpdated()
 		}
 	}
 
-	// prepare functions text
+	// Prepare functions text
 	QString functionsText;
 	QStringList functions = m_document->prettyPrintedFunctions();
 	if (functions.isEmpty()) {
@@ -102,7 +102,7 @@ void Controller::constantsAndFunctionsUpdated()
 		}
 	}
 
-	// prepare full text and update sidebar
+	// Prepare full text and update sidebar
 	QString fullText = ListHeaderTemplate.arg(tr("Constants")) + constantsText
 		+ ListHeaderTemplate.arg(tr("Functions")) + functionsText;
 

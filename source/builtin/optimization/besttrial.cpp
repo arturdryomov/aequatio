@@ -10,6 +10,11 @@ namespace
 	BestTrial instance;
 }
 
+BestTrial::BestTrial() :
+	Function("best_trial")
+{
+}
+
 Rpn::Operand BestTrial::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	// Initialize algorithm variables

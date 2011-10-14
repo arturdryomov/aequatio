@@ -15,6 +15,7 @@ Parser::Parser(QObject *parent) :
 
 Parser::~Parser()
 {
+	delete m_lexer;
 }
 
 QString Parser::process(const QString &input, Document *document)
@@ -27,7 +28,7 @@ QString Parser::process(const QString &input, Document *document)
 	m_codeGenerator = new CodeGenerator(m_document);
 	m_calculator = new Calculator(m_document, this);
 
-	// perform lexical analyzis
+	// Perform lexical analyzis
 	m_lexer->parse(input);
 	if (m_lexer->lexeme().type == LexemeEol) {
 		THROW(EEmptyInput());
@@ -61,7 +62,7 @@ QString Parser::command()
 		ensureNoMoreLexemes();
 	}
 
-	// expression
+	// Expression
 	else {
 		Rpn::CodeThread codeThread = expression(); // convert expression to RPN
 		ensureNoMoreLexemes();
@@ -151,7 +152,7 @@ QString Parser::functionDeclaration()
 	/* Parse the function body and save it */
 
 	Rpn::CodeThread functionBody = expression();
-	// this adds function to m_document
+	// This adds function to m_document
 	m_codeGenerator->addFunction(functionName, m_workingArguments, functionBody);
 
 	return tr("Function declared: %1").arg(m_document->prettyPrintedFunction(functionName));
@@ -167,7 +168,7 @@ Rpn::CodeThread Parser::expression()
 
 	/* (Summand {SummOperator Summand}) */
 
-	// first obligatory summand
+	// First obligatory summand
 	Rpn::CodeThread result = summand();
 
 	// {SummOperator Summand} section
@@ -186,7 +187,7 @@ Rpn::CodeThread Parser::vector()
 	return m_codeGenerator->packVector(extractVector());
 }
 
-// extracts vector recursively
+// Extracts vector recursively
 Rpn::Vector Parser::extractVector()
 {
 	if (m_lexer->lexeme().type != LexemeOpeningSquareBracket) {
@@ -235,7 +236,7 @@ Rpn::Vector Parser::extractVector()
 // Function = Name'(' ActualArgument{ ',' ActualArgument}')'
 Rpn::CodeThread Parser::function()
 {
-	// function name
+	// Function name
 	if (m_lexer->lexeme().type != LexemeIdentifier) {
 		THROW(EInternal());
 	}	
@@ -255,13 +256,13 @@ Rpn::CodeThread Parser::function()
 		actualArguments << expression();
 	} while (m_lexer->lexeme().type == LexemeComma);
 
-	// closing bracket
+	// Closing bracket
 	if (m_lexer->lexeme().type != LexemeClosingBracket) {
 		THROW(ELexemeExpected(tr("Closing bracket after arguments list")));
 	}	
 	m_lexer->nextLexeme();
 
-	// result
+	// Result
 	return m_codeGenerator->generateFunction(functionName, actualArguments);
 }
 
@@ -357,7 +358,7 @@ BinaryOperation Parser::multOperation()
 // Summand = Factor {MultOperator Factor}
 Rpn::CodeThread Parser::summand()
 {
-	// first obligatory factor
+	// First obligatory factor
 	Rpn::CodeThread result = factor();
 
 	// {MultOperation Factor} section
@@ -379,12 +380,12 @@ Rpn::CodeThread Parser::identifier()
 
 		// Constant | Formal argument | Function name
 
-		// formal argument
+		// Formal argument
 		if (m_workingArguments.contains(name)) {
 			return m_codeGenerator->generateFormalArgument(name);
 		}
 
-		// constant
+		// Constant
 		if (m_document->containsConstant(name) || BuiltIn::Constant::constants().contains(name)) {
 			return m_codeGenerator->generateConstant(name);
 		}

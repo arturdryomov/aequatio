@@ -8,6 +8,11 @@ namespace
 	Powell instance;
 }
 
+Powell::Powell() :
+	Function("powell")
+{
+}
+
 Rpn::Operand Powell::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	// Initialize algorithm variables

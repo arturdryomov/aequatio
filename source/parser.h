@@ -19,6 +19,7 @@ public:
 	~Parser();
 
 	QString process(const QString &input, Document *document);
+
 private:
 	QString command();
 	QString constDeclaration();

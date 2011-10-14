@@ -34,6 +34,7 @@ struct Lexeme {
 class Lexer : public QObject
 {
 	Q_OBJECT
+
 public:
 	Lexer(QObject *parent = 0);
 	~Lexer();
@@ -42,6 +43,7 @@ public:
 	Lexeme lexeme();
 	void nextLexeme();
 	void previousLexeme();
+
 private:
 	QString m_input;
 	int m_position;	

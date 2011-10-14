@@ -8,6 +8,11 @@ namespace
 	Fibonacci instance;
 }
 
+Fibonacci::Fibonacci() :
+	Function("fibonacci")
+{
+}
+
 Rpn::Operand Fibonacci::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	// Initialize algorithm variables

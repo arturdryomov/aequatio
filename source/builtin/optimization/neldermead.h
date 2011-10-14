@@ -6,16 +6,16 @@
 namespace BuiltIn {
 namespace Optimization {
 
-// Nelder-Mead method, “метод деформируемого многогранника” in Russian terminology.
-
+// Nelder-Mead method
 class NelderMead : public Function
 {
 public:
-	NelderMead() : Function("nelder_mead") {}
+	NelderMead();
 
 	QList<Rpn::Argument> requiredArguments();
 	Rpn::Operand calculate(FunctionCalculator* calculator, QList<Rpn::Operand> actualArguments);
 	Rpn::OperandType returnValueType();
+
 private:
 	FunctionCalculator* m_calculator;
 	QString m_functionName;

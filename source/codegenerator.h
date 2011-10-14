@@ -31,6 +31,7 @@ public:
 	Rpn::Vector generateVector(const QList<Number> &elements); // 1-dimensional
 	Rpn::Vector generateVector(const QList<Rpn::Vector> &elements); // multi-dimensional
 	Rpn::CodeThread packVector(const Rpn::Vector &vector);
+
 private:
 	Document *m_document;
 

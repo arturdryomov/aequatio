@@ -10,6 +10,11 @@ namespace
 	AdaptiveRandom instance;
 }
 
+AdaptiveRandom::AdaptiveRandom() :
+	Function("adaptive_random")
+{
+}
+
 Rpn::Operand AdaptiveRandom::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	// Initialize algorithm variables

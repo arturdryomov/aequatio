@@ -9,11 +9,12 @@ namespace EquationSolving {
 class Gauss : public Function
 {
 public:
-	Gauss() : Function("gauss") {}
+	Gauss();
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
 	Rpn::OperandType returnValueType();
+
 private:
 	QList<Number> findSolution(QList<QList<Number> > coefficients);
 	void swapColumns(QList<QList<Number> > &matrix, int index1, int index2);

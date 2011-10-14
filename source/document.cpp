@@ -126,12 +126,12 @@ bool Document::isFunctionUsed(const QString &name, const Rpn::CodeThread &codeTh
 		QString calledFunctionName = element.value.value<QString>();
 		if (!m_functions.contains(calledFunctionName)) continue;
 
-		// is this our function call
+		// Is this our function call
 		if (calledFunctionName == name) {
 			return true;
 		}
 
-		// check recursively
+		// Check recursively
 		Rpn::CodeThread calledFunctionCode = m_functions.value(calledFunctionName).codeThread;
 		if (isFunctionUsed(name, calledFunctionCode)) {
 			return true;

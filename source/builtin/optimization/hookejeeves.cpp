@@ -8,6 +8,11 @@ namespace
 	HookeJeeves instance;
 }
 
+HookeJeeves::HookeJeeves() :
+	Function("hooke_jeeves")
+{
+}
+
 Rpn::Operand HookeJeeves::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	// Initialize algorithm variables

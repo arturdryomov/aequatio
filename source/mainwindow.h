@@ -13,25 +13,32 @@ static const QString ListElementTemplate = "<p style='margin: 0px 0px 4px 20px'>
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
+
 signals:
 	void commandEntered(const QString &);
 	void helpLaunchQueried();
 	void logviewLaunch();
+
 public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
 	void clearInputArea();
+
 public slots:
 	void displayErrorInfo(const QString &info);
 	void hideErrorInfo();
 	void updateSidebar(const QString &contents);
 	void resultReturned(const QString &result);
+
 private slots:
 	void commandEntered();
+
 protected:
 	void resizeEvent(QResizeEvent *);
+
 private slots:
 	void aboutTriggered();
+
 private:
 	Ui::MainWindow *ui;
 	void setSplitterSizes();

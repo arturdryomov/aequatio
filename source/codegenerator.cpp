@@ -19,7 +19,7 @@ void CodeGenerator::setDocument(Document *document)
 
 void CodeGenerator::addConstant(const QString &name, const Rpn::Operand &value)
 {
-	// constant values currently can only be of Number type
+	// Constant values currently can only be of Number type
 	if (value.type != Rpn::OperandNumber) {
 		THROW(EIncorrectConstantDeclaration());
 	}
@@ -108,7 +108,7 @@ Rpn::CodeThread CodeGenerator::generateFormalArgument(const QString &name)
 
 Rpn::CodeThread CodeGenerator::generateFunction(const QString &name, const QList<Rpn::CodeThread> &actualArguments)
 {
-	// determine functions formal arguments
+	// Determine functions formal arguments
 	const QList<Rpn::Argument> &formalArguments = functionFormalArguments(name);
 
 	// Check whether actual arguments comply with respective formal arguments
@@ -121,7 +121,7 @@ Rpn::CodeThread CodeGenerator::generateFunction(const QString &name, const QList
 		checkFormalActualArgumentsCompliance(formalArguments.at(i), actualArguments.at(i));
 	}
 
-	// build resulting thread
+	// Build resulting thread
 	Rpn::CodeThread result;
 	for (int i = 0; i < actualArguments.size(); ++i) {
 		result << actualArguments.at(i);
@@ -176,7 +176,7 @@ Rpn::CodeThread CodeGenerator::packVector(const Rpn::Vector &vector)
 	return result;
 }
 
-// assuming that all arguments are expected to be of the Number type
+// Assuming that all arguments are expected to be of the Number type
 bool CodeGenerator::isFunctionSignatureSuitable(const QString &functionName, int argumentsCount)
 {
 	const QList<Rpn::Argument> &functionArguments = functionFormalArguments(functionName);
@@ -205,7 +205,7 @@ void CodeGenerator::checkFormalActualArgumentsCompliance(Rpn::Argument formalArg
 
 	if (formalArgument.type == Rpn::OperandFunctionName) {
 
-		// make sure that the function passed as an argument has appropriate signature
+		// Make sure that the function passed as an argument has appropriate signature
 
 		// (formalArgument.type == OperandFunctionName) =>
 		//	=>	(codeThreadExpressionType(actualArgumentCodeThread) == OperandFunctionName)
@@ -252,7 +252,7 @@ Rpn::OperandType CodeGenerator::codeThreadExpressionType(const Rpn::CodeThread &
 		THROW(EIncorrectRpnCode());
 	}
 
-	// operand, constant or formal argument -- the only element
+	// Operand, constant or formal argument -- the only element
 	else if (thread.size() == 1) {
 
 		Rpn::Element element = thread.last();
@@ -263,11 +263,11 @@ Rpn::OperandType CodeGenerator::codeThreadExpressionType(const Rpn::CodeThread &
 				return element.value.value<Rpn::Operand>().type;
 
 			case Rpn::ElementConstant:
-				// constants can currently be only of the Number type
+				// Constants can currently be only of the Number type
 				return Rpn::OperandNumber;
 
 			case Rpn::ElementArgument:
-				// user-defined functions currently take only Numbers as arguments,
+				// User-defined functions currently take only Numbers as arguments,
 				return Rpn::OperandNumber;
 
 			default:
@@ -275,14 +275,14 @@ Rpn::OperandType CodeGenerator::codeThreadExpressionType(const Rpn::CodeThread &
 		}
 	}
 
-	// function call
+	// Function call
 	else {
 		Rpn::Element element = thread.last();
 		if (element.type != Rpn::ElementFunctionCall) {
 			THROW(EIncorrectRpnCode());
 		}
 
-		// define the type of the result of the function call
+		// Define the type of the result of the function call
 		QString functionName = element.value.value<QString>();
 		return defineFunctionReturnType(functionName);
 	}
@@ -291,7 +291,7 @@ Rpn::OperandType CodeGenerator::codeThreadExpressionType(const Rpn::CodeThread &
 Rpn::OperandType CodeGenerator::defineFunctionReturnType(const QString &functionName)
 {
 	if (m_document->containsFunction(functionName)) {
-		// user-defined functions can currently return only the Number type
+		// User-defined functions can currently return only the Number type
 		return Rpn::OperandNumber;
 	}
 

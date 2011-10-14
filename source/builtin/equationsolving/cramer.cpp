@@ -8,6 +8,11 @@ namespace
 	Cramer instance;
 }
 
+Cramer::Cramer() :
+	Function("cramer")
+{
+}
+
 Rpn::Operand Cramer::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	Q_UNUSED(calculator);

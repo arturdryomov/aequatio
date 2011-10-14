@@ -8,6 +8,11 @@ namespace
 	Plus instancePlus;
 }
 
+Plus::Plus() :
+	Function(Rpn::FunctionPlus)
+{
+}
+
 Rpn::Operand Plus::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	Q_UNUSED(calculator);
@@ -38,6 +43,11 @@ namespace
 	Minus instanceMinus;
 }
 
+Minus::Minus() :
+	Function(Rpn::FunctionMinus)
+{
+}
+
 Rpn::Operand Minus::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	Q_UNUSED(calculator);
@@ -62,9 +72,15 @@ Rpn::OperandType Minus::returnValueType()
 	return Rpn::OperandNumber;
 }
 
+
 namespace
 {
 	Multiply instanceMultiply;
+}
+
+Multiply::Multiply() :
+	Function(Rpn::FunctionMultiply)
+{
 }
 
 Rpn::Operand Multiply::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
@@ -91,9 +107,15 @@ Rpn::OperandType Multiply::returnValueType()
 	return Rpn::OperandNumber;
 }
 
+
 namespace
 {
 	Divide instanceDivide;
+}
+
+Divide::Divide() :
+	Function(Rpn::FunctionDivide)
+{
 }
 
 Rpn::Operand Divide::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
@@ -120,9 +142,15 @@ Rpn::OperandType Divide::returnValueType()
 	return Rpn::OperandNumber;
 }
 
+
 namespace
 {
 	Power instancePower;
+}
+
+Power::Power() :
+	Function(Rpn::FunctionPower)
+{
 }
 
 Rpn::Operand Power::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
@@ -149,9 +177,15 @@ Rpn::OperandType Power::returnValueType()
 	return Rpn::OperandNumber;
 }
 
+
 namespace
 {
 	UnaryMinus instanceUnaryMinus;
+}
+
+UnaryMinus::UnaryMinus() :
+	Function(Rpn::FunctionUnaryMinus)
+{
 }
 
 Rpn::Operand UnaryMinus::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
@@ -178,9 +212,15 @@ Rpn::OperandType UnaryMinus::returnValueType()
 	return Rpn::OperandNumber;
 }
 
+
 namespace
 {
 	Sine instanceSine;
+}
+
+Sine::Sine() :
+	Function("sin")
+{
 }
 
 Rpn::Operand Sine::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
@@ -207,9 +247,15 @@ Rpn::OperandType Sine::returnValueType()
 	return Rpn::OperandNumber;
 }
 
+
 namespace
 {
 	Cosine instanceCosine;
+}
+
+Cosine::Cosine() :
+	Function("cos")
+{
 }
 
 Rpn::Operand Cosine::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
@@ -236,9 +282,15 @@ Rpn::OperandType Cosine::returnValueType()
 	return Rpn::OperandNumber;
 }
 
+
 namespace
 {
 	Tangent instanceTangent;
+}
+
+Tangent::Tangent() :
+	Function("tan")
+{
 }
 
 Rpn::Operand Tangent::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
@@ -265,9 +317,15 @@ Rpn::OperandType Tangent::returnValueType()
 	return Rpn::OperandNumber;
 }
 
+
 namespace
 {
 	Arcsine instanceArcsine;
+}
+
+Arcsine::Arcsine() :
+	Function("asin")
+{
 }
 
 Rpn::Operand Arcsine::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
@@ -294,9 +352,15 @@ Rpn::OperandType Arcsine::returnValueType()
 	return Rpn::OperandNumber;
 }
 
+
 namespace
 {
 	Arccosine instanceArccosine;
+}
+
+Arccosine::Arccosine() :
+	Function("acos")
+{
 }
 
 Rpn::Operand Arccosine::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
@@ -323,9 +387,15 @@ Rpn::OperandType Arccosine::returnValueType()
 	return Rpn::OperandNumber;
 }
 
+
 namespace
 {
 	Arctangent instanceArctangent;
+}
+
+Arctangent::Arctangent() :
+	Function("atan")
+{
 }
 
 Rpn::Operand Arctangent::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
@@ -352,9 +422,15 @@ Rpn::OperandType Arctangent::returnValueType()
 	return Rpn::OperandNumber;
 }
 
+
 namespace
 {
 	AbsoluteValue instanceAbsoluteValue;
+}
+
+AbsoluteValue::AbsoluteValue() :
+	Function("abs")
+{
 }
 
 Rpn::Operand AbsoluteValue::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
@@ -381,9 +457,15 @@ Rpn::OperandType AbsoluteValue::returnValueType()
 	return Rpn::OperandNumber;
 }
 
+
 namespace
 {
 	SquareRoot instanceSquareRoot;
+}
+
+SquareRoot::SquareRoot() :
+	Function("sqrt")
+{
 }
 
 Rpn::Operand SquareRoot::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
@@ -410,9 +492,15 @@ Rpn::OperandType SquareRoot::returnValueType()
 	return Rpn::OperandNumber;
 }
 
+
 namespace
 {
 	NaturalLogarithm instanceNaturalLogarithm;
+}
+
+NaturalLogarithm::NaturalLogarithm() :
+	Function("ln")
+{
 }
 
 Rpn::Operand NaturalLogarithm::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
@@ -439,9 +527,15 @@ Rpn::OperandType NaturalLogarithm::returnValueType()
 	return Rpn::OperandNumber;
 }
 
+
 namespace
 {
 	ExponentialFunction instanceExponentialFunction;
+}
+
+ExponentialFunction::ExponentialFunction() :
+	Function("exp")
+{
 }
 
 Rpn::Operand ExponentialFunction::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)

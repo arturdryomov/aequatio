@@ -22,6 +22,7 @@ public:
 	ELexemeExpected(const QString &whatExpected);
 	QString message();
 	LogItem logItem();
+
 private:
 	QString m_expected;
 };
@@ -40,6 +41,7 @@ public:
 	enum ElementType {Constant, Function};
 	EUndeclaredUsed(const QString &elementName, ElementType elementType);
 	QString message();
+
 private:
 	QString m_elementName;
 	ElementType m_elementType;
@@ -51,6 +53,7 @@ class EWrongArgumentsCount : public EParsing
 public:
 	EWrongArgumentsCount(const QString &functionName, int argumentsExpected);
 	QString message();
+
 private:
 	QString m_functionName;
 	int m_argumentsExpected;
@@ -62,6 +65,7 @@ class EFormalArgumentReused : public EParsing
 public:
 	EFormalArgumentReused(const QString &argumentName);
 	QString message();
+
 private:
 	QString m_argumentName;
 };
@@ -72,6 +76,7 @@ class EIncorrectCharacter : public EParsing
 public:
 	EIncorrectCharacter(QChar c);
 	QString message();
+
 private:
 	QChar m_character;
 };
@@ -91,6 +96,7 @@ class EIncorrectFunctionArgument : public EParsing
 public:
 	EIncorrectFunctionArgument(const QString &functionName);
 	QString message();
+
 private:
 	QString m_functionName;
 };
@@ -111,8 +117,10 @@ public:
 	EUnsupportedLexeme(const QString &unsupportedType);
 	// User does't need to know what is unsupported here.
 	// This info is for debug purpose only.
+
 protected:
 	LogItem logItem();
+
 private:
 	QString m_unsupported;
 };

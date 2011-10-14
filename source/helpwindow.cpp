@@ -45,7 +45,7 @@ HelpWindow::~HelpWindow()
 
 bool HelpWindow::eventFilter(QObject *watched, QEvent *event)
 {
-	// make sure we are filtering mouse event on help content widget
+	// Make sure we are filtering mouse event on help content widget
 	if (event->type() != QEvent::MouseButtonRelease) {
 		return false;
 	}
@@ -53,14 +53,14 @@ bool HelpWindow::eventFilter(QObject *watched, QEvent *event)
 		return false;
 	}
 
-	// make sure this is a left button or middle button click
+	// Make sure this is a left button or middle button click
 	QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(event);
 	if (mouseEvent == 0) return false;
 	if ((mouseEvent->button() != Qt::LeftButton) && (mouseEvent->button() != Qt::MiddleButton)) {
 		return false;
 	}
 
-	// make sure the user pressed the button while the mouse was over one of the items
+	// Make sure the user pressed the button while the mouse was over one of the items
 	const QModelIndex &modelIndex = m_helpContentWidget->indexAt(mouseEvent->pos());
 	if (!modelIndex.isValid()) return false;
 
@@ -71,7 +71,7 @@ bool HelpWindow::eventFilter(QObject *watched, QEvent *event)
 		return false;
 	}
 
-	// show the appropriate help topic
+	// Show the appropriate help topic
 	QHelpContentModel *contentModel = qobject_cast<QHelpContentModel*>(m_helpContentWidget->model());
 	if (contentModel != 0) {
 		QHelpContentItem *item = contentModel->contentItemAt(modelIndex);

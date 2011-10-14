@@ -8,6 +8,11 @@ namespace
 	Bisection instance;
 }
 
+Bisection::Bisection() :
+	Function("bisection")
+{
+}
+
 Rpn::Operand Bisection::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	// Initialize algorithm variables

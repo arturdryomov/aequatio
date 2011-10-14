@@ -7,6 +7,11 @@ namespace {
 	Gauss instance;
 }
 
+Gauss::Gauss() :
+	Function("gauss")
+{
+}
+
 Rpn::Operand Gauss::calculate(Function::FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	Q_UNUSED(calculator);
@@ -58,7 +63,7 @@ QList<Number> Gauss::findSolution(QList<QList<Number> > coefficients)
 		int mainElementIndex = i;
 		Number mainElement = coefficients[i][i];
 
-		// find main element of the current row
+		// Find main element of the current row
 		for (int j = i + 1; j < columnsCount - 1; ++j) {
 			if (qAbs(mainElement) < qAbs(coefficients[i][j])) {
 				mainElementIndex = j;
@@ -70,16 +75,16 @@ QList<Number> Gauss::findSolution(QList<QList<Number> > coefficients)
 			THROW(ENoSolution());
 		}
 
-		// swap columns
+		// Swap columns
 		if (mainElementIndex != i) {
 			swapColumns(coefficients, i, mainElementIndex);
 			orderOfVariables.swap(i, mainElementIndex);
 		}
 
-		// divide the row by the main element
+		// Divide the row by the main element
 		coefficients[i] = MathUtils::divideVectorByNumber(coefficients[i], mainElement);
 
-		// subtract current row (multiplied before) from rows below.
+		// Subtract current row (multiplied before) from rows below.
 		for (int j = i + 1; j < rowsCount; ++j) {
 			QList<Number> multipliedRow = MathUtils::multiplyVectorByNumber(coefficients[i], coefficients[j][i]);
 			coefficients[j] = MathUtils::subtractVectorFromVector(coefficients[j], multipliedRow);
@@ -127,7 +132,7 @@ QList<Number> Gauss::sizedVector(int size)
 
 bool Gauss::areCoefficientsCorrect(const QList<QList<Number> > &coefficients)
 {
-	// the matrix should has N rows and N+1 columns
+	// The matrix should has N rows and N+1 columns
 	int rowsCount = coefficients.size();
 	foreach (const QList<Number> &row, coefficients) {
 		if (row.size() != rowsCount + 1) {

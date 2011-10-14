@@ -10,11 +10,12 @@ namespace Optimization {
 class Dichotomy : public Function
 {
 public:
-	Dichotomy() : Function("dichotomy")	{}
+	Dichotomy();
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
 	Rpn::OperandType returnValueType();
+
 private:
 	struct Interval {
 		Number leftBorder;

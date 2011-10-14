@@ -7,7 +7,8 @@ QString ECalculating::message()
 
 
 EBuiltInRedifinition::EBuiltInRedifinition(const QString &elementName, EBuiltInRedifinition::ElementType elementType) :
-	m_elementName(elementName), m_elementType(elementType)
+	m_elementName(elementName),
+	m_elementType(elementType)
 {
 }
 
@@ -24,7 +25,8 @@ QString EBuiltInRedifinition::message()
 }
 
 
-ERecursiveFunction::ERecursiveFunction(const QString &functionName) : m_functionName(functionName)
+ERecursiveFunction::ERecursiveFunction(const QString &functionName) :
+	m_functionName(functionName)
 {
 }
 
@@ -36,8 +38,8 @@ QString ERecursiveFunction::message()
 
 
 EWrongParametersCount::EWrongParametersCount(const QString &parameterName, int parametersExpected) :
-m_parameterName(parameterName),
-m_parametersExpected(parametersExpected)
+	m_parameterName(parameterName),
+	m_parametersExpected(parametersExpected)
 {
 }
 
@@ -49,7 +51,8 @@ QString EWrongParametersCount::message()
 
 
 EWrongArgument::EWrongArgument(const QString &argumentName, const QString &argumentCondition) :
-	m_argumentName(argumentName), m_argumentCondition(argumentCondition)
+	m_argumentName(argumentName),
+	m_argumentCondition(argumentCondition)
 {
 }
 
@@ -60,7 +63,8 @@ QString EWrongArgument::message()
 
 
 EWrongVectorDimension::EWrongVectorDimension(int expectedDimension, int actualDimension) :
-	m_expectedDimension(expectedDimension), m_actualDimension(actualDimension)
+	m_expectedDimension(expectedDimension),
+	m_actualDimension(actualDimension)
 {
 }
 

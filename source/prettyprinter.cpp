@@ -153,6 +153,4 @@ QString PrettyPrinter::process(const Rpn::Function &function, const QString &fun
 		.arg(functionName)
 		.arg(arguments.join(", "))
 		.arg(process(function.codeThread));
-
-
 }

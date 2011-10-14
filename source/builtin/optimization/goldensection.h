@@ -10,11 +10,12 @@ namespace Optimization {
 class GoldenSection : public Function
 {
 public:
-	GoldenSection() : Function("golden_section") {}
+	GoldenSection();
 
 	Rpn::Operand calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments);
 	QList<Rpn::Argument> requiredArguments();
 	Rpn::OperandType returnValueType();
+
 private:
 	struct Interval {
 		Number leftBorder;

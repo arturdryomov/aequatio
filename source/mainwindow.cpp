@@ -62,7 +62,7 @@ void MainWindow::clearInputArea()
 
 void MainWindow::resizeEvent(QResizeEvent *)
 {
-	// scroll consoleEdit to the end
+	// Scroll consoleEdit to the end
 	ui->consoleEdit->verticalScrollBar()->setValue(ui->consoleEdit->verticalScrollBar()->maximum());
 }
 

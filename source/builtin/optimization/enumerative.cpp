@@ -8,6 +8,11 @@ namespace
 	Enumerative instance;
 }
 
+Enumerative::Enumerative() :
+	Function("enumerative")
+{
+}
+
 Rpn::Operand Enumerative::calculate(FunctionCalculator *calculator, QList<Rpn::Operand> actualArguments)
 {
 	// Initialize algorithm variables

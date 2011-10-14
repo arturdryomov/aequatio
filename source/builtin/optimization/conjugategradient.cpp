@@ -8,14 +8,19 @@ namespace
 	ConjugateGradient instance;
 }
 
+ConjugateGradient::ConjugateGradient() :
+	Function("conjugate_gradient")
+{
+}
+
 Rpn::Operand ConjugateGradient::calculate(FunctionCalculator* calculator, QList<Rpn::Operand> actualArguments)
 {
 	m_calculator = calculator;
 
-	// function name
+	// Function name
 	m_functionName = actualArguments[0].value.value<QString>();
 
-	// initial point
+	// Initial point
 	m_initialPoint = Rpn::Vector::toOneDimensional(actualArguments[1].value.value<Rpn::Vector>());
 	int expectedArgumentsCount = m_calculator->functionArguments(m_functionName).size();
 
@@ -24,7 +29,7 @@ Rpn::Operand ConjugateGradient::calculate(FunctionCalculator* calculator, QList<
 			0, expectedArgumentsCount)));
 	}
 
-	// stop value
+	// Stop value
 	m_accuracy = actualArguments[2].value.value<Number>();
 
 	Rpn::Vector result = Rpn::Vector::fromOneDimensional(findMinimum());
@@ -82,7 +87,7 @@ QList<Number> ConjugateGradient::findMinimum()
 
 Number ConjugateGradient::findStep(QList<Number> point, QList<Number> direction)
 {
-	// we'll use bisection method for 1-dimensional optimization
+	// We'll use bisection method for 1-dimensional optimization
 
 	Number sourceLeftBorder = -1000.0;
 	Number sourceRightBorder = 1000.0;
