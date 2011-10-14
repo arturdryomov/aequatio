@@ -15,7 +15,7 @@ class Calculator : public QObject
 	Q_OBJECT
 
 public:
-	explicit Calculator(QObject *parent = 0);
+	Calculator(Document *document, QObject *parent = 0);
 	~Calculator();
 
 	void setDocument(Document *document);

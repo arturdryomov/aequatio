@@ -5,11 +5,11 @@
 #include <QStack>
 #include <QStringList>
 
-Calculator::Calculator(QObject *parent) :
+Calculator::Calculator(Document *document, QObject *parent = 0) :
 	QObject(parent),
-	m_document(0),
 	m_functionCalculator(new FunctionCalculator(this))
 {
+	setDocument(document);
 }
 
 Calculator::~Calculator()
@@ -19,14 +19,14 @@ Calculator::~Calculator()
 
 void Calculator::setDocument(Document *document)
 {
+	if (document == 0) {
+		THROW(EInternal());
+	}
 	m_document = document;
 }
 
 Rpn::Operand Calculator::calculate(const Rpn::CodeThread &thread)
-{
-	// TODO: Throw exception instead?
-	Q_ASSERT(m_document != 0);
-
+{	
 	// Construct Main function, that includes child thread
 	Rpn::Function function = {QList<Rpn::Argument>(), thread};
 	m_document->addFunction(Rpn::FunctionMain, function);

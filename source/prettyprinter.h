@@ -10,7 +10,7 @@ class PrettyPrinter
 {
 
 public:
-	PrettyPrinter();
+	PrettyPrinter(const Document *document);
 	void setDocument(const Document *document);
 	QString process(const Rpn::CodeThread &codeThread);
 	QString process(const Rpn::Function &function, const QString &functionName);

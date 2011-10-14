@@ -38,9 +38,6 @@ private:
 	QString formalArgument();
 	void ensureNoMoreLexemes();
 	QList<Rpn::Argument> functionArguments(const QString &functionName);
-	
-
-
 
 	QList<QString> m_workingArguments;
 	Document *m_document;

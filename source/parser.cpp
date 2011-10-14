@@ -19,7 +19,11 @@ Parser::~Parser()
 
 QString Parser::process(const QString &input, Document *document)
 {
+	if (document == 0) {
+		THROW(EInternal());
+	}
 	m_document = document;
+
 	m_codeGenerator = new CodeGenerator(document);
 	m_calculator = new Calculator(this);
 	m_calculator->setDocument(document);
