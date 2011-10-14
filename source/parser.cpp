@@ -160,7 +160,6 @@ Rpn::CodeThread Parser::expression()
 {
 	/* Vector */
 	if (m_lexer->lexeme().type == LexemeOpeningSquareBracket) {
-		m_lexer->previousLexeme();
 		return vector();
 	}
 
