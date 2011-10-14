@@ -109,10 +109,10 @@ QString PrettyPrinter::process(const Rpn::CodeThread &codeThread)
 					int argumentsCount;
 					if (BuiltIn::Function::functions().contains(functionName)) {
 						argumentsCount = BuiltIn::Function::functions()
-							.value(functionName)->requiredArguments().count();
+							.value(functionName)->requiredArguments().size();
 					}
 					else if (m_document->containsFunction(functionName)) {
-						argumentsCount = m_document->function(functionName).arguments.count();
+						argumentsCount = m_document->function(functionName).arguments.size();
 					}
 					else {
 						THROW(EIncorrectRpnCode());
@@ -134,7 +134,7 @@ QString PrettyPrinter::process(const Rpn::CodeThread &codeThread)
 
 	} // foreach
 
-	if (codeParts.count() != 1) {
+	if (codeParts.size() != 1) {
 		THROW(EIncorrectRpnCode());
 	}
 

@@ -5,7 +5,7 @@
 #include <QStack>
 #include <QStringList>
 
-Calculator::Calculator(Document *document, QObject *parent = 0) :
+Calculator::Calculator(Document *document, QObject *parent) :
 	QObject(parent),
 	m_functionCalculator(new FunctionCalculator(this))
 {
@@ -39,7 +39,7 @@ Rpn::Operand Calculator::calculateFunction(const QString &functionName, const QL
 		// check for argument types equivalence
 		QList<Rpn::Argument> requiredArguments = BuiltIn::Function::functions().
 		value(functionName)->requiredArguments();
-		for (int i = 0; i < requiredArguments.count(); ++i) {
+		for (int i = 0; i < requiredArguments.size(); ++i) {
 			if (actualArguments.at(i).type != requiredArguments.at(i).type) {
 				THROW(EIncorrectRpnCode());
 			}
@@ -132,7 +132,7 @@ Rpn::Operand Calculator::calculateUserDefinedFunction(const QString &functionNam
 		}
 	}
 
-	if (calculationStack.count() != 1) {
+	if (calculationStack.size() != 1) {
 		THROW(EIncorrectRpnCode());
 	}
 

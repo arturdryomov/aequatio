@@ -113,17 +113,17 @@ Rpn::CodeThread CodeGenerator::generateFunction(const QString &name, const QList
 
 	// Check whether actual arguments comply with respective formal arguments
 
-	if (actualArguments.count() != formalArguments.count()) {
-		THROW(EWrongArgumentsCount(name, formalArguments.count()));
+	if (actualArguments.size() != formalArguments.size()) {
+		THROW(EWrongArgumentsCount(name, formalArguments.size()));
 	}
 
-	for (int i = 0; i < actualArguments.count(); ++i) {
+	for (int i = 0; i < actualArguments.size(); ++i) {
 		checkFormalActualArgumentsCompliance(formalArguments.at(i), actualArguments.at(i));
 	}
 
 	// build resulting thread
 	Rpn::CodeThread result;
-	for (int i = 0; i < actualArguments.count(); ++i) {
+	for (int i = 0; i < actualArguments.size(); ++i) {
 		result << actualArguments.at(i);
 	}
 	result << Rpn::Element(Rpn::ElementFunctionCall, name);
@@ -141,7 +141,7 @@ Rpn::CodeThread CodeGenerator::generateFunctonNameOperand(const QString &name)
 
 Rpn::Vector CodeGenerator::generateVector(const QList<Number> &elements)
 {
-	Q_ASSERT(elements.count() > 0);
+	Q_ASSERT(elements.size() > 0);
 
 	Rpn::Vector result;
 	foreach (Number element, elements) {
@@ -153,8 +153,8 @@ Rpn::Vector CodeGenerator::generateVector(const QList<Number> &elements)
 
 Rpn::Vector CodeGenerator::generateVector(const QList<Rpn::Vector> &elements)
 {
-	Q_ASSERT(elements.count() > 0);
-	Q_ASSERT(elements.first().values.count() > 0);
+	Q_ASSERT(elements.size() > 0);
+	Q_ASSERT(elements.first().values.size() > 0);
 
 	int innerDimensionsCount = elements.first().values.first().value<Rpn::Vector>().dimensions;
 	Rpn::Vector result(innerDimensionsCount + 1);

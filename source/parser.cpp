@@ -24,9 +24,8 @@ QString Parser::process(const QString &input, Document *document)
 	}
 	m_document = document;
 
-	m_codeGenerator = new CodeGenerator(document);
-	m_calculator = new Calculator(this);
-	m_calculator->setDocument(document);
+	m_codeGenerator = new CodeGenerator(m_document);
+	m_calculator = new Calculator(m_document, this);
 
 	// perform lexical analyzis
 	m_lexer->parse(input);
@@ -68,8 +67,7 @@ QString Parser::command()
 		ensureNoMoreLexemes();
 		Rpn::Operand expressionResult = m_calculator->calculate(codeThread);
 
-		PrettyPrinter printer;
-		printer.setDocument(m_document);
+		PrettyPrinter printer(m_document);
 		result = QString("%1 = %2").arg(printer.process(codeThread)).arg(expressionResult.toString());
 	}
 

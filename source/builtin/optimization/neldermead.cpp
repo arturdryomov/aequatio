@@ -16,7 +16,7 @@ Rpn::Operand NelderMead::calculate(Function::FunctionCalculator *calculator, QLi
 
 	QList<QList<Number> > initialSimplex = Rpn::Vector::toTwoDimensional(actualArguments[1].value.value<Rpn::Vector>());
 	if (!isVectorCorrect(initialSimplex)) {
-		int targetFunctionArgumentsCount = m_calculator->functionArguments(m_functionName).count();
+		int targetFunctionArgumentsCount = m_calculator->functionArguments(m_functionName).size();
 		THROW(EWrongArgument("initial simplex", QObject::tr("%1 × %2 size")
 			.arg(targetFunctionArgumentsCount + 1)
 			.arg(targetFunctionArgumentsCount))
@@ -134,7 +134,7 @@ QList<Number> NelderMead::findMinimum(const QList<QList<Number> > &initialSimple
 		// reflected > worst
 		else {
 			QList<Number> bestValue = simplex[best];
-			for (int i = 0; i < simplex.count(); ++i) {
+			for (int i = 0; i < simplex.size(); ++i) {
 				simplex[i] = MathUtils::addVectorToVector(
 					bestValue,
 					MathUtils::multiplyVectorByNumber(
@@ -160,12 +160,12 @@ Number NelderMead::function(const QList<Number> &arguments)
 
 int NelderMead::indexOfMinimal(const QList<Number> &values)
 {
-	if (values.count() <= 0) return -1;
+	if (values.size() <= 0) return -1;
 
 	Number min = values[0];
 	int index = 0;
 
-	for (int i = 1; i < values.count(); ++i) {
+	for (int i = 1; i < values.size(); ++i) {
 		if (values[i] < min) {
 			min = values[i];
 			index = i;
@@ -177,12 +177,12 @@ int NelderMead::indexOfMinimal(const QList<Number> &values)
 
 int NelderMead::indexOfMaximal(const QList<Number> &values)
 {
-	if (values.count() <= 0) return -1;
+	if (values.size() <= 0) return -1;
 
 	Number max = values[0];
 	int index = 0;
 
-	for (int i = 1; i < values.count(); ++i) {
+	for (int i = 1; i < values.size(); ++i) {
 		if (values[i] > max) {
 			max = values[i];
 			index = i;
@@ -194,7 +194,7 @@ int NelderMead::indexOfMaximal(const QList<Number> &values)
 
 int NelderMead::indexOfSecondMaximal(const QList<Number> &values)
 {
-	if (values.count() <= 1) return -1;
+	if (values.size() <= 1) return -1;
 
 	Number indexOfMaximal = this->indexOfMaximal(values);
 
@@ -206,7 +206,7 @@ int NelderMead::indexOfSecondMaximal(const QList<Number> &values)
 		index = 1;
 	}
 
-	for (int i = 0; i < values.count(); ++i) {
+	for (int i = 0; i < values.size(); ++i) {
 		if ((values[i] > secondMax) && (i != indexOfMaximal)) {
 			secondMax = values[i];
 			index = i;
@@ -218,14 +218,14 @@ int NelderMead::indexOfSecondMaximal(const QList<Number> &values)
 
 QList<Number> NelderMead::findCenter(const QList<QList<Number> > &simplex, int worstIndex)
 {
-	int n = simplex[0].count();
+	int n = simplex[0].size();
 
 	QList<Number> center;
 	for (int i = 0; i < n; ++i) {
 		center << 0;
 	}
 
-	for (int i = 0; i < simplex.count(); ++i) {
+	for (int i = 0; i < simplex.size(); ++i) {
 		if (i == worstIndex) continue;
 		center = MathUtils::addVectorToVector(center, simplex[i]);
 	}
@@ -243,7 +243,7 @@ bool NelderMead::found(const QList<QList<Number> > &simplex, const QList<Number>
 		Number diff = qPow(function(point) - function(center), 2);
 		sigma += diff;
 	}
-	sigma /= simplex.count();
+	sigma /= simplex.size();
 	sigma = qPow(sigma, 0.5);
 
 	bool result = sigma <= accuracy;
@@ -253,13 +253,13 @@ bool NelderMead::found(const QList<QList<Number> > &simplex, const QList<Number>
 
 bool NelderMead::isVectorCorrect(const QList<QList<Number> > vector)
 {
-	int targetFunctionArgumentCount = m_calculator->functionArguments(m_functionName).count();
+	int targetFunctionArgumentCount = m_calculator->functionArguments(m_functionName).size();
 
-	if (vector.count() != targetFunctionArgumentCount + 1) {
+	if (vector.size() != targetFunctionArgumentCount + 1) {
 		return false;
 	}
 	foreach(const QList<Number> &point, vector) {
-		if (point.count() != targetFunctionArgumentCount) {
+		if (point.size() != targetFunctionArgumentCount) {
 			return false;
 		}
 	}

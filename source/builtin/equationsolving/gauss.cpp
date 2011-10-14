@@ -40,7 +40,7 @@ Rpn::OperandType Gauss::returnValueType()
 
 QList<Number> Gauss::findSolution(QList<QList<Number> > coefficients)
 {
-	int variablesCount = coefficients.count();
+	int variablesCount = coefficients.size();
 	int columnsCount = variablesCount + 1;
 	int rowsCount = variablesCount;
 
@@ -128,9 +128,9 @@ QList<Number> Gauss::sizedVector(int size)
 bool Gauss::areCoefficientsCorrect(const QList<QList<Number> > &coefficients)
 {
 	// the matrix should has N rows and N+1 columns
-	int rowsCount = coefficients.count();
+	int rowsCount = coefficients.size();
 	foreach (const QList<Number> &row, coefficients) {
-		if (row.count() != rowsCount + 1) {
+		if (row.size() != rowsCount + 1) {
 			return false;
 		}
 	}

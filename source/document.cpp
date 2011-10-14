@@ -51,8 +51,7 @@ QString Document::prettyPrintedFunction(const QString &name) const
 		THROW(EIncorrectRpnCode());
 	}
 
-	PrettyPrinter prettyPrinter;
-    prettyPrinter.setDocument(this);
+	PrettyPrinter prettyPrinter(this);
 	return prettyPrinter.process(m_functions.value(name), name);
 }
 
@@ -74,9 +73,9 @@ QStringList Document::prettyPrintedFunctions() const
 	QMapIterator<QString, Rpn::Function> i(m_functions);
 	while (i.hasNext()) {
 		i.next();
-        if (i.key() != Rpn::FunctionMain) {
-            functions <<  prettyPrintedFunction(i.key());
-        }
+			if (i.key() != Rpn::FunctionMain) {
+				functions <<  prettyPrintedFunction(i.key());
+			}
 	}
 
 	return functions;

@@ -17,9 +17,9 @@ Rpn::Operand ConjugateGradient::calculate(FunctionCalculator* calculator, QList<
 
 	// initial point
 	m_initialPoint = Rpn::Vector::toOneDimensional(actualArguments[1].value.value<Rpn::Vector>());
-	int expectedArgumentsCount = m_calculator->functionArguments(m_functionName).count();
+	int expectedArgumentsCount = m_calculator->functionArguments(m_functionName).size();
 
-	if (m_initialPoint.count() != expectedArgumentsCount) {
+	if (m_initialPoint.size() != expectedArgumentsCount) {
 		THROW(EWrongArgument("initial point", QObject::tr("1-dimensional vector with %n argument(s)",
 			0, expectedArgumentsCount)));
 	}
@@ -49,7 +49,7 @@ Rpn::OperandType ConjugateGradient::returnValueType()
 
 QList<Number> ConjugateGradient::findMinimum()
 {
-	int argumentsCount = m_calculator->functionArguments(m_functionName).count();
+	int argumentsCount = m_calculator->functionArguments(m_functionName).size();
 
 	QList<QList<Number> > directions = initialDirections(argumentsCount);
 	QList<Number> point = m_initialPoint;
@@ -67,7 +67,7 @@ QList<Number> ConjugateGradient::findMinimum()
 		}
 
 		QList<QList<Number> > newDirections = directions;
-		for (int i = 1; i < newDirections.count() - 1; ++i) {
+		for (int i = 1; i < newDirections.size() - 1; ++i) {
 			newDirections[i] = newDirections[i + 1];
 		}
 		newDirections.first() = MathUtils::subtractVectorFromVector(nextPoint, point);
@@ -162,7 +162,7 @@ QList<Number> ConjugateGradient::searchWithDirections(const QList<QList<Number> 
 	QList<Number> currentPoint = initialPoint;
 	QList<Number> secondIterationPoint;
 	int i = 0;
-	int n = initialPoint.count();
+	int n = initialPoint.size();
 
 	forever {
 		Number step = findStep(currentPoint, directions[i]);
@@ -197,7 +197,7 @@ QList<Number> ConjugateGradient::searchWithDirections(const QList<QList<Number> 
 bool ConjugateGradient::isDirectionsLinearlyIndependend(const QList<QList<Number> > &directions)
 {
 	QVector<QVector<Number> > matrix;
-	for (int i = 1; i < directions.count(); ++i) {
+	for (int i = 1; i < directions.size(); ++i) {
 		matrix << directions[i].toVector();
 	}
 	return !MathUtils::isNull(MathUtils::countDeterminant(matrix));
