@@ -42,13 +42,13 @@ SOURCES += \
 	source/application.cpp \
 	source/logger.cpp \
 	source/exceptions.cpp \
-	source/parsingexceptions.cpp \
-	source/calculatingexceptions.cpp \
+	source/incorrectinputexceptions.cpp \
 	source/mainwindow.cpp \
 	source/aboutwindow.cpp \
 	source/helpwindow.cpp \
 	source/helpbrowser.cpp \
 	source/logwindow.cpp \
+	source/builtin/function.cpp \
 	source/builtin/basicconstants.cpp \
 	source/builtin/mathutils.cpp \
 	source/builtin/basicfunctions.cpp \
@@ -81,8 +81,7 @@ HEADERS += \
 	source/application.h \
 	source/logger.h \
 	source/exceptions.h \
-	source/parsingexceptions.h \
-	source/calculatingexceptions.h \
+	source/incorrectinputexceptions.h \
 	source/mainwindow.h \
 	source/aboutwindow.h \
 	source/helpwindow.h \

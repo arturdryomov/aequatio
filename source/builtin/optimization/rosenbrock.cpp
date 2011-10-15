@@ -41,7 +41,7 @@ Rpn::Operand Rosenbrock::calculate(FunctionCalculator *calculator, QList<Rpn::Op
 
 	// Check values of variables for currect algorithm work
 	if (m_calculator->functionArguments(m_functionName).size() != m_sourcePoint.size()) {
-		THROW(EWrongParametersCount(QObject::tr("Source point"), m_calculator->functionArguments(m_functionName).size()));
+		THROW(EWrongArgumentsCount(QObject::tr("Source point"), m_calculator->functionArguments(m_functionName).size()));
 	}
 	if (m_stopValue <= 0) {
 		THROW(EWrongArgument(QObject::tr("stop value"), QObject::tr("more than 0")) )
@@ -53,7 +53,7 @@ Rpn::Operand Rosenbrock::calculate(FunctionCalculator *calculator, QList<Rpn::Op
 		THROW(EWrongArgument(QObject::tr("decrease coefficient"), QObject::tr("more than -1 and less than 0")) )
 	}
 	if (m_calculator->functionArguments(m_functionName).size() != m_stepSizes.size()) {
-		THROW(EWrongParametersCount(QObject::tr("Coordinate steps"), m_calculator->functionArguments(m_functionName).size()));
+		THROW(EWrongArgumentsCount(QObject::tr("Coordinate steps"), m_calculator->functionArguments(m_functionName).size()));
 	}
 
 	Rpn::Operand result;

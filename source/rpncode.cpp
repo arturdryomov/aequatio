@@ -1,5 +1,4 @@
 #include "rpncode.h"
-#include "calculatingexceptions.h"
 #include "builtin/mathutils.h"
 
 namespace Rpn {
@@ -153,3 +152,19 @@ bool Argument::operator ==(const Argument &another)
 }
 
 } // namespace Rpn
+
+
+// EWrongVectorDimension class methods
+
+EWrongVectorDimension::EWrongVectorDimension(int expectedDimension, int actualDimension) :
+	m_expectedDimension(expectedDimension),
+	m_actualDimension(actualDimension)
+{
+}
+
+QString EWrongVectorDimension::message()
+{
+	return tr("%1-dimensional vector was expected but %2-dimensional was passed.")
+		.arg(m_expectedDimension)
+		.arg(m_actualDimension);
+}

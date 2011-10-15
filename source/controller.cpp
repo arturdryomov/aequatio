@@ -2,8 +2,6 @@
 #include "mainwindow.h"
 #include "application.h"
 #include "exceptions.h"
-#include "parsingexceptions.h"
-#include "calculatingexceptions.h"
 
 #include <QTextCodec>
 #include <QProcess>
@@ -24,7 +22,7 @@ void Controller::release()
 {
 	if (m_instance != 0) {
 		delete m_instance;
-	}	
+	}
 }
 
 int Controller::runApplication(int argc, char *argv[])
@@ -35,18 +33,18 @@ int Controller::runApplication(int argc, char *argv[])
 		.arg(VERSION_MINOR)
 		.arg(VERSION_BUILD)
 		.arg(versionRevisionFromNumber(VERSION_REVISION)));
-	
+
 	// Set codecs to unicode
 	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf8"));
-	QTextCodec::setCodecForTr(QTextCodec::codecForName("utf8"));	
-	
+	QTextCodec::setCodecForTr(QTextCodec::codecForName("utf8"));
+
 	m_mainWindow = new MainWindow;
 	connect(m_mainWindow, SIGNAL(commandEntered(QString)), SLOT(commandEntered(QString)));
 	connect(m_mainWindow, SIGNAL(helpLaunchQueried()), SLOT(launchHelp()));
 	connect(m_mainWindow, SIGNAL(logviewLaunch()), SLOT(launchLogview()));
 	constantsAndFunctionsUpdated();
 	m_mainWindow->show();
-	
+
 	int result = a.exec();
 	delete m_mainWindow;
 	return result;
@@ -57,18 +55,14 @@ void Controller::commandEntered(const QString &command)
 	try {
 		QString result = m_parser->process(command, m_document);
 		m_mainWindow->resultReturned(result);
-	} 
+	}
 
 	catch (EInternal &e) {
 		m_mainWindow->displayErrorInfo(e.message());
 		e.toLogger();
 		return;
 	}
-	catch (EParsing &e) {
-		m_mainWindow->displayErrorInfo(e.message());
-		return;
-	}
-	catch (ECalculating &e) {
+	catch (EIncorrectInput &e) {
 		m_mainWindow->displayErrorInfo(e.message());
 		return;
 	}
@@ -172,7 +166,7 @@ Controller::Controller(QObject *parent) :
 	m_document(new Document(this)),
 	m_parser(new Parser(this))
 
-{	
+{
 	connect(m_document, SIGNAL(constantsChanged()), SLOT(constantsAndFunctionsUpdated()));
 	connect(m_document, SIGNAL(functionsChanged()), SLOT(constantsAndFunctionsUpdated()));
 }

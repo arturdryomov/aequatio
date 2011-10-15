@@ -1,5 +1,4 @@
 #include "calculator.h"
-#include "calculatingexceptions.h"
 #include "builtin/constant.h"
 
 #include <QStack>
@@ -26,7 +25,7 @@ void Calculator::setDocument(Document *document)
 }
 
 Rpn::Operand Calculator::calculate(const Rpn::CodeThread &thread)
-{	
+{
 	// Construct Main function, that includes child thread
 	Rpn::Function function = {QList<Rpn::Argument>(), thread};
 	m_document->addFunction(Rpn::FunctionMain, function);
@@ -107,7 +106,7 @@ Rpn::Operand Calculator::calculateUserDefinedFunction(const QString &functionNam
 					THROW(EIncorrectRpnCode());
 				}
 				calculationStack.push(operand);
-				
+
 				break;
 			}
 

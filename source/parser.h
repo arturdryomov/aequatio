@@ -5,6 +5,7 @@
 #include "calculator.h"
 #include "document.h"
 #include "codegenerator.h"
+#include "incorrectinputexceptions.h"
 
 #include <QObject>
 #include <QString>
@@ -32,7 +33,7 @@ private:
 	Rpn::CodeThread powerBase();
 	Rpn::CodeThread summand();
 	Rpn::CodeThread identifier();
-	BinaryOperation multOperation();	
+	BinaryOperation multOperation();
 	BinaryOperation summOperation();
 	Number number();
 
@@ -54,5 +55,21 @@ public:
 	static bool isSummOperation(Lexeme lexeme);
 	static bool isUnaryOperation(Lexeme lexeme);
 };
+
+class EFormalArgumentReused : public EIncorrectInput
+{
+public:
+	EFormalArgumentReused(const QString &argumentName);
+	QString message();
+
+private:
+	QString m_argumentName;
+};
+
+class EIncorrectVectorInitialization : public EIncorrectInput
+{
+	QString message();
+};
+
 
 #endif // PARSER_H

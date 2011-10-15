@@ -29,7 +29,7 @@ Rpn::Operand BestTrial::calculate(FunctionCalculator *calculator, QList<Rpn::Ope
 
 	// Check values of variables for currect algorithm work
 	if (m_calculator->functionArguments(m_functionName).size() != m_sourcePoint.size()) {
-		THROW(EWrongParametersCount(QObject::tr("Source point"), m_calculator->functionArguments(m_functionName).size()));
+		THROW(EWrongArgumentsCount(QObject::tr("Source point"), m_calculator->functionArguments(m_functionName).size()));
 	}
 	if ((m_decreaseCoefficient <= 0) || (m_decreaseCoefficient >= 1)) {
 		THROW(EWrongArgument(QObject::tr("decrease coefficient"), QObject::tr("more than 0 and less than 1")) )

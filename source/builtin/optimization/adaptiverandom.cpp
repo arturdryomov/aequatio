@@ -30,7 +30,7 @@ Rpn::Operand AdaptiveRandom::calculate(FunctionCalculator *calculator, QList<Rpn
 
 	// Check values of variables for currect algorithm work
 	if (m_calculator->functionArguments(m_functionName).size() != m_sourcePoint.size()) {
-		THROW(EWrongParametersCount(QObject::tr("Source point"), m_calculator->functionArguments(m_functionName).size()));
+		THROW(EWrongArgumentsCount(QObject::tr("Source point"), m_calculator->functionArguments(m_functionName).size()));
 	}
 	if (m_accelerationCoefficient <= 1) {
 		THROW(EWrongArgument(QObject::tr("acceleration coefficient"), QObject::tr("more than 1")) )

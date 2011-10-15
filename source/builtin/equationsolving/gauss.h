@@ -16,11 +16,12 @@ public:
 	Rpn::OperandType returnValueType();
 
 private:
+	class ENoSolution : public ECalculating {};
+
 	QList<Number> findSolution(QList<QList<Number> > coefficients);
 	void swapColumns(QList<QList<Number> > &matrix, int index1, int index2);
 	QList<Number> sizedVector(int size);
 	bool areCoefficientsCorrect(const QList<QList<Number> > &coefficients);
-	class ENoSolution : public ECalculating {};
 };
 
 } // namespace

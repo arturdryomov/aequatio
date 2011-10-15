@@ -1,5 +1,4 @@
 #include "codegenerator.h"
-#include "parsingexceptions.h"
 #include "builtin/constant.h"
 #include "builtin/function.h"
 
@@ -21,7 +20,7 @@ void CodeGenerator::addConstant(const QString &name, const Rpn::Operand &value)
 {
 	// Constant values currently can only be of Number type
 	if (value.type != Rpn::OperandNumber) {
-		THROW(EIncorrectConstantDeclaration());
+		THROW(ENotNumberConstant());
 	}
 
 	// NOTE: Value.value.value is stupid. Should be fixed in some way.
@@ -49,7 +48,7 @@ Rpn::CodeThread CodeGenerator::generateBinaryOperation(BinaryOperation operation
 	arguments << left << right;
 
 	switch (operation) {
-		case BinaryOperationPlus:		
+		case BinaryOperationPlus:
 			return generateFunction(Rpn::FunctionPlus, arguments);
 
 		case BinaryOperationMinus:
@@ -92,7 +91,7 @@ Rpn::CodeThread CodeGenerator::generateConstant(const QString &name)
 		THROW(EUndeclaredUsed(name, EUndeclaredUsed::Constant));
 	}
 
-	Rpn::CodeThread result;	
+	Rpn::CodeThread result;
 	result << Rpn::Element(Rpn::ElementConstant, name);;
 
 	return result;
@@ -200,7 +199,7 @@ void CodeGenerator::checkFormalActualArgumentsCompliance(Rpn::Argument formalArg
 	const Rpn::CodeThread &actualArgumentCodeThread)
 {
 	if (formalArgument.type != codeThreadExpressionType(actualArgumentCodeThread)) {
-		THROW(EParsing()); // type of the exception is to be more precise
+		THROW(EIncorrectInput()); // type of the exception is to be more precise
 	}
 
 	if (formalArgument.type == Rpn::OperandFunctionName) {
@@ -215,7 +214,7 @@ void CodeGenerator::checkFormalActualArgumentsCompliance(Rpn::Argument formalArg
 		Q_ASSERT(element.type == Rpn::ElementOperand);
 		Rpn::Operand operand = element.value.value<Rpn::Operand>();
 		QString passedFunctionName = operand.value.value<QString>();
-		if (!isFunctionSignatureSuitable(passedFunctionName, formalArgument.info.value<int>())) {			
+		if (!isFunctionSignatureSuitable(passedFunctionName, formalArgument.info.value<int>())) {
 			THROW(EIncorrectFunctionArgument(passedFunctionName));
 		}
 	}
@@ -302,5 +301,45 @@ Rpn::OperandType CodeGenerator::defineFunctionReturnType(const QString &function
 	else {
 		THROW(EIncorrectRpnCode());
 	}
+}
+
+
+// ENotNumberConstant class methods
+
+ENotNumberConstant::ENotNumberConstant()
+{
+}
+
+QString ENotNumberConstant::message()
+{
+	return tr("Constant value can be a number or an expression the result of which is a number.");
+}
+
+
+// EIncorrectFunctionArgument class methods
+
+EIncorrectFunctionArgument::EIncorrectFunctionArgument(const QString &functionName) : m_functionName(functionName)
+{
+}
+
+QString EIncorrectFunctionArgument::message()
+{
+	return tr("Function “%1” cannot be passed as an argument here as it has inappropriate "
+		"signature (list of arguments and their types).").arg(m_functionName);
+}
+
+
+// EWrongArgumentsCount class methods
+
+EWrongArgumentsCount::EWrongArgumentsCount(const QString &functionName, int argumentsExpected) :
+	m_functionName(functionName),
+	m_argumentsExpected(argumentsExpected)
+{
+}
+
+QString EWrongArgumentsCount::message()
+{
+	return tr("Function “%1” expected %n argument(s).", "", m_argumentsExpected)
+		.arg(m_functionName);
 }
 

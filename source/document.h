@@ -2,6 +2,7 @@
 #define DOCUMENT_H
 
 #include "rpncode.h"
+#include "incorrectinputexceptions.h"
 
 #include <QObject>
 #include <QStringList>
@@ -42,5 +43,28 @@ private:
 
 	bool isFunctionUsed(const QString &name, const Rpn::CodeThread &codeThread) const;
 };
+
+
+class EBuiltInRedifinition : public EIncorrectInput
+{
+public:
+	enum ElementType {Constant, Function};
+	EBuiltInRedifinition(const QString &elementName, ElementType elementType);
+	QString message();
+private:
+	QString m_elementName;
+	ElementType m_elementType;
+};
+
+
+class ERecursiveFunction : public EIncorrectInput
+{
+public:
+	ERecursiveFunction(const QString &functionName);
+	QString message();
+private:
+	QString m_functionName;
+};
+
 
 #endif // DOCUMENT_H

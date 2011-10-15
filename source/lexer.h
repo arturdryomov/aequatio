@@ -1,6 +1,8 @@
 #ifndef LEXER_H
 #define LEXER_H
 
+#include "incorrectinputexceptions.h"
+
 #include <QObject>
 #include <QList>
 #include <QString>
@@ -26,10 +28,12 @@ enum LexemeType {
 	LexemeEol
 };
 
+
 struct Lexeme {
 	LexemeType type;
 	QString value;
 };
+
 
 class Lexer : public QObject
 {
@@ -46,7 +50,7 @@ public:
 
 private:
 	QString m_input;
-	int m_position;	
+	int m_position;
 	QList<Lexeme> m_lexemeList;
 	QListIterator<Lexeme> *m_lexemeListIterator;
 	QHash<QString, LexemeType> m_reservedWords;
@@ -64,6 +68,7 @@ private:
 	void extractComma();
 	void pushLexeme(LexemeType, QString);
 };
+
 
 class CheckChar
 {
@@ -85,6 +90,29 @@ public:
 	static bool isMinus(QChar);
 	static bool isMultiply(QChar);
 	static bool isDivide(QChar);
+};
+
+
+class EUnsupportedLexeme : public EInternal
+{
+public:
+	EUnsupportedLexeme(const QString &unsupportedType);
+	// User does't need to know what is unsupported here.
+	// This info is for debug purpose only.
+protected:
+	LogItem logItem();
+private:
+	QString m_unsupported;
+};
+
+
+class EIncorrectCharacter : public EIncorrectInput
+{
+public:
+	EIncorrectCharacter(QChar c);
+	QString message();
+private:
+	QChar m_character;
 };
 
 #endif // LEXER_H

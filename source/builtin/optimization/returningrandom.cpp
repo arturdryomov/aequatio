@@ -32,7 +32,7 @@ Rpn::Operand ReturningRandom::calculate(FunctionCalculator *calculator, QList<Rp
 		THROW(EWrongArgument(QObject::tr("decrease coefficient"), QObject::tr("more than 0 and less than 1")) )
 	}
 	if (m_calculator->functionArguments(m_functionName).size() != m_sourcePoint.size()) {
-		THROW(EWrongParametersCount(QObject::tr("Source point"), m_calculator->functionArguments(m_functionName).size()));
+		THROW(EWrongArgumentsCount(QObject::tr("Source point"), m_calculator->functionArguments(m_functionName).size()));
 	}
 
 	// Initialize random, random number generator from MathUtils needs it

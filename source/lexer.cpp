@@ -1,5 +1,4 @@
 #include "lexer.h"
-#include "parsingexceptions.h"
 
 Lexer::Lexer(QObject *parent) :
 	QObject(parent),
@@ -29,21 +28,21 @@ void Lexer::nextLexeme()
 {
 	if (m_lexemeListIterator->hasNext()) {
 		m_lexemeListIterator->next();
-	}		
+	}
 }
 
 void Lexer::previousLexeme()
 {
 	if (m_lexemeListIterator->hasPrevious()) {
 		m_lexemeListIterator->previous();
-	}	
+	}
 }
 
 void Lexer::parse(const QString &input)
 {
 	m_lexemeList.clear();
 	m_input = input.trimmed();
-	
+
 	if (m_input.isEmpty()) {
 		THROW(EEmptyInput());
 	}
@@ -59,12 +58,12 @@ void Lexer::parse(const QString &input)
 
 		extractLexeme();
 	}
-	
+
 	// Ensure there are lexemes
 	if (m_lexemeList.isEmpty()) {
 		THROW(EInternal());
-	}	
-	
+	}
+
 	// Create new constant iterator for lexemes
 	if (m_lexemeListIterator != 0) {
 		delete m_lexemeListIterator;
@@ -145,7 +144,7 @@ void Lexer::extractNumber()
 	if ( (m_position < inputLength) && (CheckChar::isSeparator(m_input.at(m_position))) ) {
 		m_position++;
 		if ( (m_position > inputLength) || (!CheckChar::isDigit(m_input.at(m_position))) )  {
-			THROW(ELexemeExpected("Number after dot"))
+			THROW(EExpected("Number after dot"))
 		}
 		while ( (m_position <= inputLength) && (CheckChar::isDigit(m_input.at(m_position))) ) {
 			m_position++;
@@ -155,13 +154,13 @@ void Lexer::extractNumber()
 	if ( (m_position <= inputLength) && (CheckChar::isExponent(m_input.at(m_position))) ) {
 		m_position++;
 		if (m_position > inputLength) {
-			THROW(ELexemeExpected("Number or sign after exponent character"))
+			THROW(EExpected("Number or sign after exponent character"))
 		}
 		if (CheckChar::isSign(m_input.at(m_position))) {
 			m_position++;
 		}
 		if ( (m_position > inputLength) || (!CheckChar::isDigit(m_input.at(m_position))) ) {
-			THROW(ELexemeExpected("Number or sign after exponent character"))
+			THROW(EExpected("Number or sign after exponent character"))
 		}
 		while ( (m_position <= inputLength) && (CheckChar::isDigit(m_input.at(m_position))) ) {
 			m_position++;
@@ -269,7 +268,7 @@ void Lexer::extractComma()
 	}
 
 	pushLexeme(lexemeType, QString());
-	m_position++;	
+	m_position++;
 }
 
 void Lexer::pushLexeme(LexemeType lexemeType, QString lexemeData)
@@ -298,7 +297,8 @@ Lexeme Lexer::endLexeme()
 	return result;
 }
 
-// Methods below are for checking symbols
+
+// CheckChar class methods
 
 bool CheckChar::isSeparator(QChar c)
 {
@@ -403,3 +403,32 @@ bool CheckChar::isDivide(QChar c)
 	QString divides = "/÷";
 	return divides.contains(c);
 }
+
+
+// EUnsupportedLexeme class methods
+
+EUnsupportedLexeme::EUnsupportedLexeme(const QString &unsupportedType) : m_unsupported(unsupportedType)
+{
+}
+
+LogItem EUnsupportedLexeme::logItem()
+{
+	LogItem item = EInternal::logItem();
+	Item unsupportedInfo = {"Unsupported lexeme", m_unsupported};
+	item.addons << unsupportedInfo;
+
+	return item;
+}
+
+
+// EIncorrectCharacter class methods
+
+EIncorrectCharacter::EIncorrectCharacter(QChar c) : m_character(c)
+{
+}
+
+QString EIncorrectCharacter::message()
+{
+	return tr("Character “%1” is incorrect here.").arg(m_character);
+}
+

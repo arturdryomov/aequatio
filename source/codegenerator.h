@@ -2,6 +2,7 @@
 #define CODEGENERATOR_H
 
 #include "document.h"
+#include "incorrectinputexceptions.h"
 
 enum BinaryOperation {
 	BinaryOperationPlus,
@@ -10,6 +11,7 @@ enum BinaryOperation {
 	BinaryOperationDivide,
 	BinaryOperationPower
 };
+
 
 class CodeGenerator
 {
@@ -43,6 +45,37 @@ private:
 	bool isFunctionSignatureSuitable(const QString &functionName, int argumentsCount);
 	void checkFormalActualArgumentsCompliance(Rpn::Argument formalArgument,
 		const Rpn::CodeThread &actualArgumentCodeThread);
+};
+
+
+class ENotNumberConstant : public EIncorrectInput
+{
+public:
+	ENotNumberConstant();
+	QString message();
+};
+
+
+class EIncorrectFunctionArgument : public EIncorrectInput
+{
+public:
+	EIncorrectFunctionArgument(const QString &functionName);
+	QString message();
+
+private:
+	QString m_functionName;
+};
+
+
+class EWrongArgumentsCount : public EIncorrectInput
+{
+public:
+	EWrongArgumentsCount(const QString &functionName, int argumentsExpected);
+	QString message();
+
+private:
+	QString m_functionName;
+	int m_argumentsExpected;
 };
 
 #endif // CODEGENERATOR_H

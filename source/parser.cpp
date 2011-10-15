@@ -1,6 +1,5 @@
 #include "parser.h"
 #include "lexer.h"
-#include "parsingexceptions.h"
 #include "prettyprinter.h"
 #include "builtin/constant.h"
 
@@ -86,14 +85,14 @@ QString Parser::constDeclaration()
 
 	// Identifier
 	if (m_lexer->lexeme().type != LexemeIdentifier) {
-		THROW(ELexemeExpected(tr("Identifier after “const”")));
+		THROW(EExpected(tr("Identifier after “const”")));
 	}
 	QString constName = m_lexer->lexeme().value;
 	m_lexer->nextLexeme();
 
 	// '='
 	if (m_lexer->lexeme().type != LexemeEqual) {
-		THROW(ELexemeExpected(tr("Sign “=” after identifier")));
+		THROW(EExpected(tr("Sign “=” after identifier")));
 	}
 	m_lexer->nextLexeme();
 
@@ -120,16 +119,16 @@ QString Parser::functionDeclaration()
 
 	// identifier
 	if (m_lexer->lexeme().type != LexemeIdentifier) {
-		THROW(ELexemeExpected(tr("Identifier after “func”")));
+		THROW(EExpected(tr("Identifier after “func”")));
 	}
 	QString functionName = m_lexer->lexeme().value;
 	m_lexer->nextLexeme();
-	
+
 
 	/* Get formal arguments and save them to list */
-	
+
 	if (m_lexer->lexeme().type != LexemeOpeningBracket) {
-		THROW(ELexemeExpected(tr("Opening bracket after function name")));
+		THROW(EExpected(tr("Opening bracket after function name")));
 	}
 
 	m_workingArguments.clear();
@@ -137,18 +136,18 @@ QString Parser::functionDeclaration()
 		m_lexer->nextLexeme();
 		m_workingArguments.append(formalArgument());
 	} while (m_lexer->lexeme().type == LexemeComma);
-	
+
 	if (m_lexer->lexeme().type != LexemeClosingBracket) {
-		THROW(ELexemeExpected(tr("Closing bracket after formal arguments list")));
-	}
-	m_lexer->nextLexeme();
-	
-	if (m_lexer->lexeme().type != LexemeEqual) {
-		THROW(ELexemeExpected(tr("Sign “=” after closing bracket")));
+		THROW(EExpected(tr("Closing bracket after formal arguments list")));
 	}
 	m_lexer->nextLexeme();
 
-	
+	if (m_lexer->lexeme().type != LexemeEqual) {
+		THROW(EExpected(tr("Sign “=” after closing bracket")));
+	}
+	m_lexer->nextLexeme();
+
+
 	/* Parse the function body and save it */
 
 	Rpn::CodeThread functionBody = expression();
@@ -191,7 +190,7 @@ Rpn::CodeThread Parser::vector()
 Rpn::Vector Parser::extractVector()
 {
 	if (m_lexer->lexeme().type != LexemeOpeningSquareBracket) {
-		THROW(ELexemeExpected(tr("Opening bracket for vector initialization")));
+		THROW(EExpected(tr("Opening bracket for vector initialization")));
 	}
 
 	m_lexer->nextLexeme();
@@ -207,7 +206,7 @@ Rpn::Vector Parser::extractVector()
 			elements << extractVector();
 		} while (m_lexer->lexeme().type == LexemeComma);
 		result = m_codeGenerator->generateVector(elements);
-	}	
+	}
 
 	// One-dimensional vector
 	else {
@@ -226,7 +225,7 @@ Rpn::Vector Parser::extractVector()
 	}
 
 	if (m_lexer->lexeme().type != LexemeClosingSquareBracket) {
-		THROW(ELexemeExpected(tr("Closing bracket for vector initialization")));
+		THROW(EExpected(tr("Closing bracket for vector initialization")));
 	}
 	m_lexer->nextLexeme();
 
@@ -239,13 +238,13 @@ Rpn::CodeThread Parser::function()
 	// Function name
 	if (m_lexer->lexeme().type != LexemeIdentifier) {
 		THROW(EInternal());
-	}	
+	}
 	QString functionName = m_lexer->lexeme().value;
 
 	// opening bracket
 	m_lexer->nextLexeme();
 	if (m_lexer->lexeme().type != LexemeOpeningBracket) {
-		THROW(ELexemeExpected(tr("Opening bracket after function name")));
+		THROW(EExpected(tr("Opening bracket after function name")));
 	}
 
 
@@ -258,8 +257,8 @@ Rpn::CodeThread Parser::function()
 
 	// Closing bracket
 	if (m_lexer->lexeme().type != LexemeClosingBracket) {
-		THROW(ELexemeExpected(tr("Closing bracket after arguments list")));
-	}	
+		THROW(EExpected(tr("Closing bracket after arguments list")));
+	}
 	m_lexer->nextLexeme();
 
 	// Result
@@ -323,14 +322,14 @@ Rpn::CodeThread Parser::powerBase()
 		result = expression();
 
 		if (m_lexer->lexeme().type != LexemeClosingBracket) {
-			THROW(ELexemeExpected(tr("Closing bracket")));
+			THROW(EExpected(tr("Closing bracket")));
 		}
 
 		m_lexer->nextLexeme();
 	}
 
 	else {
-		THROW(EParsing()); // NOTE: Exception type is possibly to be more specific.
+		THROW(EIncorrectInput()); // NOTE: Exception type is possibly to be more specific.
 	}
 
 	return result;
@@ -437,9 +436,9 @@ Number Parser::number()
 QString Parser::formalArgument()
 {
 	if (m_lexer->lexeme().type != LexemeIdentifier) {
-		THROW(ELexemeExpected(tr("Argument name")));
+		THROW(EExpected(tr("Argument name")));
 	}
-	
+
 	QString argumentName = m_lexer->lexeme().value;
 	if (m_workingArguments.contains(argumentName)) {
 		THROW(EFormalArgumentReused(argumentName));
@@ -452,7 +451,7 @@ QString Parser::formalArgument()
 void Parser::ensureNoMoreLexemes()
 {
 	if (m_lexer->lexeme().type != LexemeEol) {
-		THROW(EParsing());
+		THROW(EIncorrectInput());
 	}
 }
 
@@ -470,6 +469,9 @@ QList<Rpn::Argument> Parser::functionArguments(const QString &functionName)
 	}
 }
 
+
+// CheckLexeme class methods
+
 bool CheckLexeme::isMultOperation(Lexeme lexeme)
 {
 	return ((lexeme.type == LexemeMultiply) || (lexeme.type == LexemeDivide));
@@ -483,4 +485,27 @@ bool CheckLexeme::isSummOperation(Lexeme lexeme)
 bool CheckLexeme::isUnaryOperation(Lexeme lexeme)
 {
 	return ((lexeme.type == LexemePlus) || (lexeme.type == LexemeMinus));
+}
+
+
+// EFormalArgumentReused class methods
+
+EFormalArgumentReused::EFormalArgumentReused(const QString &argumentName) :
+	m_argumentName(argumentName)
+{
+}
+
+QString EFormalArgumentReused::message()
+{
+	return tr("There is already argument named “%1” in the arguments list.")
+		.arg(m_argumentName);
+}
+
+
+// EIncorrectVectorInitialization class methods
+
+QString EIncorrectVectorInitialization::message()
+{
+	return tr("Incorrect vector initialization. It should look like "
+		"<i>[number1, number2, ..., numberN </i>");
 }

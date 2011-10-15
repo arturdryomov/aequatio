@@ -1,7 +1,7 @@
 #ifndef RPNCODE_H
 #define RPNCODE_H
 
-#include "exceptions.h"
+#include "incorrectinputexceptions.h"
 #include "number.h"
 
 #include <QVariant>
@@ -98,6 +98,27 @@ struct Function {
 };
 
 } // namespace Rpn
+
+// These exceptions can be thrown when working with already built
+// RPN code.
+
+class EWrongVectorDimension : public EIncorrectInput
+{
+public:
+	EWrongVectorDimension(int expectedDimension, int actualDimension);
+	QString message();
+private:
+	int m_expectedDimension;
+	int m_actualDimension;
+};
+
+class EIncorrectRpnCode : public EInternal
+{
+	/* Reason for all current non-due-to-user-input exceptions in calculator
+	is incorrect RPN code. No need to be more concrete at this moment.
+	There will be not a problem to derive from EIncorrectRpnCode to provide
+	more specific info if necessary. */
+};
 
 Q_DECLARE_METATYPE(Number)
 Q_DECLARE_METATYPE(Rpn::ElementType)

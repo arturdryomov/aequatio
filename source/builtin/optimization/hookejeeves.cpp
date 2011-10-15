@@ -26,13 +26,13 @@ Rpn::Operand HookeJeeves::calculate(FunctionCalculator *calculator, QList<Rpn::O
 
 	// Check values of variables for currect algorithm work
 	if (m_calculator->functionArguments(m_functionName).size() != m_sourcePoint.size()) {
-		THROW(EWrongParametersCount(QObject::tr("Source point"), m_calculator->functionArguments(m_functionName).size()));
+		THROW(EWrongArgumentsCount(QObject::tr("Source point"), m_calculator->functionArguments(m_functionName).size()));
 	}
 	if (m_stopValue <= 0) {
 		THROW(EWrongArgument(QObject::tr("stop value"), QObject::tr("more than 0")) )
 	}
 	if (m_calculator->functionArguments(m_functionName).size() != m_stepSizes.size()) {
-		THROW(EWrongParametersCount(QObject::tr("Coordinate steps"), m_calculator->functionArguments(m_functionName).size()));
+		THROW(EWrongArgumentsCount(QObject::tr("Coordinate steps"), m_calculator->functionArguments(m_functionName).size()));
 	}
 	if (m_accelerationCoefficient <= 0) {
 		THROW(EWrongArgument(QObject::tr("acceleration coefficient"), QObject::tr("more than 0")) )
