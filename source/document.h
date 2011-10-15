@@ -21,7 +21,7 @@ public:
 	// declared, otherwise an exception will be thrown.
 	QList<Rpn::Argument> functionArguments(const QString &name) const;
 	Rpn::Function function(const QString &name) const;
-	Number constant(const QString &name) const;
+	Rpn::Operand constant(const QString &name) const;
 	QString prettyPrintedFunction(const QString &name) const;
 	QString prettyPrintedConstant(const QString &name) const;
 
@@ -30,7 +30,7 @@ public:
 
 	// If the constant/function cannot be added (trying to overwrite something built-in,
 	// for instance), an EBuildInRedifinition or ERecursiveFunction exception will be raised.
-	void addConstant(const QString &name, const Number &value);
+	void addConstant(const QString &name, const Rpn::Operand &value);
 	void addFunction(const QString &name, const Rpn::Function &function);
 
 signals:
@@ -39,7 +39,7 @@ signals:
 
 private:
 	QMap<QString, Rpn::Function> m_functions;
-	QMap<QString, Number> m_constants;
+	QMap<QString, Rpn::Operand> m_constants;
 
 	bool isFunctionUsed(const QString &name, const Rpn::CodeThread &codeThread) const;
 };

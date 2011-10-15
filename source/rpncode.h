@@ -10,12 +10,12 @@
 namespace Rpn {
 
 // basic arithmetic function names
-const QString FunctionPlus = "@Plus@";
-const QString FunctionMinus = "@Minus@";
-const QString FunctionMultiply = "@Multiply@";
-const QString FunctionDivide = "@Divide@";
-const QString FunctionPower = "@Power@";
-const QString FunctionUnaryMinus = "@UnaryMinus@";
+const QString FunctionPlus = "+";
+const QString FunctionMinus = "−";
+const QString FunctionMultiply = "×";
+const QString FunctionDivide = "÷";
+const QString FunctionPower = "^";
+const QString FunctionUnaryMinus = "− (unary)";
 
 // main function name
 const QString FunctionMain = "@Main@";
@@ -42,7 +42,7 @@ struct Vector {
 struct Operand
 {
 	Operand(OperandType type_ = OperandNumber, const QVariant &value_ = QVariant());
-	QString toString();
+	QString toString() const;
 	bool operator ==(const Operand &another);
 
 	OperandType type;

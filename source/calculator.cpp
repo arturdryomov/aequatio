@@ -107,7 +107,7 @@ Rpn::Operand Calculator::calculateUserDefinedFunction(const QString &functionNam
 					operand.value = BuiltIn::Constant::constants().value(element.value.toString());
 				}
 				else if (m_document->containsConstant(element.value.toString())) {
-					operand.value = m_document->constant(element.value.toString());
+					operand = m_document->constant(element.value.toString());
 				}
 				else {
 					THROW(EIncorrectRpnCode());

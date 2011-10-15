@@ -104,7 +104,7 @@ Operand::Operand(OperandType type_, const QVariant &value_) :
 {
 }
 
-QString Operand::toString()
+QString Operand::toString() const
 {
 	switch (type) {
 

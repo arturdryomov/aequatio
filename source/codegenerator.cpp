@@ -18,13 +18,7 @@ void CodeGenerator::setDocument(Document *document)
 
 void CodeGenerator::addConstant(const QString &name, const Rpn::Operand &value)
 {
-	// Constant values currently can only be of Number type
-	if (value.type != Rpn::OperandNumber) {
-		THROW(ENotNumberConstant());
-	}
-
-	// NOTE: Value.value.value is stupid. Should be fixed in some way.
-	m_document->addConstant(name, value.value.value<Number>());
+	m_document->addConstant(name, value);
 }
 
 void CodeGenerator::addFunction(const QString &name, const QList<QString> &formalArgumentNames,
@@ -92,7 +86,7 @@ Rpn::CodeThread CodeGenerator::generateConstant(const QString &name)
 	}
 
 	Rpn::CodeThread result;
-	result << Rpn::Element(Rpn::ElementConstant, name);;
+	result << Rpn::Element(Rpn::ElementConstant, name);
 
 	return result;
 }
@@ -117,7 +111,9 @@ Rpn::CodeThread CodeGenerator::generateFunction(const QString &name, const QList
 	}
 
 	for (int i = 0; i < actualArguments.size(); ++i) {
-		checkFormalActualArgumentsCompliance(formalArguments.at(i), actualArguments.at(i));
+		if (!areFormalActualArgumentsCompliant(formalArguments.at(i), actualArguments.at(i))) {
+			THROW(EWrongArgumentType(name, i + 1));
+		}
 	}
 
 	// Build resulting thread
@@ -195,13 +191,14 @@ bool CodeGenerator::isFunctionSignatureSuitable(const QString &functionName, int
 	return true;
 }
 
-void CodeGenerator::checkFormalActualArgumentsCompliance(Rpn::Argument formalArgument,
+bool CodeGenerator::areFormalActualArgumentsCompliant(Rpn::Argument formalArgument,
 	const Rpn::CodeThread &actualArgumentCodeThread)
 {
 	if (formalArgument.type != codeThreadExpressionType(actualArgumentCodeThread)) {
-		THROW(EIncorrectInput()); // type of the exception is to be more precise
+		return false;
 	}
 
+	// at this point formalArgument.type == codeThreadExpressionType(actualArgumentCodeThread)
 	if (formalArgument.type == Rpn::OperandFunctionName) {
 
 		// Make sure that the function passed as an argument has appropriate signature
@@ -211,13 +208,32 @@ void CodeGenerator::checkFormalActualArgumentsCompliance(Rpn::Argument formalArg
 		Q_ASSERT(actualArgumentCodeThread.size() == 1);
 
 		Rpn::Element element = actualArgumentCodeThread.last();
-		Q_ASSERT(element.type == Rpn::ElementOperand);
-		Rpn::Operand operand = element.value.value<Rpn::Operand>();
+		Rpn::Operand operand;
+		switch (element.type) {
+
+			case Rpn::ElementOperand: {
+				operand = element.value.value<Rpn::Operand>();
+				break;
+			}
+
+			case Rpn::ElementConstant: {
+				// only user-defined constants can be of any type
+				operand = m_document->constant(element.value.value<QString>());
+				break;
+			}
+
+			default: {
+				THROW(EInternal());
+			}
+		}
+
 		QString passedFunctionName = operand.value.value<QString>();
 		if (!isFunctionSignatureSuitable(passedFunctionName, formalArgument.info.value<int>())) {
 			THROW(EIncorrectFunctionArgument(passedFunctionName));
 		}
 	}
+
+	return true;
 }
 
 QList<Rpn::Argument> CodeGenerator::functionFormalArguments(const QString &functionName)
@@ -261,9 +277,17 @@ Rpn::OperandType CodeGenerator::codeThreadExpressionType(const Rpn::CodeThread &
 			case Rpn::ElementOperand:
 				return element.value.value<Rpn::Operand>().type;
 
-			case Rpn::ElementConstant:
-				// Constants can currently be only of the Number type
-				return Rpn::OperandNumber;
+			case Rpn::ElementConstant: {
+				QString constantName = element.value.value<QString>();
+				if (BuiltIn::Constant::constants().contains(constantName)) {
+					// built-in constants now are only of number type
+					return Rpn::OperandNumber;
+				}
+				else {
+					Rpn::Operand constantValue = m_document->constant(constantName);
+					return constantValue.type;
+				}
+			}
 
 			case Rpn::ElementArgument:
 				// User-defined functions currently take only Numbers as arguments,
@@ -343,3 +367,18 @@ QString EWrongArgumentsCount::message()
 		.arg(m_functionName);
 }
 
+
+// EWrongArgumentType class methods
+
+EWrongArgumentType::EWrongArgumentType(const QString &functionName, int argumentIndex) :
+	m_functionName(functionName),
+	m_argumentIndex(argumentIndex)
+{
+}
+
+QString EWrongArgumentType::message()
+{
+	return tr("Argument %1 type of function “%2” is incorrect.")
+		.arg(m_argumentIndex)
+		.arg(m_functionName);
+}

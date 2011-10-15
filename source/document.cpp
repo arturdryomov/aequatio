@@ -36,7 +36,7 @@ Rpn::Function Document::function(const QString &name) const
 	return m_functions.value(name);
 }
 
-Number Document::constant(const QString &name) const
+Rpn::Operand Document::constant(const QString &name) const
 {
 	if (!m_constants.contains(name)) {
 		THROW(EIncorrectRpnCode());
@@ -63,7 +63,7 @@ QString Document::prettyPrintedConstant(const QString &name) const
 
 	return QString("%1 = %2")
 		.arg(name)
-		.arg(numberToString(m_constants.value(name)));
+		.arg(m_constants.value(name).toString());
 }
 
 QStringList Document::prettyPrintedFunctions() const
@@ -85,7 +85,7 @@ QStringList Document::prettyPrintedConstants() const
 {
 	QStringList constants;
 
-	QMapIterator<QString, Number> i(m_constants);
+	QMapIterator<QString, Rpn::Operand> i(m_constants);
 	while (i.hasNext()) {
 		i.next();
 		constants << prettyPrintedConstant(i.key());
@@ -94,7 +94,7 @@ QStringList Document::prettyPrintedConstants() const
 	return constants;
 }
 
-void Document::addConstant(const QString &name, const Number &value)
+void Document::addConstant(const QString &name, const Rpn::Operand &value)
 {
 	if (BuiltIn::Constant::constants().contains(name)) {
 		THROW(EBuiltInRedifinition(name, EBuiltInRedifinition::Constant));

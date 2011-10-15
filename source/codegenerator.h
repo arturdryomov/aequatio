@@ -43,7 +43,7 @@ private:
 	Rpn::OperandType defineFunctionReturnType(const QString &functionName);
 	QList<Rpn::Argument> functionFormalArguments(const QString &functionName);
 	bool isFunctionSignatureSuitable(const QString &functionName, int argumentsCount);
-	void checkFormalActualArgumentsCompliance(Rpn::Argument formalArgument,
+	bool areFormalActualArgumentsCompliant(Rpn::Argument formalArgument,
 		const Rpn::CodeThread &actualArgumentCodeThread);
 };
 
@@ -76,6 +76,18 @@ public:
 private:
 	QString m_functionName;
 	int m_argumentsExpected;
+};
+
+
+class EWrongArgumentType : public EIncorrectInput
+{
+public:
+	EWrongArgumentType(const QString &functionName, int argumentIndex);
+	QString message();
+
+private:
+	QString m_functionName;
+	int m_argumentIndex;
 };
 
 #endif // CODEGENERATOR_H
