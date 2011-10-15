@@ -117,6 +117,9 @@ QString Operand::toString()
 		case OperandVector:
 			return value.value<Rpn::Vector>().toString();
 
+		case OperandIncorrect:
+			return "Ø";
+
 		default:
 			THROW(EIncorrectRpnCode());
 	}

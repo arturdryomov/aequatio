@@ -27,7 +27,7 @@ Rpn::Operand Gauss::calculate(Function::FunctionCalculator *calculator, QList<Rp
 	}
 	catch (ENoSolution &e) {
 		Q_UNUSED(e)
-		return Rpn::Operand(Rpn::OperandNumber, QVariant::fromValue(MathUtils::getNaN()));
+		return Rpn::Operand(Rpn::OperandIncorrect);
 	}
 }
 

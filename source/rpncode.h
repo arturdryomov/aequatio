@@ -23,7 +23,8 @@ const QString FunctionMain = "@Main@";
 enum OperandType {
 	OperandNumber,
 	OperandVector,
-	OperandFunctionName
+	OperandFunctionName,
+	OperandIncorrect
 };
 
 struct Vector {

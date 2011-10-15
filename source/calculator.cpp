@@ -34,10 +34,17 @@ Rpn::Operand Calculator::calculate(const Rpn::CodeThread &thread)
 
 Rpn::Operand Calculator::calculateFunction(const QString &functionName, const QList<Rpn::Operand> &actualArguments)
 {
+	// Ensure no Rpn::OperandIncorrect passed as an argument
+	foreach (const Rpn::Operand &operand, actualArguments) {
+		if (operand.type == Rpn::OperandIncorrect) {
+			return Rpn::Operand(Rpn::OperandIncorrect);
+		}
+	}
+
 	if (BuiltIn::Function::functions().contains(functionName)) {
 		// Check for argument types equivalence
-		QList<Rpn::Argument> requiredArguments = BuiltIn::Function::functions().
-		value(functionName)->requiredArguments();
+		QList<Rpn::Argument> requiredArguments = BuiltIn::Function::functions()
+			.value(functionName)->requiredArguments();
 		for (int i = 0; i < requiredArguments.size(); ++i) {
 			if (actualArguments.at(i).type != requiredArguments.at(i).type) {
 				THROW(EIncorrectRpnCode());

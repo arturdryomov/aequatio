@@ -27,9 +27,10 @@ Rpn::Operand Cramer::calculate(FunctionCalculator *calculator, QList<Rpn::Operan
 	try {
 		QList<Number> result = findSolution();
 		return Rpn::Operand(Rpn::OperandVector, QVariant::fromValue(Rpn::Vector::fromOneDimensional(result)));
-	} catch (ENoSolution &e) {
+	}
+	catch (ENoSolution &e) {
 		Q_UNUSED(e)
-		return Rpn::Operand(Rpn::OperandNumber, QVariant::fromValue(MathUtils::getNaN()));
+		return Rpn::Operand(Rpn::OperandIncorrect);
 	}
 }
 
