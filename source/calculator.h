@@ -41,7 +41,7 @@ private:
 	bool isConstant(const QString &name);
 	QList<Rpn::Argument> functionArguments(const QString &name);
 
-	// defines whether functionName is built-in or user-defined and calculates it.
+	// Defines whether functionName is built-in or user-defined and calculates it
 	Rpn::Operand calculateFunction(const QString &functionName, const QList<Rpn::Operand> &actualArguments);
 	Rpn::Operand calculateUserDefinedFunction(const QString &functionName, const QList<Rpn::Operand> &actualArguments);
 	Rpn::Operand calculateBuiltInFunction(const QString &functionName, const QList<Rpn::Operand> &actualArguments);

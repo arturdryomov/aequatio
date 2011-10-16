@@ -25,7 +25,7 @@ public:
 	// Common constructor for registration of sub-classes
 	Function(QString functionName)
 	{
-		// make sure 2 same-named functions are not added to the list
+		// Make sure 2 same-named functions are not added to the list
 		Q_ASSERT(!functions().contains(functionName));
 
 		functionsWritable().insert(functionName, this);

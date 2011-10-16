@@ -29,7 +29,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::resultReturned(const QString &result)
 {	
-	// drop result to console
+	// Drop result to console
 	ui->consoleEdit->append("→ " + result);
 }
 

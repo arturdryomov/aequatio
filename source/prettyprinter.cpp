@@ -49,7 +49,7 @@ QString PrettyPrinter::process(const Rpn::CodeThread &codeThread)
 			case Rpn::ElementFunctionCall: {
 				QString functionName = element.value.value<QString>();
 
-				// basic arithmetical operations
+				// Basic arithmetical operations
 
 				if (functionName == Rpn::FunctionPlus) {
 					part.priority = PriorityPlusMinus;
@@ -103,7 +103,7 @@ QString PrettyPrinter::process(const Rpn::CodeThread &codeThread)
 					part.text = QString("−%1").arg(argument.text);
 				}
 
-				// built-in and user-defined functions
+				// Built-in and user-defined functions
 
 				else {
 					int argumentsCount;

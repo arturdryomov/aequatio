@@ -27,7 +27,7 @@ void CodeGenerator::addFunction(const QString &name, const QList<QString> &forma
 	Rpn::Function function;
 
 	foreach (const QString &formalArgumentName, formalArgumentNames) {
-		// user-defined functions now take only numbers as arguments
+		// User-defined functions now take only numbers as arguments
 		function.arguments << Rpn::Argument(Rpn::OperandNumber, formalArgumentName);
 	}
 	function.codeThread = body;
@@ -198,7 +198,7 @@ bool CodeGenerator::areFormalActualArgumentsCompliant(Rpn::Argument formalArgume
 		return false;
 	}
 
-	// at this point formalArgument.type == codeThreadExpressionType(actualArgumentCodeThread)
+	// At this point formalArgument.type == codeThreadExpressionType(actualArgumentCodeThread)
 	if (formalArgument.type == Rpn::OperandFunctionName) {
 
 		// Make sure that the function passed as an argument has appropriate signature
@@ -217,7 +217,7 @@ bool CodeGenerator::areFormalActualArgumentsCompliant(Rpn::Argument formalArgume
 			}
 
 			case Rpn::ElementConstant: {
-				// only user-defined constants can be of any type
+				// Only user-defined constants can be of any type
 				operand = m_document->constant(element.value.value<QString>());
 				break;
 			}
@@ -280,7 +280,7 @@ Rpn::OperandType CodeGenerator::codeThreadExpressionType(const Rpn::CodeThread &
 			case Rpn::ElementConstant: {
 				QString constantName = element.value.value<QString>();
 				if (BuiltIn::Constant::constants().contains(constantName)) {
-					// built-in constants now are only of number type
+					// Built-in constants now are only of number type
 					return Rpn::OperandNumber;
 				}
 				else {
@@ -290,7 +290,7 @@ Rpn::OperandType CodeGenerator::codeThreadExpressionType(const Rpn::CodeThread &
 			}
 
 			case Rpn::ElementArgument:
-				// User-defined functions currently take only Numbers as arguments,
+				// User-defined functions currently take only Numbers as arguments
 				return Rpn::OperandNumber;
 
 			default:
