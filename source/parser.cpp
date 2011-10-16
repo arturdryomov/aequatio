@@ -15,6 +15,8 @@ Parser::Parser(QObject *parent) :
 Parser::~Parser()
 {
 	delete m_lexer;
+	delete m_codeGenerator;
+	delete m_calculator;
 }
 
 QString Parser::process(const QString &input, Document *document)
