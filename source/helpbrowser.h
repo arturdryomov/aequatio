@@ -8,8 +8,10 @@
 class HelpBrowser : public QTextBrowser
 {
 	Q_OBJECT
+
 public:
 	HelpBrowser(QHelpEngine *helpEngine, QWidget *parent = 0);
+
 private:
 	QHelpEngine	*m_helpEngine;
 

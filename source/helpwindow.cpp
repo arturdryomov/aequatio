@@ -15,7 +15,8 @@ HelpWindow::HelpWindow(QWidget *parent, Qt::WindowFlags f) :
 
 	QSize windowSizes(600, 400);
 	resize(windowSizes);
-	setWindowFlags(windowFlags() & (~Qt::WindowContextHelpButtonHint | Qt::WindowMaximizeButtonHint));
+	setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+	setWindowFlags(windowFlags() | Qt::WindowMaximizeButtonHint);
 
 	m_helpBrowser = new HelpBrowser(m_helpEngine, this);
 	m_helpContentWidget = m_helpEngine->contentWidget();
@@ -42,7 +43,7 @@ HelpWindow::HelpWindow(QWidget *parent, Qt::WindowFlags f) :
 
 	setWindowTitle(tr("Aequatio Help"));
 
-	// calling activateFirstTopLevel() directly leads to nothing -- it seems m_helpEngine
+	// Calling activateFirstTopLevel() directly leads to nothing -- it seems m_helpEngine
 	// has not already been populated at that time.
 	QTimer::singleShot(0, this, SLOT(activateFirstTopLevel()));
 }
@@ -53,7 +54,7 @@ HelpWindow::~HelpWindow()
 
 bool HelpWindow::eventFilter(QObject *watched, QEvent *event)
 {
-	// we are filtering mouse event on help content widget's viewport
+	// We are filtering mouse event on help content widget's viewport
 	if (watched == m_helpContentWidget->viewport()) {
 		if (event->type() != QEvent::MouseButtonRelease) {
 			return false;
@@ -61,7 +62,7 @@ bool HelpWindow::eventFilter(QObject *watched, QEvent *event)
 		return processMouseEvent(dynamic_cast<QMouseEvent *>(event));
 	}
 
-	// we are filtering mouse event on help content widget
+	// We are filtering mouse event on help content widget
 	if (watched == m_helpContentWidget) {
 		if (event->type() != QEvent::KeyPress) {
 			return false;
@@ -72,7 +73,7 @@ bool HelpWindow::eventFilter(QObject *watched, QEvent *event)
 	return false;
 }
 
-// returns true if the event is succesfully processed
+// Returns true if the event is succesfully processed
 bool HelpWindow::processKeyEvent(QKeyEvent *event)
 {
 	Q_UNUSED(event)
@@ -82,20 +83,20 @@ bool HelpWindow::processKeyEvent(QKeyEvent *event)
 	return true;
 }
 
-// returns true if the event is succesfully processed
+// Returns true if the event is succesfully processed
 bool HelpWindow::processMouseEvent(QMouseEvent *event)
 {
-	// make sure this is a left button or middle button click
+	// Make sure this is a left button or middle button click
 	if (event == 0) return false;
 	if ((event->button() != Qt::LeftButton) && (event->button() != Qt::MiddleButton)) {
 		return false;
 	}
 
-	// make sure the user pressed the button while the mouse was over one of the items
+	// Make sure the user pressed the button while the mouse was over one of the items
 	const QModelIndex &modelIndex = m_helpContentWidget->indexAt(event->pos());
 	if (!modelIndex.isValid()) return false;
 
-	// show the appropriate help topic
+	// Show the appropriate help topic
 	showHelpForCurrentItem();
 
 	return true;
@@ -115,7 +116,7 @@ void HelpWindow::showHelpForCurrentItem()
 
 	QString t = item->url().toString();
 
-	// do not update if it is already set
+	// Do not update if it is already set
 	QUrl currentSource = m_helpBrowser->source();
 	if (currentSource.isValid()) {
 		if (m_helpBrowser->source() == item->url()) return;
@@ -137,7 +138,7 @@ void HelpWindow::activateFirstTopLevel()
 
 void HelpWindow::onHelpBrowserSourceChanged(const QUrl &src)
 {
-	// synchronize with help content widget
+	// Synchronize with help content widget
 	QModelIndex currentIndex = m_helpContentWidget->currentIndex();
 	QModelIndex indexOfSource = m_helpContentWidget->indexOf(src);
 	if (currentIndex != indexOfSource) {

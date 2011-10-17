@@ -7,11 +7,13 @@
 class LogWindow : public QDialog
 {
 	Q_OBJECT
+
 public:
 	LogWindow(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	~LogWindow();
 
 	void setData(const QString &logContents);
+
 private:
 	QTextEdit *m_textWidget;
 };

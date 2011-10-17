@@ -29,84 +29,94 @@ win32 {
 }
 
 SOURCES += \
-	source/mainwindow.cpp \
 	source/main.cpp \
 	source/controller.cpp \
-	source/exprcalculator.cpp \
-	source/syntaxanalyzer.cpp \
+	source/document.cpp \
+	source/lexer.cpp \
+	source/parser.cpp \
+	source/prettyprinter.cpp \
+	source/codegenerator.cpp \
+	source/calculator.cpp \
+	source/rpncode.cpp \
+	source/number.cpp \
 	source/application.cpp \
-	source/lexicalanalyzer.cpp \
 	source/logger.cpp \
 	source/exceptions.cpp \
-	source/parsingexceptions.cpp \
-	source/calculatingexceptions.cpp \
+	source/incorrectinputexceptions.cpp \
+	source/mainwindow.cpp \
 	source/aboutwindow.cpp \
 	source/helpwindow.cpp \
 	source/helpbrowser.cpp \
 	source/logwindow.cpp \
-	source/rpncode.cpp \
-	source/builtinfunctions/mathutils.cpp \
-	source/builtinfunctions/basicfunctions.cpp \
-	source/builtinfunctions/optimization/enumerative.cpp \
-	source/builtinfunctions/optimization/bisection.cpp \
-	source/builtinfunctions/optimization/dichotomy.cpp \
-	source/builtinfunctions/optimization/goldensection.cpp \
-	source/builtinfunctions/optimization/fibonacci.cpp \
-	source/builtinfunctions/optimization/powell.cpp \
-	source/builtinfunctions/optimization/hookejeeves.cpp \
-	source/builtinfunctions/optimization/rosenbrock.cpp \
-	source/builtinfunctions/optimization/adaptiverandom.cpp \
-	source/builtinfunctions/optimization/returningrandom.cpp \
-	source/builtinfunctions/optimization/besttrial.cpp \
-	source/builtinfunctions/optimization/neldermead.cpp \
-	source/builtinfunctions/optimization/conjugategradient.cpp \
-	source/builtinfunctions/equationsolving/gauss.cpp \
-	source/builtinfunctions/equationsolving/cramer.cpp \
-	source/builtinfunctions/matrices.cpp \
-	source/builtinfunctions/equationsolving/lusolving.cpp \
-	source/builtinfunctions/equationsolving/pludecomposition.cpp \
-	source/builtinfunctions/equationsolving/gaussseidel.cpp \
-	source/builtinfunctions/derivative.cpp
+	source/builtin/function.cpp \
+	source/builtin/basicconstants.cpp \
+	source/builtin/mathutils.cpp \
+	source/builtin/basicfunctions.cpp \
+	source/builtin/optimization/enumerative.cpp \
+	source/builtin/optimization/bisection.cpp \
+	source/builtin/optimization/dichotomy.cpp \
+	source/builtin/optimization/goldensection.cpp \
+	source/builtin/optimization/fibonacci.cpp \
+	source/builtin/optimization/powell.cpp \
+	source/builtin/optimization/hookejeeves.cpp \
+	source/builtin/optimization/rosenbrock.cpp \
+	source/builtin/optimization/adaptiverandom.cpp \
+	source/builtin/optimization/returningrandom.cpp \
+	source/builtin/optimization/besttrial.cpp \
+	source/builtin/optimization/neldermead.cpp \
+	source/builtin/optimization/conjugategradient.cpp \
+	source/builtin/equationsolving/gauss.cpp \
+	source/builtin/equationsolving/cramer.cpp \
+	source/builtin/matrices.cpp \
+	source/builtin/equationsolving/lusolving.cpp \
+	source/builtin/equationsolving/pludecomposition.cpp \
+	source/builtin/equationsolving/gaussseidel.cpp \
+	source/builtin/derivative.cpp
 
-HEADERS  += \
-	source/mainwindow.h \
+HEADERS += \
 	source/controller.h \
-	source/syntaxanalyzer.h \
+	source/document.h \
+	source/lexer.h \
+	source/parser.h \
+	source/prettyprinter.h \
+	source/codegenerator.h \
+	source/calculator.h \
+	source/rpncode.h \
+	source/number.h \
 	source/application.h \
-	source/lexicalanalyzer.h \
 	source/logger.h \
-	source/exprcalculator.h \
 	source/exceptions.h \
-	source/parsingexceptions.h \
-	source/calculatingexceptions.h \
+	source/incorrectinputexceptions.h \
+	source/mainwindow.h \
 	source/aboutwindow.h \
 	source/helpwindow.h \
 	source/helpbrowser.h \
 	source/logwindow.h \
-	source/rpncode.h \
-	source/builtinfunctions/mathutils.h \
-	source/builtinfunctions/builtinfunction.h \
-	source/builtinfunctions/basicfunctions.h \
-	source/builtinfunctions/optimization/enumerative.h \
-	source/builtinfunctions/optimization/bisection.h \
-	source/builtinfunctions/optimization/dichotomy.h \
-	source/builtinfunctions/optimization/goldensection.h \
-	source/builtinfunctions/optimization/fibonacci.h \
-	source/builtinfunctions/optimization/powell.h \
-	source/builtinfunctions/optimization/hookejeeves.h \
-	source/builtinfunctions/optimization/rosenbrock.h \
-	source/builtinfunctions/optimization/adaptiverandom.h \
-	source/builtinfunctions/optimization/returningrandom.h \
-	source/builtinfunctions/optimization/besttrial.h \
-	source/builtinfunctions/optimization/neldermead.h \
-	source/builtinfunctions/optimization/conjugategradient.h \
-	source/builtinfunctions/equationsolving/gauss.h \
-	source/builtinfunctions/equationsolving/cramer.h \
-	source/builtinfunctions/matrices.h \
-	source/builtinfunctions/equationsolving/lusolving.h \
-	source/builtinfunctions/equationsolving/pludecomposition.h \
-	source/builtinfunctions/equationsolving/gaussseidel.h \
-	source/builtinfunctions/derivative.h
+	source/builtin/function.h \
+	source/builtin/constant.h \
+	source/builtin/basicconstants.h \
+	source/builtin/mathutils.h \
+	source/builtin/basicfunctions.h \
+	source/builtin/optimization/enumerative.h \
+	source/builtin/optimization/bisection.h \
+	source/builtin/optimization/dichotomy.h \
+	source/builtin/optimization/goldensection.h \
+	source/builtin/optimization/fibonacci.h \
+	source/builtin/optimization/powell.h \
+	source/builtin/optimization/hookejeeves.h \
+	source/builtin/optimization/rosenbrock.h \
+	source/builtin/optimization/adaptiverandom.h \
+	source/builtin/optimization/returningrandom.h \
+	source/builtin/optimization/besttrial.h \
+	source/builtin/optimization/neldermead.h \
+	source/builtin/optimization/conjugategradient.h \
+	source/builtin/equationsolving/gauss.h \
+	source/builtin/equationsolving/cramer.h \
+	source/builtin/matrices.h \
+	source/builtin/equationsolving/lusolving.h \
+	source/builtin/equationsolving/pludecomposition.h \
+	source/builtin/equationsolving/gaussseidel.h \
+	source/builtin/derivative.h
 
 FORMS	+= \
 	source/mainwindow.ui \
@@ -129,5 +139,3 @@ RCC_DIR = $$DESTDIR/rcc
 UI_DIR = $$DESTDIR/ui
 
 include(doc/doc.pri)
-
-
