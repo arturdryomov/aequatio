@@ -84,7 +84,7 @@ QList<Number> BestTrial::findMinimum()
 			);
 		}
 
-		QList<Number> currentPoint = getSpecialMinimum(currentPoints);
+		QList<Number> currentPoint = getPointOfFunctionMinimum(currentPoints);
 
 		if (countFunction(currentPoint) < countFunction(m_sourcePoint)) {
 			m_sourcePoint = currentPoint;
@@ -111,7 +111,7 @@ QList<Number> BestTrial::findMinimum()
 }
 
 // Returns point in which function has minimum value
-QList<Number> BestTrial::getSpecialMinimum(QList<QList<Number> > points)
+QList<Number> BestTrial::getPointOfFunctionMinimum(QList<QList<Number> > points)
 {
 	QList<Number> result = points.first();
 

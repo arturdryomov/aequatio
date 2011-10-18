@@ -27,7 +27,7 @@ private:
 	Number findStep(QList<Number> point, QList<Number> direction);
 	QList<QList<Number> > initialDirections(int dimensionsCount);
 	bool isDirectionsLinearlyIndependend(const QList<QList<Number> > &directions);
-	Number function(const QList<Number> arguments);
+	Number countFunction(const QList<Number> arguments);
 };
 
 } // namespace

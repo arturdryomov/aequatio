@@ -7,7 +7,8 @@ namespace {
 	LuSolving instance;
 }
 
-LuSolving::LuSolving() : Function("sle_lu")
+LuSolving::LuSolving() :
+	Function("sle_lu")
 {
 }
 

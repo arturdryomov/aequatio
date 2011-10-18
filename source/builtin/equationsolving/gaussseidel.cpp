@@ -16,12 +16,14 @@ Rpn::Operand GaussSeidel::calculate(Function::FunctionCalculator *calculator, QL
 	m_calculator = calculator;
 
 	QList<QList<Number> > coefficients = Rpn::Vector::toTwoDimensional(actualArguments[0].value.value<Rpn::Vector>());
+	Number precision = actualArguments[1].value.value<Number>();
+
+	// Check conditions for normal work
 	foreach (QList<Number> coefficientsEquation, coefficients) {
 		if (coefficientsEquation.size() != coefficients.first().size()) {
 			THROW(EWrongArgument(QObject::tr("coefficient vectors"), QObject::tr("one size")));
 		}
 	}
-	Number precision = actualArguments[1].value.value<Number>();
 
 	try {
 		QList<Number> result = findSolution(coefficients, precision);

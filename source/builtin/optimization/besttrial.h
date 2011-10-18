@@ -27,7 +27,7 @@ private:
 	Number m_stepSize;
 
 	QList<Number> findMinimum();
-	QList<Number> getSpecialMinimum(QList<QList<Number> > points);
+	QList<Number> getPointOfFunctionMinimum(QList<QList<Number> > points);
 	Number countFunction(QList<Number> arguments);
 };
 

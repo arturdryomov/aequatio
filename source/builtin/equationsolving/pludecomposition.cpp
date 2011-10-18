@@ -7,7 +7,8 @@ namespace {
 	PluDecompozition instance;
 }
 
-PluDecompozition::PluDecompozition() : Function("matrix_plu")
+PluDecompozition::PluDecompozition() :
+	Function("matrix_plu")
 {
 }
 

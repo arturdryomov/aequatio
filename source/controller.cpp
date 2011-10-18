@@ -177,7 +177,8 @@ Controller::~Controller()
 
 QString Controller::versionRevisionFromNumber(int number)
 {
-	if ((number > 9999) || (number < 1000)) return QString();
+	if ((number > 9999) || (number < 1000))
+		return QString();
 
 	int firstNumber = number / 1000;
 	int secondNumber = (number / 100) % 10;

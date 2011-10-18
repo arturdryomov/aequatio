@@ -16,14 +16,10 @@ ConjugateGradient::ConjugateGradient() :
 Rpn::Operand ConjugateGradient::calculate(FunctionCalculator* calculator, QList<Rpn::Operand> actualArguments)
 {
 	m_calculator = calculator;
-
-	// Function name
 	m_functionName = actualArguments[0].value.value<QString>();
-
-	// Initial point
 	m_initialPoint = Rpn::Vector::toOneDimensional(actualArguments[1].value.value<Rpn::Vector>());
-	int expectedArgumentsCount = m_calculator->functionArguments(m_functionName).size();
 
+	int expectedArgumentsCount = m_calculator->functionArguments(m_functionName).size();
 	if (m_initialPoint.size() != expectedArgumentsCount) {
 		THROW(EWrongArgument("initial point", QObject::tr("1-dimensional vector with %n argument(s)",
 			0, expectedArgumentsCount)));
@@ -60,14 +56,16 @@ QList<Number> ConjugateGradient::findMinimum()
 	QList<Number> point = m_initialPoint;
 
 	forever {
-		bool found;
+		bool isResultFound;
 		QList<Number> nextPoint;
-		QList<Number> result = searchWithDirections(directions, point, nextPoint, found);
-		if (found) {
+		QList<Number> result = searchWithDirections(directions, point, nextPoint, isResultFound);
+		if (isResultFound) {
+			// Exit condition
 			return result;
 		}
 
 		if (MathUtils::vectorNorm(MathUtils::subtractVectorFromVector(nextPoint, point)) < m_accuracy) {
+			// Exit condition
 			return nextPoint;
 		}
 
@@ -94,6 +92,8 @@ Number ConjugateGradient::findStep(QList<Number> point, QList<Number> direction)
 	Number middle = (sourceLeftBorder + sourceRightBorder) / 2;
 	Number accuracy = 0.00001;
 
+	// TODO: Call calculator with bisection method?
+
 	forever {
 		Number currentLeftBorder = sourceLeftBorder + qAbs(sourceRightBorder - sourceLeftBorder) / 4.0;
 		Number currentRightBorder = sourceRightBorder + qAbs(sourceRightBorder - sourceLeftBorder) / 4.0;
@@ -111,11 +111,11 @@ Number ConjugateGradient::findStep(QList<Number> point, QList<Number> direction)
 			MathUtils::multiplyVectorByNumber(direction, middle)
 		);
 
-		if (function(leftBorderPoint) <= function(middlePoint)) {
+		if (countFunction(leftBorderPoint) <= countFunction(middlePoint)) {
 			sourceRightBorder = middle;
 			middle = currentLeftBorder;
 		}
-		else if (function(rightBorderPoint) <= function(middlePoint)) {
+		else if (countFunction(rightBorderPoint) <= countFunction(middlePoint)) {
 				sourceLeftBorder = middle;
 				middle = currentRightBorder;
 		}
@@ -150,19 +150,19 @@ QList<QList<Number> > ConjugateGradient::initialDirections(int dimensionsCount)
 }
 
 /* if result is found, the following is returned:
-	 - found is true;
+	 - isResultFound is true;
 	 - searchWithDirections() returns result;
 	 - finishingPoint is not changed;
 
   if result is not found, the following is returned:
-	 - found is false;
+	 - isResultFound is false;
 	 - searchWithDirections() returns QList<Number>();
 	 - finishingPoint is last point tested.
 */
 QList<Number> ConjugateGradient::searchWithDirections(const QList<QList<Number> > directions,
-	const QList<Number> &initialPoint, QList<Number> &finishingPoint, bool &found)
+	const QList<Number> &initialPoint, QList<Number> &finishingPoint, bool &isResultFound)
 {
-	found = false;
+	isResultFound = false;
 
 	QList<Number> currentPoint = initialPoint;
 	QList<Number> secondIterationPoint;
@@ -176,14 +176,14 @@ QList<Number> ConjugateGradient::searchWithDirections(const QList<QList<Number> 
 
 		if (i == n - 1) {
 			if (currentPoint == initialPoint) {
-				found = true;
+				isResultFound = true;
 				return currentPoint;
 			}
 		}
 
 		else if (i == n) {
 			if (currentPoint == secondIterationPoint) {
-				found = true;
+				isResultFound = true;
 				return currentPoint;
 			}
 			else {
@@ -204,7 +204,7 @@ bool ConjugateGradient::isDirectionsLinearlyIndependend(const QList<QList<Number
 	return !MathUtils::isNull(MathUtils::countDeterminant(directions));
 }
 
-Number ConjugateGradient::function(const QList<Number> arguments)
+Number ConjugateGradient::countFunction(const QList<Number> arguments)
 {
 	QList<Rpn::Operand> functionArguments;
 	foreach (Number number, arguments) {

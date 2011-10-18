@@ -8,7 +8,8 @@ namespace
 	Derivative instance;
 }
 
-Derivative::Derivative() : Function("derivative")
+Derivative::Derivative() :
+	Function("derivative")
 {
 }
 

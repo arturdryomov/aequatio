@@ -16,6 +16,8 @@ public:
 	Rpn::OperandType returnValueType();
 
 private:
+	class ENoSolution : public ECalculating {};
+
 	FunctionCalculator* m_calculator;
 
 	QList<Number> findSolution(QList<QList<Number> > coefficients, Number precision);
@@ -24,8 +26,6 @@ private:
 	QList<Number> extractFreeCoefficients(QList<QList<Number> > coefficients);
 	QList<Number> emptyVector(int size);
 	bool hasSolution(QList<QList<Number> > matrix);
-
-	class ENoSolution : public ECalculating {};
 };
 
 } // namespace

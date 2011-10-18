@@ -38,8 +38,10 @@ private:
 
 	Document *m_document;
 	Parser *m_parser;
+
 	explicit Controller(QObject *parent = 0);
 	~Controller();
+
 	bool isHelpAvailable(QString helpFullPath);
 	QString versionRevisionFromNumber(int number);
 };

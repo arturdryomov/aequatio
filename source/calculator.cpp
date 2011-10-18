@@ -166,7 +166,6 @@ QList<Rpn::Argument> Calculator::functionArguments(const QString &name)
 	if (BuiltIn::Function::functions().contains(name)) {
 		return BuiltIn::Function::functions().value(name)->requiredArguments();
 	}
-
 	else if (m_document->containsFunction(name)) {
 		return m_document->function(name).arguments;
 	}
