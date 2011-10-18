@@ -17,11 +17,11 @@ public:
 	QString process(const Rpn::Function &function, const QString &functionName);
 
 private:
-	const Document *m_document;
-
 	enum PartPriority {
-		PriorityPlusMinus, PriorityMultiplyDivide,
-		PriorityPower,	PriorityHighest,
+		PriorityPlusMinus,
+		PriorityMultiplyDivide,
+		PriorityPower,
+		PriorityHighest,
 		PriorityFunction = PriorityHighest,
 		PriorityNumber = PriorityHighest
 	};
@@ -29,6 +29,7 @@ private:
 	struct PartInfo {
 		QString text;
 		PartPriority priority;
+
 		void bracesIfGreater(PartPriority externalPriority) {
 			if (externalPriority > priority) {
 				text = QString("(%1)").arg(text);
@@ -40,6 +41,11 @@ private:
 			}
 		}
 	};
+
+	const Document *m_document;
+	QStack<PartInfo> m_codeParts;
+
+	PartInfo constructFunctionPart(QString functionName);
 };
 
 #endif // PRETTYPRINTER_H
