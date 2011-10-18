@@ -82,7 +82,7 @@ Number MathUtils::countDeterminant(QList<QList<Number> > matrix)
 		int mainElementIndex = i;
 		Number mainElement = matrix[i][i];
 
-		// find main element of the current row
+		// Find main element of the current row
 		for (int j = i + 1; j < matrix.count(); ++j) {
 			if (qAbs(mainElement) < qAbs(matrix[i][j])) {
 				mainElementIndex = j;
@@ -94,13 +94,13 @@ Number MathUtils::countDeterminant(QList<QList<Number> > matrix)
 			return 0.0;
 		}
 
-		// swap columns
+		// Swap columns
 		if (mainElementIndex != i) {
 			swapColumns(matrix, i, mainElementIndex);
 			++numberOfSwaps;
 		}
 
-		// subtract current row (multiplied before) from rows below.
+		// Subtract current row (multiplied before) from rows below.
 		for (int j = i + 1; j < matrix.count(); ++j) {
 			Number multiplyer = matrix[j][i] / matrix[i][i];
 			QList<Number> multipliedRow = MathUtils::multiplyVectorByNumber(matrix[i], multiplyer);
