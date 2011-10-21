@@ -2,7 +2,7 @@ QT += core gui
 
 TARGET = aequatio
 TEMPLATE = app
-CONFIG += help
+CONFIG += help precompile_header
 
 DEFINES += "VERSION_MAJOR=0"
 DEFINES += "VERSION_MINOR=3"
@@ -27,6 +27,8 @@ win32 {
 	LIBS += -lGdi32 \
 		-lUser32
 }
+
+PRECOMPILED_HEADER = source/precompiled.h
 
 SOURCES += \
 	source/main.cpp \
@@ -116,7 +118,8 @@ HEADERS += \
 	source/builtin/equationsolving/lusolving.h \
 	source/builtin/equationsolving/pludecomposition.h \
 	source/builtin/equationsolving/gaussseidel.h \
-	source/builtin/derivative.h
+	source/builtin/derivative.h \
+	source/precompiled.h
 
 FORMS	+= \
 	source/mainwindow.ui \
@@ -139,3 +142,4 @@ RCC_DIR = $$DESTDIR/rcc
 UI_DIR = $$DESTDIR/ui
 
 include(doc/doc.pri)
+
