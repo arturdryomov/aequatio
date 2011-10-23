@@ -97,7 +97,7 @@ Number Fibonacci::findMinimum()
 		(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder);
 
 	for (int iteration = 0; iteration <= m_iterationsNumber - 3; iteration++) {
-		if (countFunction(currentInterval.leftBorder) <= countFunction(currentInterval.rightBorder)) {
+		if (calculateFunction(currentInterval.leftBorder) <= calculateFunction(currentInterval.rightBorder)) {
 			m_sourceInterval.rightBorder = currentInterval.rightBorder;
 			currentInterval.rightBorder = currentInterval.leftBorder;
 
@@ -120,7 +120,7 @@ Number Fibonacci::findMinimum()
 
 	currentInterval.rightBorder = currentInterval.leftBorder + m_differenceConstant;
 
-	if (countFunction(currentInterval.leftBorder) <= countFunction(currentInterval.rightBorder)) {
+	if (calculateFunction(currentInterval.leftBorder) <= calculateFunction(currentInterval.rightBorder)) {
 		m_sourceInterval.rightBorder = currentInterval.rightBorder;
 	}
 	else {
@@ -130,7 +130,7 @@ Number Fibonacci::findMinimum()
 	return (m_sourceInterval.rightBorder + m_sourceInterval.leftBorder) / 2;
 }
 
-Number Fibonacci::countFunction(Number argument)
+Number Fibonacci::calculateFunction(Number argument)
 {
 	QList<Rpn::Operand> functionArguments;
 	Rpn::Operand functionArgument(Rpn::OperandNumber, argument);

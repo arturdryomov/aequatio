@@ -63,7 +63,7 @@ Number Powell::findMinimum()
 		if (needInitializePoints) {
 			secondPoint = m_sourcePoint + m_stepSize;
 
-			if (countFunction(m_sourcePoint) > countFunction(secondPoint)) {
+			if (calculateFunction(m_sourcePoint) > calculateFunction(secondPoint)) {
 				thirdPoint = m_sourcePoint + 2 * m_stepSize;
 			}
 			else {
@@ -74,14 +74,14 @@ Number Powell::findMinimum()
 		Number minimumPoint = getMinimumPoint(m_sourcePoint, secondPoint, thirdPoint);
 
 		Number numerator =
-			(qPow(secondPoint, 2) - qPow(thirdPoint, 2)) * countFunction(m_sourcePoint) +
-			(qPow(thirdPoint, 2) - qPow(m_sourcePoint, 2)) * countFunction(secondPoint) +
-			(qPow(m_sourcePoint, 2) - qPow(secondPoint, 2)) * countFunction(thirdPoint);
+			(qPow(secondPoint, 2) - qPow(thirdPoint, 2)) * calculateFunction(m_sourcePoint) +
+			(qPow(thirdPoint, 2) - qPow(m_sourcePoint, 2)) * calculateFunction(secondPoint) +
+			(qPow(m_sourcePoint, 2) - qPow(secondPoint, 2)) * calculateFunction(thirdPoint);
 
 		Number denominator =
-			((secondPoint - thirdPoint) * countFunction(m_sourcePoint)) +
-			((thirdPoint - m_sourcePoint) * countFunction(secondPoint)) +
-			((m_sourcePoint - secondPoint) * countFunction(thirdPoint));
+			((secondPoint - thirdPoint) * calculateFunction(m_sourcePoint)) +
+			((thirdPoint - m_sourcePoint) * calculateFunction(secondPoint)) +
+			((m_sourcePoint - secondPoint) * calculateFunction(thirdPoint));
 
 		if (MathUtils::isNull(denominator)) {
 			m_sourcePoint = minimumPoint;
@@ -92,7 +92,7 @@ Number Powell::findMinimum()
 
 		Number quadraticPoint = (0.5 * numerator) / denominator;
 
-		if ( (qAbs((countFunction(minimumPoint) - countFunction(quadraticPoint)) / countFunction(quadraticPoint))
+		if ( (qAbs((calculateFunction(minimumPoint) - calculateFunction(quadraticPoint)) / calculateFunction(quadraticPoint))
 			< m_firstAccuracyCoefficient) && (qAbs((minimumPoint - quadraticPoint) / quadraticPoint) < m_secondAccuracyCoefficient) ) {
 			// Exit condition
 			return quadraticPoint;
@@ -126,17 +126,17 @@ Number Powell::findMinimum()
 Number Powell::getMinimumPoint(Number first, Number second, Number third)
 {
 	Number minimumNumber = first;
-	if (countFunction(minimumNumber) > countFunction(second)) {
+	if (calculateFunction(minimumNumber) > calculateFunction(second)) {
 		minimumNumber = second;
 	}
-	if (countFunction(minimumNumber) > countFunction(third)) {
+	if (calculateFunction(minimumNumber) > calculateFunction(third)) {
 		minimumNumber = third;
 	}
 
 	return minimumNumber;
 }
 
-Number Powell::countFunction(Number argument)
+Number Powell::calculateFunction(Number argument)
 {
 	QList<Rpn::Operand> functionArguments;
 	Rpn::Operand functionArgument(Rpn::OperandNumber, argument);

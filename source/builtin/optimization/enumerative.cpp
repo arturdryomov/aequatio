@@ -51,15 +51,15 @@ Number Enumerative::findMinimum()
 	Number minimumPoint = m_sourceInterval.leftBorder +
 		(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) /
 		(m_iterationsCount + 1);
-	Number functionMinumum = countFunction(minimumPoint);
+	Number functionMinumum = calculateFunction(minimumPoint);
 
 	for (int i = 1; i <= m_iterationsCount; i++) {
 		Number currentPoint = m_sourceInterval.leftBorder + i *
 			(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) /
 			(m_iterationsCount + 1);
 
-		if (countFunction(currentPoint) < functionMinumum) {
-			functionMinumum = countFunction(currentPoint);
+		if (calculateFunction(currentPoint) < functionMinumum) {
+			functionMinumum = calculateFunction(currentPoint);
 			minimumPoint = currentPoint;
 		}
 	}
@@ -67,7 +67,7 @@ Number Enumerative::findMinimum()
 	return minimumPoint;
 }
 
-Number Enumerative::countFunction(Number argument)
+Number Enumerative::calculateFunction(Number argument)
 {
 	QList<Rpn::Operand> functionArguments;
 	Rpn::Operand functionArgument(Rpn::OperandNumber, argument);

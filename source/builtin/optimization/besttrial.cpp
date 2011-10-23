@@ -86,7 +86,7 @@ QList<Number> BestTrial::findMinimum()
 
 		QList<Number> currentPoint = getPointOfFunctionMinimum(currentPoints);
 
-		if (countFunction(currentPoint) < countFunction(m_sourcePoint)) {
+		if (calculateFunction(currentPoint) < calculateFunction(m_sourcePoint)) {
 			m_sourcePoint = currentPoint;
 			iterationCount++;
 
@@ -116,7 +116,7 @@ QList<Number> BestTrial::getPointOfFunctionMinimum(QList<QList<Number> > points)
 	QList<Number> result = points.first();
 
 	foreach (QList<Number> point, points) {
-		if (countFunction(point) < countFunction(result)) {
+		if (calculateFunction(point) < calculateFunction(result)) {
 			result = point;
 		}
 	}
@@ -124,7 +124,7 @@ QList<Number> BestTrial::getPointOfFunctionMinimum(QList<QList<Number> > points)
 	return result;
 }
 
-Number BestTrial::countFunction(QList<Number> arguments)
+Number BestTrial::calculateFunction(QList<Number> arguments)
 {
 	QList<Rpn::Operand> functionArguments;
 

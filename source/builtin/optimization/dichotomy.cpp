@@ -65,7 +65,7 @@ Number Dichotomy::findMinimum()
 		currentInterval.rightBorder = (m_sourceInterval.leftBorder +
 			m_sourceInterval.rightBorder + m_swing) / 2;
 
-		if (countFunction(currentInterval.leftBorder) <= countFunction(currentInterval.rightBorder)) {
+		if (calculateFunction(currentInterval.leftBorder) <= calculateFunction(currentInterval.rightBorder)) {
 			m_sourceInterval.rightBorder = currentInterval.rightBorder;
 		}
 		else {
@@ -79,7 +79,7 @@ Number Dichotomy::findMinimum()
 	}
 }
 
-Number Dichotomy::countFunction(Number argument)
+Number Dichotomy::calculateFunction(Number argument)
 {
 	QList<Rpn::Operand> functionArguments;
 	Rpn::Operand functionArgument(Rpn::OperandNumber, argument);

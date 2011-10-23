@@ -111,11 +111,11 @@ Number ConjugateGradient::findStep(QList<Number> point, QList<Number> direction)
 			MathUtils::multiplyVectorByNumber(direction, middle)
 		);
 
-		if (countFunction(leftBorderPoint) <= countFunction(middlePoint)) {
+		if (calculateFunction(leftBorderPoint) <= calculateFunction(middlePoint)) {
 			sourceRightBorder = middle;
 			middle = currentLeftBorder;
 		}
-		else if (countFunction(rightBorderPoint) <= countFunction(middlePoint)) {
+		else if (calculateFunction(rightBorderPoint) <= calculateFunction(middlePoint)) {
 				sourceLeftBorder = middle;
 				middle = currentRightBorder;
 		}
@@ -209,7 +209,7 @@ bool ConjugateGradient::areDirectionsLinearlyIndependend(const QList<QList<Numbe
 	return !MathUtils::isNull(MathUtils::countDeterminant(matrix));
 }
 
-Number ConjugateGradient::countFunction(const QList<Number> arguments)
+Number ConjugateGradient::calculateFunction(const QList<Number> arguments)
 {
 	QList<Rpn::Operand> functionArguments;
 	foreach (Number number, arguments) {

@@ -92,7 +92,7 @@ QList<Number> Rosenbrock::findMinimum()
 		forever {
 			int wrongStepSeriesCount = 0;
 			for (int i = 0; i < currentPoint.size(); i++) {
-				if (countFunction(increaseDirection(currentPoint, i)) < countFunction(currentPoint)) {
+				if (calculateFunction(increaseDirection(currentPoint, i)) < calculateFunction(currentPoint)) {
 					currentPoint = increaseDirection(currentPoint, i);
 					m_stepSizes[i] = m_stepSizes[i] * m_accelerationCoefficient;
 				}
@@ -101,13 +101,13 @@ QList<Number> Rosenbrock::findMinimum()
 				}
 			}
 
-			if (MathUtils::equal(countFunction(currentPoint), countFunction(firstCurrentPoint))) {
+			if (MathUtils::equal(calculateFunction(currentPoint), calculateFunction(firstCurrentPoint))) {
 				wrongStepSeriesCount++;
-				if (countFunction(currentPoint) < countFunction(m_sourcePoint)) {
+				if (calculateFunction(currentPoint) < calculateFunction(m_sourcePoint)) {
 					// Loop exit condition
 					break;
 				}
-				else if (MathUtils::equal(countFunction(currentPoint), countFunction(m_sourcePoint))) {
+				else if (MathUtils::equal(calculateFunction(currentPoint), calculateFunction(m_sourcePoint))) {
 					if (wrongStepSeriesCount <= m_maximumWrongStepsCount) {
 						bool isFinish = true;
 						for (int i = 0; i < m_stepSizes.size(); i++) {
@@ -238,7 +238,7 @@ QList<Number> Rosenbrock::increaseDirection(QList<Number> point, int direction)
 	return result;
 }
 
-Number Rosenbrock::countFunction(QList<Number> arguments)
+Number Rosenbrock::calculateFunction(QList<Number> arguments)
 {
 	QList<Rpn::Operand> functionArguments;
 

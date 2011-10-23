@@ -30,7 +30,7 @@ private:
 	QList<Number> increaseDirection(QList<Number> point, int direction);
 	void initializeNewDirections(QList<Number> stepSizes);
 	QList<Number> getStepLengths(QList<Number> currentPoint, QList<Number> previousPoint);
-	Number countFunction(QList<Number> arguments);
+	Number calculateFunction(QList<Number> arguments);
 	QList<Number> solveEquationSystem(QList<QList<Number> > coefficients);
 };
 

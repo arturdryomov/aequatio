@@ -28,7 +28,7 @@ private:
 	QList<Number> findMinimum();
 	QList<Number> increaseDirection(QList<Number> point, int direction);
 	QList<Number> decreaseDirection(QList<Number> point, int direction);
-	Number countFunction(QList<Number> arguments);
+	Number calculateFunction(QList<Number> arguments);
 };
 
 } // namespace

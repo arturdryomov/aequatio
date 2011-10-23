@@ -79,7 +79,7 @@ QList<Number> ReturningRandom::findMinimum()
 			)
 		);
 
-		if (countFunction(currentPoint) < countFunction(m_sourcePoint)) {
+		if (calculateFunction(currentPoint) < calculateFunction(m_sourcePoint)) {
 			m_sourcePoint = currentPoint;
 
 			if (iterationCount < m_maximumIterationsCount) {
@@ -106,7 +106,7 @@ QList<Number> ReturningRandom::findMinimum()
 	}
 }
 
-Number ReturningRandom::countFunction(QList<Number> arguments)
+Number ReturningRandom::calculateFunction(QList<Number> arguments)
 {
 	QList<Rpn::Operand> functionArguments;
 

@@ -25,7 +25,7 @@ private:
 
 	Number findMinimum();
 	Number getMinimumPoint(Number first, Number second, Number third);
-	Number countFunction(Number argument);
+	Number calculateFunction(Number argument);
 };
 
 } // namespace

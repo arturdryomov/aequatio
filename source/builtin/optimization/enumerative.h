@@ -28,7 +28,7 @@ private:
 	Number m_iterationsCount;
 
 	Number findMinimum();
-	Number countFunction(Number argument);
+	Number calculateFunction(Number argument);
 };
 
 } // namespace

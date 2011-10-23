@@ -32,7 +32,7 @@ private:
 	Number findMinimum();
 	void initializeIterationsNumber();
 	Number fibonacciNumber(int position);
-	Number countFunction(Number argument);
+	Number calculateFunction(Number argument);
 };
 
 } // namespace

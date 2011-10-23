@@ -72,15 +72,15 @@ QList<Number> HookeJeeves::findMinimum()
 
 	forever {
 		for (int i = 0; i < currentPoint.size(); i++) {
-			if (countFunction(increaseDirection(currentPoint, i)) < countFunction(currentPoint)) {
+			if (calculateFunction(increaseDirection(currentPoint, i)) < calculateFunction(currentPoint)) {
 				currentPoint = increaseDirection(currentPoint, i);
 			}
-			else if (countFunction(decreaseDirection(currentPoint, i)) < countFunction(currentPoint)) {
+			else if (calculateFunction(decreaseDirection(currentPoint, i)) < calculateFunction(currentPoint)) {
 				currentPoint = decreaseDirection(currentPoint, i);
 			}
 		}
 
-		if (countFunction(currentPoint) < countFunction(m_sourcePoint)) {
+		if (calculateFunction(currentPoint) < calculateFunction(m_sourcePoint)) {
 			QList<Number> oldSourcePoint = m_sourcePoint;
 			m_sourcePoint = currentPoint;
 			for (int i = 0; i < currentPoint.size(); i++) {
@@ -123,7 +123,7 @@ QList<Number> HookeJeeves::decreaseDirection(QList<Number> point, int direction)
 	return result;
 }
 
-Number HookeJeeves::countFunction(QList<Number> arguments)
+Number HookeJeeves::calculateFunction(QList<Number> arguments)
 {
 	QList<Rpn::Operand> functionArguments;
 

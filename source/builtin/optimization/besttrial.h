@@ -28,7 +28,7 @@ private:
 
 	QList<Number> findMinimum();
 	QList<Number> getPointOfFunctionMinimum(QList<QList<Number> > points);
-	Number countFunction(QList<Number> arguments);
+	Number calculateFunction(QList<Number> arguments);
 };
 
 } // namespace

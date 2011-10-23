@@ -45,16 +45,16 @@ Number Derivative::findSolution(Number point)
 {
 	Number result = 0;
 
-	result -= countFunction(point + 2 * smallNumber(point));
-	result += 8 * countFunction(point + smallNumber(point));
-	result -= 8 * countFunction(point - smallNumber(point));
-	result += countFunction(point - 2 * smallNumber(point));
+	result -= calculateFunction(point + 2 * smallNumber(point));
+	result += 8 * calculateFunction(point + smallNumber(point));
+	result -= 8 * calculateFunction(point - smallNumber(point));
+	result += calculateFunction(point - 2 * smallNumber(point));
 	result /= 12 * smallNumber(point);
 
 	return result;
 }
 
-Number Derivative::countFunction(Number argument)
+Number Derivative::calculateFunction(Number argument)
 {
 	QList<Rpn::Operand> functionArguments;
 	Rpn::Operand functionArgument(Rpn::OperandNumber, argument);

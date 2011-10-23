@@ -63,7 +63,7 @@ Number GoldenSection::findMinimum()
 	Number delta = 0;
 
 	do {
-		if (countFunction(currentInterval.leftBorder) <= countFunction(currentInterval.rightBorder)) {
+		if (calculateFunction(currentInterval.leftBorder) <= calculateFunction(currentInterval.rightBorder)) {
 			m_sourceInterval.rightBorder = currentInterval.rightBorder;
 			currentInterval.rightBorder = currentInterval.leftBorder;
 			currentInterval.leftBorder = m_sourceInterval.leftBorder +
@@ -82,7 +82,7 @@ Number GoldenSection::findMinimum()
 	return (m_sourceInterval.leftBorder + m_sourceInterval.rightBorder) / 2;
 }
 
-Number GoldenSection::countFunction(Number argument)
+Number GoldenSection::calculateFunction(Number argument)
 {
 	QList<Rpn::Operand> functionArguments;
 	Rpn::Operand functionArgument(Rpn::OperandNumber, argument);

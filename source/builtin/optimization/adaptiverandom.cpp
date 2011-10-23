@@ -84,7 +84,7 @@ QList<Number> AdaptiveRandom::findMinimum()
 			)
 		);
 
-		if (countFunction(currentPoint) < countFunction(m_sourcePoint)) {
+		if (calculateFunction(currentPoint) < calculateFunction(m_sourcePoint)) {
 			QList<Number> newPoint = MathUtils::addVectorToVector(
 				m_sourcePoint,
 				MathUtils::multiplyVectorByNumber(
@@ -93,7 +93,7 @@ QList<Number> AdaptiveRandom::findMinimum()
 				)
 			);
 
-			if (countFunction(newPoint) < countFunction(m_sourcePoint)) {
+			if (calculateFunction(newPoint) < calculateFunction(m_sourcePoint)) {
 				m_sourcePoint = newPoint;
 				m_stepSize *= m_accelerationCoefficient;
 				iterationCount++;
@@ -123,7 +123,7 @@ QList<Number> AdaptiveRandom::findMinimum()
 	}
 }
 
-Number AdaptiveRandom::countFunction(QList<Number> arguments)
+Number AdaptiveRandom::calculateFunction(QList<Number> arguments)
 {
 	QList<Rpn::Operand> functionArguments;
 

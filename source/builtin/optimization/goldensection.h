@@ -29,7 +29,7 @@ private:
 	Number m_accuracy;
 
 	Number findMinimum();
-	Number countFunction(Number argument);
+	Number calculateFunction(Number argument);
 };
 
 } // namespace

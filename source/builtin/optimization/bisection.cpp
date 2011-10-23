@@ -63,11 +63,11 @@ Number Bisection::findMinimum()
 				qAbs(m_sourceInterval.rightBorder - m_sourceInterval.leftBorder) / 4
 		};
 
-		if (countFunction(currentInterval.leftBorder) < countFunction(middlePoint)) {
+		if (calculateFunction(currentInterval.leftBorder) < calculateFunction(middlePoint)) {
 			m_sourceInterval.rightBorder = middlePoint;
 			middlePoint = currentInterval.leftBorder;
 		}
-		else if (countFunction(currentInterval.rightBorder) < countFunction(middlePoint)) {
+		else if (calculateFunction(currentInterval.rightBorder) < calculateFunction(middlePoint)) {
 				m_sourceInterval.leftBorder = middlePoint;
 				middlePoint = currentInterval.rightBorder;
 		}
@@ -83,7 +83,7 @@ Number Bisection::findMinimum()
 	}
 }
 
-Number Bisection::countFunction(Number argument)
+Number Bisection::calculateFunction(Number argument)
 {
 	QList<Rpn::Operand> functionArguments;
 	Rpn::Operand functionArgument(Rpn::OperandNumber, argument);

@@ -28,7 +28,7 @@ private:
 	Interval m_sourceInterval;
 
 	Number findMinimum();
-	Number countFunction(Number argument);
+	Number calculateFunction(Number argument);
 };
 
 } // namespace

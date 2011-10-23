@@ -20,7 +20,7 @@ private:
 	QString m_functionName;
 
 	Number findSolution(Number point);
-	Number countFunction(Number argument);
+	Number calculateFunction(Number argument);
 	Number smallNumber(Number x);
 };
 
