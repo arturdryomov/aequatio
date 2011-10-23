@@ -16,6 +16,8 @@ public:
 	Rpn::OperandType returnValueType();
 
 private:
+	class ENoSolution : public ECalculating {};
+
 	struct Interval {
 		Number leftBorder;
 		Number rightBorder;

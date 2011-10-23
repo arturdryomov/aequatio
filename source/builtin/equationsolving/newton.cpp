@@ -22,10 +22,18 @@ Rpn::Operand Newton::calculate(FunctionCalculator *calculator, QList<Rpn::Operan
 	m_searchInterval.rightBorder = actualArguments.at(2).value.value<Number>();
 	m_accuracy = actualArguments.at(3).value.value<Number>();
 
-	Rpn::Operand result;
-	result.type = Rpn::OperandNumber;
-	result.value = QVariant::fromValue(findSolution());
-	return result;
+	// Check condition of accuracy
+	if (m_accuracy <= 0) {
+		THROW(EWrongArgument(QObject::tr("accuracy"), QObject::tr("more than 0")) )
+	}
+
+	try {
+		return Rpn::Operand(Rpn::OperandNumber, QVariant::fromValue(findSolution()));
+	}
+	catch (ENoSolution &e) {
+		Q_UNUSED(e)
+		return Rpn::Operand(Rpn::OperandIncorrect);
+	}
 }
 
 QList<Rpn::Argument> Newton::requiredArguments()
@@ -54,7 +62,18 @@ Number Newton::findSolution()
 
 	do {
 		previousPoint = currentPoint;
+
+		// No solution if determinant is null
+		if (MathUtils::isNull(countDerivative(previousPoint))) {
+			THROW(ENoSolution());
+		}
+
 		currentPoint -= countFunction(previousPoint) / countDerivative(previousPoint);
+
+		// No solution if point is out of range
+		if ((currentPoint > m_searchInterval.rightBorder) || (currentPoint < m_searchInterval.leftBorder)) {
+			THROW(ENoSolution());
+		}
 
 	} while (qAbs(currentPoint - previousPoint) >= m_accuracy);
 
