@@ -76,7 +76,7 @@ QList<Number> ConjugateGradient::findMinimum()
 		newDirections.first() = MathUtils::subtractVectorFromVector(nextPoint, point);
 		newDirections.last() = newDirections.first();
 
-		if (isDirectionsLinearlyIndependend(newDirections)) {
+		if (areDirectionsLinearlyIndependend(newDirections)) {
 			directions = newDirections;
 		}
 		point = nextPoint;
@@ -199,9 +199,14 @@ QList<Number> ConjugateGradient::searchWithDirections(const QList<QList<Number> 
 	return QList<Number>();
 }
 
-bool ConjugateGradient::isDirectionsLinearlyIndependend(const QList<QList<Number> > &directions)
+bool ConjugateGradient::areDirectionsLinearlyIndependend(const QList<QList<Number> > &directions)
 {
-	return !MathUtils::isNull(MathUtils::countDeterminant(directions));
+	// We should ensure that directions[1..size()] are all linearly-independent.
+	// That is, we can calculate determinant of a matrix formed from directions excluding
+	// the first element, and if it is not null, everything's fine.
+	QList<QList<Number> > matrix = directions;
+	matrix.removeFirst();
+	return !MathUtils::isNull(MathUtils::countDeterminant(matrix));
 }
 
 Number ConjugateGradient::countFunction(const QList<Number> arguments)
