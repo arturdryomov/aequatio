@@ -83,7 +83,7 @@ Number Powell::findMinimum()
 			((thirdPoint - m_sourcePoint) * countFunction(secondPoint)) +
 			((m_sourcePoint - secondPoint) * countFunction(thirdPoint));
 
-		if (denominator == 0) {
+		if (MathUtils::isNull(denominator)) {
 			m_sourcePoint = minimumPoint;
 
 			needInitializePoints = true;

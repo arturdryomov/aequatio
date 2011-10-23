@@ -22,7 +22,7 @@ Rpn::Operand PluDecompozition::calculate(Function::FunctionCalculator *calculato
 			THROW(EWrongArgument(QObject::tr("coefficient vectors"), QObject::tr("one size")));
 		}
 	}
-	if (MathUtils::countDeterminant(matrix) == 0) {
+	if (MathUtils::isNull(MathUtils::countDeterminant(matrix))) {
 		THROW(EWrongArgument(QObject::tr("matrix"), QObject::tr("nonsingular")));
 	}
 
@@ -70,7 +70,7 @@ QList<QList<QList<Number> > > PluDecompozition::decompose(QList<QList<Number> > 
 		}
 
 		// Signular matrix
-		if (maximumElement == 0) {
+		if (MathUtils::isNull(maximumElement)) {
 			THROW(ENoSolution());
 		}
 

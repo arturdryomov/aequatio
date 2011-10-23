@@ -201,7 +201,7 @@ int NelderMead::indexOfSecondMaximal(const QList<Number> &values)
 {
 	if (values.size() <= 1) return -1;
 
-	Number indexOfMaximal = this->indexOfMaximal(values);
+	int indexOfMaximal = this->indexOfMaximal(values);
 
 	Number secondMax = values[0];
 	int index = 0;

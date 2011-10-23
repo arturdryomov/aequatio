@@ -101,13 +101,13 @@ QList<Number> Rosenbrock::findMinimum()
 				}
 			}
 
-			if (countFunction(currentPoint) == countFunction(firstCurrentPoint)) {
+			if (MathUtils::equal(countFunction(currentPoint), countFunction(firstCurrentPoint))) {
 				wrongStepSeriesCount++;
 				if (countFunction(currentPoint) < countFunction(m_sourcePoint)) {
 					// Loop exit condition
 					break;
 				}
-				else if (countFunction(currentPoint) == countFunction(m_sourcePoint)) {
+				else if (MathUtils::equal(countFunction(currentPoint), countFunction(m_sourcePoint))) {
 					if (wrongStepSeriesCount <= m_maximumWrongStepsCount) {
 						bool isFinish = true;
 						for (int i = 0; i < m_stepSizes.size(); i++) {
@@ -157,7 +157,7 @@ void Rosenbrock::initializeNewDirections(QList<Number> stepSizes)
 
 	QList<QList<Number> > gramStepOne;
 	for (int i = 0; i < stepSizes.size(); i++) {
-		if (stepSizes[i] == 0) {
+		if (MathUtils::isNull(stepSizes[i])) {
 			gramStepOne << m_directions[i];
 		}
 		else {
