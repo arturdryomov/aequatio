@@ -71,7 +71,8 @@ SOURCES += \
 	source/builtin/equationsolving/lusolving.cpp \
 	source/builtin/equationsolving/pludecomposition.cpp \
 	source/builtin/equationsolving/gaussseidel.cpp \
-	source/builtin/derivative.cpp
+	source/builtin/derivative.cpp \
+	source/builtin/equationsolving/newton.cpp
 
 HEADERS += \
 	source/controller.h \
@@ -116,7 +117,8 @@ HEADERS += \
 	source/builtin/equationsolving/lusolving.h \
 	source/builtin/equationsolving/pludecomposition.h \
 	source/builtin/equationsolving/gaussseidel.h \
-	source/builtin/derivative.h
+	source/builtin/derivative.h \
+	source/builtin/equationsolving/newton.h
 
 FORMS	+= \
 	source/mainwindow.ui \
