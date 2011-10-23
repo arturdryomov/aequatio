@@ -121,12 +121,12 @@ Rpn::Operand Calculator::calculateUserDefinedFunction(const QString &functionNam
 			case Rpn::ElementFunctionCall: {
 				QString callingFunctionName = element.value.value<QString>();
 
-				QList<Rpn::Operand> actualArguments;
+				QList<Rpn::Operand> arguments;
 				for (int i = 0; i < functionArguments(callingFunctionName).size(); ++i) {
-					actualArguments.prepend(calculationStack.pop());
+					arguments.prepend(calculationStack.pop());
 				}
 
-				Rpn::Operand result = calculateFunction(callingFunctionName, actualArguments);
+				Rpn::Operand result = calculateFunction(callingFunctionName, arguments);
 				calculationStack.push(result);
 
 				break;
