@@ -27,7 +27,7 @@ private:
 	QString m_functionName;
 	Number m_resultIntervalLength;
 	Number m_differenceConstant;
-	Number m_iterationsNumber;
+	int m_iterationsNumber;
 
 	Number findMinimum();
 	void initializeIterationsNumber();
