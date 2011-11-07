@@ -24,7 +24,10 @@ public:
 	static bool equal(Number number1, Number number2);
 	static bool isNull(Number number);
 	static Number getNaN();
+	static Number positiveInfinity();
+	static Number negativeInfinity();
 	static bool isNaN(const Number number);
+	static bool isFinite(const Number number);
 
 	static QList<Number> generateRandomNumbers(int count, Number lowerLimit, Number higherLimit);
 	static Number getRandomNumber(Number higherLimit);
