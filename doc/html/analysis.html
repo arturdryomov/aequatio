@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+    <title>Aequatio Help</title>
+
+    <link rel="stylesheet" type="text/css" href="css/master.css" />
+  </head>
+
+  <body>
+
+		<h1>Analysis</h1>
+
+			<a name="integral"><h2>Integral</h2></a>
+
+				<p>integral(<i>f</i>, <i>l</i>, <i>r</i>, <i>&epsilon;</i>)</p>
+
+				<p>Calculates the one-dimensional integral of function <i>f</i> on interval from <i>l</i> to <i>r</i> with precision <i>&epsilon;</i>.</p>
+        <p>Calculation is accurate only when <i>f</i> is a smooth function.</p>
+        <p>Simpson method is used for calculation.</p>
+
+				<p>Example</p>
+
+				<div class="code">
+					<p>&larr; func f(x) = x^3 - 0.5 * x  + ln(3 * x)</p>
+					<p>&rarr; Function declared: f(x) = x ^ 3 − 0.5 × x + ln(3 × x)</p>
+					<p>&larr; integral(f, 1, 3.5, 0.01)</p>
+					<p>&rarr; integral(f, 1, 3.5, 0.01) = 39.0843</p>          
+				</div>
+
+  </body>
+
+</html>
