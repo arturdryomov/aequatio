@@ -19,6 +19,7 @@ private:
 	Number m_point;
 	QList<QList<Number> > m_points;
 
+	bool isInterpolation();
 	Number findSolution();
 };
 

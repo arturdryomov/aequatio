@@ -20,14 +20,37 @@ Rpn::Operand LagrangeInterpolation::calculate(Function::FunctionCalculator *calc
 	m_points = Rpn::Vector::toTwoDimensional(actualArguments.at(1).value.value<Rpn::Vector>());
 
 	// Ensure all points are points actually
-
 	foreach (QList<Number> point, m_points) {
 		if (point.size() != 2) {
 			THROW(EWrongArgument(QObject::tr("elements of points-list"), QObject::tr("two-dimensional points")));
 		}
 	}
 
+	// Check interpolation it is
+	if (!isInterpolation()) {
+		THROW(EWrongArgument(QObject::tr(("interpolation point")), QObject::tr("in interval of points in list")));
+	}
+
 	return Rpn::Operand(Rpn::OperandNumber, QVariant::fromValue(findSolution()));
+}
+
+bool LagrangeInterpolation::isInterpolation()
+{
+	Number maximumPoint = m_points.at(0).at(0);
+	foreach (QList<Number> point, m_points) {
+		if (point.at(0) > maximumPoint) {
+			maximumPoint = point.at(0);
+		}
+	}
+
+	Number minimumPoint = m_points.at(0).at(0);
+	foreach (QList<Number> point, m_points) {
+		if (point.at(0) < minimumPoint) {
+			minimumPoint = point.at(0);
+		}
+	}
+
+	return ((m_point < maximumPoint) && (m_point > minimumPoint));
 }
 
 QList<Rpn::Argument> LagrangeInterpolation::requiredArguments()
