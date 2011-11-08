@@ -84,7 +84,7 @@ Number Integral::integrateWithStepsCount(int stepsCount)
 		intervalLeft += step;
 	}
 
-	if (!MathUtils::isFinite(result)) {
+	if (!MathUtils::isFinite(result) || MathUtils::isNaN(result)) {
 		throw ENoSolution();
 	}
 	return result;
