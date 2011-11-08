@@ -28,6 +28,7 @@ public:
 	static Number negativeInfinity();
 	static bool isNaN(const Number number);
 	static bool isFinite(const Number number);
+	static bool isInteger(const Number number);
 
 	static QList<Number> generateRandomNumbers(int count, Number lowerLimit, Number higherLimit);
 	static Number getRandomNumber(Number higherLimit);

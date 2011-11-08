@@ -167,6 +167,11 @@ bool MathUtils::isFinite(const Number number)
 	return (!equal(number, negativeInfinity()) && !equal(number, positiveInfinity()));
 }
 
+bool MathUtils::isInteger(const Number number)
+{
+	return isNull(number - floor(number));
+}
+
 QList<Number> MathUtils::generateRandomNumbers(int count, Number lowerLimit, Number higherLimit)
 {
 	QList<Number> result;

@@ -19,8 +19,8 @@
 				<p>integral(<i>f</i>, <i>l</i>, <i>r</i>, <i>&epsilon;</i>)</p>
 
 				<p>Calculates the one-dimensional integral of function <i>f</i> on interval from <i>l</i> to <i>r</i> with precision <i>&epsilon;</i>.</p>
-        <p>Calculation is accurate only when <i>f</i> is a smooth function.</p>
-        <p>Simpson method is used for calculation.</p>
+				<p>Calculation is accurate only when <i>f</i> is a smooth function.</p>
+				<p>Simpson method is used for calculation.</p>
 
 				<p>Example</p>
 
@@ -28,9 +28,38 @@
 					<p>&larr; func f(x) = x^3 - 0.5 * x  + ln(3 * x)</p>
 					<p>&rarr; Function declared: f(x) = x ^ 3 − 0.5 × x + ln(3 × x)</p>
 					<p>&larr; integral(f, 1, 3.5, 0.01)</p>
-					<p>&rarr; integral(f, 1, 3.5, 0.01) = 39.0843</p>          
+					<p>&rarr; integral(f, 1, 3.5, 0.01) = 39.0843</p>
 				</div>
 
+			<a name="diff_runge_kutta"><h2>Runge—Kutta Method for Ordinary Differential Equations</h2></a>
+
+				<p>diff_runge_kutta(<i>f</i>, <i>y<sub>0</sub></i>, <i>l</i>, <i>r</i>, <i>n</i>)</p>
+
+				<p>
+					Numerically solves ordinary differential equation <i>y'</i> = <i>f(x, y)</i>, <i>y(x<sub>0</sub>)</i> = <i>y<sub>0</sub></i> using
+					fourth-order Runge—Kutta fixed-step method. 
+				</p>
+				<ul>
+					<li><i>f</i> — function <i>f(x, y)</i>;</li>
+					<li><i>y0</i> — initial value;</li>
+					<li><i>l</i> — left boundary of the interval on which to solve the equation, <i>x<sub>0</sub></i> = <i>l</i>;</li>
+					<li><i>r</i> — right boundary of the interval on which to solve the equation;</li>
+					<li><i>n</i> — number of intervals the <i>[l, r]</i> interval is divided into.
+				</ul>
+				
+				<p>
+					The function returns a vector of points <i>(x<sub>i</sub>, y<sub>i</sub>)</i> so that <i>y<sub>i</sub></i> = <i>y(x<sub>i</sub>)</i>,
+					where <i>x<sub>i</sub></i> are the right boundaries of the intervals the <i>[l, r]</i> interval is divided into.
+				</p>
+
+				<p>Example</p>
+
+				<div class="code">
+					<p>&larr; func f(x, y) = sin(x) + cos(y) - 2</p>
+					<p>&rarr; Function declared:  Function declared: f(x, y) = sin(x) + cos(y) − 2</p>
+					<p>&larr; diff_runge_kutta(f, 1, 1, 8, 5)</p>
+					<p>&rarr; diff_runge_kutta(f, 1, 1, 8, 5) = [[2.4, 0.502313], [3.8, −0.970277], [5.2, −5.43741], [6.6, −7.66404], [8, −10.2022]]</p>
+				</div>
   </body>
 
 </html>

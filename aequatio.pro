@@ -74,7 +74,8 @@ SOURCES += \
 	source/builtin/derivative.cpp \
 	source/builtin/equationsolving/newton.cpp \
 	source/builtin/lagrangeinterpolation.cpp \
-	source/builtin/integral.cpp
+	source/builtin/integral.cpp \
+	source/builtin/diffrungekutta.cpp
 
 HEADERS += \
 	source/controller.h \
@@ -122,7 +123,8 @@ HEADERS += \
 	source/builtin/derivative.h \
 	source/builtin/equationsolving/newton.h \
 	source/builtin/lagrangeinterpolation.h \
-	source/builtin/integral.h
+	source/builtin/integral.h \
+	source/builtin/diffrungekutta.h
 
 FORMS	+= \
 	source/mainwindow.ui \
