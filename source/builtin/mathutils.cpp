@@ -146,10 +146,30 @@ Number MathUtils::getNaN()
 	return std::numeric_limits<Number>::quiet_NaN();
 }
 
+Number MathUtils::positiveInfinity()
+{
+	return std::numeric_limits<Number>::infinity();
+}
+
+Number MathUtils::negativeInfinity()
+{
+	return - std::numeric_limits<Number>::infinity();
+}
+
 bool MathUtils::isNaN(const Number number)
 {
 	volatile Number value = number;
 	return value != value;
+}
+
+bool MathUtils::isFinite(const Number number)
+{
+	return (!equal(number, negativeInfinity()) && !equal(number, positiveInfinity()));
+}
+
+bool MathUtils::isInteger(const Number number)
+{
+	return isNull(number - floor(number));
 }
 
 QList<Number> MathUtils::generateRandomNumbers(int count, Number lowerLimit, Number higherLimit)

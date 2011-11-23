@@ -32,7 +32,7 @@ EWrongArgument::EWrongArgument(const QString &argumentName, const QString &argum
 
 QString EWrongArgument::message()
 {
-	return tr("Wrong argument condition: %1 must be %2.").arg(m_argumentName).arg(m_argumentCondition);
+	return tr("Wrong argument: %1 must be %2.").arg(m_argumentName).arg(m_argumentCondition);
 }
 
 
