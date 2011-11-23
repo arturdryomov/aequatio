@@ -14,8 +14,10 @@
         </section>
         <section title="Functions" ref="html/functions.html">
           <section title="Built-in Functions" ref="html/builtin-functions.html">
+            <section title="Analysis" ref="html/analysis.html"></section>
             <section title="Finding Minium: Zero Order" ref="html/minimum-zero.html"></section>
-						<section title="Equations Solving" ref="html/equations-solving.html"></section>
+            <section title="Equations Solving" ref="html/equations-solving.html"></section>
+            <section title="Matrix Operations" ref="html/matrices.html"></section>
           </section>
         </section>
       </section>

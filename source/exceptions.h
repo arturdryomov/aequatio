@@ -14,10 +14,12 @@ public:
 	virtual QString message() = 0; // user-friendly exception message
 	QStack<QString> throwStack;
 	void toLogger();
+
 protected:
 	virtual LogItem logItem();
 	// Helper method. tr() is simply shorter than QApplication::translate()
 	QString tr(const char *sourceText, const char *disambiguation = 0, int n = -1);
+
 private:
 	QDateTime m_throwTime;
 };

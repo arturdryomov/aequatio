@@ -4,8 +4,7 @@
 
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-
-    <title>Aequatio Help</title>
+<title>Aequatio Help</title>
 
     <link rel="stylesheet" type="text/css" href="css/master.css" />
   </head>
@@ -14,7 +13,7 @@
 
     <a name="title"><h1>Internal Functions</h1></a>
 
-      <p>These are built-in functions you can <a href="functions.html#using">use</a>.
+      <p>These are built-in functions you can <a href="functions.html#using">use</a>.</p>
 
 			<h2>Common</h2>
 
@@ -69,6 +68,33 @@
 					</tr>
 				</table>
 
+			<h2>Analysis</h2>
+				<table>
+					<tr>
+						<th>Name</th>
+						<th>Meaning</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="analysis.html#integral">
+								integral(<i>f</i>, <i>l</i>, <i>r</i>, <i>&epsilon;</i>)
+							</a>
+						</td>
+						<td>Calculates the one-dimensional integral of function <i>f</i>.</td>
+					</tr>
+					<tr class="alt">
+						<td>
+							<a href="analysis.html#diff_runge_kutta">
+								diff_runge_kutta(<i>f</i>, <i>y<sub>0</sub></i>, <i>l</i>, <i>r</i>, <i>n</i>)
+							</a>
+						</td>
+						<td>
+							Numerically solves ordinary differential equation <i>y'</i> = <i>f(x, y)</i>, <i>y(x<sub>0</sub>)</i> = <i>y<sub>0</sub></i> using
+							fourth-order Runge—Kutta fixed-step method.
+						</td>
+					</tr>
+				</table>
+
 			<h2>Equations Solving</h2>
 				
 				<table>
@@ -79,7 +105,7 @@
 					<tr>
 						<td>
 							<a href="equations-solving.html#cramer">
-								cramer([
+								sle_cramer([
 									[<i>a<sub>11</sub></i>, <i>a<sub>12</sub></i>, &hellip;, <i>a<sub>1n</sub></i>, <i>b<sub>1</sub></i>], 
 									[<i>a<sub>21</sub></i>, <i>a<sub>22</sub></i>, &hellip;, <i>a<sub>2n</sub></i>, <i>b<sub>2</sub></i>], 
 									&hellip;,
@@ -91,10 +117,10 @@
 							Solves system of linear equations with Cramer method.
 						</td>
 					</tr>
-					<tr>
+					<tr class="alt">
 						<td>
 							<a href="equations-solving.html#gauss">
-								gauss([
+								sle_gauss([
 									[<i>a<sub>11</sub></i>, <i>a<sub>12</sub></i>, &hellip;, <i>a<sub>1n</sub></i>, <i>b<sub>1</sub></i>], 
 									[<i>a<sub>21</sub></i>, <i>a<sub>22</sub></i>, &hellip;, <i>a<sub>2n</sub></i>, <i>b<sub>2</sub></i>], 
 									&hellip;,
@@ -105,6 +131,47 @@
 						</td>
 						<td>
 							Solves system of linear equations with Gauss method.
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="equations-solving.html#lu">
+								sle_lu([
+									[<i>a<sub>11</sub></i>, <i>a<sub>12</sub></i>, &hellip;, <i>a<sub>1n</sub></i>, <i>b<sub>1</sub></i>], 
+									[<i>a<sub>21</sub></i>, <i>a<sub>22</sub></i>, &hellip;, <i>a<sub>2n</sub></i>, <i>b<sub>2</sub></i>], 
+									&hellip;,
+									[<i>a<sub>n1</sub></i>, <i>a<sub>n2</sub></i>, &hellip;, <i>a<sub>nn</sub></i>, <i>b<sub>n</sub></i>]
+								])
+							</a>
+						</td>
+						<td>
+							Solves system of linear equations with LU method.
+						</td>
+					</tr>
+					<tr class="alt">
+						<td>
+							<a href="equations-solving.html#gauss-seidel">
+								sle_gauss_seidel([
+									[<i>a<sub>11</sub></i>, <i>a<sub>12</sub></i>, &hellip;, <i>a<sub>1n</sub></i>, <i>b<sub>1</sub></i>], 
+									[<i>a<sub>21</sub></i>, <i>a<sub>22</sub></i>, &hellip;, <i>a<sub>2n</sub></i>, <i>b<sub>2</sub></i>], 
+									&hellip;,
+									[<i>a<sub>n1</sub></i>, <i>a<sub>n2</sub></i>, &hellip;, <i>a<sub>nn</sub></i>, <i>b<sub>n</sub></i>]
+								], <i>P</i>
+								)
+							</a>
+						</td>
+						<td>
+							Solves system of linear equations with Gauss-Seidel method.
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="equations-solving.html#newton">
+                newton(<i>f</i>, <i>a</i>, <i>b</i>, <i>&epsilon;</i>)
+							</a>
+						</td>
+						<td>
+							Solves non-linear equation with Newton method.
 						</td>
 					</tr>
 				</table>
@@ -271,7 +338,7 @@
 						</td>
 						<td>Best Trial method</td>
 					</tr>
-					<tr>
+					<tr class="alt">
 						<td>
 							<a href="minimum-zero.html#nelder-mead">
 							nelder_mead(
@@ -304,9 +371,126 @@
 						<td>Conjugate Gradient method</td>
 					</tr>						
 				</table>
-
+				
+				<h2>Matrices Operations</h2>
+				
+				<table>
+					<tr>
+						<th>Name</th>
+						<th>Meaning</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="matrices.html#matrix_det">
+								matrix_det(<i>A</i>)
+							</a>
+						</td>
+						<td>
+							Caclulates the determinant of matrix <i>A</i>.
+						</td>
+					</tr>
+					<tr class="alt">
+						<td>
+							<a href="matrices.html#matrix_sum">
+								matrix_sum(<i>A</i>, <i>B</i>)
+							</a>
+						</td>
+						<td>
+							Adds matrix <i>A</i> to matrix <i>B</i>.
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="matrices.html#matrix_diff">
+								matrix_diff(<i>A</i>, <i>B</i>)
+							</a>
+						</td>
+						<td>
+							Subtracts matrix <i>B</i> from matrix <i>A</i>.
+						</td>
+					</tr>
+					<tr class="alt">
+						<td>
+							<a href="matrices.html#matrix_trace">
+								matrix_trace(<i>A</i>)
+							</a>
+						</td>
+						<td>
+							Calculates the trace of matrix <i>A</i>.
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="matrices.html#matrix_multiply">
+								matrix_multiply(<i>A</i>, <i>B</i>)
+							</a>
+						</td>
+						<td>
+							Multiplies matrix <i>A</i> by matrix <i>B</i>.
+						</td>
+					</tr>
+					<tr class="alt">
+						<td>
+							<a href="matrices.html#matrix_norm_m">
+								matrix_norm_m(<i>A</i>)
+							</a>
+						</td>
+						<td>
+							Calculates m-norm of matrix <i>A</i>.
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="matrices.html#matrix_norm_l">
+								matrix_norm_l(<i>A</i>)
+							</a>
+						</td>
+						<td>
+							Calculates l-norm of matrix <i>A</i>.
+						</td>
+					</tr>
+					<tr class="alt">
+						<td>
+							<a href="matrices.html#matrix_norm_frobenius">
+								matrix_norm_frobenius(<i>A</i>)
+							</a>
+						</td>
+						<td>
+							Calculates Frobenius norm of matrix <i>A</i>.
+						</td>
+					</tr>
+          <tr>
+						<td>
+							<a href="matrices.html#matrix_inverse">
+								matrix_inverse(<i>A</i>)
+							</a>
+						</td>
+						<td>
+							Calculates the inverse of matrix <i>A</i>.
+						</td>
+					</tr>
+					<tr class="alt">
+						<td>
+							<a href="matrices.html#matrix_transpose">
+								matrix_transpose(<i>A</i>)
+							</a>
+						</td>
+						<td>
+							Performs transposing of matrix <i>A</i>.
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="matrices.html#matrix_plu">
+								matrix_plu(<i>A</i>)
+							</a>
+						</td>
+						<td>
+              Performs LU decomposition with partial pivoting of matrix <i>A</i>.
+						</td>
+					</tr>
+				</table>
+				
   </body>
 
 </html>
-
-

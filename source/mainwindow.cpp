@@ -29,7 +29,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::resultReturned(const QString &result)
 {	
-	// drop result to console
+	// Drop result to console
 	ui->consoleEdit->append("→ " + result);
 }
 
@@ -62,7 +62,7 @@ void MainWindow::clearInputArea()
 
 void MainWindow::resizeEvent(QResizeEvent *)
 {
-	// scroll consoleEdit to the end
+	// Scroll consoleEdit to the end
 	ui->consoleEdit->verticalScrollBar()->setValue(ui->consoleEdit->verticalScrollBar()->maximum());
 }
 

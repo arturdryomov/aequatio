@@ -25,9 +25,11 @@ public:
 	static void release();
 
 	void add(LogItem item);
+
 protected:
 	Logger();
 	~Logger();
+
 private:
 	static Logger *m_instance;
 
